@@ -32,7 +32,9 @@ class StartPage extends StatelessWidget {
               child: const Text('Log in'),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
               child: const Text('Sign Up'),
             ),
           ],

@@ -14,6 +14,9 @@ class CustomTopAppBar extends StatelessWidget {
       ),
       centerTitle: true,
       leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+      actions: [
+        IconButton(onPressed: () {}, icon: const Icon(Icons.catching_pokemon))
+      ],
     );
   }
 }
