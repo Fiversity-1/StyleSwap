@@ -70,7 +70,7 @@ class Profile extends StatelessWidget {
                 ),
                 itemBuilder: (_, index) => GridTile(
                   child: Image.asset(
-                    'lib/images/shirt.jpg',
+                    'lib/images/1.jpg',
                     fit: BoxFit.cover,
                   ),
                 ),

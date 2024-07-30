@@ -1,4 +1,5 @@
 // startpage.dart
+import 'package:clothing_swap/features/clothing/util/cards.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -22,14 +23,16 @@ class SwipePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Container(
-                  height: 400,
-                  child: Image.asset(
-                    'lib/images/shirt.jpg',
-                    fit: BoxFit.contain,
-                  )),
+            const Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: SizedBox(
+                height: 400,
+                child: Stack(
+                  children: [
+                    CardSwipe(title: 'CardSwipe'),
+                  ],
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(15.0),
@@ -59,6 +62,32 @@ class SwipePage extends StatelessWidget {
                 'Mount Cotton',
                 style: Theme.of(context).textTheme.headlineMedium,
                 textAlign: TextAlign.left,
+              ),
+            ),
+            SizedBox(
+              height: 5,
+              width: 250,
+              child: ElevatedButton(
+                child: const Text(''),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                ),
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext content) {
+                        return SizedBox(
+                          height: 1000,
+                          child: Center(
+                            child: ElevatedButton(
+                                child: const Text(''),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                }),
+                          ),
+                        );
+                      });
+                },
               ),
             ),
           ],
