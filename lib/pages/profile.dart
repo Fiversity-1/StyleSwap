@@ -12,23 +12,23 @@ class Profile extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 87, 87, 1),
       bottomNavigationBar: const CustomBottomNavBar(),
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
-        child: const CustomTopAppBar(),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: CustomTopAppBar(),
       ),
       body: Center(
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(15.0),
               child: Container(
                 height: 150,
                 width: 180,
                 decoration:
-                    BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                    const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
               ),
             ),
-            Container(
+            SizedBox(
               height: 50,
               width: 180,
               child: Text(
@@ -38,7 +38,7 @@ class Profile extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(15.0),
               child: Container(
                 height: 75,
                 width: 300,

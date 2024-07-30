@@ -6,7 +6,7 @@ class CustomTopAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Color.fromRGBO(255, 87, 87, 1),
+      backgroundColor: const Color.fromRGBO(255, 87, 87, 1),
       title: Image.asset(
         'lib/images/hanger.png',
         height: 80,

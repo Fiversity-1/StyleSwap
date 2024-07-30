@@ -12,9 +12,9 @@ class StartPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 87, 87, 1),
       bottomNavigationBar: const CustomBottomNavBar(),
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
-        child: const CustomTopAppBar(),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: CustomTopAppBar(),
       ),
       body: Center(
         child: Column(
