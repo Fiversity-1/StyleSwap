@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:clothing_swap/pages/startpage.dart';
-import 'package:clothing_swap/pages/signup.dart';
-import 'package:clothing_swap/pages/profile.dart';
-import 'package:clothing_swap/pages/search.dart';
+import 'package:clothing_swap/features/signup/presentation/startpage.dart';
+import 'package:clothing_swap/features/signup/presentation/signup.dart';
+import 'package:clothing_swap/features/profile/presentation/profile.dart';
+import 'package:clothing_swap/features/clothing/presentation/search.dart';
 import 'package:clothing_swap/pages/swipe.dart';
 
 void main() {
