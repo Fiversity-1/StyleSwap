@@ -23,7 +23,7 @@ class SwipePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.only(top: 20),
               child: Container(
                   height: 400,
                   child: Image.asset(
@@ -31,13 +31,25 @@ class SwipePage extends StatelessWidget {
                     fit: BoxFit.contain,
                   )),
             ),
-            SizedBox(
-              height: 50,
-              width: 380,
-              child: Text(
-                'Steve',
-                style: Theme.of(context).textTheme.headlineLarge,
-                textAlign: TextAlign.left,
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    height: 50,
+                    width: 150,
+                    child: Text(
+                      'Steve',
+                      style: Theme.of(context).textTheme.headlineLarge,
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.category),
+                    onPressed: () {},
+                  ),
+                ],
               ),
             ),
             SizedBox(
