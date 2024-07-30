@@ -23,19 +23,16 @@ class SwipePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 20),
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0),
               child: SizedBox(
-                height: 400,
-                child: Stack(
-                  children: [
-                    CardSwipe(title: 'CardSwipe'),
-                  ],
-                ),
+                height: MediaQuery.of(context).size.height * 0.6,
+                width: MediaQuery.of(context).size.width * 0.97,
+                child: const CardSwipe(title: 'CardSwipe'),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.only(left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -66,11 +63,11 @@ class SwipePage extends StatelessWidget {
             ),
             SizedBox(
               height: 5,
-              width: 250,
+              width: 100,
               child: ElevatedButton(
                 child: const Text(''),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
+                  backgroundColor: Colors.white,
                 ),
                 onPressed: () {
                   showModalBottomSheet(
