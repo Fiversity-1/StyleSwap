@@ -20,19 +20,34 @@ class SwipePage extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(10.0),
               child: Container(
-                  height: 450,
-                  width: 480,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.white),
+                  height: 400,
                   child: Image.asset(
-                    'lib/images/person.png',
+                    'lib/images/shirt.jpg',
                     fit: BoxFit.contain,
                   )),
+            ),
+            SizedBox(
+              height: 50,
+              width: 380,
+              child: Text(
+                'Steve',
+                style: Theme.of(context).textTheme.headlineLarge,
+                textAlign: TextAlign.left,
+              ),
+            ),
+            SizedBox(
+              height: 50,
+              width: 380,
+              child: Text(
+                'Mount Cotton',
+                style: Theme.of(context).textTheme.headlineMedium,
+                textAlign: TextAlign.left,
+              ),
             ),
           ],
         ),
