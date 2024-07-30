@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
 
-class CustomBottomNavBar extends StatefulWidget {
+class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
 
   const CustomBottomNavBar({super.key, required this.currentIndex});
 
-  @override
-  CustomBottomNavBarState createState() => CustomBottomNavBarState();
-}
-
-class CustomBottomNavBarState extends State<CustomBottomNavBar> {
-  void _onItemTapped(int index) {
+  void _onItemTapped(BuildContext context, int index) {
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/search');
+        Navigator.pushReplacementNamed(context, '/search');
         break;
       case 1:
-        Navigator.pushNamed(context, '/message');
+        Navigator.pushReplacementNamed(context, '/message');
         break;
       case 2:
-        Navigator.pushNamed(context, '/profile');
+        Navigator.pushReplacementNamed(context, '/profile');
         break;
     }
   }
@@ -33,8 +28,11 @@ class CustomBottomNavBarState extends State<CustomBottomNavBar> {
             icon: Icon(Icons.messenger_rounded), label: 'Message'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
       ],
-      currentIndex: widget.currentIndex,
-      onTap: _onItemTapped,
+      currentIndex: currentIndex,
+      onTap: (index) => _onItemTapped(context, index),
+      selectedItemColor: Colors.red,
+      unselectedItemColor: Colors.grey,
+      backgroundColor: Colors.white,
     );
   }
 }
