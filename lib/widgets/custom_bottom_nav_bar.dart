@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
-  const CustomBottomNavBar({super.key});
+  final int currentIndex;
+
+  const CustomBottomNavBar({super.key, required this.currentIndex});
 
   @override
   CustomBottomNavBarState createState() => CustomBottomNavBarState();
 }
 
 class CustomBottomNavBarState extends State<CustomBottomNavBar> {
-  int _selectedIndex = 0;
-
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
     switch (index) {
       case 0:
         Navigator.pushNamed(context, '/search');
@@ -37,7 +33,7 @@ class CustomBottomNavBarState extends State<CustomBottomNavBar> {
             icon: Icon(Icons.messenger_rounded), label: 'Message'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
       ],
-      currentIndex: _selectedIndex,
+      currentIndex: widget.currentIndex,
       onTap: _onItemTapped,
     );
   }
