@@ -1,0 +1,19 @@
+import 'package:flutter/material.dart';
+
+class CustomTopAppBar extends StatelessWidget {
+  const CustomTopAppBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Color.fromRGBO(255, 87, 87, 1),
+      title: Image.asset(
+        'lib/images/hanger.png',
+        height: 80,
+        width: 80,
+      ),
+      centerTitle: true,
+      leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+    );
+  }
+}
