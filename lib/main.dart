@@ -1,3 +1,4 @@
+import 'package:clothing_swap/features/clothing/presentation/add_clothing_item.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/features/signup/presentation/startpage.dart';
 import 'package:clothing_swap/features/signup/presentation/signup.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const Profile(title: 'profile'),
         '/search': (context) => const SearchPage(),
         '/message': (context) => const SwipePage(title: 'SwipePage'),
+        '/add_clothing_item': (context) => const AddClothingItemPage(),
       },
       debugShowCheckedModeBanner: false,
     );

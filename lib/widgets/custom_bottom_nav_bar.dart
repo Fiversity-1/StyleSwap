@@ -11,9 +11,12 @@ class CustomBottomNavBar extends StatelessWidget {
         Navigator.pushReplacementNamed(context, '/search');
         break;
       case 1:
-        Navigator.pushReplacementNamed(context, '/message');
+        Navigator.pushReplacementNamed(context, '/add_clothing_item');
         break;
       case 2:
+        Navigator.pushReplacementNamed(context, '/message');
+        break;
+      case 3:
         Navigator.pushReplacementNamed(context, '/profile');
         break;
     }
@@ -24,6 +27,7 @@ class CustomBottomNavBar extends StatelessWidget {
     return BottomNavigationBar(
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+        BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add Clothing'),
         BottomNavigationBarItem(
             icon: Icon(Icons.messenger_rounded), label: 'Message'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
