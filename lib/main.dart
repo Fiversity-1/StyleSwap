@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:clothing_swap/pages/startpage.dart';
 import 'package:clothing_swap/pages/signup.dart';
 import 'package:clothing_swap/pages/profile.dart';
+import 'package:clothing_swap/pages/search.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignUp(title: 'SignUp'),
         '/startpage': (context) => const StartPage(title: 'StartPage'),
         '/profile': (context) => const Profile(title: 'profile'),
+        '/search': (context) => const SearchPage(),
       },
       debugShowCheckedModeBanner: false,
     );
