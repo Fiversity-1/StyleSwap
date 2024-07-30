@@ -26,11 +26,14 @@ class Profile extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Container(
-                  height: 150,
-                  width: 180,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.white),
-                ),
+                    height: 150,
+                    width: 180,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.white),
+                    child: Image.asset(
+                      'lib/images/person.png',
+                      fit: BoxFit.contain,
+                    )),
               ),
               SizedBox(
                 height: 50,
