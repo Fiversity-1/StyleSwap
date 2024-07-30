@@ -1,20 +1,16 @@
+// signup.dart
+import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatelessWidget {
-  const SignUp({Key? key, required this.title}) : super(key: key);
+  const SignUp({super.key, required this.title});
   final String title;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(255, 87, 87, 1),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.messenger_rounded), label: 'Message'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
-      ),
+      backgroundColor: const Color.fromRGBO(255, 87, 87, 1),
+      bottomNavigationBar: const CustomBottomNavBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -28,7 +24,7 @@ class SignUp extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, '/startpage');
               },
-              child: Text('Back'),
+              child: const Text('Back'),
             ),
           ],
         ),
