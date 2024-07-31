@@ -29,7 +29,10 @@ class _CardSwipeState extends State<CardSwipe> {
         }
         ;
       },
-      child: Image.asset('lib/images/$_counter.jpg', fit: BoxFit.fill),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(4.0),
+        child: Image.asset('lib/images/$_counter.jpg', fit: BoxFit.fill),
+      ),
     );
   }
 }

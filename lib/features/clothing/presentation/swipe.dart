@@ -47,6 +47,8 @@ class SwipePage extends StatelessWidget {
                   ),
                   IconButton(
                     icon: const Icon(Icons.category),
+                    iconSize: 35,
+                    color: Colors.white,
                     onPressed: () {},
                   ),
                 ],
@@ -63,18 +65,15 @@ class SwipePage extends StatelessWidget {
             ),
             SizedBox(
               height: 5,
-              width: 100,
+              width: 50,
               child: ElevatedButton(
                 child: const Text(''),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                ),
                 onPressed: () {
                   showModalBottomSheet(
                       context: context,
                       builder: (BuildContext content) {
                         return SizedBox(
-                          height: 1000,
+                          height: MediaQuery.of(context).size.height * 0.6,
                           child: Center(
                             child: ElevatedButton(
                                 child: const Text(''),
