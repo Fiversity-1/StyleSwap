@@ -25,6 +25,10 @@ class MyApp extends StatelessWidget {
             fontSize: 26,
             color: Colors.white,
           ),
+          headlineSmall: TextStyle(
+            fontSize: 26,
+            color: Colors.black,
+          ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
