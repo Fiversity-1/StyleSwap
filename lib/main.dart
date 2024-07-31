@@ -1,3 +1,4 @@
+import 'package:clothing_swap/features/messaging/messagechat.dart';
 import 'package:clothing_swap/features/messaging/messageinbox.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/features/signup/presentation/startpage.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
         '/search': (context) => const SearchPage(),
         '/message': (context) => const Message(title: 'Message'),
         '/swipe': (context) => const SwipePage(title: 'SwipePage'),
+        '/chat': (context) => const MessageChat(title: 'MessageChat'),
       },
       debugShowCheckedModeBanner: false,
     );

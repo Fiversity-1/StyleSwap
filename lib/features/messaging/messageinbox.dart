@@ -18,17 +18,47 @@ class Message extends StatelessWidget {
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Messaging!',
-              style: Theme.of(context).textTheme.headlineLarge,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: (10.0)),
+            child: Text(
+              'Chats',
+              style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),
-          ],
-        ),
+          ),
+          Expanded(
+            child: ListView(
+              children: List.generate(
+                25,
+                (index) => ListTile(
+                  minTileHeight: 85,
+                  horizontalTitleGap: 20,
+                  onTap: () {
+                    Navigator.pushNamed(context, '/chat');
+                  },
+                  hoverColor: const Color.fromRGBO(255, 87, 87, 1),
+                  splashColor: const Color.fromRGBO(255, 87, 87, 1),
+                  shape: const RoundedRectangleBorder(
+                    side: BorderSide(
+                        color: Color.fromRGBO(255, 87, 87, 1), width: 0.5),
+                  ),
+                  title: Text('Person $index',
+                      style: Theme.of(context).textTheme.headlineSmall),
+                  tileColor: Colors.white,
+                  subtitle: Text('Random Subject text here...',
+                      style: Theme.of(context).textTheme.bodyMedium),
+                  leading: const CircleAvatar(
+                    backgroundImage: AssetImage('lib/images/person.png'),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
