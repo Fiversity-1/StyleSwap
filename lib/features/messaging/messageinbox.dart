@@ -53,7 +53,14 @@ class Message extends StatelessWidget {
                   leading: const CircleAvatar(
                     backgroundImage: AssetImage('lib/images/person.png'),
                   ),
-                  trailing: const Icon(Icons.arrow_forward_ios),
+                  trailing: Wrap(
+                    spacing: 12, // space between two icons
+                    children: [
+                      Text('Time',
+                          style: Theme.of(context).textTheme.bodySmall),
+                      const Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
                 ),
               ),
             ),
