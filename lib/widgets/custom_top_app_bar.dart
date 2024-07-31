@@ -3,6 +3,17 @@ import 'package:flutter/material.dart';
 class CustomTopAppBar extends StatelessWidget {
   const CustomTopAppBar({super.key});
 
+  void _onIconTapped(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/drawer');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/swipe');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -14,13 +25,18 @@ class CustomTopAppBar extends StatelessWidget {
       ),
       centerTitle: true,
       leading: IconButton(
-        onPressed: () {},
+        //change this to drawer if we need one
+        onPressed: () {
+          _onIconTapped(context, 1);
+        },
         icon: const Icon(Icons.menu),
         color: Colors.white,
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            _onIconTapped(context, 1);
+          },
           icon: const Icon(Icons.catching_pokemon),
           color: Colors.white,
         )
