@@ -16,6 +16,7 @@ class StartPage extends StatelessWidget {
           height: height,
           width: width,
           child: Stack(
+            alignment: Alignment.topCenter,
             children: [
               Positioned.fill(
                 child: Opacity(
@@ -85,14 +86,10 @@ class StartPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
-                left: width * 0.425,
-                top: height * 0.295,
-                child: Image.asset(
-                  'lib/images/hanger.png',
-                  height: 75,
-                  width: 75,
-                ),
+              Image.asset(
+                'lib/images/hanger.png',
+                height: 75,
+                width: 75,
               ),
             ],
           ),
