@@ -11,33 +11,52 @@ class StartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 87, 87, 1),
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 2,),
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: CustomTopAppBar(),
-      ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Welcome to Cinder',
-              style: Theme.of(context).textTheme.headlineLarge,
-              textAlign: TextAlign.center,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/signup');
-              },
-              child: const Text('Log in'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/profile');
-              },
-              child: const Text('Sign Up'),
-            ),
-          ],
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Opacity(
+                  opacity: 0.5,
+                  child:
+                      Image.asset('lib/images/backdrop.jpg', fit: BoxFit.cover),
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Welcome to Cinder',
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(top: (15.0)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: (30.0)),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/signup');
+                              },
+                              child: const Text('Log in'),
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/profile');
+                            },
+                            child: const Text('Sign Up'),
+                          ),
+                        ],
+                      )),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
