@@ -1,5 +1,6 @@
 import 'package:clothing_swap/features/messaging/messagechat.dart';
 import 'package:clothing_swap/features/messaging/messageinbox.dart';
+import 'package:clothing_swap/features/clothing/presentation/add_clothing_item.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/features/signup/presentation/startpage.dart';
 import 'package:clothing_swap/features/signup/presentation/signup.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         '/message': (context) => const Message(title: 'Message'),
         '/swipe': (context) => const SwipePage(title: 'SwipePage'),
         '/chat': (context) => const MessageChat(title: 'MessageChat'),
+        '/add_clothing_item': (context) => AddClothingItemPage(),
       },
       debugShowCheckedModeBanner: false,
     );
