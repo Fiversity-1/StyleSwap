@@ -9,13 +9,21 @@ class CustomTopAppBar extends StatelessWidget {
       backgroundColor: const Color.fromRGBO(255, 87, 87, 1),
       title: Image.asset(
         'lib/images/hanger.png',
-        height: 80,
-        width: 80,
+        height: 70,
+        width: 70,
       ),
       centerTitle: true,
-      leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+      leading: IconButton(
+        onPressed: () {},
+        icon: const Icon(Icons.menu),
+        color: Colors.white,
+      ),
       actions: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.catching_pokemon))
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.catching_pokemon),
+          color: Colors.white,
+        )
       ],
     );
   }

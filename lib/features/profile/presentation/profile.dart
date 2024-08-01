@@ -69,9 +69,12 @@ class Profile extends StatelessWidget {
                   crossAxisSpacing: 2,
                 ),
                 itemBuilder: (_, index) => GridTile(
-                  child: Image.asset(
-                    'lib/images/shirt.jpg',
-                    fit: BoxFit.cover,
+                  child: InkWell(
+                    onTap: () {},
+                    splashColor: Colors.white,
+                    child: Ink.image(
+                        fit: BoxFit.cover,
+                        image: const AssetImage('lib/images/1.jpg')),
                   ),
                 ),
                 itemCount: 10,
