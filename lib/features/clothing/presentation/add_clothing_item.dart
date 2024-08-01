@@ -10,12 +10,15 @@ import 'package:image_picker/image_picker.dart';
 class AddClothingItemPage extends HookWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  AddClothingItemPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final clothingInfo = useState<ClothingInfo>(ClothingInfo());
     final activeStep = useState<int>(0);
 
-    List<Widget> steps = useMemoized(() =>  <Widget>[
+    // the steps in the form to complete
+    List<Widget> steps = useMemoized(() => <Widget>[
         ImageSelectionField(initialValue: clothingInfo.value.image,
           onSaved: (XFile? file) => clothingInfo.value = ClothingInfo(image: file),
           validator: (XFile? file) => file == null ? "Must provide an image." : null,),

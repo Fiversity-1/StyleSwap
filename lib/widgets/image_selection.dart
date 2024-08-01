@@ -11,23 +11,26 @@ class ImageSelectionField extends FormField<XFile?> {
     AutovalidateMode super.autovalidateMode = AutovalidateMode.disabled
   }) : super(
       builder: (FormFieldState<XFile?> state) {
-        final ImagePicker _picker = ImagePicker();
+        final ImagePicker picker = ImagePicker();
 
-        Future<void> _selectImage() async {
-          final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+        // uses the ImagePicker to select an image from the gallery
+        Future<void> selectImage() async {
+          final XFile? image = await picker.pickImage(source: ImageSource.gallery);
           if (image != null) {
             state.didChange(image);
           }
         }
 
-        Future<void> _takeImage() async {
-          final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+        // uses the ImagePicker to take an image from the host camera
+        Future<void> takeImage() async {
+          final XFile? image = await picker.pickImage(source: ImageSource.camera);
           if (image != null) {
             state.didChange(image);
           }
         }
 
-        void _clearImage() {
+        // removes the current image
+        void clearImage() {
           state.didChange(null);
         }
 
@@ -48,7 +51,7 @@ class ImageSelectionField extends FormField<XFile?> {
                   Align(
                       alignment: Alignment.topRight,
                       child: IconButton(
-                        icon: const Icon(Icons.close), onPressed: _clearImage,
+                        icon: const Icon(Icons.close), onPressed: clearImage,
                       )
                   )
                 ],
@@ -58,10 +61,10 @@ class ImageSelectionField extends FormField<XFile?> {
                   children: <Widget>[
                     Text(state.errorText ?? ""),
                     ElevatedButton(
-                    onPressed: _selectImage,
+                    onPressed: selectImage,
                     child: const Text('Select Image'),
                   ),ElevatedButton(
-                    onPressed: _takeImage,
+                    onPressed: takeImage,
                     child: const Text('Take Image'),
                   ),]
               )
