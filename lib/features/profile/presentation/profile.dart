@@ -12,7 +12,7 @@ class Profile extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 87, 87, 1),
       bottomNavigationBar: const CustomBottomNavBar(
-        currentIndex: 2,
+        currentIndex: 3,
       ),
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
