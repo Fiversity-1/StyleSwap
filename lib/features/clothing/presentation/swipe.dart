@@ -51,7 +51,6 @@ class _SwipePageState extends State<SwipePage> {
                     } else if (dragEndDetails.primaryVelocity! > 0) {
                       _incrementCounter();
                     }
-                    ;
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4.0),
