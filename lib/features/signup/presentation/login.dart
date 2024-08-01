@@ -123,7 +123,9 @@ class _LoginState extends State<Login> {
                         'Register here',
                         style: TextStyle(fontSize: 17.5, color: Colors.black),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/signup');
+                      },
                     ),
                   ],
                 ),
