@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 class ImageSelectionField extends FormField<XFile?> {
   ImageSelectionField({
+    super.key,
     super.onSaved,
     super.validator,
     super.initialValue,
