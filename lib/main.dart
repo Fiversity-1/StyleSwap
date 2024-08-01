@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const Profile(title: 'profile'),
         '/search': (context) => const SearchPage(),
         '/message': (context) => const SwipePage(title: 'SwipePage'),
-        '/add_clothing_item': (context) => const AddClothingItemPage(),
+        '/add_clothing_item': (context) => AddClothingItemPage(),
       },
       debugShowCheckedModeBanner: false,
     );
