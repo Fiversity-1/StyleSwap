@@ -1,6 +1,4 @@
 // startpage.dart
-import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
-import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class StartPage extends StatelessWidget {
