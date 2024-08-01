@@ -1,7 +1,12 @@
+import 'package:clothing_swap/features/messaging/messagechat.dart';
+import 'package:clothing_swap/features/messaging/messageinbox.dart';
+import 'package:clothing_swap/features/clothing/presentation/add_clothing_item.dart';
 import 'package:flutter/material.dart';
-import 'package:clothing_swap/pages/startpage.dart';
-import 'package:clothing_swap/pages/signup.dart';
-import 'package:clothing_swap/pages/profile.dart';
+import 'package:clothing_swap/features/signup/presentation/startpage.dart';
+import 'package:clothing_swap/features/signup/presentation/signup.dart';
+import 'package:clothing_swap/features/profile/presentation/profile.dart';
+import 'package:clothing_swap/features/clothing/presentation/search.dart';
+import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,6 +29,18 @@ class MyApp extends StatelessWidget {
             fontSize: 42,
             color: Colors.black,
           ),
+          headlineMedium: TextStyle(
+            fontSize: 26,
+            color: Colors.black,
+          ),
+          headlineSmall: TextStyle(
+            fontSize: 26,
+            color: Colors.black,
+          ),
+          bodySmall: TextStyle(
+            fontSize: 22,
+            color: Colors.black,
+          ),
         ),
       ),
       home: const StartPage(title: 'StartPage'),
@@ -31,6 +48,11 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignUp(title: 'SignUp'),
         '/startpage': (context) => const StartPage(title: 'StartPage'),
         '/profile': (context) => const Profile(title: 'profile'),
+        '/search': (context) => const SearchPage(),
+        '/message': (context) => const Message(title: 'Message'),
+        '/swipe': (context) => const SwipePage(title: 'SwipePage'),
+        '/chat': (context) => const MessageChat(title: 'MessageChat'),
+        '/add_clothing_item': (context) => AddClothingItemPage(),
       },
       debugShowCheckedModeBanner: false,
     );
