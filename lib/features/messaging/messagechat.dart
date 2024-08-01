@@ -1,6 +1,6 @@
 // signup.dart
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 
 class MessageChat extends StatefulWidget {
   const MessageChat({super.key, required this.title});
