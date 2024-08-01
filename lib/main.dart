@@ -7,6 +7,7 @@ import 'package:clothing_swap/features/signup/presentation/signup.dart';
 import 'package:clothing_swap/features/profile/presentation/profile.dart';
 import 'package:clothing_swap/features/clothing/presentation/search.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
+import 'package:clothing_swap/features/signup/presentation/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         '/message': (context) => const Message(title: 'Message'),
         '/swipe': (context) => const SwipePage(title: 'SwipePage'),
         '/chat': (context) => const MessageChat(title: 'MessageChat'),
+        '/login': (context) => const Login(title: 'Login'),
         '/add_clothing_item': (context) => AddClothingItemPage(),
       },
       debugShowCheckedModeBanner: false,

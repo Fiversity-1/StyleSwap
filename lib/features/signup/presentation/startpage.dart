@@ -61,7 +61,7 @@ class StartPage extends StatelessWidget {
                                     height: height * 0.07,
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        Navigator.pushNamed(context, '/signup');
+                                        Navigator.pushNamed(context, '/login');
                                       },
                                       child: const Text('Log in',
                                           style: TextStyle(fontSize: 24)),
@@ -72,7 +72,7 @@ class StartPage extends StatelessWidget {
                                 height: height * 0.07,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/profile');
+                                    Navigator.pushNamed(context, '/signup');
                                   },
                                   child: const Text(
                                     'Sign Up',
