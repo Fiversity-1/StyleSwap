@@ -1,5 +1,5 @@
 # clothing_swap
-[![Github Build status](https://github.com/Fiversity+1/ClothingSwapApp/workflows/ci.yaml/badge.svg)]
+[![Github Build status](https://github.com/Fiversity+1/ClothingSwapApp/actions/workflows/ci.yaml/badge.svg)]
 
 Clothing Swap Application DECO3801
 
