@@ -1,6 +1,6 @@
 // signup.dart
 import 'package:flutter/material.dart';
-
+import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 
 class MessageChat extends StatefulWidget {
   const MessageChat({super.key, required this.title});
