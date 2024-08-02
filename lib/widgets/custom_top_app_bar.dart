@@ -8,14 +8,12 @@ class CustomTopAppBar extends StatelessWidget {
     return AppBar(
       title: Image.asset(
         'lib/images/hanger.png',
-        height: 75,
+        height: 65,
         width: 75,
       ),
       centerTitle: true,
       leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
-      actions: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.catching_pokemon))
-      ],
+      actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.event))],
     );
   }
 }
