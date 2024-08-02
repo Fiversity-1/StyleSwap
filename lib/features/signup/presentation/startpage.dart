@@ -10,7 +10,7 @@ class StartPage extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 87, 87, 1),
+      backgroundColor: Theme.of(context).primaryColor,
       body: Center(
         child: SizedBox(
           height: height,
@@ -37,7 +37,7 @@ class StartPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Cinder',
+                        'StyleSwap',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headlineLarge,
                       ),
@@ -61,7 +61,7 @@ class StartPage extends StatelessWidget {
                                     height: height * 0.07,
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        Navigator.pushNamed(context, '/signup');
+                                        Navigator.pushNamed(context, '/login');
                                       },
                                       child: const Text('Log in',
                                           style: TextStyle(fontSize: 24)),
@@ -72,7 +72,7 @@ class StartPage extends StatelessWidget {
                                 height: height * 0.07,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/profile');
+                                    Navigator.pushNamed(context, '/signup');
                                   },
                                   child: const Text(
                                     'Sign Up',
@@ -86,11 +86,14 @@ class StartPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Image.asset(
-                'lib/images/hanger.png',
-                height: 75,
-                width: 75,
-              ),
+              Padding(
+                padding: const EdgeInsets.only(top: (15.0)),
+                child: Image.asset(
+                  'lib/images/hanger.png',
+                  height: 75,
+                  width: 75,
+                ),
+              )
             ],
           ),
         ),

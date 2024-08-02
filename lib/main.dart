@@ -7,6 +7,7 @@ import 'package:clothing_swap/features/signup/presentation/signup.dart';
 import 'package:clothing_swap/features/profile/presentation/profile.dart';
 import 'package:clothing_swap/features/clothing/presentation/search.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
+import 'package:clothing_swap/features/signup/presentation/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,17 +21,31 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 107, 163, 104),
-            dynamicSchemeVariant: DynamicSchemeVariant.fidelity,),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 107, 163, 104),
+          dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+        ),
         brightness: Brightness.light,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        ),
+        appBarTheme: const AppBarTheme(
+          color: Color.fromARGB(255, 107, 163, 104),
+        ),
         textTheme: const TextTheme(
           headlineLarge: TextStyle(
             fontSize: 42,
-            color: Colors.black,
+            color: Colors.white,
           ),
           headlineMedium: TextStyle(
             fontSize: 26,
-            color: Colors.black,
+            color: Colors.white,
           ),
           headlineSmall: TextStyle(
             fontSize: 26,
@@ -38,7 +53,7 @@ class MyApp extends StatelessWidget {
           ),
           bodySmall: TextStyle(
             fontSize: 22,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
       ),
@@ -51,6 +66,7 @@ class MyApp extends StatelessWidget {
         '/message': (context) => const Message(title: 'Message'),
         '/swipe': (context) => const SwipePage(title: 'SwipePage'),
         '/chat': (context) => const MessageChat(title: 'MessageChat'),
+        '/login': (context) => const Login(title: 'Login'),
         '/add_clothing_item': (context) => AddClothingItemPage(),
       },
       debugShowCheckedModeBanner: false,

@@ -6,17 +6,14 @@ class CustomTopAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Theme.of(context).primaryColor,
       title: Image.asset(
         'lib/images/hanger.png',
-        height: 80,
-        width: 80,
+        height: 65,
+        width: 75,
       ),
       centerTitle: true,
       leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
-      actions: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.catching_pokemon))
-      ],
+      actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.event))],
     );
   }
 }

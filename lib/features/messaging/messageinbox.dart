@@ -10,7 +10,7 @@ class Message extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 87, 87, 1),
+      backgroundColor: Theme.of(context).primaryColor,
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 2,
       ),
@@ -21,14 +21,6 @@ class Message extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: (10.0)),
-            child: Text(
-              'Chats',
-              style: Theme.of(context).textTheme.headlineMedium,
-              textAlign: TextAlign.center,
-            ),
-          ),
           Expanded(
             child: ListView(
               children: List.generate(
@@ -39,11 +31,11 @@ class Message extends StatelessWidget {
                   onTap: () {
                     Navigator.pushNamed(context, '/chat');
                   },
-                  hoverColor: const Color.fromRGBO(255, 87, 87, 1),
-                  splashColor: const Color.fromRGBO(255, 87, 87, 1),
+                  hoverColor: Theme.of(context).primaryColor.withAlpha(240),
+                  splashColor: Theme.of(context).primaryColor.withAlpha(240),
                   shape: const RoundedRectangleBorder(
                     side: BorderSide(
-                        color: Color.fromRGBO(255, 87, 87, 1), width: 0.5),
+                        color: Color.fromARGB(255, 107, 163, 104), width: 0.5),
                   ),
                   title: Text('Person $index',
                       style: Theme.of(context).textTheme.headlineSmall),
@@ -57,7 +49,7 @@ class Message extends StatelessWidget {
                     spacing: 12, // space between two icons
                     children: [
                       Text('Time',
-                          style: Theme.of(context).textTheme.bodySmall),
+                          style: Theme.of(context).textTheme.bodyMedium),
                       const Icon(Icons.arrow_forward_ios),
                     ],
                   ),

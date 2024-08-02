@@ -15,7 +15,7 @@ class _MessageChatState extends State<MessageChat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 87, 87, 1),
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
@@ -58,14 +58,13 @@ class _MessageChatState extends State<MessageChat> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
-                        borderSide: const BorderSide(
-                            color: Color.fromRGBO(255, 87, 87, 1))),
+                        borderSide: const BorderSide(color: Colors.blue)),
                     hintText: 'Aa',
                     filled: true,
                     fillColor: Colors.white,
                     suffix: IconButton(
                       icon: const Icon(Icons.send),
-                      color: const Color.fromRGBO(255, 87, 87, 1),
+                      color: Colors.blue,
                       onPressed: () {
                         _sendText.clear();
                       },
