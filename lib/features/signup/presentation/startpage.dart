@@ -31,7 +31,7 @@ class StartPage extends StatelessWidget {
                   width: width,
                   decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      color: const Color.fromRGBO(255, 87, 87, 0.88),
+                      color: Theme.of(context).primaryColor.withAlpha(240),
                       borderRadius: BorderRadius.circular(0)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

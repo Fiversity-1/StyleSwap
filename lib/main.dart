@@ -20,14 +20,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 107, 163, 104),
+            dynamicSchemeVariant: DynamicSchemeVariant.fidelity,),
+        brightness: Brightness.light,
         textTheme: const TextTheme(
           headlineLarge: TextStyle(
             fontSize: 42,
-            color: Colors.white,
+            color: Colors.black,
           ),
           headlineMedium: TextStyle(
             fontSize: 26,
-            color: Colors.white,
+            color: Colors.black,
           ),
           headlineSmall: TextStyle(
             fontSize: 26,
@@ -35,14 +39,7 @@ class MyApp extends StatelessWidget {
           ),
           bodySmall: TextStyle(
             fontSize: 22,
-            color: Colors.white,
-          ),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: const Color.fromRGBO(255, 87, 87, 1),
-            backgroundColor: Colors.white,
-            textStyle: const TextStyle(fontSize: 18),
+            color: Colors.black,
           ),
         ),
       ),

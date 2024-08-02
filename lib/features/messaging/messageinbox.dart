@@ -12,7 +12,7 @@ class Message extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 87, 87, 1),
       bottomNavigationBar: const CustomBottomNavBar(
-        currentIndex: 1,
+        currentIndex: 2,
       ),
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
