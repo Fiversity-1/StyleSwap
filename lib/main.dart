@@ -21,8 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 107, 163, 104),
-            dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
-        primary: const Color.fromARGB(255, 107, 163, 104)),
+            dynamicSchemeVariant: DynamicSchemeVariant.fidelity,),
         brightness: Brightness.light,
         textTheme: const TextTheme(
           headlineLarge: TextStyle(
