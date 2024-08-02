@@ -18,7 +18,7 @@ class _LoginState extends State<Login> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: Center(
+      body: SingleChildScrollView(
           child: Stack(
         children: [
           Positioned.fill(
