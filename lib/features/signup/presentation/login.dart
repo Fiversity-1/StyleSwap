@@ -17,7 +17,7 @@ class _LoginState extends State<Login> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 87, 87, 1),
+      backgroundColor: Theme.of(context).primaryColor,
       body: Center(
           child: Stack(
         children: [
@@ -29,17 +29,20 @@ class _LoginState extends State<Login> {
           ),
           Column(
             children: [
-              Image.asset(
-                'lib/images/hanger.png',
-                height: 75,
-                width: 75,
+              Padding(
+                padding: const EdgeInsets.only(top: (15.0)),
+                child: Image.asset(
+                  'lib/images/hanger.png',
+                  height: 75,
+                  width: 75,
+                ),
               ),
               SizedBox(
                 height: height * 0.2,
                 width: width,
               ),
               const Text(
-                'Welcome to Cinder',
+                'Glad your here!',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 30, color: Colors.white),
               ),
@@ -53,14 +56,13 @@ class _LoginState extends State<Login> {
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(7),
-                          borderSide: const BorderSide(
-                              color: Color.fromRGBO(255, 87, 87, 1))),
+                          borderSide: const BorderSide(color: Colors.blue)),
                       hintText: 'Username',
                       filled: true,
                       fillColor: Colors.white,
                       suffix: IconButton(
                         icon: const Icon(Icons.clear),
-                        color: const Color.fromRGBO(255, 87, 87, 1),
+                        color: Colors.black,
                         onPressed: () {
                           _submitCreds.clear();
                         },
@@ -77,14 +79,13 @@ class _LoginState extends State<Login> {
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(7),
-                        borderSide: const BorderSide(
-                            color: Color.fromRGBO(255, 87, 87, 1))),
+                        borderSide: const BorderSide(color: Colors.blue)),
                     hintText: 'Password',
                     filled: true,
                     fillColor: Colors.white,
                     suffix: IconButton(
                       icon: const Icon(Icons.clear),
-                      color: const Color.fromRGBO(255, 87, 87, 1),
+                      color: Colors.black,
                       onPressed: () {
                         _submitCreds.clear();
                       },
@@ -114,12 +115,12 @@ class _LoginState extends State<Login> {
                   children: [
                     const Text(
                       'Not yet signed up?',
-                      style: TextStyle(fontSize: 17.5, color: Colors.white),
+                      style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                     TextButton(
                       child: const Text(
                         'Register here',
-                        style: TextStyle(fontSize: 17.5, color: Colors.black),
+                        style: TextStyle(fontSize: 20, color: Colors.blue),
                       ),
                       onPressed: () {
                         Navigator.pushNamed(context, '/signup');

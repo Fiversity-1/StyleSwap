@@ -21,17 +21,31 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 107, 163, 104),
-            dynamicSchemeVariant: DynamicSchemeVariant.fidelity,),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 107, 163, 104),
+          dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+        ),
         brightness: Brightness.light,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        ),
+        appBarTheme: const AppBarTheme(
+          color: Color.fromARGB(255, 107, 163, 104),
+        ),
         textTheme: const TextTheme(
           headlineLarge: TextStyle(
             fontSize: 42,
-            color: Colors.black,
+            color: Colors.white,
           ),
           headlineMedium: TextStyle(
             fontSize: 26,
-            color: Colors.black,
+            color: Colors.white,
           ),
           headlineSmall: TextStyle(
             fontSize: 26,
@@ -39,7 +53,7 @@ class MyApp extends StatelessWidget {
           ),
           bodySmall: TextStyle(
             fontSize: 22,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
       ),

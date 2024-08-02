@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
+import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -7,10 +8,12 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 0,),
-      appBar: AppBar(
-        title: const Text('Search'),
-        backgroundColor: const Color.fromRGBO(255, 87, 87, 1),
+      bottomNavigationBar: const CustomBottomNavBar(
+        currentIndex: 0,
+      ),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: CustomTopAppBar(),
       ),
       body: Column(
         children: [
