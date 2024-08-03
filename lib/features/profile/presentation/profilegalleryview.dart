@@ -1,10 +1,10 @@
-// startpage.dart
+// profile.dart
 import 'package:clothing_swap/features/clothing/presentation/clothing_detail.dart';
-import 'package:clothing_swap/features/clothing/presentation/swipetop.dart';
+import 'package:clothing_swap/features/profile/presentation/profilegalleryviewtop.dart';
 import 'package:flutter/material.dart';
 
-class SwipePage extends StatelessWidget {
-  SwipePage({super.key});
+class ProfileGalleryView extends StatelessWidget {
+  ProfileGalleryView({super.key});
   final _controller = PageController();
 
   @override
@@ -12,9 +12,9 @@ class SwipePage extends StatelessWidget {
     return Scaffold(
       body: PageView(
         physics: const PageScrollPhysics(),
-        controller: _controller,
         scrollDirection: Axis.vertical,
-        children: const [SwipePageTop(), ClothingDetail()],
+        controller: _controller,
+        children: const [ProfileGalleryViewTop(), ClothingDetail()],
       ),
     );
   }
