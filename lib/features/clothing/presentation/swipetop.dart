@@ -47,6 +47,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                     _incrementCounter();
                   } else if (dragEndDetails.primaryVelocity! > 0) {
                     _incrementCounter();
+                    Navigator.pushNamed(context, '/match_animation');
                   }
                 },
                 child: ClipRRect(
