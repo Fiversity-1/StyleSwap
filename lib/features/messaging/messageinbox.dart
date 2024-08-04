@@ -21,6 +21,11 @@ class Message extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          Text(
+            'Chats',
+            style: Theme.of(context).textTheme.headlineMedium,
+            textAlign: TextAlign.left,
+          ),
           Expanded(
             child: ListView(
               children: List.generate(
