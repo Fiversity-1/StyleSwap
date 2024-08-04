@@ -32,12 +32,32 @@ class _MatchAnimationState extends State<MatchAnimation> {
               child: Lottie.network(
                   'https://lottie.host/185e81d7-c6ae-47f3-bb7b-0b37a92f69bf/WNOrVcmrIv.json'),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/chat');
-              },
-              child: const Text('Send a message!'),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 50),
+                  child: ElevatedButton(
+                    child: const Text(
+                      'Keep Looking',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/chat');
+                    },
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/swipe');
+                  },
+                  child: const Text(
+                    'Message',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),
