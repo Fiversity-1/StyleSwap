@@ -26,7 +26,7 @@ class _MatchAnimationState extends State<MatchAnimation> {
                 textAlign: TextAlign.left,
               ),
             ),
-            Container(
+            SizedBox(
               width: width * 0.6,
               height: height * 0.6,
               child: Lottie.network(
