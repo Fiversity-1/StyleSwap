@@ -11,8 +11,6 @@ class SwipePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        physics: const PageScrollPhysics(),
-        controller: _controller,
         scrollDirection: Axis.vertical,
         children: const [SwipePageTop(), ClothingDetail()],
       ),

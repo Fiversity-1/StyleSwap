@@ -82,11 +82,12 @@ class _SwipePageTopState extends State<SwipePageTop> {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.sell_outlined),
-                    iconSize: 35,
-                    color: Colors.white,
-                    onPressed: () {},
-                  ),
+                      icon: const Icon(Icons.sell_outlined),
+                      iconSize: 35,
+                      color: Colors.white,
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/clothing_detail');
+                      }),
                 ],
               ),
             ),
