@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 
-class SearchPage extends StatelessWidget {
-  const SearchPage({super.key});
+class AdvancedSearch extends StatelessWidget {
+  const AdvancedSearch({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +17,14 @@ class SearchPage extends StatelessWidget {
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.only(top: (10)),
+            child: Text(
+              'Select Brand',
+              style: Theme.of(context).textTheme.bodyLarge,
+              textAlign: TextAlign.center,
+            ),
+          ),
           const Padding(
             padding: EdgeInsets.all(16.0),
             child: TextField(
@@ -32,8 +40,8 @@ class SearchPage extends StatelessWidget {
               children: List.generate(
                 10,
                 (index) => ListTile(
-                  title: Text('Item $index'),
-                  leading: const Icon(Icons.atm),
+                  title: Text('Brand $index'),
+                  leading: const Icon(Icons.type_specimen),
                 ),
               ),
             ),
