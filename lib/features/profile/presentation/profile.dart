@@ -69,12 +69,17 @@ class Profile extends StatelessWidget {
                   crossAxisSpacing: 2,
                 ),
                 itemBuilder: (_, index) => GridTile(
-                  child: InkWell(
+                  child: GestureDetector(
                     onTap: () {},
-                    splashColor: Colors.white,
-                    child: Ink.image(
-                        fit: BoxFit.cover,
-                        image: const AssetImage('lib/images/1.jpg')),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/gallery');
+                      },
+                      splashColor: Colors.white,
+                      child: Ink.image(
+                          fit: BoxFit.cover,
+                          image: const AssetImage('lib/images/1.jpg')),
+                    ),
                   ),
                 ),
                 itemCount: 10,

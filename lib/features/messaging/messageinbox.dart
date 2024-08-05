@@ -21,6 +21,11 @@ class Message extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          Text(
+            'Chats',
+            style: Theme.of(context).textTheme.headlineMedium,
+            textAlign: TextAlign.left,
+          ),
           Expanded(
             child: ListView(
               children: List.generate(
@@ -35,7 +40,7 @@ class Message extends StatelessWidget {
                   splashColor: Theme.of(context).primaryColor.withAlpha(240),
                   shape: const RoundedRectangleBorder(
                     side: BorderSide(
-                        color: Color.fromARGB(255, 107, 163, 104), width: 0.5),
+                        color: Color.fromRGBO(107, 163, 104, 1), width: 0.5),
                   ),
                   title: Text('Person $index',
                       style: Theme.of(context).textTheme.headlineSmall),
