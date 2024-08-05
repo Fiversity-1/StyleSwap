@@ -103,15 +103,27 @@ class EventList extends StatelessWidget {
                                 bottomLeft: Radius.circular(8),
                                 bottomRight: Radius.circular(8)),
                           ),
-                          child: IconButton(
-                              icon: const Icon(Icons.more_horiz),
-                              iconSize: 35,
-                              color: Colors.black,
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/eventlist');
-                              }),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              IconButton(
+                                  icon: const Icon(Icons.favorite_border),
+                                  iconSize: 35,
+                                  color: Colors.red,
+                                  onPressed: () {
+                                    Colors.black;
+                                  }),
+                              IconButton(
+                                  icon: const Icon(Icons.comment),
+                                  iconSize: 35,
+                                  color: Colors.blue,
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, '/eventlist');
+                                  })
+                            ],
+                          ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         )
                       ],
