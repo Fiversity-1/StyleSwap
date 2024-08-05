@@ -38,7 +38,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
           Padding(
             padding: const EdgeInsets.only(top: (15.0)),
             child: SizedBox(
-              height: height * 0.7,
+              height: height * 0.65,
               width: width * 0.97,
               child: GestureDetector(
                 onHorizontalDragEnd: (dragEndDetails) {
