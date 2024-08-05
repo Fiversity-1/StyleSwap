@@ -20,7 +20,7 @@ class CustomTopAppBar extends StatelessWidget {
       actions: [
         IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/commenting');
+              Navigator.pushNamed(context, '/eventlist');
             },
             icon: const Icon(Icons.event))
       ],

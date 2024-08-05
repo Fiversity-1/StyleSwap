@@ -2,6 +2,41 @@ import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 
+class Event {
+  final String company;
+  final IconData logo;
+  final String details;
+  Event({required this.company, required this.logo, required this.details});
+}
+
+List<Event> events = [
+  Event(
+      company: 'Jacob',
+      logo: Icons.category,
+      details: 'This is random filler text'),
+  Event(
+      company: 'Steve',
+      logo: Icons.numbers,
+      details:
+          'This is random filler textThis is random iller textThis is random filleiller textThis is random filleiller textThis is random fillefiller textThis is random filler text'),
+  Event(
+      company: 'Jack',
+      logo: Icons.person,
+      details: 'This is random filler textThis is random filler text'),
+  Event(
+      company: 'Josh',
+      logo: Icons.type_specimen,
+      details: 'This is random filler text'),
+  Event(
+      company: 'John',
+      logo: Icons.gpp_good_outlined,
+      details: 'This is random filler text'),
+  Event(
+      company: 'Filler',
+      logo: Icons.palette,
+      details: 'This is random filler text'),
+];
+
 class EventList extends StatelessWidget {
   const EventList({super.key});
 
@@ -18,8 +53,8 @@ class EventList extends StatelessWidget {
       bottomNavigationBar: const CustomBottomNavBar(currentIndex: 2),
       body: Center(
           child: Padding(
-              padding: EdgeInsets.only(top: (20.0)),
-              child: Container(
+              padding: const EdgeInsets.only(top: (20.0)),
+              child: SizedBox(
                 width: width * 0.85,
                 child: ListView.separated(
                   itemCount: 5,
@@ -36,29 +71,30 @@ class EventList extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const CircleAvatar(
-                            minRadius: 15,
+                            minRadius: 14,
                             backgroundImage:
                                 AssetImage('lib/images/person.png'),
                           ),
                           Text(
-                            'Vinnies',
+                            ' ${events[index].company}',
                             style: Theme.of(context).textTheme.headlineSmall,
                             textAlign: TextAlign.center,
                           ),
                         ],
                       ),
                       minTileHeight: 125,
-                      horizontalTitleGap: 70,
                       titleAlignment: ListTileTitleAlignment.threeLine,
-                      subtitle: const Text(
-                          'ving a meet and greet and vinnies this coming week, hope you can make it!'),
+                      subtitle: Text(events[index].details),
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
                     return Column(
                       children: [
+                        const SizedBox(
+                          height: 0.35,
+                        ),
                         Container(
-                          height: 70,
+                          height: 50,
                           width: width,
                           decoration: const BoxDecoration(
                             shape: BoxShape.rectangle,
@@ -67,6 +103,13 @@ class EventList extends StatelessWidget {
                                 bottomLeft: Radius.circular(8),
                                 bottomRight: Radius.circular(8)),
                           ),
+                          child: IconButton(
+                              icon: const Icon(Icons.more_horiz),
+                              iconSize: 35,
+                              color: Colors.black,
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/eventlist');
+                              }),
                         ),
                         SizedBox(
                           height: 20,
