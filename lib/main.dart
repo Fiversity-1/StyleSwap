@@ -1,7 +1,7 @@
 import 'package:clothing_swap/features/clothing/presentation/advanced_search.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_detail.dart';
 import 'package:clothing_swap/features/clothing/presentation/match_animation.dart';
-import 'package:clothing_swap/features/community/commenting.dart';
+import 'package:clothing_swap/features/community/eventlist.dart';
 import 'package:clothing_swap/features/messaging/messagechat.dart';
 import 'package:clothing_swap/features/messaging/messageinbox.dart';
 import 'package:clothing_swap/features/clothing/presentation/add_clothing_item.dart';
@@ -13,6 +13,7 @@ import 'package:clothing_swap/features/profile/presentation/profile.dart';
 import 'package:clothing_swap/features/clothing/presentation/search_main.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
 import 'package:clothing_swap/features/signup/presentation/login.dart';
+import 'package:clothing_swap/features/community/education.dart';
 
 void main() {
   runApp(const MyApp());
@@ -77,7 +78,8 @@ class MyApp extends StatelessWidget {
         '/add_clothing_item': (context) => AddClothingItemPage(),
         '/clothing_detail': (context) => const ClothingDetail(),
         '/match_animation': (context) => const MatchAnimation(),
-        '/commenting': (context) => const Commenting(),
+        '/eventlist': (context) => const EventList(),
+        '/education': (context) => const Education(),
       },
       debugShowCheckedModeBanner: false,
     );

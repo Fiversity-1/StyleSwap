@@ -23,7 +23,6 @@ List<Category> categories = [
       options: [1, 2, 3, 4, 5, 6]),
   Category(
       category: 'Colour', logo: Icons.palette, options: [1, 2, 3, 4, 5, 6]),
-  // Add more categories as needed
 ];
 
 class AdvancedSearch extends StatefulWidget {
@@ -36,6 +35,7 @@ class AdvancedSearch extends StatefulWidget {
 class _AdvancedSearchState extends State<AdvancedSearch> {
   //use this for indexing queries/views
   int _counter = 0;
+  List colours = [];
 
   void _incrementCounter() {
     setState(() {
@@ -43,8 +43,19 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
     });
     if (_counter == categories.length) {
       Navigator.pushNamed(context, '/swipe');
+      //send over relevant images to be shown
     }
   }
+
+  // void _decreaseCounter() {
+  //   setState(() {
+  //     _counter--;
+  //   });
+  //   if (_counter == -1) {
+  //     Navigator.pushNamed(context, '/search');
+  //     //send over relevant images to be shown
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +69,29 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: (10)),
-            child: Text(
-              'Select ${categories[_counter].category}',
-              style: Theme.of(context).textTheme.bodyLarge,
-              textAlign: TextAlign.center,
-            ),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: (5), top: (10)),
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios),
+                  iconSize: 20,
+                  color: Colors.black,
+                  onPressed: () {
+                    //_decreaseCounter();
+                    //backend send, retrieval
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: (10)),
+                child: Text(
+                  'Select ${categories[_counter].category}',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           ),
           const Padding(
             padding: EdgeInsets.all(16.0),
