@@ -1,6 +1,7 @@
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
 class SwipePageTop extends StatefulWidget {
   const SwipePageTop({super.key});
@@ -12,7 +13,11 @@ class SwipePageTop extends StatefulWidget {
 class _SwipePageTopState extends State<SwipePageTop> {
   //use this for indexing queries/views
   int _counter = 0;
-
+  List images = [
+    Image.asset('lib/images/0.jpg', fit: BoxFit.fill),
+    Image.asset('lib/images/1.jpg', fit: BoxFit.fill),
+    Image.asset('lib/images/2.jpg', fit: BoxFit.fill),
+  ];
   void _incrementCounter() {
     setState(() {
       _counter++;
@@ -23,6 +28,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       bottomNavigationBar: const CustomBottomNavBar(
@@ -40,21 +46,21 @@ class _SwipePageTopState extends State<SwipePageTop> {
             child: SizedBox(
               height: height * 0.65,
               width: width * 0.97,
-              child: GestureDetector(
-                onHorizontalDragEnd: (dragEndDetails) {
-                  if (dragEndDetails.primaryVelocity! < 0) {
-                    //left swipe
-                    _incrementCounter();
-                  } else if (dragEndDetails.primaryVelocity! > 0) {
-                    _incrementCounter();
+              child: CardSwiper(
+                cardsCount: 3,
+                numberOfCardsDisplayed: 3,
+                onSwipe: (previousIndex, currentIndex, direction) {
+                  _incrementCounter();
+                  if (direction.name == 'right') {
                     Navigator.pushNamed(context, '/match_animation');
                   }
+                  return true;
                 },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(4.0),
-                  child: Image.asset('lib/images/$_counter.jpg',
-                      fit: BoxFit.contain),
-                ),
+                allowedSwipeDirection:
+                    const AllowedSwipeDirection.only(left: true, right: true),
+                cardBuilder:
+                    (context, index, percentThresholdX, percentThresholdY) =>
+                        images[index],
               ),
             ),
           ),
@@ -64,7 +70,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Steve',
+                  'Steve$_counter',
                   style: Theme.of(context).textTheme.headlineLarge,
                   textAlign: TextAlign.left,
                 ),

@@ -29,8 +29,7 @@ class _MatchAnimationState extends State<MatchAnimation> {
             SizedBox(
               width: width * 0.6,
               height: height * 0.6,
-              child: Lottie.network(
-                  'https://lottie.host/185e81d7-c6ae-47f3-bb7b-0b37a92f69bf/WNOrVcmrIv.json'),
+              child: Lottie.asset('lib/images/match3.json'),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -43,13 +42,13 @@ class _MatchAnimationState extends State<MatchAnimation> {
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/chat');
+                      Navigator.pushNamed(context, '/swipe');
                     },
                   ),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/swipe');
+                    Navigator.pushNamed(context, '/chat');
                   },
                   child: const Text(
                     'Message',
