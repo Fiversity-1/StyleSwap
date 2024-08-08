@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           seedColor: const Color.fromARGB(255, 107, 164, 104),
           dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
         ),
-        scafoldBackgroundColour: Colour.blue,
+        scafoldBackgroundColor: Color.blue,
         brightness: Brightness.light,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
