@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         appBarTheme: const AppBarTheme(
-          color: Color.fromRGBO(107, 163, 104, 1),
+          color: Color.fromARGB(0, 63, 102, 128), // to change colour of top nav. 
         ),
         textTheme: const TextTheme(
           headlineLarge: TextStyle(
