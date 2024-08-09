@@ -24,7 +24,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      //boo
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 1,
       ),

@@ -10,7 +10,7 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      //boo
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 3,
       ),
