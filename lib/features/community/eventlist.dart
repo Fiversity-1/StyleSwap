@@ -44,7 +44,6 @@ class EventList extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),

@@ -8,7 +8,6 @@ class Education extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),

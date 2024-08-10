@@ -14,7 +14,6 @@ class _MatchAnimationState extends State<MatchAnimation> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
       body: Center(
         child: Column(
           children: [

@@ -10,7 +10,6 @@ class StartPage extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
       body: Center(
         child: SizedBox(
           height: height,
