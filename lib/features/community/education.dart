@@ -7,13 +7,13 @@ class Education extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const PreferredSize(
+    return const Scaffold(
+      appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
       ),
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 2),
-      body: const Column(
+      bottomNavigationBar: CustomBottomNavBar(currentIndex: 2),
+      body: Column(
         children: [
           Padding(
             padding: EdgeInsets.only(top: (20.0)),
