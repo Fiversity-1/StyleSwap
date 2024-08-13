@@ -1,15 +1,24 @@
+import 'package:clothing_swap/features/clothing/presentation/clothing_item.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:clothing_swap/features/clothing/presentation/clothing_item.dart';
 
 class ClothingDetail extends StatelessWidget {
-  final ClothingDetail? specificItem;
-  const ClothingDetail({super.key, this.specificItem});
+  const ClothingDetail({super.key});
 
   @override
   Widget build(BuildContext context) {
+    ClothingItemDetail item = ClothingItemDetail(
+        bio:
+            'This is an awesome black shirt that I really like a lot a lot a lot a lot a lot.',
+        type: 'Shirt',
+        size: 54,
+        gender: 'Male',
+        brand: 'Anko',
+        condition: 'Good',
+        colours: ['Black', 'Grey']);
+
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
@@ -36,7 +45,7 @@ class ClothingDetail extends StatelessWidget {
                       Navigator.pushNamed(context, '/swipe');
                     }),
                 Text(
-                  this.specificItem.bio,
+                  'Info',
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -51,62 +60,62 @@ class ClothingDetail extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: (0.0)),
               child: ListView(
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(8),
-                children: const [
+                children: [
                   ListTile(
                     tileColor: Colors.white,
-                    title: Text(
-                        'This is a awesome shirt awesome shirt awesome shirt an awesome shirtan awesome shirtan awesome shirtan awesome shirt an awesome shirt'),
-                    leading: Icon(Icons.info),
+                    title: Text(item.bio),
+                    leading: const Icon(Icons.info),
                   ),
                   ListTile(
                     tileColor: Colors.white,
-                    title: Text("Type"),
-                    subtitle: Text("Pants"),
-                    leading: Icon(Icons.category),
+                    title: const Text("Type"),
+                    subtitle: Text(item.type),
+                    leading: const Icon(Icons.category),
                   ),
                   ListTile(
                     tileColor: Colors.white,
-                    title: Text("Size"),
-                    subtitle: Text("32"),
-                    leading: Icon(Icons.numbers),
+                    title: const Text("Size"),
+                    subtitle: Text(item.size.toString()),
+                    leading: const Icon(Icons.numbers),
                   ),
                   ListTile(
                       tileColor: Colors.green,
-                      title: Text("Gender"),
+                      title: const Text("Gender"),
                       textColor: Colors.white,
-                      subtitle: Text("Male"),
-                      leading: Icon(
+                      subtitle: Text(item.gender),
+                      leading: const Icon(
                         Icons.person,
                         color: Colors.white,
                       ),
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.star,
                         color: Colors.yellow,
                       )),
                   ListTile(
                     tileColor: Colors.white,
-                    title: Text("Brand"),
-                    subtitle: Text("Gucci"),
-                    leading: Icon(Icons.type_specimen),
+                    title: const Text("Brand"),
+                    subtitle: Text(item.brand),
+                    leading: const Icon(Icons.type_specimen),
                   ),
                   ListTile(
                       tileColor: Colors.green,
-                      title: Text("Condition"),
+                      title: const Text("Condition"),
                       textColor: Colors.white,
-                      subtitle: Text("Good"),
-                      leading:
-                          Icon(Icons.gpp_good_outlined, color: Colors.white),
-                      trailing: Icon(
+                      subtitle: Text(item.condition),
+                      leading: const Icon(Icons.gpp_good_outlined,
+                          color: Colors.white),
+                      trailing: const Icon(
                         Icons.star,
                         color: Colors.yellow,
                       )),
                   ListTile(
                     tileColor: Colors.white,
-                    title: Text("Colour"),
-                    subtitle: Text("Green"),
-                    leading: Icon(Icons.palette),
+                    title: const Text("Colour"),
+                    subtitle: Text(item.colours.join(", ")),
+                    leading: const Icon(Icons.palette),
                   ),
                 ],
               ),

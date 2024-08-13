@@ -7,6 +7,7 @@ class ClothingCard extends StatefulWidget {
   const ClothingCard({super.key, required this.item});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ClothingCardState createState() => _ClothingCardState();
 }
 
