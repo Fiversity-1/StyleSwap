@@ -17,7 +17,15 @@ class ClothingDetail extends StatelessWidget {
         gender: 'Male',
         brand: 'Anko',
         condition: 'Good',
-        colours: ['Black', 'Grey']);
+        colours: [
+          'Black',
+          'Grey'
+        ],
+        images: [
+          'lib/images/0.jpg',
+          'lib/images/watermelon.png',
+          'lib/images/watermelon2.jpg'
+        ]);
 
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -139,11 +147,11 @@ class ClothingDetail extends StatelessWidget {
                     splashColor: Colors.white,
                     child: Ink.image(
                         fit: BoxFit.cover,
-                        image: const AssetImage('lib/images/1.jpg')),
+                        image: AssetImage(item.images[index])),
                   ),
                 ),
               ),
-              itemCount: 4,
+              itemCount: item.images.length,
             ),
             Padding(
               padding: const EdgeInsets.only(top: (10.0), bottom: (10)),

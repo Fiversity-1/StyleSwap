@@ -20,6 +20,7 @@ class ClothingItemDetail {
   final String brand;
   final String condition;
   final List<String> colours;
+  final List<String> images;
   ClothingItemDetail({
     required this.bio,
     required this.type,
@@ -28,5 +29,6 @@ class ClothingItemDetail {
     required this.brand,
     required this.condition,
     required this.colours,
+    required this.images,
   });
 }
