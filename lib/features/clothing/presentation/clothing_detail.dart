@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:clothing_swap/features/clothing/presentation/clothing_item.dart';
 
 class ClothingDetail extends StatelessWidget {
-  const ClothingDetail({super.key});
+  final ClothingDetail? specificItem;
+  const ClothingDetail({super.key, this.specificItem});
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +36,14 @@ class ClothingDetail extends StatelessWidget {
                       Navigator.pushNamed(context, '/swipe');
                     }),
                 Text(
-                  'Info',
+                  this.specificItem.bio,
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: (4)),
                 ),
-                Text(
+                const Text(
                   ' ',
                 ),
               ],
