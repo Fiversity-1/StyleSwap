@@ -253,7 +253,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
           TargetContent(
             child: const Column(children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: (50.0)),
+                padding: EdgeInsets.only(bottom: (50.0)),
                 child: Text(
                   "Swipe Left: Not Interested\nSwipe Right: Interested\nTap: See more images",
                   textAlign: TextAlign.left,
