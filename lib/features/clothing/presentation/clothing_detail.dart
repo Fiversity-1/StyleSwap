@@ -70,7 +70,8 @@ class ClothingDetail extends StatelessWidget {
               child: ListView(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                padding: const EdgeInsets.all(8),
+                padding:
+                    kIsWeb ? const EdgeInsets.all(16) : const EdgeInsets.all(8),
                 children: [
                   ListTile(
                     tileColor: Colors.white,
