@@ -10,7 +10,6 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //boo
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 3,
       ),

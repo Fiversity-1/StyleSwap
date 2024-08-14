@@ -13,11 +13,17 @@ class CustomTopAppBar extends StatelessWidget {
       ),
       leading: IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/swipe');
+            Navigator.pushNamed(context, '/education');
           },
           icon: const Icon(Icons.recycling)),
       centerTitle: true,
-      actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.event))],
+      actions: [
+        IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/eventlist');
+            },
+            icon: const Icon(Icons.event))
+      ],
     );
   }
 }

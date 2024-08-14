@@ -9,7 +9,6 @@ class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //boo
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),

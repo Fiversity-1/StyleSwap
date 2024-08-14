@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.green,
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
@@ -41,8 +41,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
         appBarTheme: const AppBarTheme(
-          color: Color.fromARGB(0, 63, 102, 128), // to change colour of top nav. 
-        ),
+            color: Colors.green // to change colour of top nav.
+            ),
         textTheme: const TextTheme(
           headlineLarge: TextStyle(
             fontSize: 42,

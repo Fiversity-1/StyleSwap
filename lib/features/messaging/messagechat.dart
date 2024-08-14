@@ -15,7 +15,6 @@ class _MessageChatState extends State<MessageChat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //boo
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),

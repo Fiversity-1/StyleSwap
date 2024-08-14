@@ -25,7 +25,6 @@ class _SearchPageState extends State<SearchPage> {
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
       ),
-      //boo
       body: Center(
           child: Stack(
         children: [
