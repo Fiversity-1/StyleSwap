@@ -3,7 +3,6 @@ import 'package:clothing_swap/widgets/image_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:im_stepper/stepper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 
@@ -20,11 +19,11 @@ class AddClothingItemPage extends HookWidget {
     // the steps in the form to complete
     List<Widget> steps = <Widget>[
       ImageSelectionField(
-        initialValue: clothingInfo.value.image,
-        onChanged: (XFile? file) =>
-        clothingInfo.value = clothingInfo.value.copyWith(image: file),
-        validator: (XFile? file) =>
-        file == null ? "Image required" : null,
+        initialValue: clothingInfo.value.images,
+        onSaved: (List<XFile>? images) =>
+        clothingInfo.value = clothingInfo.value.copyWith(images: images),
+        validator: (List<XFile>? images) =>
+        (images ?? []).isEmpty ? "Image required" : null,
       ),
       SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -109,11 +108,16 @@ class AddClothingItemPage extends HookWidget {
       activeStep.value--;
     }
 
-    void validate() {
+    void next() {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
         nextStep();
       }
+    }
+
+    void previous() {
+      _formKey.currentState!.save();
+      previousStep();
     }
 
     void save() {
@@ -121,7 +125,7 @@ class AddClothingItemPage extends HookWidget {
     }
 
     return Scaffold(
-      backgroundColor:  Colors.white,
+      backgroundColor:  Theme.of(context).colorScheme.surface,
         bottomNavigationBar: const CustomBottomNavBar(
           currentIndex: 1,
         ),
@@ -139,14 +143,20 @@ class AddClothingItemPage extends HookWidget {
                   Padding(
                       padding: const EdgeInsets.all(16),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ElevatedButton(
-                              onPressed: isFirstStep() ? null : previousStep,
-                              child: const Text("Previous")),
+                              onPressed: isFirstStep() ? null : previous,
+                              child: const Text("Previous"),
+                          ),
                           ElevatedButton(
-                              onPressed: isMaxStep() ? save : validate,
-                              child: const Text("Next")),
+                              onPressed: isMaxStep() ? save : next,
+                              child: const Text("Next"),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                          ),
                         ],
                       )
                   )

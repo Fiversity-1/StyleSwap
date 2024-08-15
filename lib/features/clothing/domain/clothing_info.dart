@@ -2,7 +2,7 @@
 import 'package:image_picker/image_picker.dart';
 
 class ClothingInfo {
-  final XFile? image;
+  final List<XFile> images;
   final ClothingSize? size;
   final String? description;
   final String? brand;
@@ -11,11 +11,11 @@ class ClothingInfo {
   final ClothingType? type;
   final List<ClothingColour>? colours;
 
-  ClothingInfo({this.image, this.size, this.description,
+  ClothingInfo({this.images = const [], this.size, this.description,
     this.brand, this.condition, this.gender, this.type, this.colours});
 
   ClothingInfo copyWith({
-    XFile? image,
+    List<XFile>? images,
     ClothingSize? size,
     String? description,
     String? brand,
@@ -23,7 +23,7 @@ class ClothingInfo {
     ClothingGender? gender,
     ClothingType? type,
     List<ClothingColour>? colours,}) {
-    return ClothingInfo(size: size ?? this.size, image: image ?? this.image,
+    return ClothingInfo(size: size ?? this.size, images: images ?? this.images,
       description: description ?? this.description, brand: brand ?? this.brand,
       condition: condition ?? this.condition, gender: gender ?? this.gender,
       type: type ?? this.type, colours: colours ?? this.colours);

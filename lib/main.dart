@@ -19,30 +19,23 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
+    final colourScheme = ColorScheme.fromSeed(
+      seedColor: const Color.fromARGB(255, 76, 175, 80),
+      dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+      surface: Colors.white
+    );
+
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 107, 164, 104),
-          dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
-        ),
+        colorScheme: colourScheme,
         scaffoldBackgroundColor: Colors.blue,
         brightness: Brightness.light,
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
+        appBarTheme: AppBarTheme(
+            color: colourScheme.primary// to change colour of top nav.
         ),
-        appBarTheme: const AppBarTheme(
-            color: Colors.green // to change colour of top nav.
-            ),
         textTheme: const TextTheme(
           headlineLarge: TextStyle(
             fontSize: 42,
