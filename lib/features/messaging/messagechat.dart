@@ -29,7 +29,6 @@ class _MessageChatState extends State<MessageChat> {
                 child: IconButton(
                   icon: const Icon(Icons.arrow_back_ios),
                   iconSize: 35,
-                  color: Colors.white,
                   onPressed: () {},
                 ),
               ),
@@ -56,14 +55,13 @@ class _MessageChatState extends State<MessageChat> {
                   controller: _sendText,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: const BorderSide(color: Colors.blue)),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                     hintText: 'Aa',
                     filled: true,
                     fillColor: Colors.white,
                     suffix: IconButton(
                       icon: const Icon(Icons.send),
-                      color: Colors.blue,
                       onPressed: () {
                         _sendText.clear();
                       },

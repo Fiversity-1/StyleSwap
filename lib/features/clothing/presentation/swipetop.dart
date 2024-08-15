@@ -88,17 +88,11 @@ class _SwipePageTopState extends State<SwipePageTop> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: Colors.lightBlue,
             title: Text('Fun Fact',
                 style: Theme.of(context).textTheme.headlineMedium),
             //Have 10 fun facts and index with mod to avoid out of bounds
-            content: Text(
-              popups[counter % 10],
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            ),
+            content: Text(popups[counter % 10],
+                style: Theme.of(context).textTheme.bodyMedium),
             actions: [
               TextButton(
                 onPressed: () {
@@ -127,7 +121,6 @@ class _SwipePageTopState extends State<SwipePageTop> {
           preferredSize: Size.fromHeight(50),
           child: CustomTopAppBar(),
         ),
-        backgroundColor: Colors.white10,
         body: Stack(
           alignment: Alignment.center,
           children: [
@@ -145,7 +138,9 @@ class _SwipePageTopState extends State<SwipePageTop> {
                   padding: const EdgeInsets.only(top: (10)),
                   child: Container(
                     key: _tapingKey,
-                    color: Colors.blue.withOpacity(0.8),
+                    color: Theme.of(context)
+                        .scaffoldBackgroundColor
+                        .withOpacity(0.9),
                     width: (kIsWeb) ? width * 0.50625 : width * 0.9125,
                     height: (kIsWeb) ? height * 0.675 : height * 0.58,
                   ),
@@ -189,16 +184,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                     children: [
                       Text(
                         swipeImages[_counter].name,
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                          shadows: [
-                            Shadow(
-                              color: Colors.blue.shade900.withOpacity(0.5),
-                              offset: const Offset(1, 1),
-                            ),
-                          ],
-                        ),
+                        style: Theme.of(context).textTheme.headlineMedium,
                       ),
                     ],
                   ),
@@ -208,19 +194,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        swipeImages[_counter].location,
-                        style: TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
-                          shadows: [
-                            Shadow(
-                              color: Colors.blue.shade900.withOpacity(0.5),
-                              offset: const Offset(1, 1),
-                            ),
-                          ],
-                        ),
-                      ),
+                      Text(swipeImages[_counter].location,
+                          style: Theme.of(context).textTheme.headlineMedium),
                     ],
                   ),
                 ),
@@ -230,7 +205,6 @@ class _SwipePageTopState extends State<SwipePageTop> {
                       icon: const Icon(Icons.arrow_circle_up),
                       iconSize: 35,
                       key: _moreDetailKey,
-                      color: Colors.white,
                       onPressed: () {
                         Navigator.pushNamed(context, '/clothing_detail');
                       }),
@@ -246,21 +220,18 @@ class _SwipePageTopState extends State<SwipePageTop> {
   void createTutorial() {
     listTargets.add(
       TargetFocus(
-        color: Colors.blueAccent,
+        color: Theme.of(context).scaffoldBackgroundColor,
         identify: "Target 2",
         keyTarget: _tapingKey,
         contents: [
           TargetContent(
-            child: const Column(children: [
+            child: Column(children: [
               Padding(
-                padding: EdgeInsets.only(bottom: (50.0)),
+                padding: const EdgeInsets.only(bottom: (50.0)),
                 child: Text(
                   "Swipe Left: Not Interested\nSwipe Right: Interested\nTap: See more images",
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.white,
-                  ),
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
             ]),
@@ -272,20 +243,17 @@ class _SwipePageTopState extends State<SwipePageTop> {
     );
 
     listTargets.add(TargetFocus(
-      color: Colors.blueAccent,
+      color: Theme.of(context).scaffoldBackgroundColor,
       identify: "Target 3",
       keyTarget: _moreDetailKey,
       contents: [
         TargetContent(
-            child: const Column(
+            child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               "Swipe/Tap up for more info",
-              style: TextStyle(
-                fontSize: 22,
-                color: Colors.white,
-              ),
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         )),
@@ -297,9 +265,10 @@ class _SwipePageTopState extends State<SwipePageTop> {
   void showTutorial() {
     explainer = TutorialCoachMark(
       targets: listTargets,
-      colorShadow: Colors.white,
+      colorShadow: Theme.of(context).scaffoldBackgroundColor,
       textSkip: "SKIP",
-      textStyleSkip: const TextStyle(fontSize: 22, color: Colors.white),
+      textStyleSkip: TextStyle(
+          fontSize: 22, color: Theme.of(context).scaffoldBackgroundColor),
       paddingFocus: 4,
       opacityShadow: 1,
       onClickTarget: (target) {},

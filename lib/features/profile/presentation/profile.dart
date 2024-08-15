@@ -27,8 +27,7 @@ class Profile extends StatelessWidget {
                 child: Container(
                     height: 150,
                     width: 180,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.white),
+                    decoration: const BoxDecoration(shape: BoxShape.circle),
                     child: Image.asset(
                       'lib/images/person.png',
                       fit: BoxFit.contain,
@@ -50,7 +49,6 @@ class Profile extends StatelessWidget {
                   width: 300,
                   decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10)),
                   child: Text(
                     'This is random fill!esssr text for the sake of seeing what it',

@@ -53,6 +53,7 @@ ThemeData lightTheme = ThemeData(
         ),
       ),
     ),
+    dialogBackgroundColor: Colors.lightBlue,
     inputDecorationTheme: const InputDecorationTheme(
         fillColor: Colors.white,
         enabledBorder:

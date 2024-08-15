@@ -41,13 +41,13 @@ class Message extends StatelessWidget {
                   },
                   hoverColor: Theme.of(context).primaryColor.withAlpha(240),
                   splashColor: Theme.of(context).primaryColor.withAlpha(240),
-                  shape: const RoundedRectangleBorder(
+                  shape: RoundedRectangleBorder(
                     side: BorderSide(
-                        color: Color.fromRGBO(107, 163, 104, 1), width: 0.5),
+                        color: Theme.of(context).primaryColor.withAlpha(240),
+                        width: 0.5),
                   ),
                   title: Text('Person $index',
                       style: Theme.of(context).textTheme.headlineSmall),
-                  tileColor: Colors.white,
                   subtitle: Text('Random Subject text here...',
                       style: Theme.of(context).textTheme.bodyMedium),
                   leading: const CircleAvatar(
