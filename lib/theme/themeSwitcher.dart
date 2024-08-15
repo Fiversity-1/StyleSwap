@@ -12,7 +12,8 @@ class ThemeSwitcher with ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleTheme() {
+  void toggleTheme(String option) {
+    //add toggle for accessibility and user device
     if (_themeData == lightTheme) {
       themeData = darkTheme;
     } else {

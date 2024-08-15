@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     // bool isdark;
     // isdark = (colourMode == Brightness.dark);
     return MaterialApp(
-      themeMode: Provider.of(context).themeData,
+      theme: Provider.of<ThemeSwitcher>(context).themeData,
       home: const StartPage(title: 'StartPage'),
       routes: {
         '/signup': (context) => const SignUp(title: 'SignUp'),
