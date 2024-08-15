@@ -26,6 +26,7 @@ class Message extends StatelessWidget {
                 25,
                 (index) => ListTile(
                   minTileHeight: 85,
+                  minVerticalPadding: 12.5,
                   horizontalTitleGap: 20,
                   onTap: () {
                     Navigator.pushNamed(context, '/chat');
@@ -42,7 +43,8 @@ class Message extends StatelessWidget {
                   subtitle: Text('Random Subject text here...',
                       style: Theme.of(context).textTheme.bodyMedium),
                   leading: const CircleAvatar(
-                    backgroundImage: AssetImage('lib/images/person.png'),
+                    backgroundImage:
+                        AssetImage('lib/images/profilepicture.jpg'),
                   ),
                   trailing: Wrap(
                     spacing: 18, // space between two icons

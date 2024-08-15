@@ -35,7 +35,7 @@ dependencies:
   flutter_card_swiper: ^7.0.1
   flip_card: ^0.7.0
   tutorial_coach_mark: ^1.2.11
-  
+  provider:
 
 
   # The following adds the Cupertino Icons font to your application.

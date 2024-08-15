@@ -12,81 +12,24 @@ import 'package:clothing_swap/features/profile/presentation/profile.dart';
 import 'package:clothing_swap/features/clothing/presentation/search_main.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
 import 'package:clothing_swap/features/signup/presentation/login.dart';
+import 'package:provider/provider.dart';
+import 'package:clothing_swap/theme/themeSwitcher.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => ThemeSwitcher(), child: const MyApp()));
 }
-
-ThemeData lightTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
-  brightness: Brightness.light,
-  useMaterial3: true,
-  primaryColor: Colors.lightBlue,
-  scaffoldBackgroundColor: Colors.grey[300],
-  // scaffoldBackgroundColor: Colors.lightBlue,
-  // textTheme: const TextTheme(
-  //   headlineLarge: TextStyle(
-  //     fontSize: 42,
-  //     color: Colors.white,
-  //   ),
-  //   headlineMedium: TextStyle(
-  //     fontSize: 26,
-  //     color: Colors.white,
-  //   ),
-  //   headlineSmall: TextStyle(
-  //     fontSize: 26,
-  //     color: Colors.black,
-  //   ),
-  //   bodySmall: TextStyle(
-  //     fontSize: 22,
-  //     color: Colors.white,
-  //   ),
-  // ),
-  appBarTheme: const AppBarTheme(
-    color: Colors.blue,
-    iconTheme: IconThemeData(color: Colors.white),
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-    ),
-  ),
-  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      selectedItemColor: Colors.blue,
-      unselectedItemColor: Colors.grey,
-      backgroundColor: Colors.white),
-  // dialogBackgroundColor: Colors.lightBlue,
-  // inputDecorationTheme: const InputDecorationTheme(
-  //     fillColor: Colors.white,
-  //     enabledBorder:
-  //         OutlineInputBorder(borderSide: BorderSide(color: Colors.blue))),
-  hoverColor: Colors.lightBlueAccent,
-  listTileTheme: const ListTileThemeData(
-      tileColor: Colors.white,
-      selectedTileColor: Colors.lightBlue,
-      selectedColor: Colors.white),
-  // iconTheme: const IconThemeData(color: Colors.black)
-);
-
-ThemeData darkTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-  brightness: Brightness.light,
-  useMaterial3: true,
-);
-
-ThemeData accessibilityTheme = ThemeData();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // var colourMode = MediaQuery.of(context).platformBrightness;
+    // bool isdark;
+    // isdark = (colourMode == Brightness.dark);
     return MaterialApp(
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.light,
+      themeMode: Provider.of(context).themeData,
       home: const StartPage(title: 'StartPage'),
       routes: {
         '/signup': (context) => const SignUp(title: 'SignUp'),
