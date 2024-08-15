@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageSelectionField extends FormField<XFile?> {
+
+  void Function(XFile?)? onChanged;
+
   ImageSelectionField({
     super.key,
     super.onSaved,
+    this.onChanged,
     super.validator,
     super.initialValue,
     AutovalidateMode super.autovalidateMode = AutovalidateMode.disabled
@@ -19,6 +23,7 @@ class ImageSelectionField extends FormField<XFile?> {
           final XFile? image = await picker.pickImage(source: ImageSource.gallery);
           if (image != null) {
             state.didChange(image);
+            onChanged!(image);
           }
         }
 
@@ -27,12 +32,14 @@ class ImageSelectionField extends FormField<XFile?> {
           final XFile? image = await picker.pickImage(source: ImageSource.camera);
           if (image != null) {
             state.didChange(image);
+            onChanged!(image);
           }
         }
 
         // removes the current image
         void clearImage() {
           state.didChange(null);
+          onChanged!(null);
         }
 
         return Column(
@@ -60,7 +67,14 @@ class ImageSelectionField extends FormField<XFile?> {
             else
               Column(
                   children: <Widget>[
-                    Text(state.errorText ?? ""),
+                    Text(
+                      state.errorText ?? "",
+                      style: const TextStyle(
+                        color: Colors.red, // Set the text color to red
+                        fontSize: 18, // Optional: Set the font size
+                        fontWeight: FontWeight.bold, // Optional: Set the font weight
+                      ),
+                    ),
                     ElevatedButton(
                     onPressed: selectImage,
                     child: const Text('Select Image'),

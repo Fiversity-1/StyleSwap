@@ -18,49 +18,69 @@ class AddClothingItemPage extends HookWidget {
     final activeStep = useState<int>(0);
 
     // the steps in the form to complete
-    List<Widget> steps = useMemoized(
-        () => <Widget>[
-              ImageSelectionField(
-                initialValue: clothingInfo.value.image,
-                onSaved: (XFile? file) =>
-                    clothingInfo.value = ClothingInfo(image: file),
-                validator: (XFile? file) =>
-                    file == null ? "Must provide an image." : null,
-              ),
-              Center(
-                  child: Column(
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Brand',
-                    ),
-                    validator: (String? text) => (text?.length ?? 0) < 1
-                        ? "Brand must be provided"
-                        : null,
-                    onSaved: (String? text) =>
-                        clothingInfo.value = ClothingInfo(brand: text),
+    List<Widget> steps = <Widget>[
+      ImageSelectionField(
+        initialValue: clothingInfo.value.image,
+        onChanged: (XFile? file) =>
+        clothingInfo.value = clothingInfo.value.copyWith(image: file),
+        validator: (XFile? file) =>
+        file == null ? "Image required" : null,
+      ),
+      SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+        children: [
+          TextFormField(
+            initialValue: clothingInfo.value.brand,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Brand',
+            ),
+            validator: (String? text) => (text?.length ?? 0) < 1
+                ? "Brand must be provided"
+                : null,
+            onChanged: (String? text) =>
+            clothingInfo.value = clothingInfo.value.copyWith(brand: text),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+              height: 300,
+              child: TextFormField(
+                  initialValue: clothingInfo.value.description,
+                  expands: true,
+                  textAlignVertical: TextAlignVertical.top,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Description',
                   ),
-                  const SizedBox(height: 10),
-                  Expanded(
-                      child: TextFormField(
-                          expands: true,
-                          textAlignVertical: TextAlignVertical.top,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Description',
-                          ),
-                          validator: (String? text) => (text?.length ?? 0) < 1
-                              ? "Brand must be provided"
-                              : null,
-                          onSaved: (String? text) =>
-                              clothingInfo.value = ClothingInfo(brand: text),
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null))
-                ],
-              ))
-            ],
-        [clothingInfo.value]);
+                  onChanged: (String? text) =>
+                  clothingInfo.value = clothingInfo.value
+                      .copyWith(description: text),
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null
+              )
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+              height: 300,
+              child: TextFormField(
+                  initialValue: clothingInfo.value.description,
+                  expands: true,
+                  textAlignVertical: TextAlignVertical.top,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Description',
+                  ),
+                  onChanged: (String? text) =>
+                  clothingInfo.value = clothingInfo.value
+                      .copyWith(description: text),
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null
+              )
+          )
+        ],
+      )),
+    ];
 
     int numSteps = steps.length;
     Widget currentWidget = steps[activeStep.value];
@@ -101,6 +121,7 @@ class AddClothingItemPage extends HookWidget {
     }
 
     return Scaffold(
+      backgroundColor:  Colors.white,
         bottomNavigationBar: const CustomBottomNavBar(
           currentIndex: 1,
         ),
@@ -108,51 +129,27 @@ class AddClothingItemPage extends HookWidget {
           preferredSize: Size.fromHeight(50),
           child: CustomTopAppBar(),
         ),
-        body: Padding(
-            padding: const EdgeInsets.all(32),
-            child: Form(
+        body: Form(
                 key: _formKey,
                 child: Column(children: [
-                  DotStepper(
-                    dotCount: numSteps,
-                    dotRadius: 10,
-                    activeStep: activeStep.value,
-                    shape: Shape.circle,
-                    spacing: 10,
-                    indicator: Indicator.shift,
-
-                    /// TAPPING WILL NOT FUNCTION PROPERLY WITHOUT THIS PIECE OF CODE.
-                    onDotTapped: (tappedDotIndex) {
-                      activeStep.value = tappedDotIndex;
-                    },
-
-                    fixedDotDecoration: const FixedDotDecoration(
-                      color: Colors.grey,
-                    ),
-                    indicatorDecoration: const IndicatorDecoration(
-                        color: Colors.blue,
-                        strokeColor: Colors.blue,
-                        strokeWidth: 0),
-                  ),
-
                   /// Jump buttons.
-                  Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: currentWidget)),
-
+                  Expanded(child: currentWidget),
+                  
                   // Next and Previous buttons.
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                          onPressed: isFirstStep() ? null : previousStep,
-                          child: const Text("Previous")),
-                      ElevatedButton(
-                          onPressed: isMaxStep() ? save : validate,
-                          child: const Text("Next")),
-                    ],
+                  Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton(
+                              onPressed: isFirstStep() ? null : previousStep,
+                              child: const Text("Previous")),
+                          ElevatedButton(
+                              onPressed: isMaxStep() ? save : validate,
+                              child: const Text("Next")),
+                        ],
+                      )
                   )
-                ]))));
+                ])));
   }
 }
