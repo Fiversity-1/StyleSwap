@@ -40,11 +40,9 @@ class _SearchPageState extends State<SearchPage> {
                 height: height * 0.2,
                 width: width,
               ),
-              const Text(
-                'What are you looking for?',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 30, color: Colors.white),
-              ),
+              Text('What are you looking for?',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineLarge),
               Padding(
                 padding: const EdgeInsets.only(top: (20.0), bottom: (8.5)),
                 child: SizedBox(
@@ -54,14 +52,12 @@ class _SearchPageState extends State<SearchPage> {
                     controller: _submitCreds,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7),
-                          borderSide: const BorderSide(color: Colors.blue)),
+                        borderRadius: BorderRadius.circular(7),
+                      ),
                       hintText: 'E.g. Gucci Baggy Blue Shirt',
                       filled: true,
-                      fillColor: Colors.white,
                       suffix: IconButton(
                         icon: const Icon(Icons.clear),
-                        color: Colors.black,
                         onPressed: () {
                           _submitCreds.clear();
                         },
@@ -78,7 +74,7 @@ class _SearchPageState extends State<SearchPage> {
                       ElevatedButton(
                         child: const Text(
                           'Advanced Search',
-                          style: TextStyle(fontSize: 20, color: Colors.white),
+                          style: TextStyle(fontSize: 20),
                         ),
                         onPressed: () {
                           Navigator.pushNamed(context, '/advanced_search');

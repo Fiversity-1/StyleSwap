@@ -45,6 +45,7 @@ ThemeData lightTheme = ThemeData(
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        textStyle: const TextStyle(color: Colors.white),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
@@ -52,6 +53,10 @@ ThemeData lightTheme = ThemeData(
         ),
       ),
     ),
+    inputDecorationTheme: const InputDecorationTheme(
+        fillColor: Colors.white,
+        enabledBorder:
+            OutlineInputBorder(borderSide: BorderSide(color: Colors.blue))),
     listTileTheme: const ListTileThemeData(
         tileColor: Colors.white,
         selectedTileColor: Colors.green,
