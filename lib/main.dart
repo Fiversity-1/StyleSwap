@@ -53,6 +53,10 @@ ThemeData lightTheme = ThemeData(
         ),
       ),
     ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: Colors.white),
     dialogBackgroundColor: Colors.lightBlue,
     inputDecorationTheme: const InputDecorationTheme(
         fillColor: Colors.white,
