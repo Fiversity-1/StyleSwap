@@ -38,7 +38,7 @@ class ProfileGalleryViewTop extends StatelessWidget {
                         }),
                   ),
                   SizedBox(
-                    height: height * 0.765,
+                    height: height * 0.7,
                     width: width,
                   ),
                 ],

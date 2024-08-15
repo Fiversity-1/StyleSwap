@@ -23,16 +23,16 @@ class Profile extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Container(
-                    height: 150,
-                    width: 180,
-                    decoration: const BoxDecoration(shape: BoxShape.circle),
-                    child: Image.asset(
-                      'lib/images/person.png',
-                      fit: BoxFit.contain,
-                    )),
+              const Padding(
+                padding: EdgeInsets.only(top: 15.0, bottom: 5),
+                child: SizedBox(
+                  height: 150,
+                  width: 180,
+                  child: CircleAvatar(
+                    backgroundImage:
+                        AssetImage('lib/images/profilepicture.jpg'),
+                  ),
+                ),
               ),
               SizedBox(
                 height: 50,
@@ -44,17 +44,19 @@ class Profile extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.only(top: 5, bottom: 15),
                 child: Container(
                   height: 75,
                   width: 300,
                   decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
+                      color: Theme.of(context).primaryColorLight,
                       borderRadius: BorderRadius.circular(10)),
                   child: Text(
-                    'This is random fill!esssr text for the sake of seeing what it',
+                    'I love food and sustainability! Keen to trade some clothes!',
                     style: Theme.of(context).textTheme.bodyLarge,
                     textAlign: TextAlign.center,
+                    softWrap: true,
                   ),
                 ),
               ),
@@ -62,7 +64,7 @@ class Profile extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                  crossAxisCount: kIsWeb ? 3 : 2,
                   mainAxisSpacing: 2,
                   crossAxisSpacing: 2,
                 ),
@@ -73,10 +75,10 @@ class Profile extends StatelessWidget {
                       onTap: () {
                         Navigator.pushNamed(context, '/gallery');
                       },
-                      splashColor: Colors.white,
+                      splashColor: Theme.of(context).primaryColorLight,
                       child: Ink.image(
                           fit: BoxFit.cover,
-                          image: const AssetImage('lib/images/1.jpg')),
+                          image: const AssetImage('lib/images/backdrop.jpg')),
                     ),
                   ),
                 ),
