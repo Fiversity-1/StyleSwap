@@ -1,5 +1,6 @@
 // signup.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.title});
@@ -47,7 +48,7 @@ class _LoginState extends State<Login> {
                 padding: const EdgeInsets.only(top: (20.0), bottom: (8.5)),
                 child: SizedBox(
                   height: height * 0.085,
-                  width: width * 0.875,
+                  width: kIsWeb ? width * 0.35 : width * 0.875,
                   child: TextField(
                     controller: _submitCreds,
                     decoration: InputDecoration(
@@ -56,7 +57,6 @@ class _LoginState extends State<Login> {
                       ),
                       hintText: 'Username',
                       filled: true,
-                      fillColor: Colors.white,
                       suffix: IconButton(
                         icon: const Icon(Icons.clear),
                         onPressed: () {
@@ -69,7 +69,7 @@ class _LoginState extends State<Login> {
               ),
               SizedBox(
                 height: height * 0.085,
-                width: width * 0.875,
+                width: kIsWeb ? width * 0.35 : width * 0.875,
                 child: TextField(
                   controller: _submitCreds,
                   decoration: InputDecoration(
@@ -78,7 +78,6 @@ class _LoginState extends State<Login> {
                     ),
                     hintText: 'Password',
                     filled: true,
-                    fillColor: Colors.white,
                     suffix: IconButton(
                       icon: const Icon(Icons.clear),
                       onPressed: () {
@@ -91,7 +90,7 @@ class _LoginState extends State<Login> {
               Padding(
                 padding: const EdgeInsets.only(top: (15.0)),
                 child: SizedBox(
-                  width: width * 0.45,
+                  width: kIsWeb ? width * 0.2 : width * 0.45,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/profile');

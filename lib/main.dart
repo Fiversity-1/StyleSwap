@@ -18,92 +18,65 @@ void main() {
 }
 
 ThemeData lightTheme = ThemeData(
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-    brightness: Brightness.light,
-    useMaterial3: true,
-    textTheme: const TextTheme(
-      headlineLarge: TextStyle(
-        fontSize: 42,
-        color: Colors.white,
-      ),
-      headlineMedium: TextStyle(
-        fontSize: 26,
-        color: Colors.white,
-      ),
-      headlineSmall: TextStyle(
-        fontSize: 26,
-        color: Colors.black,
-      ),
-      bodySmall: TextStyle(
-        fontSize: 22,
-        color: Colors.white,
-      ),
-    ),
-    appBarTheme: const AppBarTheme(
-      color: Colors.blue,
-      iconTheme: IconThemeData(color: Colors.white),
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        textStyle: const TextStyle(color: Colors.white),
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-    ),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        backgroundColor: Colors.white),
-    dialogBackgroundColor: Colors.lightBlue,
-    inputDecorationTheme: const InputDecorationTheme(
-        fillColor: Colors.white,
-        enabledBorder:
-            OutlineInputBorder(borderSide: BorderSide(color: Colors.blue))),
-    listTileTheme: const ListTileThemeData(
-        tileColor: Colors.white,
-        selectedTileColor: Colors.green,
-        selectedColor: Colors.white),
-    iconTheme: const IconThemeData(color: Colors.black));
-
-ThemeData darkTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
+  colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
   brightness: Brightness.light,
   useMaterial3: true,
-  textTheme: const TextTheme(
-    headlineLarge: TextStyle(
-      fontSize: 42,
-      color: Colors.white,
-    ),
-    headlineMedium: TextStyle(
-      fontSize: 26,
-      color: Colors.white,
-    ),
-    headlineSmall: TextStyle(
-      fontSize: 26,
-      color: Colors.black,
-    ),
-    bodySmall: TextStyle(
-      fontSize: 22,
-      color: Colors.white,
-    ),
-  ),
+  primaryColor: Colors.lightBlue,
+  scaffoldBackgroundColor: Colors.grey[300],
+  // scaffoldBackgroundColor: Colors.lightBlue,
+  // textTheme: const TextTheme(
+  //   headlineLarge: TextStyle(
+  //     fontSize: 42,
+  //     color: Colors.white,
+  //   ),
+  //   headlineMedium: TextStyle(
+  //     fontSize: 26,
+  //     color: Colors.white,
+  //   ),
+  //   headlineSmall: TextStyle(
+  //     fontSize: 26,
+  //     color: Colors.black,
+  //   ),
+  //   bodySmall: TextStyle(
+  //     fontSize: 22,
+  //     color: Colors.white,
+  //   ),
+  // ),
   appBarTheme: const AppBarTheme(
     color: Colors.blue,
     iconTheme: IconThemeData(color: Colors.white),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.green,
-      foregroundColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
     ),
   ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      selectedItemColor: Colors.blue,
+      unselectedItemColor: Colors.grey,
+      backgroundColor: Colors.white),
+  // dialogBackgroundColor: Colors.lightBlue,
+  // inputDecorationTheme: const InputDecorationTheme(
+  //     fillColor: Colors.white,
+  //     enabledBorder:
+  //         OutlineInputBorder(borderSide: BorderSide(color: Colors.blue))),
+  hoverColor: Colors.lightBlueAccent,
+  listTileTheme: const ListTileThemeData(
+      tileColor: Colors.white,
+      selectedTileColor: Colors.lightBlue,
+      selectedColor: Colors.white),
+  // iconTheme: const IconThemeData(color: Colors.black)
 );
+
+ThemeData darkTheme = ThemeData(
+  colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+  brightness: Brightness.light,
+  useMaterial3: true,
+);
+
+ThemeData accessibilityTheme = ThemeData();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

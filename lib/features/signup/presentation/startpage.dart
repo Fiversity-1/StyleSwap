@@ -1,5 +1,6 @@
 // startpage.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key, required this.title});
@@ -45,7 +46,7 @@ class StartPage extends StatelessWidget {
                         child: Text(
                           'Trade Clothes Online',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
                       Padding(
@@ -56,7 +57,7 @@ class StartPage extends StatelessWidget {
                               Padding(
                                   padding: const EdgeInsets.only(right: (30.0)),
                                   child: SizedBox(
-                                    width: width * 0.35,
+                                    width: kIsWeb ? width * 0.175 : width * 0.3,
                                     height: height * 0.07,
                                     child: ElevatedButton(
                                       onPressed: () {
@@ -67,7 +68,7 @@ class StartPage extends StatelessWidget {
                                     ),
                                   )),
                               SizedBox(
-                                width: width * 0.35,
+                                width: kIsWeb ? width * 0.175 : width * 0.35,
                                 height: height * 0.07,
                                 child: ElevatedButton(
                                   onPressed: () {

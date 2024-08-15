@@ -20,15 +20,6 @@ class Message extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                'Chats',
-                style: Theme.of(context).textTheme.headlineMedium,
-                textAlign: TextAlign.left,
-              ),
-            ],
-          ),
           Expanded(
             child: ListView(
               children: List.generate(
@@ -54,7 +45,7 @@ class Message extends StatelessWidget {
                     backgroundImage: AssetImage('lib/images/person.png'),
                   ),
                   trailing: Wrap(
-                    spacing: 12, // space between two icons
+                    spacing: 18, // space between two icons
                     children: [
                       Text('Time',
                           style: Theme.of(context).textTheme.bodyMedium),

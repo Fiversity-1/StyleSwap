@@ -13,7 +13,7 @@ class CustomTopAppBar extends StatelessWidget {
       ),
       leading: IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/education');
+            Navigator.pushNamed(context, '/swipe');
           },
           icon: const Icon(Icons.recycling)),
       centerTitle: true,

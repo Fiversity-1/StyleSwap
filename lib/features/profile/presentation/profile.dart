@@ -2,6 +2,7 @@
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class Profile extends StatelessWidget {
   const Profile({super.key, required this.title});
