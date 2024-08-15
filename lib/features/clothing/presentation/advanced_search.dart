@@ -47,16 +47,6 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
     }
   }
 
-  // void _decreaseCounter() {
-  //   setState(() {
-  //     _counter--;
-  //   });
-  //   if (_counter == -1) {
-  //     Navigator.pushNamed(context, '/search');
-  //     //send over relevant images to be shown
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,10 +67,7 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
                   icon: const Icon(Icons.arrow_back_ios),
                   iconSize: 20,
                   color: Colors.black,
-                  onPressed: () {
-                    //_decreaseCounter();
-                    //backend send, retrieval
-                  },
+                  onPressed: () {},
                 ),
               ),
               Padding(

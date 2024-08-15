@@ -17,51 +17,93 @@ void main() {
   runApp(const MyApp());
 }
 
+ThemeData lightTheme = ThemeData(
+    colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+    brightness: Brightness.light,
+    useMaterial3: true,
+    textTheme: const TextTheme(
+      headlineLarge: TextStyle(
+        fontSize: 42,
+        color: Colors.white,
+      ),
+      headlineMedium: TextStyle(
+        fontSize: 26,
+        color: Colors.white,
+      ),
+      headlineSmall: TextStyle(
+        fontSize: 26,
+        color: Colors.black,
+      ),
+      bodySmall: TextStyle(
+        fontSize: 22,
+        color: Colors.white,
+      ),
+    ),
+    appBarTheme: const AppBarTheme(
+      color: Colors.blue,
+      iconTheme: IconThemeData(color: Colors.white),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+    ),
+    listTileTheme: const ListTileThemeData(
+        tileColor: Colors.white,
+        selectedTileColor: Colors.green,
+        selectedColor: Colors.white),
+    iconTheme: const IconThemeData(color: Colors.black));
+
+ThemeData darkTheme = ThemeData(
+  colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
+  brightness: Brightness.light,
+  useMaterial3: true,
+  textTheme: const TextTheme(
+    headlineLarge: TextStyle(
+      fontSize: 42,
+      color: Colors.white,
+    ),
+    headlineMedium: TextStyle(
+      fontSize: 26,
+      color: Colors.white,
+    ),
+    headlineSmall: TextStyle(
+      fontSize: 26,
+      color: Colors.black,
+    ),
+    bodySmall: TextStyle(
+      fontSize: 22,
+      color: Colors.white,
+    ),
+  ),
+  appBarTheme: const AppBarTheme(
+    color: Colors.blue,
+    iconTheme: IconThemeData(color: Colors.white),
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.green,
+      foregroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+    ),
+  ),
+);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 107, 164, 104),
-          dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
-        ),
-        scaffoldBackgroundColor: Colors.blue,
-        brightness: Brightness.light,
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-        ),
-        appBarTheme: const AppBarTheme(
-            color: Colors.green // to change colour of top nav.
-            ),
-        textTheme: const TextTheme(
-          headlineLarge: TextStyle(
-            fontSize: 42,
-            color: Colors.white,
-          ),
-          headlineMedium: TextStyle(
-            fontSize: 26,
-            color: Colors.white,
-          ),
-          headlineSmall: TextStyle(
-            fontSize: 26,
-            color: Colors.black,
-          ),
-          bodySmall: TextStyle(
-            fontSize: 22,
-            color: Colors.white,
-          ),
-        ),
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.light,
       home: const StartPage(title: 'StartPage'),
       routes: {
         '/signup': (context) => const SignUp(title: 'SignUp'),

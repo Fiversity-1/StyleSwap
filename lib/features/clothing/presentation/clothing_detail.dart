@@ -48,7 +48,6 @@ class ClothingDetail extends StatelessWidget {
                 IconButton(
                     icon: const Icon(Icons.arrow_back_ios),
                     iconSize: 25,
-                    color: Colors.white,
                     onPressed: () {
                       Navigator.pushNamed(context, '/swipe');
                     }),
@@ -74,54 +73,47 @@ class ClothingDetail extends StatelessWidget {
                     kIsWeb ? const EdgeInsets.all(16) : const EdgeInsets.all(8),
                 children: [
                   ListTile(
-                    tileColor: Colors.white,
                     title: Text(item.bio),
                     leading: const Icon(Icons.info),
                   ),
                   ListTile(
-                    tileColor: Colors.white,
                     title: const Text("Type"),
                     subtitle: Text(item.type),
                     leading: const Icon(Icons.category),
                   ),
                   ListTile(
-                    tileColor: Colors.white,
                     title: const Text("Size"),
                     subtitle: Text(item.size.toString()),
                     leading: const Icon(Icons.numbers),
                   ),
                   ListTile(
-                      tileColor: Colors.green,
+                      selected: true,
                       title: const Text("Gender"),
-                      textColor: Colors.white,
                       subtitle: Text(item.gender),
                       leading: const Icon(
                         Icons.person,
-                        color: Colors.white,
                       ),
                       trailing: const Icon(
                         Icons.star,
                         color: Colors.yellow,
                       )),
                   ListTile(
-                    tileColor: Colors.white,
                     title: const Text("Brand"),
                     subtitle: Text(item.brand),
                     leading: const Icon(Icons.type_specimen),
                   ),
                   ListTile(
-                      tileColor: Colors.green,
+                      selected: true,
                       title: const Text("Condition"),
-                      textColor: Colors.white,
                       subtitle: Text(item.condition),
-                      leading: const Icon(Icons.gpp_good_outlined,
-                          color: Colors.white),
+                      leading: const Icon(
+                        Icons.gpp_good_outlined,
+                      ),
                       trailing: const Icon(
                         Icons.star,
                         color: Colors.yellow,
                       )),
                   ListTile(
-                    tileColor: Colors.white,
                     title: const Text("Colour"),
                     subtitle: Text(item.colours.join(", ")),
                     leading: const Icon(Icons.palette),
