@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
       theme: Provider.of<ThemeSwitcher>(context).themeData,
       home: const StartPage(title: 'StartPage'),
       routes: {
+        //Test
         '/signup': (context) => const SignUp(title: 'SignUp'),
         '/startpage': (context) => const StartPage(title: 'StartPage'),
         '/profile': (context) => const Profile(title: 'profile'),
