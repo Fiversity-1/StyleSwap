@@ -19,58 +19,71 @@ class _MessageChatState extends State<MessageChat> {
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+      body: Stack(
         children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: (10.0)),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios),
-                  iconSize: 35,
-                  onPressed: () {},
-                ),
-              ),
-              const CircleAvatar(
-                backgroundImage: AssetImage('lib/images/person.png'),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: (15.0)),
-                child: Text('Steve',
-                    style: Theme.of(context).textTheme.headlineLarge,
-                    textAlign: TextAlign.center),
-              ),
-            ],
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.6),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.075,
-                width: MediaQuery.of(context).size.width * 0.95,
-                child: TextField(
-                  scrollPhysics: const NeverScrollableScrollPhysics(),
-                  controller: _sendText,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    hintText: 'Aa',
-                    filled: true,
-                    fillColor: Colors.white,
-                    suffix: IconButton(
-                      icon: const Icon(Icons.send),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: (10.0), top: 5),
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios),
+                      iconSize: 35,
                       onPressed: () {
-                        _sendText.clear();
+                        Navigator.pushReplacementNamed(context, '/message');
                       },
                     ),
                   ),
-                ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: CircleAvatar(
+                      backgroundImage:
+                          AssetImage('lib/images/profilepicture.jpg'),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: (15), top: 5),
+                    child: Text('Steve',
+                        style: Theme.of(context).textTheme.headlineLarge,
+                        textAlign: TextAlign.center),
+                  ),
+                ],
               ),
             ],
           ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.075,
+                    width: MediaQuery.of(context).size.width * 0.95,
+                    child: TextField(
+                      scrollPhysics: const NeverScrollableScrollPhysics(),
+                      controller: _sendText,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        hintText: 'Aa',
+                        filled: true,
+                        suffix: IconButton(
+                          icon: const Icon(Icons.send),
+                          onPressed: () {
+                            _sendText.clear();
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

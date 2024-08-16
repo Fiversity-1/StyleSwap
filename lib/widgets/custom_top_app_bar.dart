@@ -20,7 +20,7 @@ class CustomTopAppBar extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(context, '/preferences');
           },
-          icon: const Icon(Icons.recycling)),
+          icon: const Icon(Icons.settings)),
       centerTitle: true,
       actions: [
         IconButton(
