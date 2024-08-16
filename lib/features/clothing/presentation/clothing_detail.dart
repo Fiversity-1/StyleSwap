@@ -48,7 +48,6 @@ class ClothingDetail extends StatelessWidget {
                 IconButton(
                     icon: const Icon(Icons.arrow_back_ios),
                     iconSize: 25,
-                    color: Colors.white,
                     onPressed: () {
                       Navigator.pushNamed(context, '/swipe');
                     }),
@@ -74,56 +73,88 @@ class ClothingDetail extends StatelessWidget {
                     kIsWeb ? const EdgeInsets.all(16) : const EdgeInsets.all(8),
                 children: [
                   ListTile(
-                    tileColor: Colors.white,
-                    title: Text(item.bio),
+                    title: Text(
+                      item.bio,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     leading: const Icon(Icons.info),
                   ),
                   ListTile(
-                    tileColor: Colors.white,
-                    title: const Text("Type"),
-                    subtitle: Text(item.type),
+                    title: Text(
+                      "Type",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      item.type,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     leading: const Icon(Icons.category),
                   ),
                   ListTile(
-                    tileColor: Colors.white,
-                    title: const Text("Size"),
-                    subtitle: Text(item.size.toString()),
+                    title: Text(
+                      "Size",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      item.size.toString(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     leading: const Icon(Icons.numbers),
                   ),
                   ListTile(
-                      tileColor: Colors.green,
-                      title: const Text("Gender"),
-                      textColor: Colors.white,
-                      subtitle: Text(item.gender),
+                      selected: true,
+                      title: Text(
+                        "Gender",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      subtitle: Text(
+                        item.gender,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                       leading: const Icon(
                         Icons.person,
-                        color: Colors.white,
                       ),
                       trailing: const Icon(
                         Icons.star,
                         color: Colors.yellow,
                       )),
                   ListTile(
-                    tileColor: Colors.white,
-                    title: const Text("Brand"),
-                    subtitle: Text(item.brand),
+                    title: Text(
+                      "Brand",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      item.brand,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     leading: const Icon(Icons.type_specimen),
                   ),
                   ListTile(
-                      tileColor: Colors.green,
-                      title: const Text("Condition"),
-                      textColor: Colors.white,
-                      subtitle: Text(item.condition),
-                      leading: const Icon(Icons.gpp_good_outlined,
-                          color: Colors.white),
+                      selected: true,
+                      title: Text(
+                        "Condition",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      subtitle: Text(
+                        item.condition,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      leading: const Icon(
+                        Icons.gpp_good_outlined,
+                      ),
                       trailing: const Icon(
                         Icons.star,
                         color: Colors.yellow,
                       )),
                   ListTile(
-                    tileColor: Colors.white,
-                    title: const Text("Colour"),
-                    subtitle: Text(item.colours.join(", ")),
+                    title: Text(
+                      "Colour",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      item.colours.join(", "),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     leading: const Icon(Icons.palette),
                   ),
                 ],

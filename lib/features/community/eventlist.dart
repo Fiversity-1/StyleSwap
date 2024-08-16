@@ -64,7 +64,6 @@ class EventList extends StatelessWidget {
                             topRight: Radius.circular(8)),
                       ),
                       onTap: () {},
-                      tileColor: Colors.white,
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -96,7 +95,6 @@ class EventList extends StatelessWidget {
                           width: width,
                           decoration: const BoxDecoration(
                             shape: BoxShape.rectangle,
-                            color: Colors.white,
                             borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(8),
                                 bottomRight: Radius.circular(8)),
@@ -107,14 +105,12 @@ class EventList extends StatelessWidget {
                               IconButton(
                                   icon: const Icon(Icons.favorite_border),
                                   iconSize: 35,
-                                  color: Colors.red,
                                   onPressed: () {
                                     Colors.black;
                                   }),
                               IconButton(
                                   icon: const Icon(Icons.comment),
                                   iconSize: 35,
-                                  color: Colors.blue,
                                   onPressed: () {
                                     Navigator.pushNamed(context, '/eventlist');
                                   })

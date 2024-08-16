@@ -1,5 +1,6 @@
 // signup.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.title});
@@ -40,28 +41,24 @@ class _LoginState extends State<Login> {
                 height: height * 0.2,
                 width: width,
               ),
-              const Text(
-                'Glad your here!',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 30, color: Colors.white),
-              ),
+              Text('Glad your here!',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineLarge),
               Padding(
                 padding: const EdgeInsets.only(top: (20.0), bottom: (8.5)),
                 child: SizedBox(
                   height: height * 0.085,
-                  width: width * 0.875,
+                  width: kIsWeb ? width * 0.35 : width * 0.875,
                   child: TextField(
                     controller: _submitCreds,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7),
-                          borderSide: const BorderSide(color: Colors.blue)),
+                        borderRadius: BorderRadius.circular(7),
+                      ),
                       hintText: 'Username',
                       filled: true,
-                      fillColor: Colors.white,
                       suffix: IconButton(
                         icon: const Icon(Icons.clear),
-                        color: Colors.black,
                         onPressed: () {
                           _submitCreds.clear();
                         },
@@ -72,19 +69,17 @@ class _LoginState extends State<Login> {
               ),
               SizedBox(
                 height: height * 0.085,
-                width: width * 0.875,
+                width: kIsWeb ? width * 0.35 : width * 0.875,
                 child: TextField(
                   controller: _submitCreds,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7),
-                        borderSide: const BorderSide(color: Colors.blue)),
+                      borderRadius: BorderRadius.circular(7),
+                    ),
                     hintText: 'Password',
                     filled: true,
-                    fillColor: Colors.white,
                     suffix: IconButton(
                       icon: const Icon(Icons.clear),
-                      color: Colors.black,
                       onPressed: () {
                         _submitCreds.clear();
                       },
@@ -95,7 +90,7 @@ class _LoginState extends State<Login> {
               Padding(
                 padding: const EdgeInsets.only(top: (15.0)),
                 child: SizedBox(
-                  width: width * 0.45,
+                  width: kIsWeb ? width * 0.2 : width * 0.45,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/profile');
@@ -112,14 +107,14 @@ class _LoginState extends State<Login> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       'Not yet signed up?',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     TextButton(
                       child: const Text(
                         'Register here',
-                        style: TextStyle(fontSize: 20, color: Colors.blue),
+                        style: TextStyle(fontSize: 18, color: Colors.blue),
                       ),
                       onPressed: () {
                         Navigator.pushNamed(context, '/signup');

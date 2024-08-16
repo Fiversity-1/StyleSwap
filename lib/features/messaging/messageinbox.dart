@@ -20,41 +20,34 @@ class Message extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                'Chats',
-                style: Theme.of(context).textTheme.headlineMedium,
-                textAlign: TextAlign.left,
-              ),
-            ],
-          ),
           Expanded(
             child: ListView(
               children: List.generate(
                 25,
                 (index) => ListTile(
                   minTileHeight: 85,
+                  minVerticalPadding: 12.5,
                   horizontalTitleGap: 20,
                   onTap: () {
                     Navigator.pushNamed(context, '/chat');
                   },
                   hoverColor: Theme.of(context).primaryColor.withAlpha(240),
                   splashColor: Theme.of(context).primaryColor.withAlpha(240),
-                  shape: const RoundedRectangleBorder(
+                  shape: RoundedRectangleBorder(
                     side: BorderSide(
-                        color: Color.fromRGBO(107, 163, 104, 1), width: 0.5),
+                        color: Theme.of(context).primaryColor.withAlpha(240),
+                        width: 0.5),
                   ),
                   title: Text('Person $index',
                       style: Theme.of(context).textTheme.headlineSmall),
-                  tileColor: Colors.white,
                   subtitle: Text('Random Subject text here...',
                       style: Theme.of(context).textTheme.bodyMedium),
                   leading: const CircleAvatar(
-                    backgroundImage: AssetImage('lib/images/person.png'),
+                    backgroundImage:
+                        AssetImage('lib/images/profilepicture.jpg'),
                   ),
                   trailing: Wrap(
-                    spacing: 12, // space between two icons
+                    spacing: 18, // space between two icons
                     children: [
                       Text('Time',
                           style: Theme.of(context).textTheme.bodyMedium),
