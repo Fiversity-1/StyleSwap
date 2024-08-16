@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_reorderable_grid_view/widgets/reorderable_builder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
@@ -15,7 +16,8 @@ class ImageSelectionField extends FormField<List<XFile>> {
           AutovalidateMode.onUserInteraction})
       : super(
             initialValue: initialValue ?? [],
-            builder: (FormFieldState<List<XFile>> state) {
+            builder: (FormFieldState<List<XFile>> field) {
+              var state = field as _ImageSelectionFieldState;
               final ImagePicker picker = ImagePicker();
 
               // uses the ImagePicker to select an image from the gallery
@@ -87,65 +89,98 @@ class ImageSelectionField extends FormField<List<XFile>> {
                 state.didChange(updatedList);
               }
 
-              void onReorder(int oldIndex, int newIndex) {
-                List<XFile> updatedList = List<XFile>.from(state.value ?? []);
-                var image = updatedList.removeAt(oldIndex);
-                updatedList.insert(newIndex, image);
-                state.didChange(updatedList);
+              void onReorder(ReorderedListFunction reorderedListFunction) {
+                state.didChange(reorderedListFunction(state.value!) as List<XFile>);
               }
 
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                      child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ReorderableGridView.count(
-                      crossAxisCount: 2,
-                      // 2 images across
-                      childAspectRatio: 3 / 4,
-                      onReorder: onReorder,
-                      footer: [
-                        Container(
-                            key: const Key("add_button"),
-                            margin: const EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16.0),
-                            ),
-                            child: AddImageButton(
-                                callback: () => addImage(state.context),
-                                errorText: state.errorText))
-                      ],
-                      dragWidgetBuilderV2: DragWidgetBuilderV2(
-                          isScreenshotDragWidget: false,
-                          builder: (index, child, screenshot) {
-                            return Material(
-                              color: Colors.transparent, // Ensure transparency
-                              child: child,
-                            );
-                          }),
-                      dragStartDelay: const Duration(milliseconds: 250),
-                      // 3:4 ratio
-                      children: (state.value ?? [])
-                          .asMap()
-                          .entries
-                          .map((e) => Container(
-                                key: Key(e.value.path),
-                                margin: const EdgeInsets.all(8.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  child: ImageWithCloseIcon(
-                                    imageFile: e.value,
-                                    onClose: () => onClearImage(e.key),
-                                  ),
-                                ),
-                              ))
-                          .toList(),
+              final generatedChildren = List.generate(
+                  (state.value ?? []).length + 1, (index)
+              {
+                if (index < state.value!.length) {
+                  return Container(
+                    key: Key(state.value![index].path),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16.0),
+                      child: ImageWithCloseIcon(
+                        imageFile: state.value![index],
+                        onClose: () => onClearImage(index),
+                      ),
                     ),
+                  );
+                } else {
+                  return Container(
+                      key: const Key("add_button"),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: AddImageButton(
+                          callback: () => addImage(state.context),
+                          errorText: state.errorText));
+                  }
+              }
+              );
+
+              return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+              Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                    child: ReorderableBuilder(
+                      children: generatedChildren,
+                      lockedIndices: [state.value!.length],
+                      nonDraggableIndices: [state.value!.length],
+                    scrollController: state.scrollController,
+                    builder: (children) {
+                      return GridView(
+                        key: state.gridViewKey,
+                          controller: state.scrollController,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 16,
+                          childAspectRatio: 3 / 4,
+                          ),
+                          children: children,
+                        );
+                      },
+                      onReorder: onReorder,
+                      dragChildBoxDecoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                          BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          spreadRadius: 4,
+                          blurRadius: 8,
+                          ),
+                          ],
+                        ),
+                    )
                   ))
                 ],
               );
             });
+
+  @override
+  FormFieldState<List<XFile>> createState() => _ImageSelectionFieldState();
+}
+
+class _ImageSelectionFieldState extends FormFieldState<List<XFile>> with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+  late Animation<double> animation;
+  final scrollController = ScrollController();
+  final gridViewKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+    animation = Tween<double>(begin: 1.0, end: 0.8).animate(controller);
+  }
 }
 
 class ImageWithCloseIcon extends StatelessWidget {
