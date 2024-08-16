@@ -1,7 +1,7 @@
 // signup.dart
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:clothing_swap/theme/themeSwitcher.dart';
+import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:provider/provider.dart';
 
 class Preferences extends StatefulWidget {

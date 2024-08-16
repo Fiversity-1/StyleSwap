@@ -1,5 +1,5 @@
 import 'package:clothing_swap/theme/theme.dart';
-import 'package:clothing_swap/theme/themeSwitcher.dart';
+import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

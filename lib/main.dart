@@ -14,7 +14,7 @@ import 'package:clothing_swap/features/clothing/presentation/search_main.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
 import 'package:clothing_swap/features/signup/presentation/login.dart';
 import 'package:provider/provider.dart';
-import 'package:clothing_swap/theme/themeSwitcher.dart';
+import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/features/profile/presentation/preferences.dart';
 
 void main() {
