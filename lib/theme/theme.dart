@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
-  brightness: Brightness.light,
   useMaterial3: true,
-  primaryColor: Colors.lightBlue,
-  scaffoldBackgroundColor: Colors.grey[300],
+  colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.blue,
+      primary: Colors.blue,
+      surface: Colors.white,
+      brightness: Brightness.light
+  ),
   appBarTheme: const AppBarTheme(
     color: Colors.blue,
     iconTheme: IconThemeData(color: Colors.white),
@@ -30,8 +32,12 @@ ThemeData lightTheme = ThemeData(
 
 ThemeData darkTheme = ThemeData(
     useMaterial3: true,
-    scaffoldBackgroundColor: const Color.fromARGB(255, 43, 41, 41),
-    primarySwatch: Colors.deepPurple,
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.deepPurple,
+      primary: Colors.deepPurple,
+      surface: const Color.fromARGB(255, 43, 41, 41),
+      brightness: Brightness.dark
+    ),
     iconTheme: const IconThemeData(color: Colors.white),
     appBarTheme: const AppBarTheme(
       color: Colors.deepPurple,
@@ -55,24 +61,6 @@ ThemeData darkTheme = ThemeData(
       iconColor: Colors.white,
       selectedTileColor: Color.fromARGB(255, 128, 7, 149),
       selectedColor: Colors.white,
-    ),
-    textTheme: const TextTheme(
-      headlineLarge: TextStyle(
-        color: Colors.white,
-      ),
-      headlineMedium: TextStyle(
-        color: Colors.white,
-      ),
-      headlineSmall: TextStyle(
-        color: Colors.white,
-      ),
-      bodyLarge: TextStyle(color: Colors.white),
-      bodyMedium: TextStyle(
-        color: Colors.white,
-      ),
-      bodySmall: TextStyle(
-        color: Colors.white,
-      ),
     ),
     inputDecorationTheme: const InputDecorationTheme(
       fillColor: Color.fromARGB(255, 50, 47, 47),

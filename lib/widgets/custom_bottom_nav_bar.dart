@@ -24,16 +24,22 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-        BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add Clothing'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.messenger_rounded), label: 'Message'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-      ],
-      currentIndex: currentIndex,
-      onTap: (index) => _onItemTapped(context, index),
+    return Theme(
+        data: Theme.of(context).copyWith(
+          // sets the background color of the `BottomNavigationBar`
+            canvasColor: Theme.of(context).scaffoldBackgroundColor,
+        ), // sets the inactive color of the `BottomNavigationBar`
+        child: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+            BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add Clothing'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.messenger_rounded), label: 'Message'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          ],
+          currentIndex: currentIndex,
+          onTap: (index) => _onItemTapped(context, index),
+        )
     );
   }
 }

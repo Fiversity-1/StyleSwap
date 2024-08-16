@@ -24,9 +24,14 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
+    final colourScheme = ColorScheme.fromSeed(
+      seedColor: const Color.fromARGB(255, 76, 175, 80),
+      dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+      surface: Colors.white
+    );
+
     return MaterialApp(
       theme: Provider.of<ThemeSwitcher>(context).themeData,
       home: const StartPage(title: 'StartPage'),
