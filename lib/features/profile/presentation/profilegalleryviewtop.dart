@@ -33,13 +33,12 @@ class ProfileGalleryViewTop extends StatelessWidget {
                     child: IconButton(
                         icon: const Icon(Icons.arrow_back_ios),
                         iconSize: 25,
-                        color: Colors.black,
                         onPressed: () {
                           Navigator.pushNamed(context, '/profile');
                         }),
                   ),
                   SizedBox(
-                    height: height * 0.765,
+                    height: height * 0.7,
                     width: width,
                   ),
                 ],

@@ -7,20 +7,20 @@ class Education extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PreferredSize(
+    return Scaffold(
+      appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
       ),
-      bottomNavigationBar: CustomBottomNavBar(currentIndex: 2),
+      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 2),
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: (20.0)),
+            padding: const EdgeInsets.only(top: (20.0)),
             child: Text(
               'Sustainable Clothing Practices',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 25, color: Colors.white),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ],

@@ -125,7 +125,6 @@ class AddClothingItemPage extends HookWidget {
     }
 
     return Scaffold(
-      backgroundColor:  Theme.of(context).colorScheme.surface,
         bottomNavigationBar: const CustomBottomNavBar(
           currentIndex: 1,
         ),

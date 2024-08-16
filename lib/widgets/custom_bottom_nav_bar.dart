@@ -27,7 +27,7 @@ class CustomBottomNavBar extends StatelessWidget {
     return Theme(
         data: Theme.of(context).copyWith(
           // sets the background color of the `BottomNavigationBar`
-            canvasColor: Theme.of(context).colorScheme.surfaceContainer,
+            canvasColor: Theme.of(context).scaffoldBackgroundColor,
         ), // sets the inactive color of the `BottomNavigationBar`
         child: BottomNavigationBar(
           items: const [
@@ -39,9 +39,6 @@ class CustomBottomNavBar extends StatelessWidget {
           ],
           currentIndex: currentIndex,
           onTap: (index) => _onItemTapped(context, index),
-          selectedItemColor: Colors.blue,
-          unselectedItemColor: Colors.grey,
-          backgroundColor: Colors.white,
         )
     );
   }

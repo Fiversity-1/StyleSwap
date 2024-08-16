@@ -38,7 +38,7 @@ class _MatchAnimationState extends State<MatchAnimation> {
                   child: ElevatedButton(
                     child: const Text(
                       'Keep Looking',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
+                      style: TextStyle(fontSize: 20),
                     ),
                     onPressed: () {
                       Navigator.pushNamed(context, '/swipe');

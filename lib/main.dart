@@ -1,6 +1,7 @@
 import 'package:clothing_swap/features/clothing/presentation/advanced_search.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_detail.dart';
 import 'package:clothing_swap/features/clothing/presentation/match_animation.dart';
+import 'package:clothing_swap/features/community/eventlist.dart';
 import 'package:clothing_swap/features/messaging/messagechat.dart';
 import 'package:clothing_swap/features/messaging/messageinbox.dart';
 import 'package:clothing_swap/features/clothing/presentation/add_clothing_item.dart';
@@ -12,9 +13,13 @@ import 'package:clothing_swap/features/profile/presentation/profile.dart';
 import 'package:clothing_swap/features/clothing/presentation/search_main.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
 import 'package:clothing_swap/features/signup/presentation/login.dart';
+import 'package:provider/provider.dart';
+import 'package:clothing_swap/theme/theme_switcher.dart';
+import 'package:clothing_swap/features/profile/presentation/preferences.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => ThemeSwitcher(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -28,33 +33,7 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: colourScheme,
-        scaffoldBackgroundColor: Colors.blue,
-        brightness: Brightness.light,
-        appBarTheme: AppBarTheme(
-            color: colourScheme.primary// to change colour of top nav.
-        ),
-        textTheme: const TextTheme(
-          headlineLarge: TextStyle(
-            fontSize: 42,
-            color: Colors.white,
-          ),
-          headlineMedium: TextStyle(
-            fontSize: 26,
-            color: Colors.white,
-          ),
-          headlineSmall: TextStyle(
-            fontSize: 26,
-            color: Colors.black,
-          ),
-          bodySmall: TextStyle(
-            fontSize: 22,
-            color: Colors.white,
-          ),
-        ),
-      ),
+      theme: Provider.of<ThemeSwitcher>(context).themeData,
       home: const StartPage(title: 'StartPage'),
       routes: {
         '/signup': (context) => const SignUp(title: 'SignUp'),
@@ -70,6 +49,8 @@ class MyApp extends StatelessWidget {
         '/add_clothing_item': (context) => AddClothingItemPage(),
         '/clothing_detail': (context) => const ClothingDetail(),
         '/match_animation': (context) => const MatchAnimation(),
+        '/preferences': (context) => const Preferences(),
+        '/events': (context) => const EventList(),
       },
       debugShowCheckedModeBanner: false,
     );
