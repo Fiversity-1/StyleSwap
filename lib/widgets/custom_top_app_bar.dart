@@ -1,6 +1,4 @@
-import 'package:clothing_swap/theme/themeSwitcher.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class CustomTopAppBar extends StatelessWidget {
   const CustomTopAppBar({super.key});
@@ -15,15 +13,14 @@ class CustomTopAppBar extends StatelessWidget {
       ),
       leading: IconButton(
           onPressed: () {
-            Provider.of<ThemeSwitcher>(context, listen: false)
-                .toggleTheme("test");
+            Navigator.pushNamed(context, '/preferences');
           },
           icon: const Icon(Icons.recycling)),
       centerTitle: true,
       actions: [
         IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/eventlist');
+              Navigator.pushNamed(context, '/events');
             },
             icon: const Icon(Icons.event))
       ],

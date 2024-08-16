@@ -1,6 +1,7 @@
 import 'package:clothing_swap/features/clothing/presentation/advanced_search.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_detail.dart';
 import 'package:clothing_swap/features/clothing/presentation/match_animation.dart';
+import 'package:clothing_swap/features/community/eventlist.dart';
 import 'package:clothing_swap/features/messaging/messagechat.dart';
 import 'package:clothing_swap/features/messaging/messageinbox.dart';
 import 'package:clothing_swap/features/clothing/presentation/add_clothing_item.dart';
@@ -14,6 +15,7 @@ import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
 import 'package:clothing_swap/features/signup/presentation/login.dart';
 import 'package:provider/provider.dart';
 import 'package:clothing_swap/theme/themeSwitcher.dart';
+import 'package:clothing_swap/features/profile/presentation/preferences.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
@@ -25,9 +27,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // var colourMode = MediaQuery.of(context).platformBrightness;
-    // bool isdark;
-    // isdark = (colourMode == Brightness.dark);
     return MaterialApp(
       theme: Provider.of<ThemeSwitcher>(context).themeData,
       home: const StartPage(title: 'StartPage'),
@@ -45,6 +44,8 @@ class MyApp extends StatelessWidget {
         '/add_clothing_item': (context) => AddClothingItemPage(),
         '/clothing_detail': (context) => const ClothingDetail(),
         '/match_animation': (context) => const MatchAnimation(),
+        '/preferences': (context) => const Preferences(),
+        '/events': (context) => const EventList(),
       },
       debugShowCheckedModeBanner: false,
     );
