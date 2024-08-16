@@ -31,10 +31,10 @@ dependencies:
   flutter:
     sdk: flutter
   image_picker: ^1.0.7
-  im_stepper: ^1.0.1+1
   flutter_card_swiper: ^7.0.1
   flip_card: ^0.7.0
   tutorial_coach_mark: ^1.2.11
+  reorderable_grid_view: ^2.2.8
   provider:
 
 
@@ -43,6 +43,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   flutter_hooks: ^0.20.5
   lottie: ^3.1.2
+  flutter_reorderable_grid_view: ^5.0.1
 
 
 dev_dependencies:
