@@ -1,6 +1,9 @@
 // startpage.dart
+import 'package:clothing_swap/theme/theme.dart';
+import 'package:clothing_swap/theme/themeSwitcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:provider/provider.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key, required this.title});
@@ -89,7 +92,9 @@ class StartPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: (15.0)),
                 child: Image.asset(
-                  'lib/images/hanger.png',
+                  Provider.of<ThemeSwitcher>(context).themeData == lightTheme
+                      ? 'lib/images/hanger.png'
+                      : 'lib/images/hanger_white.png',
                   height: 75,
                   width: 75,
                 ),
