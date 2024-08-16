@@ -50,7 +50,7 @@ class Profile extends StatelessWidget {
                   width: 300,
                   decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      color: Theme.of(context).primaryColorLight,
+                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(10)),
                   child: Text(
                     'I love food and sustainability! Keen to trade some clothes!',

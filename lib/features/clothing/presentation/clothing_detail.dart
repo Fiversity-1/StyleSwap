@@ -73,23 +73,44 @@ class ClothingDetail extends StatelessWidget {
                     kIsWeb ? const EdgeInsets.all(16) : const EdgeInsets.all(8),
                 children: [
                   ListTile(
-                    title: Text(item.bio),
+                    title: Text(
+                      item.bio,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     leading: const Icon(Icons.info),
                   ),
                   ListTile(
-                    title: const Text("Type"),
-                    subtitle: Text(item.type),
+                    title: Text(
+                      "Type",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      item.type,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     leading: const Icon(Icons.category),
                   ),
                   ListTile(
-                    title: const Text("Size"),
-                    subtitle: Text(item.size.toString()),
+                    title: Text(
+                      "Size",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      item.size.toString(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     leading: const Icon(Icons.numbers),
                   ),
                   ListTile(
                       selected: true,
-                      title: const Text("Gender"),
-                      subtitle: Text(item.gender),
+                      title: Text(
+                        "Gender",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      subtitle: Text(
+                        item.gender,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                       leading: const Icon(
                         Icons.person,
                       ),
@@ -98,14 +119,26 @@ class ClothingDetail extends StatelessWidget {
                         color: Colors.yellow,
                       )),
                   ListTile(
-                    title: const Text("Brand"),
-                    subtitle: Text(item.brand),
+                    title: Text(
+                      "Brand",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      item.brand,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     leading: const Icon(Icons.type_specimen),
                   ),
                   ListTile(
                       selected: true,
-                      title: const Text("Condition"),
-                      subtitle: Text(item.condition),
+                      title: Text(
+                        "Condition",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      subtitle: Text(
+                        item.condition,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                       leading: const Icon(
                         Icons.gpp_good_outlined,
                       ),
@@ -114,8 +147,14 @@ class ClothingDetail extends StatelessWidget {
                         color: Colors.yellow,
                       )),
                   ListTile(
-                    title: const Text("Colour"),
-                    subtitle: Text(item.colours.join(", ")),
+                    title: Text(
+                      "Colour",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      item.colours.join(", "),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     leading: const Icon(Icons.palette),
                   ),
                 ],

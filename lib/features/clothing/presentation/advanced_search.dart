@@ -66,7 +66,6 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
                 child: IconButton(
                   icon: const Icon(Icons.arrow_back_ios),
                   iconSize: 20,
-                  color: Colors.black,
                   onPressed: () {},
                 ),
               ),
@@ -99,7 +98,10 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
                         _incrementCounter();
                         //backend send, retrieval
                       },
-                      title: Text('${categories[_counter].options[index]}'),
+                      title: Text(
+                        '${categories[_counter].options[index]}',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
                       leading: Icon(categories[_counter].logo));
                 }),
           ),
