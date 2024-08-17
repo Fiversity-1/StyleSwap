@@ -68,25 +68,33 @@ class _MessageChatState extends State<MessageChat> {
                     itemBuilder: (context, index) {
                       return Container(
                         padding: const EdgeInsets.only(
-                            left: 18, right: 18, top: 10, bottom: 10),
+                            left: 24, right: 24, top: 10, bottom: 10),
                         child: Align(
-                          alignment: (messages[index].messageType == "receiver"
-                              ? Alignment.topLeft
-                              : Alignment.topRight),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: (messages[index].messageType == "receiver"
-                                  ? Colors.purple
-                                  : Colors.blue),
-                            ),
-                            padding: const EdgeInsets.all(16),
-                            child: Text(
-                              messages[index].messageContent,
-                              style: const TextStyle(fontSize: 15),
-                            ),
-                          ),
-                        ),
+                            alignment:
+                                (messages[index].messageType == "receiver"
+                                    ? Alignment.topLeft
+                                    : Alignment.topRight),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: (messages[index].messageType ==
+                                            "receiver"
+                                        ? Colors.purple
+                                        : Colors.blue),
+                                  ),
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text(
+                                    messages[index].messageContent,
+                                    style: const TextStyle(fontSize: 15),
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(messages[index].time),
+                              ],
+                            )),
                       );
                     },
                   ),
@@ -112,15 +120,18 @@ class _MessageChatState extends State<MessageChat> {
                         ),
                         hintText: 'Aa',
                         filled: true,
+                        prefix: IconButton(
+                            icon: const Icon(Icons.image), onPressed: () {}),
                         suffix: IconButton(
                           icon: const Icon(Icons.send),
                           onPressed: () {
                             setState(() => messages.add(ChatMessage(
                                 messageContent: "test",
-                                messageType: "sender")));
+                                messageType: "sender",
+                                time: "5:45pm")));
                             _sendText.clear();
                             _scroller.animateTo(
-                              _scroller.position.maxScrollExtent,
+                              _scroller.position.maxScrollExtent + 90,
                               curve: Curves.easeOut,
                               duration: const Duration(milliseconds: 500),
                             );
@@ -142,13 +153,21 @@ class _MessageChatState extends State<MessageChat> {
 class ChatMessage {
   String messageContent;
   String messageType;
-  ChatMessage({required this.messageContent, required this.messageType});
+  String time;
+  //Image
+  ChatMessage(
+      {required this.messageContent,
+      required this.messageType,
+      required this.time});
 }
 
 List<ChatMessage> messages = [
-  ChatMessage(messageContent: "Hello", messageType: "receiver"),
-  ChatMessage(messageContent: "Hello", messageType: "receiver"),
-  ChatMessage(messageContent: "Hello", messageType: "sender"),
-  ChatMessage(messageContent: "Hello", messageType: "receiver"),
-  ChatMessage(messageContent: "Hello", messageType: "sender"),
+  ChatMessage(
+      messageContent: "Hello this is a massive message",
+      messageType: "receiver",
+      time: "5:45pm"),
+  ChatMessage(messageContent: "Hello", messageType: "receiver", time: "5:45pm"),
+  ChatMessage(messageContent: "Hello", messageType: "sender", time: "5:45pm"),
+  ChatMessage(messageContent: "Hello", messageType: "receiver", time: "5:45pm"),
+  ChatMessage(messageContent: "Hello", messageType: "sender", time: "5:45pm"),
 ];

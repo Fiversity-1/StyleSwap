@@ -6,8 +6,7 @@ ThemeData lightTheme = ThemeData(
       seedColor: Colors.blue,
       primary: Colors.blue,
       surface: Colors.white,
-      brightness: Brightness.light
-  ),
+      brightness: Brightness.light),
   appBarTheme: const AppBarTheme(
     color: Colors.blue,
     iconTheme: IconThemeData(color: Colors.white),
@@ -33,11 +32,10 @@ ThemeData lightTheme = ThemeData(
 ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.deepPurple,
-      primary: Colors.deepPurple,
-      surface: const Color.fromARGB(255, 43, 41, 41),
-      brightness: Brightness.dark
-    ),
+        seedColor: Colors.deepPurple,
+        primary: Colors.deepPurple,
+        surface: const Color.fromARGB(255, 43, 41, 41),
+        brightness: Brightness.dark),
     iconTheme: const IconThemeData(color: Colors.white),
     appBarTheme: const AppBarTheme(
       color: Colors.deepPurple,
@@ -49,6 +47,7 @@ ThemeData darkTheme = ThemeData(
         backgroundColor: Colors.black12),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
