@@ -42,7 +42,7 @@ ThemeData darkTheme = ThemeData(
       iconTheme: IconThemeData(color: Colors.white),
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        selectedItemColor: Colors.deepPurple,
+        selectedItemColor: Colors.deepPurpleAccent,
         unselectedItemColor: Colors.grey,
         backgroundColor: Colors.black12),
     elevatedButtonTheme: ElevatedButtonThemeData(
