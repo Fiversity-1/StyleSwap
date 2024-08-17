@@ -27,10 +27,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colourScheme = ColorScheme.fromSeed(
-      seedColor: const Color.fromARGB(255, 76, 175, 80),
-      dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
-      surface: Colors.white
-    );
+        seedColor: const Color.fromARGB(255, 76, 175, 80),
+        dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+        surface: Colors.white);
 
     return MaterialApp(
       theme: Provider.of<ThemeSwitcher>(context).themeData,
@@ -43,7 +42,10 @@ class MyApp extends StatelessWidget {
         '/advanced_search': (context) => const AdvancedSearch(),
         '/message': (context) => const Message(title: 'Message'),
         '/swipe': (context) => const SwipePage(),
-        '/chat': (context) => const MessageChat(title: 'MessageChat'),
+        '/chat': (context) => const MessageChat(
+              title: 'MessageChat',
+              clothingFile: null,
+            ),
         '/gallery': (context) => ProfileGalleryView(),
         '/login': (context) => const Login(title: 'Login'),
         '/add_clothing_item': (context) => AddClothingItemPage(),

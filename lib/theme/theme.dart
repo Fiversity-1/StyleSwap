@@ -58,7 +58,7 @@ ThemeData darkTheme = ThemeData(
       tileColor: Color.fromARGB(255, 59, 53, 53),
       leadingAndTrailingTextStyle: TextStyle(color: Colors.white),
       iconColor: Colors.white,
-      selectedTileColor: Color.fromARGB(255, 128, 7, 149),
+      selectedTileColor: Colors.deepPurple,
       selectedColor: Colors.white,
     ),
     inputDecorationTheme: const InputDecorationTheme(

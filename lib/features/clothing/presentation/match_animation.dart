@@ -47,7 +47,8 @@ class _MatchAnimationState extends State<MatchAnimation> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/chat');
+                    Navigator.pushNamed(context, '/chat',
+                        arguments: 'lib/images/1.jpg');
                   },
                   child: const Text(
                     'Message',
