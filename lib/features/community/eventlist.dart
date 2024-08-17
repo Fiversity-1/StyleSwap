@@ -5,36 +5,56 @@ import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 class Event {
   final String company;
   final IconData logo;
+  final String title;
+  final String date;
+  final String time;
   final String details;
-  Event({required this.company, required this.logo, required this.details});
+  Event(
+      {required this.title,
+      required this.company,
+      required this.logo,
+      required this.details,
+      required this.date,
+      required this.time});
 }
 
 List<Event> events = [
   Event(
       company: 'Jacob',
       logo: Icons.category,
-      details: 'This is random filler text'),
-  Event(
-      company: 'Steve',
-      logo: Icons.numbers,
       details:
-          'This is random filler textThis is random iller textThis is random filleiller textThis is random filleiller textThis is random fillefiller textThis is random filler text'),
+          'Come join us for a weekly clothes Come join us for a weekly clothes Come join us for a weekly clothes Come join us for a weekly clothes Come join us for a weekly clothes Come join us for a weekly clothes swap at Redlands Vinnies. Bring your favourite hat!',
+      title: 'Clothes Swap',
+      date: '4/5/24',
+      time: '5pm'),
   Event(
-      company: 'Jack',
-      logo: Icons.person,
-      details: 'This is random filler textThis is random filler text'),
+      company: 'Jacob',
+      logo: Icons.category,
+      details: 'This is random filler text',
+      title: 'Clothes Swap',
+      date: '4/5/24',
+      time: '5pm'),
   Event(
-      company: 'Josh',
-      logo: Icons.type_specimen,
-      details: 'This is random filler text'),
+      company: 'Jacob',
+      logo: Icons.category,
+      details: 'This is random filler text',
+      title: 'Clothes Swap',
+      date: '4/5/24',
+      time: '5pm'),
   Event(
-      company: 'John',
-      logo: Icons.gpp_good_outlined,
-      details: 'This is random filler text'),
+      company: 'Jacob',
+      logo: Icons.category,
+      details: 'This is random filler text',
+      title: 'Clothes Swap',
+      date: '4/5/24',
+      time: '5pm'),
   Event(
-      company: 'Filler',
-      logo: Icons.palette,
-      details: 'This is random filler text'),
+      company: 'Jacob',
+      logo: Icons.category,
+      details: 'This is random filler text',
+      title: 'Clothes Swap',
+      date: '4/5/24',
+      time: '5pm'),
 ];
 
 class EventList extends StatelessWidget {
@@ -50,81 +70,88 @@ class EventList extends StatelessWidget {
       ),
       bottomNavigationBar: const CustomBottomNavBar(currentIndex: 2),
       body: Center(
-          child: Padding(
-              padding: const EdgeInsets.only(top: (20.0)),
-              child: SizedBox(
-                width: width * 0.85,
-                child: ListView.separated(
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8),
-                            topRight: Radius.circular(8)),
-                      ),
-                      onTap: () {},
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const CircleAvatar(
-                            minRadius: 14,
-                            backgroundImage:
-                                AssetImage('lib/images/person.png'),
+        child: Padding(
+          padding: const EdgeInsets.only(top: (20.0)),
+          child: SizedBox(
+            width: width * 0.85,
+            child: ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    ListTile(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(8),
                           ),
-                          Text(
-                            ' ${events[index].company}',
-                            style: Theme.of(context).textTheme.headlineSmall,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                      minTileHeight: 125,
-                      titleAlignment: ListTileTitleAlignment.threeLine,
-                      subtitle: Text(events[index].details),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 0.35,
                         ),
-                        Container(
-                          height: 50,
-                          width: width,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(8),
-                                bottomRight: Radius.circular(8)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        onTap: () {},
+                        title: Padding(
+                          padding: const EdgeInsets.only(bottom: 15.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              IconButton(
-                                  icon: const Icon(Icons.favorite_border),
-                                  iconSize: 35,
-                                  onPressed: () {
-                                    Colors.black;
-                                  }),
-                              IconButton(
-                                  icon: const Icon(Icons.comment),
-                                  iconSize: 35,
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, '/eventlist');
-                                  })
+                              ClipOval(
+                                child: Image.asset(
+                                  'lib/images/vinnies.jpg',
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Text(
+                                ' ${events[index].title}',
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                                textAlign: TextAlign.center,
+                              ),
                             ],
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        )
-                      ],
-                    );
-                  },
-                ),
-              ))),
+                        minTileHeight: 125,
+                        titleAlignment: ListTileTitleAlignment.threeLine,
+                        subtitle: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text('Hosted By: ${events[index].company}'),
+                                Text(
+                                    'When: ${events[index].date}, ${events[index].time}'),
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+                            Text(events[index].details),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.thumb_up_alt),
+                                  iconSize: 25,
+                                  onPressed: () {},
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.comment),
+                                  iconSize: 25,
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, '/event',
+                                        arguments: events[index]);
+                                  },
+                                )
+                              ],
+                            )
+                          ],
+                        )),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
