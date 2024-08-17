@@ -1,6 +1,9 @@
 // signup.dart
+import 'package:clothing_swap/theme/theme.dart';
+import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.title});
@@ -32,7 +35,9 @@ class _LoginState extends State<Login> {
               Padding(
                 padding: const EdgeInsets.only(top: (15.0)),
                 child: Image.asset(
-                  'lib/images/hanger.png',
+                  Provider.of<ThemeSwitcher>(context).themeData == lightTheme
+                      ? 'lib/images/hanger.png'
+                      : 'lib/images/hanger_white.png',
                   height: 75,
                   width: 75,
                 ),
@@ -41,7 +46,7 @@ class _LoginState extends State<Login> {
                 height: height * 0.2,
                 width: width,
               ),
-              Text('Glad your here!',
+              Text('Glad you\'re here!',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineLarge),
               Padding(
@@ -112,9 +117,9 @@ class _LoginState extends State<Login> {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     TextButton(
-                      child: const Text(
+                      child: Text(
                         'Register here',
-                        style: TextStyle(fontSize: 18, color: Colors.blue),
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       onPressed: () {
                         Navigator.pushNamed(context, '/signup');

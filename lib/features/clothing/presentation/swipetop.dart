@@ -202,7 +202,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                 Padding(
                   padding: const EdgeInsets.only(top: (0.0)),
                   child: IconButton(
-                      icon: const Icon(Icons.arrow_circle_up),
+                      icon: const Icon(Icons.swipe_up),
                       iconSize: 35,
                       key: _moreDetailKey,
                       onPressed: () {
