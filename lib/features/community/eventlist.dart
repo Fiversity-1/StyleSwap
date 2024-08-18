@@ -80,6 +80,7 @@ class EventList extends StatelessWidget {
                 return Column(
                   children: [
                     ListTile(
+                        hoverColor: Colors.transparent,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(8),
@@ -125,10 +126,16 @@ class EventList extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                IconButton(
-                                  icon: const Icon(Icons.thumb_up_alt),
-                                  iconSize: 25,
-                                  onPressed: () {},
+                                Row(
+                                  children: [
+                                    const Text("Attending: 5"),
+                                    IconButton(
+                                      icon: const Icon(
+                                          Icons.check_circle_outline),
+                                      iconSize: 25,
+                                      onPressed: () {},
+                                    ),
+                                  ],
                                 ),
                                 IconButton(
                                   icon: const Icon(Icons.comment),

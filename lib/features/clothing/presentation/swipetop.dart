@@ -3,6 +3,7 @@ import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_build.dart';
@@ -163,7 +164,16 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         _incrementCounter();
 
                         if (direction.name == 'right') {
-                          Navigator.pushNamed(context, '/match_animation');
+                          //Navigator.pushNamed(context, '/match_animation');
+                          Fluttertoast.showToast(
+                              msg: "New Match!",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.TOP,
+                              timeInSecForIosWeb: 2,
+                              backgroundColor: Colors.purple,
+                              textColor: Colors.white,
+                              webPosition: ToastGravity.TOP,
+                              fontSize: 16.0);
                         }
                         return true;
                       },

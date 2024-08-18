@@ -62,8 +62,8 @@ ThemeData darkTheme = ThemeData(
       selectedColor: Colors.white,
     ),
     inputDecorationTheme: const InputDecorationTheme(
-      fillColor: Color.fromARGB(255, 50, 47, 47),
-    ),
+        fillColor: Color.fromARGB(255, 50, 47, 47),
+        prefixIconColor: Colors.white),
     hintColor: Colors.white);
 
 ThemeData accessibilityTheme = ThemeData();
