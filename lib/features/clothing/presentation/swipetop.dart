@@ -3,10 +3,10 @@ import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_build.dart';
+import 'package:toastification/toastification.dart';
 
 class SwipePageTop extends StatefulWidget {
   const SwipePageTop({super.key});
@@ -70,7 +70,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
       _counter = 0;
     }
     if (_counter % 4 == 0 && _counter != 0) {
-      _showAlertDialog(context, _counter);
+      //_showAlertDialog(context, _counter);
     }
   }
 
@@ -164,16 +164,44 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         _incrementCounter();
 
                         if (direction.name == 'right') {
-                          //Navigator.pushNamed(context, '/match_animation');
-                          Fluttertoast.showToast(
-                              msg: "New Match!",
-                              toastLength: Toast.LENGTH_LONG,
-                              gravity: ToastGravity.TOP,
-                              timeInSecForIosWeb: 2,
-                              backgroundColor: Colors.purple,
-                              textColor: Colors.white,
-                              webPosition: ToastGravity.TOP,
-                              fontSize: 16.0);
+                          //modified from pubdev toastification package
+                          toastification.showCustom(
+                            context:
+                                context, // optional if you use ToastificationWrapper
+                            autoCloseDuration: const Duration(seconds: 3),
+                            alignment: Alignment.bottomRight,
+                            builder: (BuildContext context,
+                                ToastificationItem holder) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Theme.of(context).hoverColor,
+                                ),
+                                padding: const EdgeInsets.all(16),
+                                margin: const EdgeInsets.all(8),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('You\'ve got a New Match!',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    const SizedBox(height: 16),
+                                    Row(
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                context, '/chat');
+                                          },
+                                          child: const Text('Message Now!'),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
                         }
                         return true;
                       },

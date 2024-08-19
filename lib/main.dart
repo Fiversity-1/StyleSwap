@@ -8,7 +8,6 @@ import 'package:clothing_swap/features/messaging/messagechat.dart';
 import 'package:clothing_swap/features/messaging/messageinbox.dart';
 import 'package:clothing_swap/features/clothing/presentation/add_clothing_item.dart';
 import 'package:clothing_swap/features/profile/presentation/profilegalleryview.dart';
-import 'package:clothing_swap/widgets/event_listing.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/features/signup/presentation/startpage.dart';
 import 'package:clothing_swap/features/signup/presentation/signup.dart';
