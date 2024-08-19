@@ -45,6 +45,7 @@ dependencies:
   lottie: ^3.1.2
   flutter_reorderable_grid_view: ^5.0.1
   fluttertoast: ^8.2.8
+  like_button: ^2.0.5
 
 
 dev_dependencies:
