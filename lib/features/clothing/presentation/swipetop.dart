@@ -79,35 +79,35 @@ class _SwipePageTopState extends State<SwipePageTop> {
 
   @override
   void initState() {
-    //createTutorial();
-    //showTutorial();
+    createTutorial();
+    showTutorial();
     super.initState();
   }
 
-  void _showAlertDialog(BuildContext context, int counter) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Fun Fact',
-                style: Theme.of(context).textTheme.headlineMedium),
-            //Have 10 fun facts and index with mod to avoid out of bounds
-            content: Text(popups[counter % 10],
-                style: Theme.of(context).textTheme.bodyMedium),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  'Sweet!',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-              ),
-            ],
-          );
-        });
-  }
+  // void _showAlertDialog(BuildContext context, int counter) {
+  //   showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return AlertDialog(
+  //           title: Text('Fun Fact',
+  //               style: Theme.of(context).textTheme.headlineMedium),
+  //           //Have 10 fun facts and index with mod to avoid out of bounds
+  //           content: Text(popups[counter % 10],
+  //               style: Theme.of(context).textTheme.bodyMedium),
+  //           actions: [
+  //             TextButton(
+  //               onPressed: () {
+  //                 Navigator.of(context).pop();
+  //               },
+  //               child: Text(
+  //                 'Sweet!',
+  //                 style: Theme.of(context).textTheme.headlineMedium,
+  //               ),
+  //             ),
+  //           ],
+  //         );
+  //       });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -166,8 +166,6 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         if (direction.name == 'right') {
                           //modified from pubdev toastification package
                           toastification.showCustom(
-                            context:
-                                context, // optional if you use ToastificationWrapper
                             autoCloseDuration: const Duration(seconds: 3),
                             alignment: Alignment.bottomRight,
                             builder: (BuildContext context,
@@ -258,40 +256,39 @@ class _SwipePageTopState extends State<SwipePageTop> {
   void createTutorial() {
     listTargets.add(
       TargetFocus(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: const Color.fromARGB(255, 69, 65, 65),
         identify: "Target 2",
         keyTarget: _tapingKey,
         contents: [
           TargetContent(
-            child: Column(children: [
+            child: const Column(children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: (50.0)),
+                padding: EdgeInsets.only(bottom: (0.0)),
                 child: Text(
-                  "Swipe Left: Not Interested\nSwipe Right: Interested\nTap: See more images",
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
+                    "1. Swipe Left if you're not interested\n2. Swipe Right if you're interested\n3. Tap to view more images",
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(fontSize: 22, color: Colors.white)),
               ),
             ]),
           )
         ],
         shape: ShapeLightFocus.RRect,
-        radius: 7,
+        radius: 5,
       ),
     );
 
     listTargets.add(TargetFocus(
-      color: Theme.of(context).scaffoldBackgroundColor,
+      color: Colors.grey,
       identify: "Target 3",
       keyTarget: _moreDetailKey,
       contents: [
         TargetContent(
-            child: Column(
+            child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               "Swipe/Tap up for more info",
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: TextStyle(fontSize: 22, color: Colors.white),
             ),
           ],
         )),
@@ -303,12 +300,11 @@ class _SwipePageTopState extends State<SwipePageTop> {
   void showTutorial() {
     explainer = TutorialCoachMark(
       targets: listTargets,
-      colorShadow: Theme.of(context).scaffoldBackgroundColor,
-      textSkip: "SKIP",
-      textStyleSkip: TextStyle(
-          fontSize: 22, color: Theme.of(context).scaffoldBackgroundColor),
-      paddingFocus: 4,
-      opacityShadow: 1,
+      colorShadow: Colors.white,
+      textSkip: "Skip",
+      textStyleSkip: const TextStyle(fontSize: 22, color: Colors.white),
+      paddingFocus: 1,
+      opacityShadow: 0.9,
       onClickTarget: (target) {},
       onClickOverlay: (target) {},
     )..show(context: context);
