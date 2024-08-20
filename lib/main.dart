@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
               title: 'MessageChat',
               clothingFile: null,
             ),
-        '/comment': (context) => Comments(),
+        '/comment': (context) => const Comments(),
         '/gallery': (context) => ProfileGalleryView(),
         '/login': (context) => const Login(title: 'Login'),
         '/add_clothing_item': (context) => AddClothingItemPage(),
