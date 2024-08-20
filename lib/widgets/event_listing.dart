@@ -38,7 +38,8 @@ class _EventListState extends State<EventList> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset('lib/images/op.jpg', fit: BoxFit.fitWidth),
+                        Image.asset(widget.listings[index].image,
+                            fit: BoxFit.fitWidth),
                         Text(
                           '${widget.listings[index].title} - ${widget.listings[index].city}',
                           style: Theme.of(context).textTheme.headlineLarge,

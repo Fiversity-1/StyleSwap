@@ -7,6 +7,7 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_build.dart';
 import 'package:toastification/toastification.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SwipePageTop extends StatefulWidget {
   const SwipePageTop({super.key});
@@ -20,7 +21,30 @@ class _SwipePageTopState extends State<SwipePageTop> {
   late TutorialCoachMark explainer;
   List<TargetFocus> listTargets = [];
   int _counter = 0;
+  bool _hasRun = false;
+//Start Chat GPT
+  @override
+  void initState() {
+    super.initState();
+    _checkIfRun().then((_) {
+      if (!_hasRun) {
+        createTutorial();
+        showTutorial();
+      }
+    });
+  }
 
+  Future<void> _checkIfRun() async {
+    final prefs = await SharedPreferences.getInstance();
+    _hasRun = prefs.getBool('hasRun') ?? false;
+
+    if (!_hasRun) {
+      // Run your code here
+      await prefs.setBool('hasRun', true);
+    }
+  }
+
+//End ChatGPT
   List swipeImages = [
     ClothingItem(name: 'Jacob', location: 'Mount Cotton', images: [
       'lib/images/0.jpg',
@@ -76,13 +100,6 @@ class _SwipePageTopState extends State<SwipePageTop> {
 
   final GlobalKey _tapingKey = GlobalKey();
   final GlobalKey _moreDetailKey = GlobalKey();
-
-  @override
-  void initState() {
-    createTutorial();
-    showTutorial();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -263,8 +280,9 @@ class _SwipePageTopState extends State<SwipePageTop> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Swipe/Tap up for more info",
+              "Swipe or Tap up for more info",
               style: TextStyle(fontSize: 22, color: Colors.white),
+              textAlign: TextAlign.end,
             ),
           ],
         )),

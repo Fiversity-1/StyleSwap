@@ -11,19 +11,17 @@ class Category {
 }
 
 List<Category> categories = [
-  Category(category: 'Type', logo: Icons.category, options: [1, 2, 3]),
+  Category(category: 'Type', logo: Icons.category, options: ['Shirt', 'Pants']),
   Category(category: 'Size', logo: Icons.numbers, options: [1, 2, 3, 4, 5]),
-  Category(category: 'Gender', logo: Icons.person, options: [1, 2, 3, 4, 5, 6]),
-  Category(
-      category: 'Brand',
-      logo: Icons.type_specimen,
-      options: [1, 2, 3, 4, 5, 6]),
+  Category(category: 'Gender', logo: Icons.person, options: ['Male', 'Female']),
   Category(
       category: 'Condition',
       logo: Icons.gpp_good_outlined,
-      options: [1, 2, 3, 4, 5, 6]),
+      options: ['Brand New', 'Barely Worn', 'Good', 'Bit how\'s it going...']),
   Category(
-      category: 'Colour', logo: Icons.palette, options: [1, 2, 3, 4, 5, 6]),
+      category: 'Colour',
+      logo: Icons.palette,
+      options: ['Yellow', 'Green', 'Red', 'Blue']),
 ];
 
 class AdvancedSearch extends StatefulWidget {

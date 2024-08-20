@@ -15,7 +15,6 @@ class ClothingDetail extends StatelessWidget {
         type: 'Shirt',
         size: 54,
         gender: 'Male',
-        brand: 'Anko',
         condition: 'Good',
         colours: [
           'Black',
@@ -43,25 +42,14 @@ class ClothingDetail extends StatelessWidget {
           child: Column(children: [
             SizedBox(height: height * 0.015, width: width),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                    icon: const Icon(Icons.arrow_back_ios),
+                    icon: const Icon(Icons.swipe_up),
                     iconSize: 25,
                     onPressed: () {
                       Navigator.pushNamed(context, '/swipe');
                     }),
-                Text(
-                  'Info',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: (4)),
-                ),
-                const Text(
-                  ' ',
-                ),
               ],
             ),
             Padding(
@@ -119,17 +107,6 @@ class ClothingDetail extends StatelessWidget {
                         color: Colors.yellow,
                       )),
                   ListTile(
-                    title: Text(
-                      "Brand",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    subtitle: Text(
-                      item.brand,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    leading: const Icon(Icons.type_specimen),
-                  ),
-                  ListTile(
                       selected: true,
                       title: Text(
                         "Condition",
@@ -184,15 +161,6 @@ class ClothingDetail extends StatelessWidget {
                 ),
               ),
               itemCount: item.images.length,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: (10.0), bottom: (10)),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/swipe');
-                },
-                child: const Text('Back'),
-              ),
             ),
           ]),
         ),

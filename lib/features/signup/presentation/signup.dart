@@ -17,11 +17,6 @@ class SignUp extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'New Profile',
-              style: Theme.of(context).textTheme.headlineLarge,
-              textAlign: TextAlign.center,
-            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/startpage');
