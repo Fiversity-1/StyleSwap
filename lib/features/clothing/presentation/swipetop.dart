@@ -84,31 +84,6 @@ class _SwipePageTopState extends State<SwipePageTop> {
     super.initState();
   }
 
-  // void _showAlertDialog(BuildContext context, int counter) {
-  //   showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return AlertDialog(
-  //           title: Text('Fun Fact',
-  //               style: Theme.of(context).textTheme.headlineMedium),
-  //           //Have 10 fun facts and index with mod to avoid out of bounds
-  //           content: Text(popups[counter % 10],
-  //               style: Theme.of(context).textTheme.bodyMedium),
-  //           actions: [
-  //             TextButton(
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //               child: Text(
-  //                 'Sweet!',
-  //                 style: Theme.of(context).textTheme.headlineMedium,
-  //               ),
-  //             ),
-  //           ],
-  //         );
-  //       });
-  // }
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -166,6 +141,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         if (direction.name == 'right') {
                           //modified from pubdev toastification package
                           toastification.showCustom(
+                            context: context,
                             autoCloseDuration: const Duration(seconds: 3),
                             alignment: Alignment.bottomRight,
                             builder: (BuildContext context,
@@ -278,7 +254,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
     );
 
     listTargets.add(TargetFocus(
-      color: Colors.grey,
+      color: const Color.fromARGB(255, 69, 65, 65),
       identify: "Target 3",
       keyTarget: _moreDetailKey,
       contents: [
@@ -301,10 +277,9 @@ class _SwipePageTopState extends State<SwipePageTop> {
     explainer = TutorialCoachMark(
       targets: listTargets,
       colorShadow: Colors.white,
-      textSkip: "Skip",
-      textStyleSkip: const TextStyle(fontSize: 22, color: Colors.white),
+      hideSkip: true,
       paddingFocus: 1,
-      opacityShadow: 0.9,
+      opacityShadow: 0.95,
       onClickTarget: (target) {},
       onClickOverlay: (target) {},
     )..show(context: context);

@@ -3,11 +3,11 @@ import 'package:clothing_swap/features/clothing/presentation/clothing_detail.dar
 import 'package:clothing_swap/features/clothing/presentation/match_animation.dart';
 import 'package:clothing_swap/features/community/event_class.dart';
 import 'package:clothing_swap/features/community/eventlist.dart';
-import 'package:clothing_swap/features/community/individual_event.dart';
 import 'package:clothing_swap/features/messaging/messagechat.dart';
 import 'package:clothing_swap/features/messaging/messageinbox.dart';
 import 'package:clothing_swap/features/clothing/presentation/add_clothing_item.dart';
 import 'package:clothing_swap/features/profile/presentation/profilegalleryview.dart';
+import 'package:clothing_swap/widgets/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/features/signup/presentation/startpage.dart';
 import 'package:clothing_swap/features/signup/presentation/signup.dart';
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
               title: 'MessageChat',
               clothingFile: null,
             ),
-        '/event': (context) => const IndividualEvent(),
+        '/comment': (context) => Comments(),
         '/gallery': (context) => ProfileGalleryView(),
         '/login': (context) => const Login(title: 'Login'),
         '/add_clothing_item': (context) => AddClothingItemPage(),
