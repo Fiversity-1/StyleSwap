@@ -40,12 +40,11 @@ class ClothingDetail extends StatelessWidget {
       body: Center(
         child: SingleChildScrollView(
           child: Column(children: [
-            SizedBox(height: height * 0.015, width: width),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                    icon: const Icon(Icons.swipe_up),
+                    icon: const Icon(Icons.swipe_down),
                     iconSize: 25,
                     onPressed: () {
                       Navigator.pushNamed(context, '/swipe');

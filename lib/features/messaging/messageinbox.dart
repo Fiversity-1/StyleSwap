@@ -40,11 +40,10 @@ class Message extends StatelessWidget {
                   ),
                   title: Text('Person $index',
                       style: Theme.of(context).textTheme.headlineSmall),
-                  subtitle: Text('Random Subject text here...',
+                  subtitle: Text('New Clothing Match!',
                       style: Theme.of(context).textTheme.bodyMedium),
                   leading: const CircleAvatar(
-                    backgroundImage:
-                        AssetImage('lib/images/profilepicture.jpg'),
+                    backgroundImage: AssetImage('lib/images/1.jpg'),
                   ),
                   trailing: Wrap(
                     spacing: 18, // space between two icons
