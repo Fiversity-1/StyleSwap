@@ -1,8 +1,11 @@
 // signup.dart
 
+import 'package:clothing_swap/theme/theme.dart';
+import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
+import 'package:provider/provider.dart';
 
 class MessageChat extends StatefulWidget {
   const MessageChat({super.key, required this.title, this.clothingFile});
@@ -93,6 +96,9 @@ class _MessageChatState extends State<MessageChat> {
                       padding: const EdgeInsets.only(top: 10, bottom: 10),
                       //physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
+                        //Chat Gpt code - the idea to include the picture in the list view
+                        //and to increase index, rest of the code mine
+
                         if (index == 0) {
                           // Return the image as the first item
                           return Column(
@@ -105,7 +111,7 @@ class _MessageChatState extends State<MessageChat> {
                                         height: 100,
                                         fit: BoxFit.cover,
                                       ),
-                                    ) // Use the image if path is not null
+                                    )
                                   : ClipOval(
                                       child: Image.asset(
                                         'lib/images/1.jpg',
@@ -117,6 +123,7 @@ class _MessageChatState extends State<MessageChat> {
                             ],
                           );
                         } else {
+                          //End chat GPT code
                           return Container(
                             padding: const EdgeInsets.only(
                                 left: 24, right: 24, top: 10, bottom: 10),
@@ -136,10 +143,19 @@ class _MessageChatState extends State<MessageChat> {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
                                         color:
-                                            (messages[index - 1].messageType ==
-                                                    "receiver"
-                                                ? Colors.purple
-                                                : Colors.blue),
+                                            Provider.of<ThemeSwitcher>(context)
+                                                        .themeData ==
+                                                    lightTheme
+                                                ? (messages[index - 1]
+                                                            .messageType ==
+                                                        "receiver"
+                                                    ? Colors.green
+                                                    : Colors.blue)
+                                                : (messages[index - 1]
+                                                            .messageType ==
+                                                        "receiver"
+                                                    ? Colors.purple
+                                                    : Colors.blue),
                                       ),
                                       padding: const EdgeInsets.all(16),
                                       child: Text(
@@ -171,47 +187,52 @@ class _MessageChatState extends State<MessageChat> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.image),
-                        iconSize: 25,
-                        onPressed: () async {
-                          // Handle select from camera roll action
-
-                          ;
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: IconButton(
+                          icon: const Icon(Icons.image),
+                          iconSize: 25,
+                          onPressed: () async {
+                            // Handle select from camera roll action
+                          },
+                        ),
                       ),
-                      SizedBox(
-                        height: height * 0.075,
-                        width: width * 0.8,
-                        child: TextField(
-                          textAlignVertical: TextAlignVertical.top,
-                          controller: _sendText,
-                          decoration: InputDecoration(
-                            //contentPadding from chatgpt
-                            contentPadding: kIsWeb
-                                ? const EdgeInsets.all(20.0)
-                                : const EdgeInsets.only(top: 20.0),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            hintText: 'Aa',
-                            filled: true,
-                            suffix: IconButton(
-                              icon: const Icon(Icons.send, size: 24),
-                              onPressed: () {
-                                setState(() => _sendText.text.isNotEmpty
-                                    ? messages.add(ChatMessage(
-                                        messageContent: _sendText.text,
-                                        messageType: "sender",
-                                        time: "5:45pm"))
-                                    : null);
-                                _sendText.clear();
-                                _scroller.animateTo(
-                                  _scroller.position.maxScrollExtent + 90,
-                                  curve: Curves.easeOut,
-                                  duration: const Duration(milliseconds: 500),
-                                );
-                              },
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: SizedBox(
+                          height: kIsWeb ? height * 0.075 : height * 0.055,
+                          width: width * 0.8,
+                          child: TextField(
+                            textAlignVertical: TextAlignVertical.top,
+                            controller: _sendText,
+                            decoration: InputDecoration(
+                              //contentPadding from chatgpt
+                              contentPadding: kIsWeb
+                                  ? const EdgeInsets.all(20.0)
+                                  : const EdgeInsets.only(top: 10, left: 10),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              hintText: 'Aa',
+                              filled: true,
+                              suffix: IconButton(
+                                icon: const Icon(Icons.send,
+                                    size: kIsWeb ? 24 : 18),
+                                onPressed: () {
+                                  setState(() => _sendText.text.isNotEmpty
+                                      ? messages.add(ChatMessage(
+                                          messageContent: _sendText.text,
+                                          messageType: "sender",
+                                          time: "5:45pm"))
+                                      : null);
+                                  _sendText.clear();
+                                  _scroller.animateTo(
+                                    _scroller.position.maxScrollExtent + 90,
+                                    curve: Curves.easeOut,
+                                    duration: const Duration(milliseconds: 500),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ),
