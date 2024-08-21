@@ -18,6 +18,24 @@ class MessageChat extends StatefulWidget {
 class _MessageChatState extends State<MessageChat> {
   final _sendText = TextEditingController();
   final _scroller = ScrollController();
+
+//Void function idea to handle  both onSubmitted: and onPressed (icon) from chatGPT
+//code modified for personal implementation
+  void _handleSend(String value) {
+    setState(() => _sendText.text.isNotEmpty
+        ? messages.add(ChatMessage(
+            messageContent: _sendText.text,
+            messageType: "sender",
+            time: "5:45pm"))
+        : null);
+    _sendText.clear();
+    _scroller.animateTo(
+      _scroller.position.maxScrollExtent + 90,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 500),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final clothingFile = ModalRoute.of(context)?.settings.arguments;
@@ -33,8 +51,6 @@ class _MessageChatState extends State<MessageChat> {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              //3 lines for image are GPT
-
               Row(
                 children: [
                   Padding(
@@ -64,26 +80,6 @@ class _MessageChatState extends State<MessageChat> {
                 ],
               ),
 
-              // SizedBox(
-              //   child: clothingFile != null
-              //       ? ClipOval(
-              //           child: Image.asset(
-              //             clothingFile.toString(),
-              //             width: 50,
-              //             height: 25,
-              //             fit: BoxFit.cover,
-              //           ),
-              //         ) // Use the image if path is not null
-              //       : ClipOval(
-              //           child: Image.asset(
-              //             'lib/images/1.jpg',
-              //             width: 100,
-              //             height: 100,
-              //             fit: BoxFit.cover,
-              //           ),
-              //         ),
-              // ),
-
               //https://www.freecodecamp.org/news/build-a-chat-app-ui-with-flutter/ retrieved from the following URL but modified for our application
               Expanded(
                 child: Padding(
@@ -94,10 +90,9 @@ class _MessageChatState extends State<MessageChat> {
                       shrinkWrap: true,
                       controller: _scroller,
                       padding: const EdgeInsets.only(top: 10, bottom: 10),
-                      //physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         //Chat Gpt code - the idea to include the picture in the list view
-                        //and to increase index, rest of the code mine
+                        //and to increase index
 
                         if (index == 0) {
                           // Return the image as the first item
@@ -203,6 +198,7 @@ class _MessageChatState extends State<MessageChat> {
                           height: kIsWeb ? height * 0.075 : height * 0.055,
                           width: width * 0.8,
                           child: TextField(
+                            onSubmitted: _handleSend,
                             textAlignVertical: TextAlignVertical.top,
                             controller: _sendText,
                             decoration: InputDecoration(
@@ -219,18 +215,8 @@ class _MessageChatState extends State<MessageChat> {
                                 icon: const Icon(Icons.send,
                                     size: kIsWeb ? 24 : 18),
                                 onPressed: () {
-                                  setState(() => _sendText.text.isNotEmpty
-                                      ? messages.add(ChatMessage(
-                                          messageContent: _sendText.text,
-                                          messageType: "sender",
-                                          time: "5:45pm"))
-                                      : null);
-                                  _sendText.clear();
-                                  _scroller.animateTo(
-                                    _scroller.position.maxScrollExtent + 90,
-                                    curve: Curves.easeOut,
-                                    duration: const Duration(milliseconds: 500),
-                                  );
+                                  //Idea from chatgpt to handle both enter and icon
+                                  _handleSend(_sendText.text);
                                 },
                               ),
                             ),
