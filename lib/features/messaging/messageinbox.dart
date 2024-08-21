@@ -23,7 +23,7 @@ class Message extends StatelessWidget {
           Expanded(
             child: ListView(
               children: List.generate(
-                25,
+                inbox.length,
                 (index) => ListTile(
                   minTileHeight: 85,
                   minVerticalPadding: 12.5,
@@ -38,9 +38,10 @@ class Message extends StatelessWidget {
                         color: Theme.of(context).primaryColor.withAlpha(240),
                         width: 0.5),
                   ),
-                  title: Text('Person $index',
-                      style: Theme.of(context).textTheme.headlineSmall),
-                  subtitle: Text('New Clothing Match!',
+                  //inbox[index].opened
+                  title:
+                      Text(inbox[index].name, style: TextStyle(fontSize: 24)),
+                  subtitle: Text(inbox[index].previewContent,
                       style: Theme.of(context).textTheme.bodyMedium),
                   leading: const CircleAvatar(
                     backgroundImage: AssetImage('lib/images/1.jpg'),
@@ -48,7 +49,7 @@ class Message extends StatelessWidget {
                   trailing: Wrap(
                     spacing: 18, // space between two icons
                     children: [
-                      Text('Time',
+                      Text(inbox[index].time,
                           style: Theme.of(context).textTheme.bodyMedium),
                       const Icon(Icons.arrow_forward_ios),
                     ],
@@ -62,3 +63,38 @@ class Message extends StatelessWidget {
     );
   }
 }
+
+class ChatListing {
+  String name;
+  String previewContent;
+  String time;
+  bool opened;
+  ChatListing(
+      {required this.name,
+      required this.previewContent,
+      required this.time,
+      required this.opened});
+}
+
+List<ChatListing> inbox = [
+  ChatListing(
+      name: "Jacob",
+      previewContent: "New Clothing Match!",
+      time: "5:45pm",
+      opened: true),
+  ChatListing(
+      name: "Steve",
+      previewContent: "New Clothing Match!",
+      time: "7:30pm",
+      opened: false),
+  ChatListing(
+      name: "Bob",
+      previewContent: "New Clothing Match!",
+      time: "7:45pm",
+      opened: false),
+  ChatListing(
+      name: "Karen",
+      previewContent: "New Clothing Match!",
+      time: "8pm",
+      opened: true),
+];

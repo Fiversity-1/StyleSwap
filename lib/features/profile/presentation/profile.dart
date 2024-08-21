@@ -3,11 +3,25 @@ import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key, required this.title});
-  final String title;
 
+  final String title;
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+List<String> images = [
+  'lib/images/0.jpg',
+  'lib/images/1.jpg',
+  'lib/images/2.jpg',
+  'lib/images/watermelon.png',
+  'lib/images/watermelon2.jpg'
+];
+
+class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,29 +91,29 @@ class Profile extends StatelessWidget {
                   ),
                 ),
               ),
-              GridView.builder(
+              ReorderableGridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
+                dragStartDelay: Duration.zero,
+                onReorder: (oldIndex, newIndex) {
+                  setState(() {
+                    var val = images.removeAt(oldIndex);
+                    images.insert(newIndex, val);
+                  });
+                },
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: kIsWeb ? 3 : 2,
                   mainAxisSpacing: 2,
                   crossAxisSpacing: 2,
                 ),
                 itemBuilder: (_, index) => GridTile(
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/gallery');
-                      },
-                      splashColor: Theme.of(context).primaryColorLight,
-                      child: Ink.image(
-                          fit: BoxFit.cover,
-                          image: const AssetImage('lib/images/backdrop.jpg')),
-                    ),
+                  key: ValueKey(images[index]),
+                  child: Image.asset(
+                    images[index],
+                    fit: BoxFit.cover,
                   ),
                 ),
-                itemCount: 10,
+                itemCount: images.length,
               ),
             ],
           ),
