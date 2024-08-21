@@ -28,7 +28,10 @@ class Message extends StatelessWidget {
                   minTileHeight: 85,
                   minVerticalPadding: 12.5,
                   horizontalTitleGap: 20,
+                  selected: !inbox[index].opened,
+                  selectedTileColor: Theme.of(context).cardColor,
                   onTap: () {
+                    inbox[index].opened = true;
                     Navigator.pushNamed(context, '/chat');
                   },
                   hoverColor: Theme.of(context).primaryColor.withAlpha(240),
@@ -38,9 +41,16 @@ class Message extends StatelessWidget {
                         color: Theme.of(context).primaryColor.withAlpha(240),
                         width: 0.5),
                   ),
-                  //inbox[index].opened
-                  title:
-                      Text(inbox[index].name, style: TextStyle(fontSize: 24)),
+                  title: Row(
+                    children: [
+                      Text('${inbox[index].name} ',
+                          style: const TextStyle(
+                            fontSize: 24,
+                          )),
+                      Icon(
+                          !inbox[index].opened ? Icons.mark_chat_unread : null),
+                    ],
+                  ),
                   subtitle: Text(inbox[index].previewContent,
                       style: Theme.of(context).textTheme.bodyMedium),
                   leading: const CircleAvatar(
@@ -91,7 +101,7 @@ List<ChatListing> inbox = [
       name: "Bob",
       previewContent: "New Clothing Match!",
       time: "7:45pm",
-      opened: false),
+      opened: true),
   ChatListing(
       name: "Karen",
       previewContent: "New Clothing Match!",
