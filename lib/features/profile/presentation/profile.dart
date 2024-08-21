@@ -107,12 +107,34 @@ class _ProfileState extends State<Profile> {
                   crossAxisSpacing: 2,
                 ),
                 itemBuilder: (_, index) => GridTile(
-                  key: ValueKey(images[index]),
-                  child: Image.asset(
-                    images[index],
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                    key: ValueKey(images[index]),
+                    child: Stack(
+                      children: [
+                        //3 lines from chatgpt, suggested to use infinity with sized box
+                        //as having weird format when added icon on top
+                        SizedBox(
+                          width: double.infinity,
+                          height: double.infinity,
+                          //end chatgpt
+                          child: Image.asset(
+                            images[index],
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.remove_circle,
+                            color: Colors.black,
+                          ),
+                          iconSize: 25,
+                          onPressed: () {
+                            setState(() {
+                              images.removeAt(index);
+                            });
+                          },
+                        ),
+                      ],
+                    )),
                 itemCount: images.length,
               ),
             ],

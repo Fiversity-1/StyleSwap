@@ -1,6 +1,5 @@
 import 'package:clothing_swap/features/clothing/presentation/advanced_search.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_detail.dart';
-import 'package:clothing_swap/features/clothing/presentation/match_animation.dart';
 import 'package:clothing_swap/features/community/event_class.dart';
 import 'package:clothing_swap/features/community/eventlist.dart';
 import 'package:clothing_swap/features/messaging/messagechat.dart';
@@ -53,7 +52,6 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const Login(title: 'Login'),
         '/add_clothing_item': (context) => AddClothingItemPage(),
         '/clothing_detail': (context) => const ClothingDetail(),
-        '/match_animation': (context) => const MatchAnimation(),
         '/preferences': (context) => const Preferences(),
         '/events': (context) => EventPage(
               communityEvents: communityEvents,
