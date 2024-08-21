@@ -22,6 +22,7 @@ List<String> images = [
   'lib/images/watermelon2.jpg'
 ];
 //example from https://pub.dev/packages/confirm_dialog modified
+bool edited = false;
 
 class _ProfileState extends State<Profile> {
   @override
@@ -65,7 +66,14 @@ class _ProfileState extends State<Profile> {
                     top: 5,
                     right: 65,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (edited) {
+                          edited = false;
+                        } else {
+                          edited = true;
+                        }
+                        setState(() {});
+                      },
                       style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(7)),
                       child: const Text(
@@ -93,62 +101,93 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
               ),
-              ReorderableGridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                dragStartDelay: Duration.zero,
-                onReorder: (oldIndex, newIndex) {
-                  setState(() {
-                    var val = images.removeAt(oldIndex);
-                    images.insert(newIndex, val);
-                  });
-                },
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: kIsWeb ? 3 : 2,
-                  mainAxisSpacing: 2,
-                  crossAxisSpacing: 2,
-                ),
-                itemBuilder: (_, index) => GridTile(
-                    key: ValueKey(images[index]),
-                    child: Stack(
-                      children: [
-                        //3 lines from chatgpt, suggested to use infinity with sized box
-                        //as having weird format when added icon on top
-                        SizedBox(
-                          width: double.infinity,
-                          height: double.infinity,
-                          //end chatgpt
-                          child: Image.asset(
-                            images[index],
+              Visibility(
+                visible: !edited,
+                child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: kIsWeb ? 3 : 2,
+                    mainAxisSpacing: 2,
+                    crossAxisSpacing: 2,
+                  ),
+                  itemBuilder: (_, index) => GridTile(
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: InkWell(
+                        onTap: () {},
+                        splashColor: Theme.of(context).primaryColorLight,
+                        child: Ink.image(
                             fit: BoxFit.cover,
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.remove_circle,
-                            color: Colors.black,
-                          ),
-                          iconSize: 25,
-                          onPressed: () async {
-                            if (await confirm(
-                              context,
-                              title: const Text('Confirm'),
-                              content: const Text('Would you like to remove?'),
-                              textOK: Text('Yes',
-                                  style: Theme.of(context).textTheme.bodyLarge),
-                              textCancel: Text('No',
-                                  style: Theme.of(context).textTheme.bodyLarge),
-                            )) {
-                              setState(() {
-                                images.removeAt(index);
-                              });
-                            }
-                          },
-                        ),
-                      ],
-                    )),
-                itemCount: images.length,
+                            image: AssetImage(images[index])),
+                      ),
+                    ),
+                  ),
+                  itemCount: images.length,
+                ),
               ),
+              Visibility(
+                visible: edited,
+                child: ReorderableGridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  dragStartDelay: Duration.zero,
+                  onReorder: (oldIndex, newIndex) {
+                    setState(() {
+                      var val = images.removeAt(oldIndex);
+                      images.insert(newIndex, val);
+                    });
+                  },
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: kIsWeb ? 3 : 2,
+                    mainAxisSpacing: 2,
+                    crossAxisSpacing: 2,
+                  ),
+                  itemBuilder: (_, index) => GridTile(
+                      key: ValueKey(images[index]),
+                      child: Stack(
+                        children: [
+                          //3 lines from chatgpt, suggested to use infinity with sized box
+                          //as having weird format when added icon on top
+                          SizedBox(
+                            width: double.infinity,
+                            height: double.infinity,
+                            //end chatgpt
+                            child: Image.asset(
+                              images[index],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.remove_circle,
+                              color: Colors.black,
+                            ),
+                            iconSize: 25,
+                            onPressed: () async {
+                              if (await confirm(
+                                context,
+                                title: const Text('Confirm'),
+                                content:
+                                    const Text('Would you like to remove?'),
+                                textOK: Text('Yes',
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge),
+                                textCancel: Text('No',
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge),
+                              )) {
+                                setState(() {
+                                  images.removeAt(index);
+                                });
+                              }
+                            },
+                          ),
+                        ],
+                      )),
+                  itemCount: images.length,
+                ),
+              )
             ],
           ),
         ),
