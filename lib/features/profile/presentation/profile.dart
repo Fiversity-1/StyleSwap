@@ -34,14 +34,31 @@ class Profile extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 50,
-                width: 180,
-                child: Text(
-                  'Steve',
-                  style: Theme.of(context).textTheme.headlineLarge,
-                  textAlign: TextAlign.center,
-                ),
+              Stack(
+                children: [
+                  SizedBox(
+                    height: 50,
+                    width: 375,
+                    child: Text(
+                      'Steve',
+                      style: Theme.of(context).textTheme.headlineLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Positioned(
+                    top: 5,
+                    right: 65,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(7)),
+                      child: const Text(
+                        'Edit Profile',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  )
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5, bottom: 15),
@@ -50,7 +67,7 @@ class Profile extends StatelessWidget {
                   width: 300,
                   decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      color: Theme.of(context).primaryColor,
+                      color: Theme.of(context).highlightColor,
                       borderRadius: BorderRadius.circular(10)),
                   child: Text(
                     'I love food and sustainability! Keen to trade some clothes!',

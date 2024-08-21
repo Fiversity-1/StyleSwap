@@ -15,8 +15,7 @@ class Comments extends StatefulWidget {
 class CommentsState extends State<Comments> {
   final _sendComment = TextEditingController();
   final _scroller = ScrollController();
-  static const IconData emoji_emotions =
-      IconData(0xe22b, fontFamily: 'MaterialIcons');
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -36,12 +35,16 @@ class CommentsState extends State<Comments> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Clothing Swap - Brisbane",
-                      style: Theme.of(context).textTheme.headlineLarge),
+                      style: kIsWeb
+                          ? Theme.of(context).textTheme.headlineMedium
+                          : Theme.of(context).textTheme.headlineSmall),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: (5), top: (10)),
+              padding: kIsWeb
+                  ? const EdgeInsets.only(left: (5), top: (10))
+                  : const EdgeInsets.only(left: (5), top: (5)),
               child: IconButton(
                 icon: const Icon(Icons.arrow_back_ios),
                 iconSize: 20,
@@ -54,9 +57,11 @@ class CommentsState extends State<Comments> {
                 child: SingleChildScrollView(
               child: Column(children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: (20.0)),
+                  padding: kIsWeb
+                      ? const EdgeInsets.only(top: (20.0))
+                      : const EdgeInsets.only(top: (30.0)),
                   child: SizedBox(
-                    width: width * 0.8,
+                    width: kIsWeb ? width * 0.8 : width * 0.9,
                     height: height * 0.65,
                     child: SingleChildScrollView(
                       child: SizedBox(
@@ -89,7 +94,7 @@ class CommentsState extends State<Comments> {
                                           'lib/images/profilepicture.jpg'),
                                     ),
                                     title: Text(comments[index].user),
-                                    trailing: Text(comments[index].time),
+                                    // trailing: Text(comments[index].time),
                                     subtitle: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
