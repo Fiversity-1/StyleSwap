@@ -4,6 +4,7 @@ import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
+import 'package:confirm_dialog/confirm_dialog.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key, required this.title});
@@ -20,6 +21,7 @@ List<String> images = [
   'lib/images/watermelon.png',
   'lib/images/watermelon2.jpg'
 ];
+//example from https://pub.dev/packages/confirm_dialog modified
 
 class _ProfileState extends State<Profile> {
   @override
@@ -127,10 +129,20 @@ class _ProfileState extends State<Profile> {
                             color: Colors.black,
                           ),
                           iconSize: 25,
-                          onPressed: () {
-                            setState(() {
-                              images.removeAt(index);
-                            });
+                          onPressed: () async {
+                            if (await confirm(
+                              context,
+                              title: const Text('Confirm'),
+                              content: const Text('Would you like to remove?'),
+                              textOK: Text('Yes',
+                                  style: Theme.of(context).textTheme.bodyLarge),
+                              textCancel: Text('No',
+                                  style: Theme.of(context).textTheme.bodyLarge),
+                            )) {
+                              setState(() {
+                                images.removeAt(index);
+                              });
+                            }
                           },
                         ),
                       ],
