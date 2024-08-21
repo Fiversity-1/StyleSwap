@@ -3,6 +3,8 @@ import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_flip_card/flipcard/flip_card.dart';
+import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 
@@ -23,10 +25,16 @@ List<String> images = [
 ];
 //example from https://pub.dev/packages/confirm_dialog modified
 bool edited = false;
+List<FlipCardController> _flipImage =
+    List.generate(images.length, (index) => FlipCardController());
 
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
+    //List generate line from chatgpt
+
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 3,
@@ -113,16 +121,40 @@ class _ProfileState extends State<Profile> {
                   ),
                   itemBuilder: (_, index) => GridTile(
                     child: GestureDetector(
-                      onTap: () {},
-                      child: InkWell(
-                        onTap: () {},
-                        splashColor: Theme.of(context).primaryColorLight,
-                        child: Ink.image(
-                            fit: BoxFit.cover,
-                            image: AssetImage(images[index])),
+                      onTap: () {
+                        setState(() {
+                          _flipImage[index].flipcard();
+                        });
+                      },
+                      child: FlipCard(
+                        frontWidget: Image.asset(
+                          images[index],
+                          fit: BoxFit.cover,
+                        ),
+                        backWidget: Container(
+                          color: Theme.of(context).primaryColor,
+                          child: Column(
+                            children: [
+                              Text("Stats",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall),
+                              Text(" Views: 5",
+                                  style: Theme.of(context).textTheme.bodyLarge),
+                              Text(" Views: 5",
+                                  style: Theme.of(context).textTheme.bodyLarge),
+                              Text(" Views: 5",
+                                  style: Theme.of(context).textTheme.bodyLarge),
+                            ],
+                          ),
+                        ),
+                        controller: _flipImage[index],
+                        rotateSide: RotateSide.right,
                       ),
                     ),
                   ),
+
+                  //End modified code
                   itemCount: images.length,
                 ),
               ),
@@ -158,31 +190,47 @@ class _ProfileState extends State<Profile> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.remove_circle,
-                              color: Colors.black,
-                            ),
-                            iconSize: 25,
-                            onPressed: () async {
-                              if (await confirm(
-                                context,
-                                title: const Text('Confirm'),
-                                content:
-                                    const Text('Would you like to remove?'),
-                                textOK: Text('Yes',
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge),
-                                textCancel: Text('No',
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge),
-                              )) {
-                                setState(() {
-                                  images.removeAt(index);
-                                });
-                              }
-                            },
-                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.remove_circle,
+                                  color: Colors.black,
+                                ),
+                                iconSize: 25,
+                                //pubdev confirm dialog
+                                onPressed: () async {
+                                  if (await confirm(
+                                    context,
+                                    title: const Text('Confirm'),
+                                    content:
+                                        const Text('Would you like to remove?'),
+                                    textOK: Text('Yes',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge),
+                                    textCancel: Text('No',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge),
+                                  )) {
+                                    setState(() {
+                                      images.removeAt(index);
+                                    });
+                                  }
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.drag_indicator_rounded,
+                                  color: Colors.black,
+                                ),
+                                iconSize: 25,
+                                onPressed: () {},
+                              ),
+                            ],
+                          )
                         ],
                       )),
                   itemCount: images.length,
