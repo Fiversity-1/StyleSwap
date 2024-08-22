@@ -206,7 +206,7 @@ class CommentsState extends State<Comments> {
                         filled: true,
 
                         suffix: IconButton(
-                          icon: Icon(Icons.send, size: 24),
+                          icon: const Icon(Icons.send, size: 24),
                           onPressed: () {
                             setState(() => _sendComment.text.isNotEmpty
                                 ? comments.add(

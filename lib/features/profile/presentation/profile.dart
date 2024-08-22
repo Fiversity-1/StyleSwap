@@ -3,7 +3,7 @@ import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_flip_card/flipcard/flip_card.dart';
+
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
@@ -33,8 +33,6 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     //List generate line from chatgpt
 
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 3,
