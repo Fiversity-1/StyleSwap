@@ -1,6 +1,8 @@
 
 import 'package:image_picker/image_picker.dart';
 
+import 'clothing_type.dart';
+
 class ClothingInfo {
   final List<XFile> images;
   final ClothingSize? size;
@@ -53,28 +55,6 @@ enum ClothingGender {
   male,
   female,
   unisex
-}
-
-enum ClothingType {
-  hat,
-  scarf,
-  tie,
-  shirt,
-  midriff,
-  belt,
-  shorts,
-  pants,
-  skirt,
-  dress,
-  shoes,
-  jumper,
-  jacket,
-  sweater,
-  coat,
-  gloves,
-  vest,
-  leggings,
-  tights
 }
 
 sealed class ClothingSize {

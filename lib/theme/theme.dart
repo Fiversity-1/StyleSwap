@@ -35,6 +35,7 @@ ThemeData darkTheme = ThemeData(
     colorScheme: ColorScheme.fromSeed(
       seedColor: Colors.deepPurple,
       primary: Colors.deepPurple,
+      onPrimary: Colors.white,
       surface: const Color.fromARGB(255, 43, 41, 41),
       brightness: Brightness.dark
     ),
