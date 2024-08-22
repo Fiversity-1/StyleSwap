@@ -1,6 +1,9 @@
 // signup.dart
+import 'package:clothing_swap/theme/theme.dart';
+import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.title});
@@ -11,14 +14,14 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final _submitCreds = TextEditingController();
-
+  final _submitCreds1 = TextEditingController();
+  final _submitCreds2 = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SingleChildScrollView(
+      body: Expanded(
           child: Stack(
         children: [
           Positioned.fill(
@@ -27,21 +30,48 @@ class _LoginState extends State<Login> {
               child: Image.asset('lib/images/backdrop2.jpg', fit: BoxFit.cover),
             ),
           ),
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: (15.0)),
-                child: Image.asset(
-                  'lib/images/hanger.png',
-                  height: 75,
-                  width: 75,
+          Positioned(
+            top: 5, // Adjust as needed
+            left: 0,
+            right: 0,
+            child: Image.asset(
+              Provider.of<ThemeSwitcher>(context).themeData == lightTheme
+                  ? 'lib/images/hanger.png'
+                  : 'lib/images/hanger_white.png',
+              height: 75,
+              width: 75,
+            ),
+          ),
+          Positioned(
+            bottom: 15, // Adjust as needed
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Not yet signed up?',
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
-              ),
+                TextButton(
+                  child: Text(
+                    'Register here',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/signup');
+                  },
+                ),
+              ],
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
               SizedBox(
-                height: height * 0.2,
                 width: width,
               ),
-              Text('Glad your here!',
+              Text('Glad you\'re here!',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineLarge),
               Padding(
@@ -50,7 +80,7 @@ class _LoginState extends State<Login> {
                   height: height * 0.085,
                   width: kIsWeb ? width * 0.35 : width * 0.875,
                   child: TextField(
-                    controller: _submitCreds,
+                    controller: _submitCreds1,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(7),
@@ -60,7 +90,7 @@ class _LoginState extends State<Login> {
                       suffix: IconButton(
                         icon: const Icon(Icons.clear),
                         onPressed: () {
-                          _submitCreds.clear();
+                          _submitCreds1.clear();
                         },
                       ),
                     ),
@@ -71,7 +101,7 @@ class _LoginState extends State<Login> {
                 height: height * 0.085,
                 width: kIsWeb ? width * 0.35 : width * 0.875,
                 child: TextField(
-                  controller: _submitCreds,
+                  controller: _submitCreds2,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(7),
@@ -81,7 +111,7 @@ class _LoginState extends State<Login> {
                     suffix: IconButton(
                       icon: const Icon(Icons.clear),
                       onPressed: () {
-                        _submitCreds.clear();
+                        _submitCreds2.clear();
                       },
                     ),
                   ),
@@ -100,27 +130,6 @@ class _LoginState extends State<Login> {
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: (157.5)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Not yet signed up?',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    TextButton(
-                      child: const Text(
-                        'Register here',
-                        style: TextStyle(fontSize: 18, color: Colors.blue),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/signup');
-                      },
-                    ),
-                  ],
                 ),
               ),
             ],

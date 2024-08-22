@@ -10,19 +10,17 @@ class Category {
 }
 
 List<Category> categories = [
-  Category(category: 'Type', logo: Icons.category, options: [1, 2, 3]),
+  Category(category: 'Type', logo: Icons.category, options: ['Shirt', 'Pants']),
   Category(category: 'Size', logo: Icons.numbers, options: [1, 2, 3, 4, 5]),
-  Category(category: 'Gender', logo: Icons.person, options: [1, 2, 3, 4, 5, 6]),
-  Category(
-      category: 'Brand',
-      logo: Icons.type_specimen,
-      options: [1, 2, 3, 4, 5, 6]),
+  Category(category: 'Gender', logo: Icons.person, options: ['Male', 'Female']),
   Category(
       category: 'Condition',
       logo: Icons.gpp_good_outlined,
-      options: [1, 2, 3, 4, 5, 6]),
+      options: ['Brand New', 'Barely Worn', 'Good', 'Bit how\'s it going...']),
   Category(
-      category: 'Colour', logo: Icons.palette, options: [1, 2, 3, 4, 5, 6]),
+      category: 'Colour',
+      logo: Icons.palette,
+      options: ['Yellow', 'Green', 'Red', 'Blue']),
 ];
 
 class AdvancedSearch extends StatefulWidget {
@@ -35,11 +33,15 @@ class AdvancedSearch extends StatefulWidget {
 class _AdvancedSearchState extends State<AdvancedSearch> {
   //use this for indexing queries/views
   int _counter = 0;
+  Set<int> selectedTiles = {};
   List colours = [];
+  int _tileCounter = 0;
 
-  void _incrementCounter() {
+  void _changeCategory() {
     setState(() {
       _counter++;
+      _tileCounter = 0;
+      selectedTiles.clear();
     });
     if (_counter == categories.length) {
       Navigator.pushNamed(context, '/swipe');
@@ -60,23 +62,40 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
       body: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: (5), top: (10)),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios),
-                  iconSize: 20,
-                  onPressed: () {},
-                ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: (5), top: (10)),
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios),
+                      iconSize: 20,
+                      onPressed: () {},
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: (10)),
+                    child: Text(
+                      'Select ${categories[_counter].category}',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
               ),
               Padding(
-                padding: const EdgeInsets.only(top: (10)),
-                child: Text(
-                  'Select ${categories[_counter].category}',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  textAlign: TextAlign.center,
-                ),
-              ),
+                  padding: const EdgeInsets.only(top: (10)),
+                  child: Visibility(
+                      visible:
+                          (_tileCounter == 0 || _counter == 0) ? false : true,
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_forward),
+                        iconSize: 25,
+                        onPressed: () {
+                          _changeCategory();
+                        },
+                      )))
             ],
           ),
           const Padding(
@@ -95,9 +114,19 @@ class _AdvancedSearchState extends State<AdvancedSearch> {
                 itemBuilder: (context, index) {
                   return ListTile(
                       onTap: () {
-                        _incrementCounter();
+                        _tileCounter++;
+                        _counter != 0
+                            ? setState(() {
+                                if (selectedTiles.contains(index)) {
+                                  selectedTiles.remove(index);
+                                } else {
+                                  selectedTiles.add(index);
+                                }
+                              })
+                            : _changeCategory();
                         //backend send, retrieval
                       },
+                      selected: selectedTiles.contains(index),
                       title: Text(
                         '${categories[_counter].options[index]}',
                         style: Theme.of(context).textTheme.bodyLarge,

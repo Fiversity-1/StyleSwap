@@ -17,7 +17,7 @@ class ClothingItemDetail {
   final String type;
   final int size;
   final String gender;
-  final String brand;
+
   final String condition;
   final List<String> colours;
   final List<String> images;
@@ -26,7 +26,6 @@ class ClothingItemDetail {
     required this.type,
     required this.size,
     required this.gender,
-    required this.brand,
     required this.condition,
     required this.colours,
     required this.images,

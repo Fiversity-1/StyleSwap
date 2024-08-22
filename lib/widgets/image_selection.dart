@@ -5,7 +5,6 @@ import 'package:flutter_reorderable_grid_view/widgets/reorderable_builder.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageSelectionField extends FormField<List<XFile>> {
-
   ImageSelectionField(
       {super.key,
       super.onSaved,
@@ -89,12 +88,12 @@ class ImageSelectionField extends FormField<List<XFile>> {
               }
 
               void onReorder(ReorderedListFunction reorderedListFunction) {
-                state.didChange(reorderedListFunction(state.value!) as List<XFile>);
+                state.didChange(
+                    reorderedListFunction(state.value!) as List<XFile>);
               }
 
-              final generatedChildren = List.generate(
-                  (state.value ?? []).length + 1, (index)
-              {
+              final generatedChildren =
+                  List.generate((state.value ?? []).length + 1, (index) {
                 if (index < state.value!.length) {
                   return Container(
                     key: Key(state.value![index].path),
@@ -115,11 +114,11 @@ class ImageSelectionField extends FormField<List<XFile>> {
                       child: AddImageButton(
                           callback: () => addImage(state.context),
                           errorText: state.errorText));
-                  }
-              }
-              );
+                }
+              });
 
               return Column(
+
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
               Expanded(
@@ -156,6 +155,7 @@ class ImageSelectionField extends FormField<List<XFile>> {
                   children: generatedChildren,
                     )
                   ))
+
                 ],
               );
             });
@@ -164,7 +164,8 @@ class ImageSelectionField extends FormField<List<XFile>> {
   FormFieldState<List<XFile>> createState() => _ImageSelectionFieldState();
 }
 
-class _ImageSelectionFieldState extends FormFieldState<List<XFile>> with SingleTickerProviderStateMixin {
+class _ImageSelectionFieldState extends FormFieldState<List<XFile>>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation;
   final scrollController = ScrollController();

@@ -27,19 +27,19 @@ class CustomBottomNavBar extends StatelessWidget {
     return Theme(
         data: Theme.of(context).copyWith(
           // sets the background color of the `BottomNavigationBar`
-            canvasColor: Theme.of(context).scaffoldBackgroundColor,
+          canvasColor: Theme.of(context).scaffoldBackgroundColor,
         ), // sets the inactive color of the `BottomNavigationBar`
         child: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-            BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add Clothing'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.add), label: 'Add Clothing'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.messenger_rounded), label: 'Message'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           ],
           currentIndex: currentIndex,
           onTap: (index) => _onItemTapped(context, index),
-        )
-    );
+        ));
   }
 }

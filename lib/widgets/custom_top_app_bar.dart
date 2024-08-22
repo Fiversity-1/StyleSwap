@@ -1,3 +1,4 @@
+import 'package:clothing_swap/features/community/event_class.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +21,13 @@ class CustomTopAppBar extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(context, '/preferences');
           },
-          icon: const Icon(Icons.recycling)),
+          icon: const Icon(Icons.settings)),
       centerTitle: true,
       actions: [
         IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/events');
+              Navigator.pushNamed(context, '/events',
+                  arguments: communityEvents);
             },
             icon: const Icon(Icons.event))
       ],

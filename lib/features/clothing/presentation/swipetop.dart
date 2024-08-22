@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_build.dart';
+import 'package:toastification/toastification.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SwipePageTop extends StatefulWidget {
   const SwipePageTop({super.key});
@@ -19,7 +21,30 @@ class _SwipePageTopState extends State<SwipePageTop> {
   late TutorialCoachMark explainer;
   List<TargetFocus> listTargets = [];
   int _counter = 0;
+  bool _hasRun = false;
+//Start Chat GPT
+  @override
+  void initState() {
+    super.initState();
+    _checkIfRun().then((_) {
+      if (!_hasRun) {
+        createTutorial();
+        showTutorial();
+      }
+    });
+  }
 
+  Future<void> _checkIfRun() async {
+    final prefs = await SharedPreferences.getInstance();
+    _hasRun = prefs.getBool('hasRun') ?? false;
+
+    if (!_hasRun) {
+      // Run your code here
+      await prefs.setBool('hasRun', true);
+    }
+  }
+
+//End ChatGPT
   List swipeImages = [
     ClothingItem(name: 'Jacob', location: 'Mount Cotton', images: [
       'lib/images/0.jpg',
@@ -69,44 +94,12 @@ class _SwipePageTopState extends State<SwipePageTop> {
       _counter = 0;
     }
     if (_counter % 4 == 0 && _counter != 0) {
-      _showAlertDialog(context, _counter);
+      //_showAlertDialog(context, _counter);
     }
   }
 
   final GlobalKey _tapingKey = GlobalKey();
   final GlobalKey _moreDetailKey = GlobalKey();
-
-  @override
-  void initState() {
-    //createTutorial();
-    //showTutorial();
-    super.initState();
-  }
-
-  void _showAlertDialog(BuildContext context, int counter) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Fun Fact',
-                style: Theme.of(context).textTheme.headlineMedium),
-            //Have 10 fun facts and index with mod to avoid out of bounds
-            content: Text(popups[counter % 10],
-                style: Theme.of(context).textTheme.bodyMedium),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  'Sweet!',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-              ),
-            ],
-          );
-        });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +156,43 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         _incrementCounter();
 
                         if (direction.name == 'right') {
-                          Navigator.pushNamed(context, '/match_animation');
+                          //modified from pubdev toastification package
+                          toastification.showCustom(
+                            context: context,
+                            autoCloseDuration: const Duration(seconds: 3),
+                            alignment: Alignment.bottomRight,
+                            builder: (BuildContext context,
+                                ToastificationItem holder) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Theme.of(context).hoverColor,
+                                ),
+                                padding: const EdgeInsets.all(16),
+                                margin: const EdgeInsets.all(8),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('You\'ve got a New Match!',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    const SizedBox(height: 16),
+                                    Row(
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                context, '/chat');
+                                          },
+                                          child: const Text('Message Now!'),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
                         }
                         return true;
                       },
@@ -200,9 +229,9 @@ class _SwipePageTopState extends State<SwipePageTop> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: (0.0)),
+                  padding: const EdgeInsets.only(bottom: (5.0)),
                   child: IconButton(
-                      icon: const Icon(Icons.arrow_circle_up),
+                      icon: const Icon(Icons.swipe_up),
                       iconSize: 35,
                       key: _moreDetailKey,
                       onPressed: () {
@@ -220,40 +249,40 @@ class _SwipePageTopState extends State<SwipePageTop> {
   void createTutorial() {
     listTargets.add(
       TargetFocus(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: const Color.fromARGB(255, 69, 65, 65),
         identify: "Target 2",
         keyTarget: _tapingKey,
         contents: [
           TargetContent(
-            child: Column(children: [
+            child: const Column(children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: (50.0)),
+                padding: EdgeInsets.only(bottom: (0.0)),
                 child: Text(
-                  "Swipe Left: Not Interested\nSwipe Right: Interested\nTap: See more images",
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
+                    "1. Swipe Left if you're not interested\n2. Swipe Right if you're interested\n3. Tap to view more images",
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(fontSize: 22, color: Colors.white)),
               ),
             ]),
           )
         ],
         shape: ShapeLightFocus.RRect,
-        radius: 7,
+        radius: 5,
       ),
     );
 
     listTargets.add(TargetFocus(
-      color: Theme.of(context).scaffoldBackgroundColor,
+      color: const Color.fromARGB(255, 69, 65, 65),
       identify: "Target 3",
       keyTarget: _moreDetailKey,
       contents: [
         TargetContent(
-            child: Column(
+            child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Swipe/Tap up for more info",
-              style: Theme.of(context).textTheme.headlineMedium,
+              "Swipe or Tap up for more info",
+              style: TextStyle(fontSize: 22, color: Colors.white),
+              textAlign: TextAlign.end,
             ),
           ],
         )),
@@ -265,12 +294,10 @@ class _SwipePageTopState extends State<SwipePageTop> {
   void showTutorial() {
     explainer = TutorialCoachMark(
       targets: listTargets,
-      colorShadow: Theme.of(context).scaffoldBackgroundColor,
-      textSkip: "SKIP",
-      textStyleSkip: TextStyle(
-          fontSize: 22, color: Theme.of(context).scaffoldBackgroundColor),
-      paddingFocus: 4,
-      opacityShadow: 1,
+      colorShadow: Colors.white,
+      hideSkip: true,
+      paddingFocus: 1,
+      opacityShadow: 0.95,
       onClickTarget: (target) {},
       onClickOverlay: (target) {},
     )..show(context: context);
