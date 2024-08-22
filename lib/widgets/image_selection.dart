@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_reorderable_grid_view/widgets/reorderable_builder.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
 class ImageSelectionField extends FormField<List<XFile>> {
 
@@ -127,7 +126,6 @@ class ImageSelectionField extends FormField<List<XFile>> {
               child: Padding(
                   padding: const EdgeInsets.all(16.0),
                     child: ReorderableBuilder(
-                      children: generatedChildren,
                       lockedIndices: [state.value!.length],
                       nonDraggableIndices: [state.value!.length],
                     scrollController: state.scrollController,
@@ -155,6 +153,7 @@ class ImageSelectionField extends FormField<List<XFile>> {
                           ),
                           ],
                         ),
+                  children: generatedChildren,
                     )
                   ))
                 ],
@@ -227,10 +226,10 @@ class AddImageButton extends StatefulWidget {
   const AddImageButton({super.key, required this.callback, this.errorText});
 
   @override
-  _AddImageButtonState createState() => _AddImageButtonState();
+  AddImageButtonState createState() => AddImageButtonState();
 }
 
-class _AddImageButtonState extends State<AddImageButton> {
+class AddImageButtonState extends State<AddImageButton> {
   bool _showError = false;
 
   @override
