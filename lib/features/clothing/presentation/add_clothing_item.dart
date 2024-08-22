@@ -150,11 +150,11 @@ class AddClothingItemPage extends HookWidget {
                           ),
                           ElevatedButton(
                               onPressed: isMaxStep() ? save : next,
-                              child: const Text("Next"),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Theme.of(context).colorScheme.primary,
                                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
                               ),
+                              child: const Text("Next"),
                           ),
                         ],
                       )
