@@ -126,7 +126,6 @@ class ImageSelectionField extends FormField<List<XFile>> {
               child: Padding(
                   padding: const EdgeInsets.all(16.0),
                     child: ReorderableBuilder(
-                      children: generatedChildren,
                       lockedIndices: [state.value!.length],
                       nonDraggableIndices: [state.value!.length],
                     scrollController: state.scrollController,
@@ -154,6 +153,7 @@ class ImageSelectionField extends FormField<List<XFile>> {
                           ),
                           ],
                         ),
+                  children: generatedChildren,
                     )
                   ))
                 ],
