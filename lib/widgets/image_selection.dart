@@ -118,42 +118,44 @@ class ImageSelectionField extends FormField<List<XFile>> {
               });
 
               return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: ReorderableBuilder(
-                            children: generatedChildren,
-                            lockedIndices: [state.value!.length],
-                            nonDraggableIndices: [state.value!.length],
-                            scrollController: state.scrollController,
-                            builder: (children) {
-                              return GridView(
-                                key: state.gridViewKey,
-                                controller: state.scrollController,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 16,
-                                  crossAxisSpacing: 16,
-                                  childAspectRatio: 3 / 4,
-                                ),
-                                children: children,
-                              );
-                            },
-                            onReorder: onReorder,
-                            dragChildBoxDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.25),
-                                  spreadRadius: 4,
-                                  blurRadius: 8,
-                                ),
-                              ],
-                            ),
-                          )))
+
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+              Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                    child: ReorderableBuilder(
+                      lockedIndices: [state.value!.length],
+                      nonDraggableIndices: [state.value!.length],
+                    scrollController: state.scrollController,
+                    builder: (children) {
+                      return GridView(
+                        key: state.gridViewKey,
+                          controller: state.scrollController,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 16,
+                          childAspectRatio: 3 / 4,
+                          ),
+                          children: children,
+                        );
+                      },
+                      onReorder: onReorder,
+                      dragChildBoxDecoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                          BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          spreadRadius: 4,
+                          blurRadius: 8,
+                          ),
+                          ],
+                        ),
+                  children: generatedChildren,
+                    )
+                  ))
+
                 ],
               );
             });
@@ -225,10 +227,10 @@ class AddImageButton extends StatefulWidget {
   const AddImageButton({super.key, required this.callback, this.errorText});
 
   @override
-  _AddImageButtonState createState() => _AddImageButtonState();
+  AddImageButtonState createState() => AddImageButtonState();
 }
 
-class _AddImageButtonState extends State<AddImageButton> {
+class AddImageButtonState extends State<AddImageButton> {
   bool _showError = false;
 
   @override
