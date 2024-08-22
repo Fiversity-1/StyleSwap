@@ -139,16 +139,13 @@ class _ProfileState extends State<Profile> {
                                   color: Theme.of(context).hoverColor,
                                   width: 5)),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("Stats\n",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall),
-                              Text("Date Listed: 22/08/24\n",
+                              Text("Date Listed: 22/08/24",
                                   style: Theme.of(context).textTheme.bodyLarge),
-                              Text(" Total Views: 56\n",
+                              Text(" Total Views: 56",
                                   style: Theme.of(context).textTheme.bodyLarge),
-                              Text(" Total Interested: 5\n",
+                              Text(" Total Interested: 5",
                                   style: Theme.of(context).textTheme.bodyLarge),
                             ],
                           ),
