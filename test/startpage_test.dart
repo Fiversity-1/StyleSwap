@@ -5,12 +5,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:clothing_swap/main.dart';
 import 'package:clothing_swap/features/signup/presentation/startpage.dart';
 import 'package:provider/provider.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
@@ -21,13 +17,13 @@ void main() {
     await tester.pumpWidget(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => ThemeSwitcher()),
+          ChangeNotifierProvider(create: (_) => ThemeSwitcher()), 
         ],
         child: MaterialApp(
           home: const StartPage(title: 'Test Title'),
           routes: {
-            '/login': (context) => Scaffold(body: Text('Login Page')),
-            '/signup': (context) => Scaffold(body: Text('Sign Up Page')),
+            '/login': (context) => const Scaffold(body: Text('Login Page')),
+            '/signup': (context) => const Scaffold(body: Text('Sign Up Page')),
           },
         ),
       ),
