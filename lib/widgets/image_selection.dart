@@ -226,10 +226,10 @@ class AddImageButton extends StatefulWidget {
   const AddImageButton({super.key, required this.callback, this.errorText});
 
   @override
-  _AddImageButtonState createState() => _AddImageButtonState();
+  AddImageButtonState createState() => AddImageButtonState();
 }
 
-class _AddImageButtonState extends State<AddImageButton> {
+class AddImageButtonState extends State<AddImageButton> {
   bool _showError = false;
 
   @override
