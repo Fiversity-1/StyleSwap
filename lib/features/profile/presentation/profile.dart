@@ -132,18 +132,23 @@ class _ProfileState extends State<Profile> {
                           fit: BoxFit.cover,
                         ),
                         backWidget: Container(
-                          color: Theme.of(context).primaryColor,
+                          padding: const EdgeInsets.all(3.0),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              border: Border.all(
+                                  color: Theme.of(context).hoverColor,
+                                  width: 5)),
                           child: Column(
                             children: [
-                              Text("Stats",
+                              Text("Stats\n",
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineSmall),
-                              Text(" Views: 5",
+                              Text("Date Listed: 22/08/24\n",
                                   style: Theme.of(context).textTheme.bodyLarge),
-                              Text(" Views: 5",
+                              Text(" Total Views: 56\n",
                                   style: Theme.of(context).textTheme.bodyLarge),
-                              Text(" Views: 5",
+                              Text(" Total Interested: 5\n",
                                   style: Theme.of(context).textTheme.bodyLarge),
                             ],
                           ),
