@@ -84,9 +84,9 @@ class _ProfileState extends State<Profile> {
                       },
                       style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(7)),
-                      child: const Text(
-                        'Edit Profile',
-                        style: TextStyle(fontSize: 12),
+                      child: Text(
+                        !edited ? 'Edit Profile' : 'Done',
+                        style: const TextStyle(fontSize: 12),
                       ),
                     ),
                   )
