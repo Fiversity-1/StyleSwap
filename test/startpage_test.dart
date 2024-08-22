@@ -8,13 +8,12 @@
 
 
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:clothing_swap/main.dart';
 import 'package:clothing_swap/features/signup/presentation/startpage.dart';
 import 'package:provider/provider.dart';
-import 'package:clothing_swap/theme/theme_switcher.dart'; // Import ThemeSwitcher
+import 'package:clothing_swap/theme/theme_switcher.dart';
 
 void main() {
   testWidgets('Buttons navigate to the correct pages', (WidgetTester tester) async {
@@ -22,9 +21,15 @@ void main() {
     await tester.pumpWidget(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => ThemeSwitcher()), // Mock or use actual implementation
+          ChangeNotifierProvider(create: (_) => ThemeSwitcher()),
         ],
-        child: const MyApp(),
+        child: MaterialApp(
+          home: const StartPage(title: 'Test Title'),
+          routes: {
+            '/login': (context) => Scaffold(body: Text('Login Page')),
+            '/signup': (context) => Scaffold(body: Text('Sign Up Page')),
+          },
+        ),
       ),
     );
 
@@ -37,7 +42,8 @@ void main() {
     await tester.tap(logInButton);
     await tester.pumpAndSettle(); // Wait for navigation to complete
 
-    // You can add further checks to confirm navigation here
-    // For example, checking for a widget on the login page
+    // Verify navigation to the login page
+    expect(find.text('Login Page'), findsOneWidget);
+
   });
 }
