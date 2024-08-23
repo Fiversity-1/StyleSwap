@@ -308,7 +308,9 @@ class CommentsState extends State<Comments> {
                         suffix: IconButton(
                           icon: const Icon(Icons.send, size: 24),
                           onPressed: () {
-                            _handleComment(_sendComment.text);
+                            if (_sendComment.text.isNotEmpty) {
+                              _handleComment(_sendComment.text);
+                            }
                           },
                         ),
                       ),
