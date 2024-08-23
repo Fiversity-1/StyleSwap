@@ -17,7 +17,7 @@ class CommentsState extends State<Comments> {
 
   void _handleReaction(String value, int index) {
     setState(() {
-      var lastReaction;
+      String lastReaction;
       if (comments[index].angryed) {
         lastReaction = "angry";
       } else if (comments[index].hahaed) {
