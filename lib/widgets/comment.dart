@@ -1,4 +1,3 @@
-import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -101,7 +100,6 @@ class CommentsState extends State<Comments> {
 
   @override
   Widget build(BuildContext context) {
-    final clothingFile = ModalRoute.of(context)?.settings.arguments;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
