@@ -1,4 +1,5 @@
 import 'package:clothing_swap/features/community/event_class.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 
@@ -14,6 +15,8 @@ class EventList extends StatefulWidget {
 }
 
 class _EventListState extends State<EventList> {
+  //Map from chatgpt for mapping booleans
+  Map<int, bool> seeMoreMap = {};
   bool attendance = false;
 
   @override
@@ -22,6 +25,8 @@ class _EventListState extends State<EventList> {
       child: ListView.builder(
         itemCount: widget.listings.length,
         itemBuilder: (context, index) {
+          //Map from chatgpt for mapping booleans
+          bool seeMore = seeMoreMap[index] ?? false;
           return Padding(
             padding: const EdgeInsets.only(bottom: 25.0),
             child: Column(
@@ -40,11 +45,31 @@ class _EventListState extends State<EventList> {
                       children: [
                         Image.asset(widget.listings[index].image,
                             fit: BoxFit.fitWidth),
-                        Text(
-                          '${widget.listings[index].title} - ${widget.listings[index].city}',
-                          style: Theme.of(context).textTheme.headlineLarge,
-                          textAlign: TextAlign.center,
-                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${widget.listings[index].title} - ${widget.listings[index].city}',
+                              style: Theme.of(context).textTheme.headlineLarge,
+                              textAlign: TextAlign.center,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  seeMoreMap[index] = !seeMore;
+                                  setState(() {});
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.all(5)),
+                                child: Text(
+                                  !seeMore ? 'See More' : 'See Less',
+                                  style: const TextStyle(fontSize: 10),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -57,61 +82,73 @@ class _EventListState extends State<EventList> {
                         shrinkWrap: true,
                         padding: const EdgeInsets.all(0),
                         children: [
-                          ListTile(
-                            shape: const RoundedRectangleBorder(
-                              side:
-                                  BorderSide(color: Colors.black26, width: 0.5),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(0),
+                          Visibility(
+                            visible: seeMore,
+                            child: ListTile(
+                              shape: const RoundedRectangleBorder(
+                                side: BorderSide(
+                                    color: Colors.black26, width: 0.5),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(0),
+                                ),
                               ),
+                              title: Text(
+                                'Hosted by: ${widget.listings[index].company}',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              leading: const Icon(Icons.home),
                             ),
-                            title: Text(
-                              'Hosted by: ${widget.listings[index].company}',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            leading: const Icon(Icons.home),
                           ),
-                          ListTile(
-                            shape: const RoundedRectangleBorder(
-                              side:
-                                  BorderSide(color: Colors.black26, width: 0.5),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(0),
+                          Visibility(
+                            visible: seeMore,
+                            child: ListTile(
+                              shape: const RoundedRectangleBorder(
+                                side: BorderSide(
+                                    color: Colors.black26, width: 0.5),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(0),
+                                ),
                               ),
+                              title: Text(
+                                "Where: ${widget.listings[index].location}",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              leading: const Icon(Icons.location_on),
                             ),
-                            title: Text(
-                              "Where: ${widget.listings[index].location}",
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            leading: const Icon(Icons.location_on),
                           ),
-                          ListTile(
-                            shape: const RoundedRectangleBorder(
-                              side:
-                                  BorderSide(color: Colors.black26, width: 0.5),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(0),
+                          Visibility(
+                            visible: seeMore,
+                            child: ListTile(
+                              shape: const RoundedRectangleBorder(
+                                side: BorderSide(
+                                    color: Colors.black26, width: 0.5),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(0),
+                                ),
                               ),
+                              title: Text(
+                                "When: ${widget.listings[index].date}, ${widget.listings[index].time} ",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              leading: const Icon(Icons.calendar_month_rounded),
                             ),
-                            title: Text(
-                              "When: ${widget.listings[index].date}, ${widget.listings[index].time} ",
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            leading: const Icon(Icons.calendar_month_rounded),
                           ),
-                          ListTile(
-                            shape: const RoundedRectangleBorder(
-                              side:
-                                  BorderSide(color: Colors.black26, width: 0.5),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(0),
+                          Visibility(
+                            visible: seeMore,
+                            child: ListTile(
+                              shape: const RoundedRectangleBorder(
+                                side: BorderSide(
+                                    color: Colors.black26, width: 0.5),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(0),
+                                ),
                               ),
+                              title: Text(
+                                "Details: ${widget.listings[index].details}",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              leading: const Icon(Icons.info),
                             ),
-                            title: Text(
-                              "Details: ${widget.listings[index].details}",
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            leading: const Icon(Icons.info),
                           ),
                         ],
                       ),

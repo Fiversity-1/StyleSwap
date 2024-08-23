@@ -73,11 +73,7 @@ class _ProfileState extends State<Profile> {
                     right: 65,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (edited) {
-                          edited = false;
-                        } else {
-                          edited = true;
-                        }
+                        edited = !edited;
                         setState(() {});
                       },
                       style: ElevatedButton.styleFrom(
