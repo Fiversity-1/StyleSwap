@@ -16,50 +16,70 @@ class CommentsState extends State<Comments> {
   final _sendComment = TextEditingController();
   final _scroller = ScrollController();
 
+  void _handleComment(String value) {
+    setState(() => _sendComment.text.isNotEmpty
+        ? comments.add(
+            Comment(
+              commentContent: value,
+              time: "Now",
+              user: "Steve",
+              picture: 'lib/images/profilepicture.jpg',
+              like: 5,
+              heart: 6,
+              haha: 7,
+              angry: 3,
+              angryed: false,
+              hahaed: false,
+              liked: false,
+              hearted: false,
+            ),
+          )
+        : null);
+    _sendComment.clear();
+    //scroll animation not working
+    // _scroller.animateTo(
+    //   _scroller.position.minScrollExtent,
+    //   curve: Curves.easeOut,
+    //   duration: const Duration(milliseconds: 500),
+    //);
+  }
+
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    final clothingFile = ModalRoute.of(context)?.settings.arguments;
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: CustomTopAppBar(),
-        ),
-        bottomNavigationBar: const CustomBottomNavBar(currentIndex: 2),
-        body: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: kIsWeb ? (10) : 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: CustomTopAppBar(),
+      ),
+      body: Stack(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios),
+                    iconSize: 20,
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/events');
+                    },
+                  ),
                   Text("Clothing Swap - Brisbane",
                       style: kIsWeb
-                          ? Theme.of(context).textTheme.headlineMedium
-                          : Theme.of(context).textTheme.headlineSmall),
+                          ? Theme.of(context).textTheme.bodyLarge
+                          : Theme.of(context).textTheme.bodyLarge),
                 ],
               ),
-            ),
-            Padding(
-              padding: kIsWeb
-                  ? const EdgeInsets.only(left: (5), top: (10))
-                  : const EdgeInsets.only(left: (5), top: (5)),
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios),
-                iconSize: 20,
-                onPressed: () {
-                  Navigator.pushNamed(context, '/events');
-                },
-              ),
-            ),
-            Center(
-                child: SingleChildScrollView(
-              child: Column(children: [
-                Padding(
-                  padding: kIsWeb
-                      ? const EdgeInsets.only(top: (20.0))
-                      : const EdgeInsets.only(top: (60.0)),
+
+              //https://www.freecodecamp.org/news/build-a-chat-app-ui-with-flutter/ retrieved from the following URL but modified for our application
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: height * 0.075),
                   child: SizedBox(
                     width: kIsWeb ? width * 0.6 : width * 0.9,
                     height: height * 0.65,
@@ -78,6 +98,7 @@ class CommentsState extends State<Comments> {
                               bool angry = false;
                               bool haha = false;
                               bool heart = false;
+                              bool reacted = false;
                               return Card(
                                 shadowColor: Theme.of(context).hoverColor,
                                 shape: RoundedRectangleBorder(
@@ -174,14 +195,23 @@ class CommentsState extends State<Comments> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: (20.0)),
-                  child: SizedBox(
+              ),
+            ],
+          ),
+          //End code retrieved
+          Padding(
+            padding: EdgeInsets.only(bottom: height * 0.025),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
                     height: height * 0.075,
                     width: kIsWeb ? width * 0.6 : width * 0.9,
                     child: TextField(
                       textAlignVertical: TextAlignVertical.top,
                       controller: _sendComment,
+                      onSubmitted: _handleComment,
                       decoration: InputDecoration(
                         //contentPadding from chatgpt
                         contentPadding: kIsWeb
@@ -204,40 +234,19 @@ class CommentsState extends State<Comments> {
                         suffix: IconButton(
                           icon: const Icon(Icons.send, size: 24),
                           onPressed: () {
-                            setState(() => _sendComment.text.isNotEmpty
-                                ? comments.add(
-                                    Comment(
-                                      commentContent: _sendComment.text,
-                                      time: "Now",
-                                      user: "Steve",
-                                      picture: 'lib/images/profilepicture.jpg',
-                                      like: 0,
-                                      heart: 0,
-                                      haha: 0,
-                                      angry: 0,
-                                      angryed: false,
-                                      hahaed: false,
-                                      liked: false,
-                                      hearted: false,
-                                    ),
-                                  )
-                                : null);
-                            _sendComment.clear();
-                            _scroller.animateTo(
-                              _scroller.position.maxScrollExtent + 90,
-                              curve: Curves.easeOut,
-                              duration: const Duration(milliseconds: 500),
-                            );
+                            _handleComment(_sendComment.text);
                           },
                         ),
                       ),
                     ),
                   ),
-                ),
-              ]),
-            )),
-          ],
-        ));
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
