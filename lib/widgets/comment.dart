@@ -14,10 +14,10 @@ class Comments extends StatefulWidget {
 class CommentsState extends State<Comments> {
   final _sendComment = TextEditingController();
   final _scroller = ScrollController();
+  String lastReaction = "";
 
   void _handleReaction(String value, int index) {
     setState(() {
-      String lastReaction;
       if (comments[index].angryed) {
         lastReaction = "angry";
       } else if (comments[index].hahaed) {
