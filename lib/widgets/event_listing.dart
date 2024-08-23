@@ -170,7 +170,7 @@ class _EventListState extends State<EventList> {
                                 likeBuilder: (attendance) {
                                   final colour = attendance
                                       ? Theme.of(context).hoverColor
-                                      : Theme.of(context).indicatorColor;
+                                      : null;
                                   return Icon(Icons.check_circle_outline,
                                       color: colour);
                                 },

@@ -30,7 +30,7 @@ class CommentsState extends State<Comments> {
         body: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: (10)),
+              padding: const EdgeInsets.only(top: kIsWeb ? (10) : 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -59,13 +59,13 @@ class CommentsState extends State<Comments> {
                 Padding(
                   padding: kIsWeb
                       ? const EdgeInsets.only(top: (20.0))
-                      : const EdgeInsets.only(top: (30.0)),
+                      : const EdgeInsets.only(top: (60.0)),
                   child: SizedBox(
-                    width: kIsWeb ? width * 0.8 : width * 0.9,
+                    width: kIsWeb ? width * 0.6 : width * 0.9,
                     height: height * 0.65,
                     child: SingleChildScrollView(
                       child: SizedBox(
-                        width: width * 0.65,
+                        width: width * 0.6,
                         child: ListView.builder(
                             reverse: true,
                             controller: _scroller,
@@ -79,9 +79,11 @@ class CommentsState extends State<Comments> {
                               bool haha = false;
                               bool heart = false;
                               return Card(
-                                color: Theme.of(context).primaryColor,
                                 shadowColor: Theme.of(context).hoverColor,
                                 shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Theme.of(context).hoverColor,
+                                      width: 0.9),
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 child: ListTile(
@@ -111,11 +113,10 @@ class CommentsState extends State<Comments> {
                                                   const EdgeInsets.all(10),
                                               likeCount: comments[index].like,
                                               likeBuilder: (like) {
-                                                final colour = like
-                                                    ? Colors.blue
-                                                    : Theme.of(context)
-                                                        .indicatorColor;
-                                                return Icon(Icons.thumb_up,
+                                                final colour =
+                                                    like ? Colors.blue : null;
+                                                return Icon(
+                                                    Icons.thumb_up_outlined,
                                                     color: colour);
                                               },
                                             ),
@@ -126,11 +127,10 @@ class CommentsState extends State<Comments> {
                                                   const EdgeInsets.all(10),
                                               likeCount: comments[index].heart,
                                               likeBuilder: (heart) {
-                                                final colour = heart
-                                                    ? Colors.red
-                                                    : Theme.of(context)
-                                                        .indicatorColor;
-                                                return Icon(Icons.favorite,
+                                                final colour =
+                                                    heart ? Colors.red : null;
+                                                return Icon(
+                                                    Icons.favorite_outline,
                                                     color: colour);
                                               },
                                             ),
@@ -141,10 +141,8 @@ class CommentsState extends State<Comments> {
                                                   const EdgeInsets.all(10),
                                               likeCount: comments[index].haha,
                                               likeBuilder: (haha) {
-                                                final colour = haha
-                                                    ? Colors.yellowAccent
-                                                    : Theme.of(context)
-                                                        .indicatorColor;
+                                                final colour =
+                                                    haha ? Colors.green : null;
                                                 return Icon(
                                                     Icons
                                                         .sentiment_very_satisfied_rounded,
@@ -158,10 +156,8 @@ class CommentsState extends State<Comments> {
                                               isLiked: angry,
                                               likeCount: comments[index].angry,
                                               likeBuilder: (angry) {
-                                                final colour = angry
-                                                    ? Colors.red
-                                                    : Theme.of(context)
-                                                        .indicatorColor;
+                                                final colour =
+                                                    angry ? Colors.red : null;
                                                 return Icon(
                                                     Icons
                                                         .sentiment_dissatisfied_rounded,
@@ -182,7 +178,7 @@ class CommentsState extends State<Comments> {
                   padding: const EdgeInsets.only(top: (20.0)),
                   child: SizedBox(
                     height: height * 0.075,
-                    width: width * 0.8,
+                    width: kIsWeb ? width * 0.6 : width * 0.9,
                     child: TextField(
                       textAlignVertical: TextAlignVertical.top,
                       controller: _sendComment,
