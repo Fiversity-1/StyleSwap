@@ -94,7 +94,7 @@ class _ProfileState extends State<Profile> {
                   Positioned(
                     top: 5,
                     right: 65,
-                    bottom: !kIsWeb ? 10 : 0,
+                    bottom: 10,
                     child: ElevatedButton(
                       onPressed: () {
                         edited = !edited;
