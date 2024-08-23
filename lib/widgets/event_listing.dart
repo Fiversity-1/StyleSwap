@@ -50,7 +50,9 @@ class _EventListState extends State<EventList> {
                           children: [
                             Text(
                               '${widget.listings[index].title} - ${widget.listings[index].city}',
-                              style: Theme.of(context).textTheme.headlineLarge,
+                              style: kIsWeb
+                                  ? Theme.of(context).textTheme.headlineLarge
+                                  : Theme.of(context).textTheme.bodyLarge,
                               textAlign: TextAlign.center,
                             ),
                             Padding(
@@ -61,7 +63,10 @@ class _EventListState extends State<EventList> {
                                   setState(() {});
                                 },
                                 style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.all(5)),
+                                  padding: const EdgeInsets.all(5),
+                                  backgroundColor: Colors.transparent,
+                                  minimumSize: const Size(0, 0),
+                                ),
                                 child: Text(
                                   !seeMore ? 'See More' : 'See Less',
                                   style: const TextStyle(fontSize: 10),
