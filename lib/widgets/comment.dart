@@ -16,6 +16,61 @@ class CommentsState extends State<Comments> {
   final _sendComment = TextEditingController();
   final _scroller = ScrollController();
 
+  void _handleReaction(String value, int index) {
+    setState(() {
+      var lastReaction;
+      if (comments[index].angryed) {
+        lastReaction = "angry";
+      } else if (comments[index].hahaed) {
+        lastReaction = "haha";
+      } else if (comments[index].hearted) {
+        lastReaction = "heart";
+      } else if (comments[index].liked) {
+        lastReaction = "like";
+      }
+
+      switch (value) {
+        case "like":
+          //2 lines chatgpt (same logic for each reaction)
+          comments[index].liked = !comments[index].liked;
+          comments[index].like += comments[index].liked ? 1 : -1;
+          break;
+        case "heart":
+          comments[index].hearted = !comments[index].hearted;
+          comments[index].heart += comments[index].hearted ? 1 : -1;
+          break;
+        case "haha":
+          comments[index].hahaed = !comments[index].hahaed;
+          comments[index].haha += comments[index].hahaed ? 1 : -1;
+          break;
+        case "angry":
+          comments[index].angryed = !comments[index].angryed;
+          comments[index].angry += comments[index].angryed ? 1 : -1;
+          break;
+      }
+      if (lastReaction != value) {
+        switch (lastReaction) {
+          case "like":
+            comments[index].liked = !comments[index].liked;
+            comments[index].like -= 1;
+            break;
+          case "heart":
+            comments[index].hearted = !comments[index].hearted;
+            comments[index].heart -= 1;
+            break;
+          case "haha":
+            comments[index].hahaed = !comments[index].hahaed;
+            comments[index].haha -= 1;
+            break;
+          case "angry":
+            comments[index].angryed = !comments[index].angryed;
+            comments[index].angry -= 1;
+            break;
+        }
+      }
+    });
+  }
+
   void _handleComment(String value) {
     setState(() => _sendComment.text.isNotEmpty
         ? comments.add(
@@ -90,15 +145,11 @@ class CommentsState extends State<Comments> {
                             reverse: true,
                             controller: _scroller,
                             shrinkWrap: true,
-                            //physics from chatGPT
+
+                            //physics line  from chatGPT
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: comments.length,
                             itemBuilder: (context, index) {
-                              bool like = false;
-                              bool angry = false;
-                              bool haha = false;
-                              bool heart = false;
-                              bool reacted = false;
                               return Card(
                                 shadowColor: Theme.of(context).hoverColor,
                                 shape: RoundedRectangleBorder(
@@ -108,6 +159,7 @@ class CommentsState extends State<Comments> {
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 child: ListTile(
+                                    key: ValueKey(comments[index]),
                                     tileColor: Colors.transparent,
                                     hoverColor: Colors.transparent,
                                     onTap: () {},
@@ -129,13 +181,19 @@ class CommentsState extends State<Comments> {
                                           children: [
                                             LikeButton(
                                               size: 20,
-                                              isLiked: like,
+                                              isLiked: comments[index].liked,
+                                              onTap: (isLiked) async {
+                                                _handleReaction("like", index);
+
+                                                return comments[index].liked;
+                                              },
                                               likeCountPadding:
                                                   const EdgeInsets.all(10),
                                               likeCount: comments[index].like,
-                                              likeBuilder: (like) {
-                                                final colour =
-                                                    like ? Colors.blue : null;
+                                              likeBuilder: (isLiked) {
+                                                final colour = isLiked
+                                                    ? Colors.blue
+                                                    : null;
                                                 return Icon(
                                                     Icons.thumb_up_outlined,
                                                     color: colour);
@@ -143,13 +201,18 @@ class CommentsState extends State<Comments> {
                                             ),
                                             LikeButton(
                                               size: 20,
-                                              isLiked: heart,
+                                              isLiked: comments[index].hearted,
+                                              onTap: (isLiked) async {
+                                                _handleReaction("heart", index);
+
+                                                return comments[index].hearted;
+                                              },
                                               likeCountPadding:
                                                   const EdgeInsets.all(10),
                                               likeCount: comments[index].heart,
-                                              likeBuilder: (heart) {
+                                              likeBuilder: (isLiked) {
                                                 final colour =
-                                                    heart ? Colors.red : null;
+                                                    isLiked ? Colors.red : null;
                                                 return Icon(
                                                     Icons.favorite_outline,
                                                     color: colour);
@@ -157,13 +220,19 @@ class CommentsState extends State<Comments> {
                                             ),
                                             LikeButton(
                                               size: 20,
-                                              isLiked: haha,
+                                              isLiked: comments[index].hahaed,
+                                              onTap: (isLiked) async {
+                                                _handleReaction("haha", index);
+
+                                                return comments[index].hahaed;
+                                              },
                                               likeCountPadding:
                                                   const EdgeInsets.all(10),
                                               likeCount: comments[index].haha,
-                                              likeBuilder: (haha) {
-                                                final colour =
-                                                    haha ? Colors.green : null;
+                                              likeBuilder: (isLiked) {
+                                                final colour = isLiked
+                                                    ? Colors.green
+                                                    : null;
                                                 return Icon(
                                                     Icons
                                                         .sentiment_very_satisfied_rounded,
@@ -172,13 +241,18 @@ class CommentsState extends State<Comments> {
                                             ),
                                             LikeButton(
                                               size: 20,
+                                              onTap: (isLiked) async {
+                                                _handleReaction("angry", index);
+
+                                                return comments[index].angryed;
+                                              },
                                               likeCountPadding:
                                                   const EdgeInsets.all(10),
-                                              isLiked: angry,
+                                              isLiked: comments[index].angryed,
                                               likeCount: comments[index].angry,
-                                              likeBuilder: (angry) {
+                                              likeBuilder: (isLiked) {
                                                 final colour =
-                                                    angry ? Colors.red : null;
+                                                    isLiked ? Colors.red : null;
                                                 return Icon(
                                                     Icons
                                                         .sentiment_dissatisfied_rounded,
