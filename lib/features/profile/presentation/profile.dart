@@ -23,16 +23,19 @@ List<String> images = [
   'lib/images/watermelon.png',
   'lib/images/watermelon2.jpg'
 ];
-//example from https://pub.dev/packages/confirm_dialog modified
-bool edited = false;
-List<FlipCardController> _flipImage =
-    List.generate(images.length, (index) => FlipCardController());
 
 class _ProfileState extends State<Profile> {
+  bool edited = false;
+  bool editedBio = false;
+  String bio = 'I love food and sustainability! Keen to trade some clothes!';
+
+//List generate line from chatgpt
+  final List<FlipCardController> _flipImage =
+      List.generate(images.length, (index) => FlipCardController());
+  final _changeBio = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    //List generate line from chatgpt
-
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 3,
@@ -46,16 +49,34 @@ class _ProfileState extends State<Profile> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 15.0, bottom: 5),
-                child: SizedBox(
-                  height: 150,
-                  width: 180,
-                  child: CircleAvatar(
-                    backgroundImage:
-                        AssetImage('lib/images/profilepicture.jpg'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 15.0, bottom: 5),
+                    child: SizedBox(
+                      height: 150,
+                      width: 180,
+                      child: CircleAvatar(
+                        backgroundImage:
+                            AssetImage('lib/images/profilepicture.jpg'),
+                      ),
+                    ),
                   ),
-                ),
+                  Visibility(
+                    visible: edited,
+                    child: IconButton(
+                        icon: const Icon(
+                          Icons.image,
+                        ),
+                        iconSize: 25,
+                        //pubdev confirm dialog
+                        onPressed: () {
+                          //Select image
+                          // setState(() {});
+                        }),
+                  ),
+                ],
               ),
               Stack(
                 children: [
@@ -71,13 +92,10 @@ class _ProfileState extends State<Profile> {
                   Positioned(
                     top: 5,
                     right: 65,
+                    bottom: 10,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (edited) {
-                          edited = false;
-                        } else {
-                          edited = true;
-                        }
+                        edited = !edited;
                         setState(() {});
                       },
                       style: ElevatedButton.styleFrom(
@@ -91,22 +109,82 @@ class _ProfileState extends State<Profile> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 5, bottom: 15),
-                child: Container(
-                  height: 75,
-                  width: 300,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      color: Theme.of(context).highlightColor,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Text(
-                    'I love food and sustainability! Keen to trade some clothes!',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                    textAlign: TextAlign.center,
-                    softWrap: true,
-                  ),
-                ),
-              ),
+                  padding: const EdgeInsets.only(top: 5, bottom: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          height: 75,
+                          width: 300,
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              color: editedBio
+                                  ? Colors.transparent
+                                  : Theme.of(context).highlightColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Stack(
+                            children: [
+                              Visibility(
+                                visible: editedBio,
+                                child: SizedBox(
+                                  height: 75,
+                                  width: 300,
+                                  child: TextField(
+                                    maxLines: 3,
+                                    textAlignVertical: TextAlignVertical.top,
+                                    controller: _changeBio,
+                                    decoration: InputDecoration(
+                                      //contentPadding from chatgpt
+                                      contentPadding: kIsWeb
+                                          ? const EdgeInsets.all(20.0)
+                                          : const EdgeInsets.only(
+                                              top: 10, left: 10),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      hintText: 'New Bio...',
+                                      filled: true,
+                                      suffix: IconButton(
+                                        icon: const Icon(Icons.done,
+                                            size: kIsWeb ? 24 : 18),
+                                        onPressed: () {
+                                          //Idea from chatgpt to handle both enter and icon
+                                          bio = _changeBio.text;
+                                          editedBio = !editedBio;
+                                          setState(() {});
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: !editedBio,
+                                child: Text(
+                                  bio,
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                  textAlign: TextAlign.center,
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
+                          )),
+                      Visibility(
+                        visible: edited,
+                        child: IconButton(
+                            icon: const Icon(
+                              Icons.edit,
+                            ),
+                            iconSize: 25,
+                            //pubdev confirm dialog
+                            onPressed: () {
+                              editedBio = !editedBio;
+                              setState(() {});
+                            }),
+                      ),
+                    ],
+                  )),
               Visibility(
                 visible: !edited,
                 child: GridView.builder(
@@ -223,7 +301,7 @@ class _ProfileState extends State<Profile> {
                               ),
                               IconButton(
                                 icon: const Icon(
-                                  Icons.drag_indicator_rounded,
+                                  Icons.open_with,
                                   color: Colors.black,
                                 ),
                                 iconSize: 25,

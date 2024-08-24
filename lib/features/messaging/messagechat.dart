@@ -199,6 +199,7 @@ class _MessageChatState extends State<MessageChat> {
                           width: width * 0.8,
                           child: TextField(
                             onSubmitted: _handleSend,
+                            onTap: () {},
                             textAlignVertical: TextAlignVertical.top,
                             controller: _sendText,
                             decoration: InputDecoration(

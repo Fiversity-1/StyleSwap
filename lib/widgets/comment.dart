@@ -1,4 +1,3 @@
-import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,75 +15,149 @@ class CommentsState extends State<Comments> {
   final _sendComment = TextEditingController();
   final _scroller = ScrollController();
 
+  void _handleReaction(String value, int index) {
+    setState(() {
+      String lastReaction = "";
+      if (comments[index].angryed) {
+        lastReaction = "angry";
+      } else if (comments[index].hahaed) {
+        lastReaction = "haha";
+      } else if (comments[index].hearted) {
+        lastReaction = "heart";
+      } else if (comments[index].liked) {
+        lastReaction = "like";
+      }
+
+      switch (value) {
+        case "like":
+          //2 lines chatgpt (same logic for each reaction)
+          comments[index].liked = !comments[index].liked;
+          comments[index].like += comments[index].liked ? 1 : -1;
+          break;
+        case "heart":
+          comments[index].hearted = !comments[index].hearted;
+          comments[index].heart += comments[index].hearted ? 1 : -1;
+          break;
+        case "haha":
+          comments[index].hahaed = !comments[index].hahaed;
+          comments[index].haha += comments[index].hahaed ? 1 : -1;
+          break;
+        case "angry":
+          comments[index].angryed = !comments[index].angryed;
+          comments[index].angry += comments[index].angryed ? 1 : -1;
+          break;
+      }
+      if (lastReaction != value) {
+        switch (lastReaction) {
+          case "like":
+            comments[index].liked = !comments[index].liked;
+            comments[index].like -= 1;
+            break;
+          case "heart":
+            comments[index].hearted = !comments[index].hearted;
+            comments[index].heart -= 1;
+            break;
+          case "haha":
+            comments[index].hahaed = !comments[index].hahaed;
+            comments[index].haha -= 1;
+            break;
+          case "angry":
+            comments[index].angryed = !comments[index].angryed;
+            comments[index].angry -= 1;
+            break;
+        }
+      }
+    });
+  }
+
+  void _handleComment(String value) {
+    setState(() => _sendComment.text.isNotEmpty
+        ? comments.add(
+            Comment(
+              commentContent: value,
+              time: "Now",
+              user: "Steve",
+              picture: 'lib/images/profilepicture.jpg',
+              like: 5,
+              heart: 6,
+              haha: 7,
+              angry: 3,
+              angryed: false,
+              hahaed: false,
+              liked: false,
+              hearted: false,
+            ),
+          )
+        : null);
+    _sendComment.clear();
+    //scroll animation not working
+    // _scroller.animateTo(
+    //   _scroller.position.minScrollExtent,
+    //   curve: Curves.easeOut,
+    //   duration: const Duration(milliseconds: 500),
+    //);
+  }
+
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: CustomTopAppBar(),
-        ),
-        bottomNavigationBar: const CustomBottomNavBar(currentIndex: 2),
-        body: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: (10)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: CustomTopAppBar(),
+      ),
+      body: Stack(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios),
+                    iconSize: 20,
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/events');
+                    },
+                  ),
                   Text("Clothing Swap - Brisbane",
                       style: kIsWeb
-                          ? Theme.of(context).textTheme.headlineMedium
-                          : Theme.of(context).textTheme.headlineSmall),
+                          ? Theme.of(context).textTheme.bodyLarge
+                          : Theme.of(context).textTheme.bodyLarge),
                 ],
               ),
-            ),
-            Padding(
-              padding: kIsWeb
-                  ? const EdgeInsets.only(left: (5), top: (10))
-                  : const EdgeInsets.only(left: (5), top: (5)),
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios),
-                iconSize: 20,
-                onPressed: () {
-                  Navigator.pushNamed(context, '/events');
-                },
-              ),
-            ),
-            Center(
-                child: SingleChildScrollView(
-              child: Column(children: [
-                Padding(
-                  padding: kIsWeb
-                      ? const EdgeInsets.only(top: (20.0))
-                      : const EdgeInsets.only(top: (30.0)),
+
+              //https://www.freecodecamp.org/news/build-a-chat-app-ui-with-flutter/ retrieved from the following URL but modified for our application
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: height * 0.075),
                   child: SizedBox(
-                    width: kIsWeb ? width * 0.8 : width * 0.9,
+                    width: kIsWeb ? width * 0.6 : width * 0.9,
                     height: height * 0.65,
                     child: SingleChildScrollView(
                       child: SizedBox(
-                        width: width * 0.65,
+                        width: width * 0.6,
                         child: ListView.builder(
                             reverse: true,
                             controller: _scroller,
                             shrinkWrap: true,
-                            //physics from chatGPT
+
+                            //physics line  from chatGPT
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: comments.length,
                             itemBuilder: (context, index) {
-                              bool like = false;
-                              bool angry = false;
-                              bool haha = false;
-                              bool heart = false;
                               return Card(
-                                color: Theme.of(context).primaryColor,
                                 shadowColor: Theme.of(context).hoverColor,
                                 shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Theme.of(context).hoverColor,
+                                      width: 0.9),
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 child: ListTile(
+                                    key: ValueKey(comments[index]),
                                     tileColor: Colors.transparent,
                                     hoverColor: Colors.transparent,
                                     onTap: () {},
@@ -106,45 +179,58 @@ class CommentsState extends State<Comments> {
                                           children: [
                                             LikeButton(
                                               size: 20,
-                                              isLiked: like,
+                                              isLiked: comments[index].liked,
+                                              onTap: (isLiked) async {
+                                                _handleReaction("like", index);
+
+                                                return comments[index].liked;
+                                              },
                                               likeCountPadding:
                                                   const EdgeInsets.all(10),
                                               likeCount: comments[index].like,
-                                              likeBuilder: (like) {
-                                                final colour = like
+                                              likeBuilder: (isLiked) {
+                                                final colour = isLiked
                                                     ? Colors.blue
-                                                    : Theme.of(context)
-                                                        .indicatorColor;
-                                                return Icon(Icons.thumb_up,
+                                                    : null;
+                                                return Icon(
+                                                    Icons.thumb_up_outlined,
                                                     color: colour);
                                               },
                                             ),
                                             LikeButton(
                                               size: 20,
-                                              isLiked: heart,
+                                              isLiked: comments[index].hearted,
+                                              onTap: (isLiked) async {
+                                                _handleReaction("heart", index);
+
+                                                return comments[index].hearted;
+                                              },
                                               likeCountPadding:
                                                   const EdgeInsets.all(10),
                                               likeCount: comments[index].heart,
-                                              likeBuilder: (heart) {
-                                                final colour = heart
-                                                    ? Colors.red
-                                                    : Theme.of(context)
-                                                        .indicatorColor;
-                                                return Icon(Icons.favorite,
+                                              likeBuilder: (isLiked) {
+                                                final colour =
+                                                    isLiked ? Colors.red : null;
+                                                return Icon(
+                                                    Icons.favorite_outline,
                                                     color: colour);
                                               },
                                             ),
                                             LikeButton(
                                               size: 20,
-                                              isLiked: haha,
+                                              isLiked: comments[index].hahaed,
+                                              onTap: (isLiked) async {
+                                                _handleReaction("haha", index);
+
+                                                return comments[index].hahaed;
+                                              },
                                               likeCountPadding:
                                                   const EdgeInsets.all(10),
                                               likeCount: comments[index].haha,
-                                              likeBuilder: (haha) {
-                                                final colour = haha
-                                                    ? Colors.yellowAccent
-                                                    : Theme.of(context)
-                                                        .indicatorColor;
+                                              likeBuilder: (isLiked) {
+                                                final colour = isLiked
+                                                    ? Colors.green
+                                                    : null;
                                                 return Icon(
                                                     Icons
                                                         .sentiment_very_satisfied_rounded,
@@ -153,15 +239,18 @@ class CommentsState extends State<Comments> {
                                             ),
                                             LikeButton(
                                               size: 20,
+                                              onTap: (isLiked) async {
+                                                _handleReaction("angry", index);
+
+                                                return comments[index].angryed;
+                                              },
                                               likeCountPadding:
                                                   const EdgeInsets.all(10),
-                                              isLiked: angry,
+                                              isLiked: comments[index].angryed,
                                               likeCount: comments[index].angry,
-                                              likeBuilder: (angry) {
-                                                final colour = angry
-                                                    ? Colors.red
-                                                    : Theme.of(context)
-                                                        .indicatorColor;
+                                              likeBuilder: (isLiked) {
+                                                final colour =
+                                                    isLiked ? Colors.red : null;
                                                 return Icon(
                                                     Icons
                                                         .sentiment_dissatisfied_rounded,
@@ -178,14 +267,23 @@ class CommentsState extends State<Comments> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: (20.0)),
-                  child: SizedBox(
+              ),
+            ],
+          ),
+          //End code retrieved
+          Padding(
+            padding: EdgeInsets.only(bottom: height * 0.025),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
                     height: height * 0.075,
-                    width: width * 0.8,
+                    width: kIsWeb ? width * 0.6 : width * 0.9,
                     child: TextField(
                       textAlignVertical: TextAlignVertical.top,
                       controller: _sendComment,
+                      onSubmitted: _handleComment,
                       decoration: InputDecoration(
                         //contentPadding from chatgpt
                         contentPadding: kIsWeb
@@ -208,40 +306,21 @@ class CommentsState extends State<Comments> {
                         suffix: IconButton(
                           icon: const Icon(Icons.send, size: 24),
                           onPressed: () {
-                            setState(() => _sendComment.text.isNotEmpty
-                                ? comments.add(
-                                    Comment(
-                                      commentContent: _sendComment.text,
-                                      time: "Now",
-                                      user: "Steve",
-                                      picture: 'lib/images/profilepicture.jpg',
-                                      like: 0,
-                                      heart: 0,
-                                      haha: 0,
-                                      angry: 0,
-                                      angryed: false,
-                                      hahaed: false,
-                                      liked: false,
-                                      hearted: false,
-                                    ),
-                                  )
-                                : null);
-                            _sendComment.clear();
-                            _scroller.animateTo(
-                              _scroller.position.maxScrollExtent + 90,
-                              curve: Curves.easeOut,
-                              duration: const Duration(milliseconds: 500),
-                            );
+                            if (_sendComment.text.isNotEmpty) {
+                              _handleComment(_sendComment.text);
+                            }
                           },
                         ),
                       ),
                     ),
                   ),
-                ),
-              ]),
-            )),
-          ],
-        ));
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
