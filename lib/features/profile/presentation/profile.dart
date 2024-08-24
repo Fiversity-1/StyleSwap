@@ -301,7 +301,7 @@ class _ProfileState extends State<Profile> {
                               ),
                               IconButton(
                                 icon: const Icon(
-                                  Icons.drag_indicator_rounded,
+                                  Icons.open_with,
                                   color: Colors.black,
                                 ),
                                 iconSize: 25,
