@@ -1,4 +1,3 @@
-//Code used from Clipper Widget Flutter - Medium
 import 'package:flutter/material.dart';
 
 class OvalShapeClipper extends CustomClipper<Rect> {

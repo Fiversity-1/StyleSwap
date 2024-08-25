@@ -1,3 +1,4 @@
+import 'package:clothing_swap/features/community/comment_class.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -90,12 +91,6 @@ class CommentsState extends State<Comments> {
           )
         : null);
     _sendComment.clear();
-    //scroll animation not working
-    // _scroller.animateTo(
-    //   _scroller.position.minScrollExtent,
-    //   curve: Curves.easeOut,
-    //   duration: const Duration(milliseconds: 500),
-    //);
   }
 
   @override
@@ -323,80 +318,3 @@ class CommentsState extends State<Comments> {
     );
   }
 }
-
-class Comment {
-  String commentContent;
-  String time;
-  String user;
-  String picture;
-  int like;
-  int heart;
-  int haha;
-  bool liked;
-  bool hearted;
-  bool hahaed;
-  bool angryed;
-
-  int angry;
-  //Image
-  Comment({
-    required this.commentContent,
-    required this.time,
-    required this.user,
-    required this.picture,
-    required this.like,
-    required this.heart,
-    required this.haha,
-    required this.angry,
-    required this.angryed,
-    required this.hahaed,
-    required this.hearted,
-    required this.liked,
-  });
-}
-
-List<Comment> comments = [
-  Comment(
-    commentContent:
-        "What if there was a massive message that took over two lines two liens two liens two lines two liens",
-    time: "Now",
-    user: "Steve",
-    picture: 'lib/images/profilepicture.jpg',
-    like: 5,
-    heart: 6,
-    haha: 7,
-    angry: 3,
-    angryed: false,
-    hahaed: false,
-    liked: false,
-    hearted: false,
-  ),
-  Comment(
-    commentContent: "So Keen!",
-    time: "Now",
-    user: "Steve",
-    picture: 'lib/images/profilepicture.jpg',
-    like: 5,
-    heart: 6,
-    haha: 7,
-    angry: 3,
-    angryed: false,
-    hahaed: false,
-    liked: false,
-    hearted: false,
-  ),
-  Comment(
-    commentContent: "So Keen!",
-    time: "Now",
-    user: "Steve",
-    picture: 'lib/images/profilepicture.jpg',
-    like: 5,
-    heart: 6,
-    haha: 7,
-    angry: 3,
-    angryed: false,
-    hahaed: false,
-    liked: false,
-    hearted: false,
-  ),
-];

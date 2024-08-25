@@ -1,10 +1,13 @@
 // signup.dart
 
+import 'package:clothing_swap/features/messaging/message_class.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
+import 'package:clothing_swap/widgets/photo_modal.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class MessageChat extends StatefulWidget {
@@ -35,6 +38,9 @@ class _MessageChatState extends State<MessageChat> {
       duration: const Duration(milliseconds: 500),
     );
   }
+
+  final ImagePicker _picker = ImagePicker();
+  XFile? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +194,11 @@ class _MessageChatState extends State<MessageChat> {
                           icon: const Icon(Icons.image),
                           iconSize: 25,
                           onPressed: () async {
-                            // Handle select from camera roll action
+                            XFile? image = await photoOptionModal(
+                                context, _picker, 50, null, null);
+                            setState(() {
+                              _image = image;
+                            });
                           },
                         ),
                       ),
@@ -235,25 +245,3 @@ class _MessageChatState extends State<MessageChat> {
     );
   }
 }
-
-class ChatMessage {
-  String messageContent;
-  String messageType;
-  String time;
-  //Image
-  ChatMessage(
-      {required this.messageContent,
-      required this.messageType,
-      required this.time});
-}
-
-List<ChatMessage> messages = [
-  ChatMessage(
-      messageContent: "Hello this is a massive message",
-      messageType: "receiver",
-      time: "5:45pm"),
-  ChatMessage(messageContent: "Hello", messageType: "receiver", time: "5:45pm"),
-  ChatMessage(messageContent: "Hello", messageType: "sender", time: "5:45pm"),
-  ChatMessage(messageContent: "Hello", messageType: "receiver", time: "5:45pm"),
-  ChatMessage(messageContent: "Hello", messageType: "sender", time: "5:45pm"),
-];

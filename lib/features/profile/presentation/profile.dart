@@ -1,6 +1,6 @@
 // profile.dart
 import 'dart:io';
-import 'package:clothing_swap/widgets/clipOval.dart';
+import 'package:clothing_swap/widgets/clip_oval.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/photo_modal.dart';
@@ -38,7 +38,7 @@ class _ProfileState extends State<Profile> {
 
   final _changeBio = TextEditingController();
 
-  //DhiWise Fluter Image tutorial implementation
+  //See DhiWise Flutter Image tutorial implementation
   final ImagePicker _picker = ImagePicker();
   XFile? _image;
   @override
@@ -65,7 +65,7 @@ class _ProfileState extends State<Profile> {
                       height: 150,
                       width: 150,
                       child: ClipOval(
-                        //clipper: OvalShapeClipper(),
+                        clipper: OvalShapeClipper(),
                         child: (_image == null)
                             //Chatgpt recommended using Image.asset instead of Asset Image
                             ? Image.asset('lib/images/profilepicture.jpg',
