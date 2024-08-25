@@ -1,10 +1,12 @@
 // profile.dart
+import 'dart:io';
+import 'package:clothing_swap/widgets/clipOval.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-
 import 'package:flutter_flip_card/flutter_flip_card.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 
@@ -32,8 +34,12 @@ class _ProfileState extends State<Profile> {
 //List generate line from chatgpt
   final List<FlipCardController> _flipImage =
       List.generate(images.length, (index) => FlipCardController());
+
   final _changeBio = TextEditingController();
 
+  //DhiWise Fluter Image tutorial implementation
+  final ImagePicker _picker = ImagePicker();
+  XFile? _image;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,14 +58,22 @@ class _ProfileState extends State<Profile> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 15.0, bottom: 5),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0, bottom: 5),
                     child: SizedBox(
                       height: 150,
-                      width: 180,
-                      child: CircleAvatar(
-                        backgroundImage:
-                            AssetImage('lib/images/profilepicture.jpg'),
+                      width: 150,
+                      child: ClipOval(
+                        clipper: OvalShapeClipper(),
+                        child: (_image == null)
+                            //Chatgpt recommended using Image.asset instead of Asset Image
+                            ? Image.asset('lib/images/profilepicture.jpg',
+                                fit: BoxFit.cover)
+                            : kIsWeb
+                                ? Image.network(_image!.path)
+                                : Image.file(
+                                    File(_image!.path),
+                                  ),
                       ),
                     ),
                   ),
@@ -70,10 +84,13 @@ class _ProfileState extends State<Profile> {
                           Icons.image,
                         ),
                         iconSize: 25,
-                        //pubdev confirm dialog
-                        onPressed: () {
-                          //Select image
-                          // setState(() {});
+                        onPressed: () async {
+                          final XFile? image = await _picker.pickImage(
+                              source: ImageSource.gallery);
+
+                          setState(() {
+                            _image = image;
+                          });
                         }),
                   ),
                 ],
