@@ -6,6 +6,7 @@ import 'package:clothing_swap/features/messaging/message_class.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/widgets/photo_modal.dart';
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
@@ -191,16 +192,47 @@ class _MessageChatState extends State<MessageChat> {
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               child: kIsWeb
-                                                  ? Image.network(
-                                                      messages[index - 1]
-                                                          .images!
-                                                          .path,
-                                                      fit: BoxFit.cover)
-                                                  : Image.file(
-                                                      File(messages[index - 1]
-                                                          .images!
-                                                          .path),
-                                                      fit: BoxFit.cover),
+                                                  //Stack overflow - "Show fullscreen image onTap in Flutter"
+                                                  ? GestureDetector(
+                                                      onTap: () {
+                                                        showImageViewer(
+                                                            context,
+                                                            Image.network(messages[
+                                                                        index -
+                                                                            1]
+                                                                    .images!
+                                                                    .path)
+                                                                .image,
+                                                            swipeDismissible:
+                                                                true);
+                                                      },
+                                                      child: Image.network(
+                                                          messages[index - 1]
+                                                              .images!
+                                                              .path,
+                                                          fit: BoxFit.cover),
+                                                    )
+                                                  : GestureDetector(
+                                                      onTap: () {
+                                                        showImageViewer(
+                                                            context,
+                                                            //ChatGPT suggested using FileImage instead of Image.File
+                                                            FileImage(
+                                                              File(messages[
+                                                                      index - 1]
+                                                                  .images!
+                                                                  .path),
+                                                            ),
+                                                            swipeDismissible:
+                                                                true);
+                                                      },
+                                                      child: Image.file(
+                                                          File(messages[
+                                                                  index - 1]
+                                                              .images!
+                                                              .path),
+                                                          fit: BoxFit.cover),
+                                                    ),
                                             ),
                                           ),
                                     const SizedBox(height: 5),
