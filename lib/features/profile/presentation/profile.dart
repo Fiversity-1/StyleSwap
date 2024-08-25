@@ -1,6 +1,5 @@
 // profile.dart
 import 'dart:io';
-import 'package:clothing_swap/widgets/clip_oval.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/photo_modal.dart';
@@ -64,16 +63,19 @@ class _ProfileState extends State<Profile> {
                     child: SizedBox(
                       height: 150,
                       width: 150,
-                      child: ClipOval(
-                        clipper: OvalShapeClipper(),
-                        child: (_image == null)
-                            //Chatgpt recommended using Image.asset instead of Asset Image
-                            ? Image.asset('lib/images/profilepicture.jpg',
-                                fit: BoxFit.cover)
+                      child: CircleAvatar(
+                        radius: 75,
+                        backgroundImage: (_image == null)
+                            ? const AssetImage(
+                                'lib/images/profilepicture.jpg',
+                              )
                             : kIsWeb
-                                ? Image.network(_image!.path)
-                                : Image.file(
-                                    File(_image!.path),
+                                ? Image.network(_image!.path, fit: BoxFit.cover)
+                                    .image
+                                : FileImage(
+                                    (File(
+                                      _image!.path,
+                                    )),
                                   ),
                       ),
                     ),
