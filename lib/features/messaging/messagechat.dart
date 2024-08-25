@@ -1,5 +1,7 @@
 // signup.dart
 
+import 'dart:io';
+
 import 'package:clothing_swap/features/messaging/message_class.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
@@ -12,7 +14,7 @@ import 'package:provider/provider.dart';
 
 class MessageChat extends StatefulWidget {
   const MessageChat({super.key, required this.title, this.clothingFile});
-  final String? clothingFile;
+  final XFile? clothingFile;
   final String title;
   @override
   State<MessageChat> createState() => _MessageChatState();
@@ -29,9 +31,23 @@ class _MessageChatState extends State<MessageChat> {
         ? messages.add(ChatMessage(
             messageContent: _sendText.text,
             messageType: "sender",
-            time: "5:45pm"))
+            time: "5:45pm",
+          ))
         : null);
     _sendText.clear();
+    _scroller.animateTo(
+      _scroller.position.maxScrollExtent + 90,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 500),
+    );
+  }
+
+  void _handleImage(XFile image) {
+    setState(() => messages.add(ChatMessage(
+        messageContent: "",
+        messageType: "sender",
+        time: "5:45pm",
+        images: image)));
     _scroller.animateTo(
       _scroller.position.maxScrollExtent + 90,
       curve: Curves.easeOut,
@@ -140,30 +156,52 @@ class _MessageChatState extends State<MessageChat> {
                                           ? CrossAxisAlignment.start
                                           : CrossAxisAlignment.end,
                                   children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color:
-                                            Provider.of<ThemeSwitcher>(context)
-                                                        .themeData ==
-                                                    lightTheme
-                                                ? (messages[index - 1]
-                                                            .messageType ==
-                                                        "receiver"
-                                                    ? Colors.green
-                                                    : Colors.blue)
-                                                : (messages[index - 1]
-                                                            .messageType ==
-                                                        "receiver"
-                                                    ? Colors.purple
-                                                    : Colors.blue),
-                                      ),
-                                      padding: const EdgeInsets.all(16),
-                                      child: Text(
-                                        messages[index - 1].messageContent,
-                                        style: const TextStyle(fontSize: 15),
-                                      ),
-                                    ),
+                                    messages[index - 1].messageContent != ""
+                                        ? Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: Provider.of<ThemeSwitcher>(
+                                                              context)
+                                                          .themeData ==
+                                                      lightTheme
+                                                  ? (messages[index - 1]
+                                                              .messageType ==
+                                                          "receiver"
+                                                      ? Colors.green
+                                                      : Colors.blue)
+                                                  : (messages[index - 1]
+                                                              .messageType ==
+                                                          "receiver"
+                                                      ? Colors.purple
+                                                      : Colors.blue),
+                                            ),
+                                            padding: const EdgeInsets.all(16),
+                                            child: Text(
+                                              messages[index - 1]
+                                                  .messageContent,
+                                              style:
+                                                  const TextStyle(fontSize: 15),
+                                            ))
+                                        : SizedBox(
+                                            height: 300,
+                                            width: 300,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: kIsWeb
+                                                  ? Image.network(
+                                                      messages[index - 1]
+                                                          .images!
+                                                          .path,
+                                                      fit: BoxFit.cover)
+                                                  : Image.file(
+                                                      File(messages[index - 1]
+                                                          .images!
+                                                          .path),
+                                                      fit: BoxFit.cover),
+                                            ),
+                                          ),
                                     const SizedBox(height: 5),
                                     Text(
                                       messages[index - 1].time,
@@ -196,9 +234,9 @@ class _MessageChatState extends State<MessageChat> {
                           onPressed: () async {
                             XFile? image = await photoOptionModal(
                                 context, _picker, 50, null, null);
-                            setState(() {
-                              _image = image;
-                            });
+
+                            _image = image;
+                            _handleImage(_image!);
                           },
                         ),
                       ),

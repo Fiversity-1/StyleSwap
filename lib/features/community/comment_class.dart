@@ -1,8 +1,8 @@
 class Comment {
-  String commentContent;
-  String time;
-  String user;
-  String picture;
+  final String commentContent;
+  final String time;
+  final String user;
+  final String picture;
   int like;
   int heart;
   int haha;

@@ -1,12 +1,16 @@
+import 'package:image_picker/image_picker.dart';
+
 class ChatMessage {
-  String messageContent;
-  String messageType;
-  String time;
+  final String messageContent;
+  final String messageType;
+  final String time;
+  XFile? images;
   //Image
   ChatMessage(
       {required this.messageContent,
       required this.messageType,
-      required this.time});
+      required this.time,
+      this.images});
 }
 
 List<ChatMessage> messages = [
