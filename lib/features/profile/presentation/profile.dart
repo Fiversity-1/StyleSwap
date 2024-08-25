@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:clothing_swap/widgets/clipOval.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
+import 'package:clothing_swap/widgets/photo_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_flip_card/flutter_flip_card.dart';
@@ -64,7 +65,7 @@ class _ProfileState extends State<Profile> {
                       height: 150,
                       width: 150,
                       child: ClipOval(
-                        clipper: OvalShapeClipper(),
+                        //clipper: OvalShapeClipper(),
                         child: (_image == null)
                             //Chatgpt recommended using Image.asset instead of Asset Image
                             ? Image.asset('lib/images/profilepicture.jpg',
@@ -84,10 +85,10 @@ class _ProfileState extends State<Profile> {
                           Icons.image,
                         ),
                         iconSize: 25,
+                        //ChatGPT suggested use of async, wait with Future returns
                         onPressed: () async {
-                          final XFile? image = await _picker.pickImage(
-                              source: ImageSource.gallery);
-
+                          XFile? image = await photoOptionModal(
+                              context, _picker, 50, null, null);
                           setState(() {
                             _image = image;
                           });
