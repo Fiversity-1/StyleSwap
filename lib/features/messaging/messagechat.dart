@@ -49,7 +49,8 @@ class _MessageChatState extends State<MessageChat> {
         time: "5:45pm",
         images: image)));
     _scroller.animateTo(
-      _scroller.position.maxScrollExtent + 90,
+      //scroll image size
+      _scroller.position.maxScrollExtent + 350,
       curve: Curves.easeOut,
       duration: const Duration(milliseconds: 500),
     );
