@@ -23,7 +23,7 @@ class ClothingItemDetail {
 
   final String condition;
   final List<String> colours;
-  final List<AssetImage> images;
+  final List<ImageProvider> images;
   ClothingItemDetail({
     required this.bio,
     required this.type,

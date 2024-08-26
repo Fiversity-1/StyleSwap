@@ -132,10 +132,12 @@ class ClothingDetail extends StatelessWidget {
               itemBuilder: (_, index) => GridTile(
                 child: GestureDetector(
                   onTap: () {
-                    showImageViewer(
+                    MultiImageProvider multiImageProvider =
+                        MultiImageProvider(item.images);
+                    showImageViewerPager(
                         context,
                         //ChatGPT suggested using FileImage instead of Image.File
-                        item.images[index],
+                        multiImageProvider,
                         swipeDismissible: true);
                   },
                   child: Image(fit: BoxFit.cover, image: item.images[index]),
