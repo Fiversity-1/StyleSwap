@@ -45,7 +45,7 @@ class ClothingDetail extends StatelessWidget {
                 children: [
                   ListTile(
                     title: Text(
-                      item.bio,
+                      swipeImages[0].details.bio,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(Icons.info),
@@ -56,7 +56,7 @@ class ClothingDetail extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      item.type,
+                      swipeImages[0].details.type,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(Icons.category),
@@ -67,7 +67,7 @@ class ClothingDetail extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      item.size.toString(),
+                      swipeImages[0].details.size.toString(),
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(Icons.numbers),
@@ -79,7 +79,7 @@ class ClothingDetail extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       subtitle: Text(
-                        item.gender,
+                        swipeImages[0].details.gender,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       leading: const Icon(
@@ -96,7 +96,7 @@ class ClothingDetail extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       subtitle: Text(
-                        item.condition,
+                        swipeImages[0].details.condition,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       leading: const Icon(
@@ -112,7 +112,7 @@ class ClothingDetail extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      item.colours.join(", "),
+                      swipeImages[0].details.colours.join(", "),
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(Icons.palette),
@@ -132,8 +132,9 @@ class ClothingDetail extends StatelessWidget {
               itemBuilder: (_, index) => GridTile(
                 child: GestureDetector(
                   onTap: () {
-                    MultiImageProvider multiImageProvider =
-                        MultiImageProvider(item.images, initialIndex: index);
+                    MultiImageProvider multiImageProvider = MultiImageProvider(
+                        swipeImages[0].details.images,
+                        initialIndex: index);
                     showImageViewerPager(
                       context,
                       //ChatGPT suggested using FileImage instead of Image.File
@@ -142,10 +143,12 @@ class ClothingDetail extends StatelessWidget {
                       doubleTapZoomable: true,
                     );
                   },
-                  child: Image(fit: BoxFit.cover, image: item.images[index]),
+                  child: Image(
+                      fit: BoxFit.cover,
+                      image: swipeImages[0].details.images[index]),
                 ),
               ),
-              itemCount: item.images.length,
+              itemCount: swipeImages[0].details.images.length,
             ),
           ]),
         ),

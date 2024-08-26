@@ -25,7 +25,8 @@ class _ProfileState extends State<Profile> {
 
 //List generate line from chatgpt
   final List<FlipCardController> _flipImage = List.generate(
-      personalProfileExample.listings!.length, (index) => FlipCardController());
+      personalProfileExample.personalListings!.length,
+      (index) => FlipCardController());
 
   final _changeBio = TextEditingController();
 
@@ -208,6 +209,10 @@ class _ProfileState extends State<Profile> {
                   ),
                   itemBuilder: (_, index) => GridTile(
                     child: GestureDetector(
+                      onLongPress: () {
+                        edited = !edited;
+                        setState(() {});
+                      },
                       onTap: () {
                         setState(() {
                           _flipImage[index].flipcard();
@@ -215,7 +220,8 @@ class _ProfileState extends State<Profile> {
                       },
                       child: FlipCard(
                         frontWidget: Image(
-                            image: personalProfileExample.listings![index],
+                            image:
+                                personalProfileExample.personalListings![index],
                             fit: BoxFit.cover),
                         backWidget: Container(
                           padding: const EdgeInsets.all(3.0),
@@ -243,7 +249,7 @@ class _ProfileState extends State<Profile> {
                   ),
 
                   //End modified code
-                  itemCount: personalProfileExample.listings!.length,
+                  itemCount: personalProfileExample.personalListings!.length,
                 ),
               ),
               Visibility(
@@ -254,9 +260,10 @@ class _ProfileState extends State<Profile> {
                   dragStartDelay: Duration.zero,
                   onReorder: (oldIndex, newIndex) {
                     setState(() {
-                      var val =
-                          personalProfileExample.listings!.removeAt(oldIndex);
-                      personalProfileExample.listings!.insert(newIndex, val);
+                      var val = personalProfileExample.personalListings!
+                          .removeAt(oldIndex);
+                      personalProfileExample.personalListings!
+                          .insert(newIndex, val);
                     });
                   },
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -265,7 +272,8 @@ class _ProfileState extends State<Profile> {
                     crossAxisSpacing: 2,
                   ),
                   itemBuilder: (_, index) => GridTile(
-                      key: ValueKey(personalProfileExample.listings![index]),
+                      key: ValueKey(
+                          personalProfileExample.personalListings![index]),
                       child: Stack(
                         children: [
                           //3 lines from chatgpt, suggested to use infinity with sized box
@@ -275,8 +283,8 @@ class _ProfileState extends State<Profile> {
                               height: double.infinity,
                               //end chatgpt
                               child: Image(
-                                  image:
-                                      personalProfileExample.listings![index],
+                                  image: personalProfileExample
+                                      .personalListings![index],
                                   fit: BoxFit.cover)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -304,7 +312,7 @@ class _ProfileState extends State<Profile> {
                                             .bodyLarge),
                                   )) {
                                     setState(() {
-                                      personalProfileExample.listings!
+                                      personalProfileExample.personalListings!
                                           .removeAt(index);
                                     });
                                   }
@@ -322,7 +330,7 @@ class _ProfileState extends State<Profile> {
                           )
                         ],
                       )),
-                  itemCount: personalProfileExample.listings!.length,
+                  itemCount: personalProfileExample.personalListings!.length,
                 ),
               )
             ],

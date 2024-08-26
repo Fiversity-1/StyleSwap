@@ -1,18 +1,30 @@
 // profile.dart
 
+import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
+import 'package:confirm_dialog/confirm_dialog.dart';
+import 'package:image_picker/image_picker.dart';
 
+import 'package:photo_view/photo_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:photo_view/photo_view_gallery.dart';
 
-class PublicProfile extends StatelessWidget {
+class PublicProfile extends StatefulWidget {
   const PublicProfile({super.key});
 
   @override
+  State<PublicProfile> createState() => _PublicProfileState();
+}
+
+class _PublicProfileState extends State<PublicProfile> {
+  @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    PageController _pageController;
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 3,
@@ -82,15 +94,184 @@ class PublicProfile extends StatelessWidget {
                 ),
                 itemBuilder: (_, index) => GridTile(
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        //PhotoViewGallery Code from pubdev photo_view modified with ChatGPT to stack icon on top
+                        MaterialPageRoute(
+                            builder: (context) => Scaffold(
+                                    body: Stack(
+                                  children: [
+                                    PhotoViewGallery.builder(
+                                      itemCount: publicProfileExample
+                                          .personalListings!.length,
+                                      builder: (context, index) {
+                                        return PhotoViewGalleryPageOptions(
+                                          imageProvider: publicProfileExample
+                                              .personalListings![index],
+                                          minScale:
+                                              PhotoViewComputedScale.contained *
+                                                  0.8,
+                                          maxScale:
+                                              PhotoViewComputedScale.covered *
+                                                  2,
+                                        );
+                                      },
+                                      pageController: _pageController =
+                                          PageController(initialPage: index),
+                                      scrollPhysics:
+                                          const BouncingScrollPhysics(),
+                                      enableRotation: true,
+                                    ),
+                                    Column(children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 5),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 7.5, left: 5),
+                                                  child: IconButton(
+                                                      icon: const Icon(
+                                                        Icons.info,
+                                                      ),
+                                                      iconSize: 25,
+                                                      onPressed: () {
+                                                        Navigator.pushNamed(
+                                                            context,
+                                                            '/clothing_detail');
+                                                      }),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 7.5),
+                                                  child: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.swap_horiz,
+                                                    ),
+                                                    iconSize: 25,
+                                                    onPressed: () async {
+                                                      if (await confirm(
+                                                        context,
+                                                        title:
+                                                            const Text('Trade'),
+                                                        content: const Text(
+                                                            'Would you like to propose a trade on this item as well?'),
+                                                        textCancel: Text('No',
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyLarge),
+                                                        textOK: Text('Yes',
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyLarge),
+                                                      )) {
+                                                        Navigator.pushNamed(
+                                                            // ignore: use_build_context_synchronously
+                                                            context,
+                                                            '/chat');
+
+                                                        setState(() {
+                                                          messages.add(ChatMessage(
+                                                              messageContent:
+                                                                  "",
+                                                              messageType:
+                                                                  "sender",
+                                                              time: "5:45pm",
+                                                              images: publicProfileExample
+                                                                      .personalListings![
+                                                                  _pageController
+                                                                          .page
+                                                                      as int]);
+                                                        });
+                                                      }
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 5.0, left: 5),
+                                              child: IconButton(
+                                                  icon: const Icon(
+                                                    Icons.close,
+                                                  ),
+                                                  iconSize: 25,
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  }),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height: height * 0.4),
+                                      Visibility(
+                                          visible: kIsWeb,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 50),
+                                                child: ElevatedButton(
+                                                    child: const Icon(
+                                                      Icons.arrow_back,
+                                                      size: 35,
+                                                    ),
+                                                    onPressed: () {
+                                                      _pageController.previousPage(
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      500),
+                                                          curve:
+                                                              Curves.easeInOut);
+                                                    }),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 50),
+                                                child: ElevatedButton(
+                                                    child: const Icon(
+                                                      Icons.arrow_forward,
+                                                      size: 35,
+                                                    ),
+                                                    onPressed: () {
+                                                      _pageController.nextPage(
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      500),
+                                                          curve:
+                                                              Curves.easeInOut);
+                                                    }),
+                                              ),
+                                            ],
+                                          ))
+                                    ])
+                                  ],
+                                ))),
+                      );
+                    },
                     child: Image(
-                        image: publicProfileExample.listings![index],
-                        fit: BoxFit.cover),
+                      image: publicProfileExample.personalListings![index],
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-
-                //End modified code
-                itemCount: publicProfileExample.listings!.length,
+                itemCount: publicProfileExample.personalListings!.length,
               ),
             ],
           ),

@@ -1,5 +1,4 @@
 //Generative Code
-import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 
 class ClothingItem {
@@ -7,12 +6,14 @@ class ClothingItem {
   final String location;
   final List<AssetImage> images;
   int currentIndex;
+  final ClothingItemDetail details;
 
   ClothingItem(
       {required this.name,
       required this.location,
       required this.images,
-      this.currentIndex = 0});
+      this.currentIndex = 0,
+      required this.details});
 }
 
 class ClothingItemDetail {
@@ -35,31 +36,80 @@ class ClothingItemDetail {
   });
 }
 
-ClothingItemDetail item = ClothingItemDetail(
-    bio:
-        'This is an awesome black shirt that I really like a lot a lot a lot a lot a lot.',
-    type: 'Shirt',
-    size: 54,
-    gender: 'Male',
-    condition: 'Good',
-    colours: ['Black'],
-    images: ([
+List swipeImages = [
+  ClothingItem(
+      name: 'Steve',
+      location: 'Brisbane',
+      images: [
+        const AssetImage('lib/images/2.jpg'),
+      ],
+      details: ClothingItemDetail(
+          bio:
+              'This is an awesome black shirt that I really like a lot a lot a lot a lot a lot.',
+          type: 'Shirt',
+          size: 54,
+          gender: 'Male',
+          condition: 'Good',
+          colours: ['Black'],
+          images: ([
+            const AssetImage('lib/images/1.jpg'),
+            const AssetImage('lib/images/1-extra.jpg'),
+          ]))),
+  ClothingItem(
+      name: 'Bob',
+      location: 'Gold Coast',
+      images: [
+        const AssetImage('lib/images/3.jpg'),
+      ],
+      details: ClothingItemDetail(
+          bio:
+              'This is an awesome black shirt that I really like a lot a lot a lot a lot a lot.',
+          type: 'Shirt',
+          size: 54,
+          gender: 'Male',
+          condition: 'Good',
+          colours: ['Black'],
+          images: ([
+            const AssetImage('lib/images/1.jpg'),
+            const AssetImage('lib/images/1-extra.jpg'),
+          ]))),
+  ClothingItem(
+    name: 'Jacob',
+    location: 'Mount Cotton',
+    images: [
       const AssetImage('lib/images/1.jpg'),
       const AssetImage('lib/images/1-extra.jpg'),
-    ]));
-
-List swipeImages = [
-  ClothingItem(name: 'Steve', location: 'Brisbane', images: [
-    const AssetImage('lib/images/2.jpg'),
-  ]),
-  ClothingItem(name: 'Bob', location: 'Gold Coast', images: [
-    const AssetImage('lib/images/3.jpg'),
-  ]),
-  ClothingItem(name: 'Jacob', location: 'Mount Cotton', images: [
-    const AssetImage('lib/images/1.jpg'),
-    const AssetImage('lib/images/1-extra.jpg'),
-  ]),
-  ClothingItem(name: 'Pop', location: 'Sunshine Coast', images: [
-    const AssetImage('lib/images/4.jpg'),
-  ]),
+    ],
+    details: ClothingItemDetail(
+        bio:
+            'This is an awesome black shirt that I really like a lot a lot a lot a lot a lot.',
+        type: 'Shirt',
+        size: 54,
+        gender: 'Male',
+        condition: 'Good',
+        colours: ['Black'],
+        images: ([
+          const AssetImage('lib/images/1.jpg'),
+          const AssetImage('lib/images/1-extra.jpg'),
+        ])),
+  ),
+  ClothingItem(
+    name: 'Pop',
+    location: 'Sunshine Coast',
+    images: [
+      const AssetImage('lib/images/4.jpg'),
+    ],
+    details: ClothingItemDetail(
+        bio:
+            'This is an awesome black shirt that I really like a lot a lot a lot a lot a lot.',
+        type: 'Shirt',
+        size: 54,
+        gender: 'Male',
+        condition: 'Good',
+        colours: ['Black'],
+        images: ([
+          const AssetImage('lib/images/1.jpg'),
+          const AssetImage('lib/images/1-extra.jpg'),
+        ])),
+  ),
 ];
