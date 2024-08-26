@@ -1,4 +1,5 @@
 import 'package:clothing_swap/features/clothing/presentation/clothing_item.dart';
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
@@ -9,23 +10,6 @@ class ClothingDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ClothingItemDetail item = ClothingItemDetail(
-        bio:
-            'This is an awesome black shirt that I really like a lot a lot a lot a lot a lot.',
-        type: 'Shirt',
-        size: 54,
-        gender: 'Male',
-        condition: 'Good',
-        colours: [
-          'Black',
-          'Grey'
-        ],
-        images: [
-          'lib/images/0.jpg',
-          'lib/images/watermelon.png',
-          'lib/images/watermelon2.jpg'
-        ]);
-
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
@@ -147,16 +131,14 @@ class ClothingDetail extends StatelessWidget {
               ),
               itemBuilder: (_, index) => GridTile(
                 child: GestureDetector(
-                  onTap: () {},
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/gallery');
-                    },
-                    splashColor: Colors.white,
-                    child: Ink.image(
-                        fit: BoxFit.cover,
-                        image: AssetImage(item.images[index])),
-                  ),
+                  onTap: () {
+                    showImageViewer(
+                        context,
+                        //ChatGPT suggested using FileImage instead of Image.File
+                        item.images[index],
+                        swipeDismissible: true);
+                  },
+                  child: Image(fit: BoxFit.cover, image: item.images[index]),
                 ),
               ),
               itemCount: item.images.length,

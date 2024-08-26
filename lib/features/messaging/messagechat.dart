@@ -1,8 +1,8 @@
 // signup.dart
 
 import 'dart:io';
-
 import 'package:clothing_swap/features/messaging/message_class.dart';
+import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/widgets/photo_modal.dart';
@@ -87,19 +87,28 @@ class _MessageChatState extends State<MessageChat> {
                       },
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 5),
-                    child: CircleAvatar(
-                      radius: 18,
-                      backgroundImage:
-                          AssetImage('lib/images/profilepicture.jpg'),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/public_profile');
+                      },
+                      child: CircleAvatar(
+                        radius: 18,
+                        backgroundImage: publicProfileExample.profilePicture,
+                      ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: (15), top: 5),
-                    child: Text('Steve',
-                        style: Theme.of(context).textTheme.headlineMedium,
-                        textAlign: TextAlign.center),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/public_profile');
+                      },
+                      child: Text(publicProfileExample.name,
+                          style: Theme.of(context).textTheme.headlineMedium,
+                          textAlign: TextAlign.center),
+                    ),
                   ),
                 ],
               ),

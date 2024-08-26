@@ -17,7 +17,7 @@ class CustomBottomNavBar extends StatelessWidget {
         Navigator.pushReplacementNamed(context, '/message');
         break;
       case 3:
-        Navigator.pushReplacementNamed(context, '/profile');
+        Navigator.pushReplacementNamed(context, '/personal_profile');
         break;
     }
   }

@@ -10,13 +10,15 @@ import 'package:clothing_swap/widgets/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/features/signup/presentation/startpage.dart';
 import 'package:clothing_swap/features/signup/presentation/signup.dart';
-import 'package:clothing_swap/features/profile/presentation/profile.dart';
+import 'package:clothing_swap/features/profile/presentation/personal_profile.dart';
 import 'package:clothing_swap/features/clothing/presentation/search_main.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
 import 'package:clothing_swap/features/signup/presentation/login.dart';
 import 'package:provider/provider.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/features/profile/presentation/preferences.dart';
+
+import 'features/profile/presentation/public_profile.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
@@ -27,13 +29,11 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-
 //    final colourScheme = ColorScheme.fromSeed(
 //      seedColor: const Color.fromARGB(255, 76, 175, 80),
 //      dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
 //      surface: Colors.white
 //    );
-
 
     return MaterialApp(
       theme: Provider.of<ThemeSwitcher>(context).themeData,
@@ -41,7 +41,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/signup': (context) => const SignUp(title: 'SignUp'),
         '/startpage': (context) => const StartPage(title: 'StartPage'),
-        '/profile': (context) => const Profile(title: 'profile'),
+        '/personal_profile': (context) => const Profile(title: 'profile'),
+        '/public_profile': (context) => const PublicProfile(),
         '/search': (context) => const SearchPage(),
         '/advanced_search': (context) => const AdvancedSearch(),
         '/message': (context) => const Message(title: 'Message'),

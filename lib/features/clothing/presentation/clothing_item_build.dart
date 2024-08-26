@@ -29,8 +29,8 @@ class _ClothingCardState extends State<ClothingCard> {
         });
       },
       child: Card(
-        child: Image.asset(
-          widget.item.images[widget.item.currentIndex],
+        child: Image(
+          image: widget.item.images[widget.item.currentIndex],
           fit: BoxFit.cover,
         ),
       ),

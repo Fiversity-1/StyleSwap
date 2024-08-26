@@ -1,5 +1,6 @@
 // profile.dart
 import 'dart:io';
+import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/photo_modal.dart';
@@ -18,22 +19,13 @@ class Profile extends StatefulWidget {
   State<Profile> createState() => _ProfileState();
 }
 
-List<String> images = [
-  'lib/images/0.jpg',
-  'lib/images/1.jpg',
-  'lib/images/2.jpg',
-  'lib/images/watermelon.png',
-  'lib/images/watermelon2.jpg'
-];
-
 class _ProfileState extends State<Profile> {
   bool edited = false;
   bool editedBio = false;
-  String bio = 'I love food and sustainability! Keen to trade some clothes!';
 
 //List generate line from chatgpt
-  final List<FlipCardController> _flipImage =
-      List.generate(images.length, (index) => FlipCardController());
+  final List<FlipCardController> _flipImage = List.generate(
+      personalProfileExample.listings!.length, (index) => FlipCardController());
 
   final _changeBio = TextEditingController();
 
@@ -66,9 +58,7 @@ class _ProfileState extends State<Profile> {
                       child: CircleAvatar(
                         radius: 75,
                         backgroundImage: (_image == null)
-                            ? const AssetImage(
-                                'lib/images/profilepicture.jpg',
-                              )
+                            ? personalProfileExample.profilePicture
                             : kIsWeb
                                 ? Image.network(_image!.path, fit: BoxFit.cover)
                                     .image
@@ -104,7 +94,7 @@ class _ProfileState extends State<Profile> {
                     height: 50,
                     width: 375,
                     child: Text(
-                      'Steve',
+                      personalProfileExample.name,
                       style: Theme.of(context).textTheme.headlineLarge,
                       textAlign: TextAlign.center,
                     ),
@@ -170,7 +160,8 @@ class _ProfileState extends State<Profile> {
                                             size: kIsWeb ? 24 : 18),
                                         onPressed: () {
                                           //Idea from chatgpt to handle both enter and icon
-                                          bio = _changeBio.text;
+                                          personalProfileExample.bio =
+                                              _changeBio.text;
                                           editedBio = !editedBio;
                                           setState(() {});
                                         },
@@ -182,7 +173,7 @@ class _ProfileState extends State<Profile> {
                               Visibility(
                                 visible: !editedBio,
                                 child: Text(
-                                  bio,
+                                  personalProfileExample.bio,
                                   style: Theme.of(context).textTheme.bodyLarge,
                                   textAlign: TextAlign.center,
                                   softWrap: true,
@@ -223,10 +214,9 @@ class _ProfileState extends State<Profile> {
                         });
                       },
                       child: FlipCard(
-                        frontWidget: Image.asset(
-                          images[index],
-                          fit: BoxFit.cover,
-                        ),
+                        frontWidget: Image(
+                            image: personalProfileExample.listings![index],
+                            fit: BoxFit.cover),
                         backWidget: Container(
                           padding: const EdgeInsets.all(3.0),
                           decoration: BoxDecoration(
@@ -253,7 +243,7 @@ class _ProfileState extends State<Profile> {
                   ),
 
                   //End modified code
-                  itemCount: images.length,
+                  itemCount: personalProfileExample.listings!.length,
                 ),
               ),
               Visibility(
@@ -264,8 +254,9 @@ class _ProfileState extends State<Profile> {
                   dragStartDelay: Duration.zero,
                   onReorder: (oldIndex, newIndex) {
                     setState(() {
-                      var val = images.removeAt(oldIndex);
-                      images.insert(newIndex, val);
+                      var val =
+                          personalProfileExample.listings!.removeAt(oldIndex);
+                      personalProfileExample.listings!.insert(newIndex, val);
                     });
                   },
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -274,20 +265,19 @@ class _ProfileState extends State<Profile> {
                     crossAxisSpacing: 2,
                   ),
                   itemBuilder: (_, index) => GridTile(
-                      key: ValueKey(images[index]),
+                      key: ValueKey(personalProfileExample.listings![index]),
                       child: Stack(
                         children: [
                           //3 lines from chatgpt, suggested to use infinity with sized box
                           //as having weird format when added icon on top
                           SizedBox(
-                            width: double.infinity,
-                            height: double.infinity,
-                            //end chatgpt
-                            child: Image.asset(
-                              images[index],
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                              width: double.infinity,
+                              height: double.infinity,
+                              //end chatgpt
+                              child: Image(
+                                  image:
+                                      personalProfileExample.listings![index],
+                                  fit: BoxFit.cover)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -314,7 +304,8 @@ class _ProfileState extends State<Profile> {
                                             .bodyLarge),
                                   )) {
                                     setState(() {
-                                      images.removeAt(index);
+                                      personalProfileExample.listings!
+                                          .removeAt(index);
                                     });
                                   }
                                 },
@@ -331,7 +322,7 @@ class _ProfileState extends State<Profile> {
                           )
                         ],
                       )),
-                  itemCount: images.length,
+                  itemCount: personalProfileExample.listings!.length,
                 ),
               )
             ],
