@@ -32,19 +32,19 @@ ThemeData lightTheme = ThemeData(
 ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.deepPurple,
-        primary: Colors.deepPurple,
-        surface: const Color.fromARGB(255, 43, 41, 41),
+        seedColor: Color(4291935485), // primary: Color(4291935485),
+        primary: Color(4281804380), // onPrimary: Color(4281804380),
+        surface: Color(4279505432),  // surface: Color(4279505432),
         brightness: Brightness.dark),
     iconTheme: const IconThemeData(color: Colors.white),
     appBarTheme: const AppBarTheme(
-      color: Colors.deepPurple,
+      color: Color(4281804380), // onPrimary: Color(4281804380),
       iconTheme: IconThemeData(color: Colors.white),
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        selectedItemColor: Colors.deepPurpleAccent,
-        unselectedItemColor: Colors.grey,
-        backgroundColor: Colors.black12),
+        selectedItemColor: Color(4291935485), // // primary: Color(4291935485),
+        unselectedItemColor: Color(4291609307), // secondary: Color(4291609307),
+        backgroundColor:  Color(4281804380)), // onPrimary: Color(4281804380),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
@@ -65,6 +65,48 @@ ThemeData darkTheme = ThemeData(
         fillColor: Color.fromARGB(255, 50, 47, 47),
         prefixIconColor: Colors.white),
     hintColor: Colors.white);
+
+
+
+//ThemeData darkTheme = ThemeData(
+//    useMaterial3: true,
+//    colorScheme: ColorScheme.fromSeed(
+//        seedColor: Colors.deepPurple,
+//        primary: Colors.deepPurple,
+//        surface: const Color.fromARGB(255, 43, 41, 41),
+//        brightness: Brightness.dark),
+//    iconTheme: const IconThemeData(color: Colors.white),
+//    appBarTheme: const AppBarTheme(
+//      color: Colors.deepPurple,
+//      iconTheme: IconThemeData(color: Colors.white),
+//    ),
+//    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+//        selectedItemColor: Colors.deepPurpleAccent,
+//        unselectedItemColor: Colors.grey,
+//        backgroundColor: Colors.black12),
+//    elevatedButtonTheme: ElevatedButtonThemeData(
+//      style: ElevatedButton.styleFrom(
+//        foregroundColor: Colors.white,
+//        shape: RoundedRectangleBorder(
+//          borderRadius: BorderRadius.circular(20),
+//        ),
+//      ),
+//    ),
+//    hoverColor: Colors.deepPurpleAccent,
+//    listTileTheme: const ListTileThemeData(
+//      tileColor: Color.fromARGB(255, 59, 53, 53),
+//      leadingAndTrailingTextStyle: TextStyle(color: Colors.white),
+//      iconColor: Colors.white,
+//      selectedTileColor: Colors.deepPurple,
+//      selectedColor: Colors.white,
+//    ),
+//    inputDecorationTheme: const InputDecorationTheme(
+//        fillColor: Color.fromARGB(255, 50, 47, 47),
+//        prefixIconColor: Colors.white),
+//    hintColor: Colors.white);
+
+
+
 
 ThemeData accessibilityTheme = ThemeData();
 
