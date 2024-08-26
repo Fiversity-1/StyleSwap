@@ -1,33 +1,44 @@
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
-  useMaterial3: true,
-  colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.blue,
-      primary: Colors.blue,
-      surface: Colors.white,
-      brightness: Brightness.light),
-  appBarTheme: const AppBarTheme(
-    color: Colors.blue,
-    iconTheme: IconThemeData(color: Colors.white),
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+    useMaterial3: true,
+    colorScheme: ColorScheme.fromSeed(
+        seedColor: Color(4284962190), // primary:Color(4284962190),
+        primary: Color(4294967295), // onPrimary: Color(4294967295),
+        surface: Color(4294899711),  // surface: Color(4294899711),
+        brightness: Brightness.dark),
+    iconTheme: const IconThemeData(color: Colors.white),
+    appBarTheme: const AppBarTheme(
+      color: Color(4284962190), // primary:Color(4284962190),
+      iconTheme: IconThemeData(color: Colors.white),
+    ),
+
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        selectedItemColor: Color(4284962190), // primary: Color(4284962190),
+        unselectedItemColor: Color(4284636016), // secondary: Color(4284636016),
+        backgroundColor:  Color(4294967295)), // onPrimary: Color(4294967295),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Color(4280097568), // onSurface: Color(4280097568),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
       ),
     ),
-  ),
-  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      selectedItemColor: Colors.blue,
-      unselectedItemColor: Colors.grey,
-      backgroundColor: Colors.white),
-  hoverColor: Colors.lightBlueAccent,
-  listTileTheme: const ListTileThemeData(
-      tileColor: Colors.white,
-      selectedTileColor: Colors.lightBlue,
-      selectedColor: Colors.white),
-);
+    hoverColor: Color(4294967295), // onPrimary: Color(4294967295),
+    listTileTheme: const ListTileThemeData(
+      tileColor: Color(4284962190), // primary:Color(4284962190),
+      leadingAndTrailingTextStyle: TextStyle(color: Color(4280097568)),  // onSurface: Color(4280097568),
+      iconColor: Color(4280097568), // onSurface: Color(4280097568),
+      selectedTileColor: Color(4280422214),  // onPrimaryFixed: Color(4280422214),
+      selectedColor: Colors.white,
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+        fillColor: Color(4293582335),  // primaryContainer: Color(4293582335),
+        prefixIconColor: Colors.white),
+    hintColor: Colors.white);
+
+
 
 ThemeData darkTheme = ThemeData(
     useMaterial3: true,
@@ -62,7 +73,7 @@ ThemeData darkTheme = ThemeData(
       selectedColor: Colors.white,
     ),
     inputDecorationTheme: const InputDecorationTheme(
-        fillColor: Color(4294948011),  // error: Color(4294948011),
+        fillColor: Color(4283317621),  // primaryContainer: Color(4283317621),
         prefixIconColor: Colors.white),
     hintColor: Colors.white);
 
