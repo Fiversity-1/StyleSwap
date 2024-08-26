@@ -47,64 +47,24 @@ ThemeData darkTheme = ThemeData(
         backgroundColor:  Color(4281804380)), // onPrimary: Color(4281804380),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
+        foregroundColor: Color(4293386472), // onSurface: Color(4293386472),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
       ),
     ),
-    hoverColor: Colors.deepPurpleAccent,
+    hoverColor: Color(4281804380), // onPrimary: Color(4281804380),
     listTileTheme: const ListTileThemeData(
-      tileColor: Color.fromARGB(255, 59, 53, 53),
-      leadingAndTrailingTextStyle: TextStyle(color: Colors.white),
-      iconColor: Colors.white,
-      selectedTileColor: Colors.deepPurple,
+      tileColor: Color(4291935485), // primary: Color(4291935485),
+      leadingAndTrailingTextStyle: TextStyle(color: Color(4293386472)),  // onSurface: Color(4293386472),
+      iconColor: Color(4293386472), // onSurface: Color(4293386472),
+      selectedTileColor: Color(4280422214),  // onPrimaryFixed: Color(4280422214),
       selectedColor: Colors.white,
     ),
     inputDecorationTheme: const InputDecorationTheme(
-        fillColor: Color.fromARGB(255, 50, 47, 47),
+        fillColor: Color(4294948011),  // error: Color(4294948011),
         prefixIconColor: Colors.white),
     hintColor: Colors.white);
-
-
-
-//ThemeData darkTheme = ThemeData(
-//    useMaterial3: true,
-//    colorScheme: ColorScheme.fromSeed(
-//        seedColor: Colors.deepPurple,
-//        primary: Colors.deepPurple,
-//        surface: const Color.fromARGB(255, 43, 41, 41),
-//        brightness: Brightness.dark),
-//    iconTheme: const IconThemeData(color: Colors.white),
-//    appBarTheme: const AppBarTheme(
-//      color: Colors.deepPurple,
-//      iconTheme: IconThemeData(color: Colors.white),
-//    ),
-//    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-//        selectedItemColor: Colors.deepPurpleAccent,
-//        unselectedItemColor: Colors.grey,
-//        backgroundColor: Colors.black12),
-//    elevatedButtonTheme: ElevatedButtonThemeData(
-//      style: ElevatedButton.styleFrom(
-//        foregroundColor: Colors.white,
-//        shape: RoundedRectangleBorder(
-//          borderRadius: BorderRadius.circular(20),
-//        ),
-//      ),
-//    ),
-//    hoverColor: Colors.deepPurpleAccent,
-//    listTileTheme: const ListTileThemeData(
-//      tileColor: Color.fromARGB(255, 59, 53, 53),
-//      leadingAndTrailingTextStyle: TextStyle(color: Colors.white),
-//      iconColor: Colors.white,
-//      selectedTileColor: Colors.deepPurple,
-//      selectedColor: Colors.white,
-//    ),
-//    inputDecorationTheme: const InputDecorationTheme(
-//        fillColor: Color.fromARGB(255, 50, 47, 47),
-//        prefixIconColor: Colors.white),
-//    hintColor: Colors.white);
-
 
 
 
