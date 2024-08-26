@@ -133,12 +133,14 @@ class ClothingDetail extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     MultiImageProvider multiImageProvider =
-                        MultiImageProvider(item.images);
+                        MultiImageProvider(item.images, initialIndex: index);
                     showImageViewerPager(
-                        context,
-                        //ChatGPT suggested using FileImage instead of Image.File
-                        multiImageProvider,
-                        swipeDismissible: true);
+                      context,
+                      //ChatGPT suggested using FileImage instead of Image.File
+                      multiImageProvider,
+                      swipeDismissible: true,
+                      doubleTapZoomable: true,
+                    );
                   },
                   child: Image(fit: BoxFit.cover, image: item.images[index]),
                 ),
