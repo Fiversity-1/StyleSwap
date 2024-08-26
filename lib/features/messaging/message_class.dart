@@ -15,11 +15,7 @@ class ChatMessage {
 
 List<ChatMessage> messages = [
   ChatMessage(
-      messageContent: "Hello this is a massive message",
+      messageContent: "Hey are you keen on trading?",
       messageType: "receiver",
       time: "5:45pm"),
-  ChatMessage(messageContent: "Hello", messageType: "receiver", time: "5:45pm"),
-  ChatMessage(messageContent: "Hello", messageType: "sender", time: "5:45pm"),
-  ChatMessage(messageContent: "Hello", messageType: "receiver", time: "5:45pm"),
-  ChatMessage(messageContent: "Hello", messageType: "sender", time: "5:45pm"),
 ];

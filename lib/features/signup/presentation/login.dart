@@ -27,7 +27,7 @@ class _LoginState extends State<Login> {
           Positioned.fill(
             child: Opacity(
               opacity: 0.10,
-              child: Image.asset('lib/images/backdrop2.jpg', fit: BoxFit.cover),
+              child: Image.asset('lib/images/4.jpg', fit: BoxFit.cover),
             ),
           ),
           Positioned(

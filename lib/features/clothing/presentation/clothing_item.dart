@@ -42,37 +42,24 @@ ClothingItemDetail item = ClothingItemDetail(
     size: 54,
     gender: 'Male',
     condition: 'Good',
-    colours: ['Black', 'Grey'],
+    colours: ['Black'],
     images: ([
-      const AssetImage('lib/images/0.jpg'),
-      const AssetImage('lib/images/watermelon.png'),
-      const AssetImage('lib/images/watermelon2.jpg'),
+      const AssetImage('lib/images/1.jpg'),
+      const AssetImage('lib/images/1-extra.jpg'),
     ]));
 
 List swipeImages = [
-  ClothingItem(name: 'Jacob', location: 'Mount Cotton', images: [
-    const AssetImage('lib/images/0.jpg'),
-    const AssetImage('lib/images/watermelon.png'),
-    const AssetImage('lib/images/watermelon2.jpg'),
-  ]),
   ClothingItem(name: 'Steve', location: 'Brisbane', images: [
-    const AssetImage('lib/images/1.jpg'),
-    const AssetImage('lib/images/watermelon.png'),
-    const AssetImage('lib/images/watermelon2.jpg')
+    const AssetImage('lib/images/2.jpg'),
   ]),
   ClothingItem(name: 'Bob', location: 'Gold Coast', images: [
-    const AssetImage('lib/images/2.jpg'),
-    const AssetImage('lib/images/watermelon.png'),
-    const AssetImage('lib/images/watermelon2.jpg')
+    const AssetImage('lib/images/3.jpg'),
+  ]),
+  ClothingItem(name: 'Jacob', location: 'Mount Cotton', images: [
+    const AssetImage('lib/images/1.jpg'),
+    const AssetImage('lib/images/1-extra.jpg'),
   ]),
   ClothingItem(name: 'Pop', location: 'Sunshine Coast', images: [
-    const AssetImage('lib/images/backdrop.jpg'),
-    const AssetImage('lib/images/watermelon.png'),
-    const AssetImage('lib/images/watermelon2.jpg')
-  ]),
-  ClothingItem(name: 'Shaq', location: 'Los Angeles', images: [
-    const AssetImage('lib/images/backdrop2.jpg'),
-    const AssetImage('lib/images/watermelon.png'),
-    const AssetImage('lib/images/watermelon2.jpg')
+    const AssetImage('lib/images/4.jpg'),
   ]),
 ];

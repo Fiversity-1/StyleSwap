@@ -1,4 +1,5 @@
 // signup.dart
+import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -138,38 +139,3 @@ class _MessageState extends State<Message> {
     );
   }
 }
-
-class ChatListing {
-  String name;
-  String previewContent;
-  String time;
-  bool opened;
-  ChatListing(
-      {required this.name,
-      required this.previewContent,
-      required this.time,
-      required this.opened});
-}
-
-List<ChatListing> inbox = [
-  ChatListing(
-      name: "Jacob",
-      previewContent: "New Clothing Match!",
-      time: "5:45pm",
-      opened: true),
-  ChatListing(
-      name: "Steve",
-      previewContent: "New Clothing Match!",
-      time: "7:30pm",
-      opened: false),
-  ChatListing(
-      name: "Bob",
-      previewContent: "New Clothing Match!",
-      time: "7:45pm",
-      opened: true),
-  ChatListing(
-      name: "Karen",
-      previewContent: "New Clothing Match!",
-      time: "8pm",
-      opened: true),
-];
