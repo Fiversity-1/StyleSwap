@@ -226,12 +226,13 @@ class _ProfileState extends State<Profile> {
                                       body: Stack(
                                     children: [
                                       PhotoViewGallery.builder(
-                                        itemCount: publicProfileExample
+                                        itemCount: personalProfileExample
                                             .personalListings!.length,
                                         builder: (context, index) {
                                           return PhotoViewGalleryPageOptions(
-                                            imageProvider: publicProfileExample
-                                                .personalListings![index],
+                                            imageProvider:
+                                                personalProfileExample
+                                                    .personalListings![index],
                                             minScale: PhotoViewComputedScale
                                                     .contained *
                                                 0.8,
@@ -249,14 +250,14 @@ class _ProfileState extends State<Profile> {
                                       Column(children: [
                                         Padding(
                                           padding:
-                                              const EdgeInsets.only(top: 5),
+                                              const EdgeInsets.only(top: 25),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Padding(
                                                 padding: const EdgeInsets.only(
-                                                    top: 7.5, left: 5),
+                                                    top: 25, left: 5),
                                                 child: IconButton(
                                                     icon: const Icon(
                                                       Icons.info,
@@ -401,12 +402,12 @@ class _ProfileState extends State<Profile> {
                         );
                       },
                       child: Image(
-                        image: publicProfileExample.personalListings![index],
+                        image: personalProfileExample.personalListings![index],
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  itemCount: publicProfileExample.personalListings!.length,
+                  itemCount: personalProfileExample.personalListings!.length,
                 ),
               ),
               Visibility(

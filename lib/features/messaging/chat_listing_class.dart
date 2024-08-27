@@ -56,6 +56,7 @@ class ChatMessage {
   final String time;
   XFile? images;
   //can be XFile later on but for sake of testing other listings
+
   ImageProvider? additionalListings;
   String type;
   //Image

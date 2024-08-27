@@ -24,7 +24,17 @@ class MessageChat extends StatefulWidget {
 
 class _MessageChatState extends State<MessageChat> {
   final _sendText = TextEditingController();
-  final _scroller = ScrollController();
+  var _scroller = ScrollController();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // You can use didChangeDependencies to restore scroll position if necessary
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scroller.animateTo(_scroller.position.maxScrollExtent,
+          curve: Curves.easeOut, duration: const Duration(milliseconds: 500));
+    });
+  }
 
 //Void function idea to handle  both onSubmitted: and onPressed (icon) from chatGPT
 //code modified for personal implementation
@@ -254,8 +264,8 @@ class _MessageChatState extends State<MessageChat> {
                                             ))
                                         : messages[index - 1].type == "image"
                                             ? SizedBox(
-                                                height: 300,
-                                                width: 300,
+                                                height: kIsWeb ? 300 : 200,
+                                                width: kIsWeb ? 300 : 200,
                                                 child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(10),
@@ -308,72 +318,197 @@ class _MessageChatState extends State<MessageChat> {
                                                 ),
                                               )
                                             : SizedBox(
-                                                height: 300,
-                                                width: 300,
+                                                height: kIsWeb ? 300 : 200,
+                                                width: kIsWeb ? 300 : 200,
                                                 child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    child: Stack(
-                                                      children: [
-                                                        kIsWeb
-                                                            //Stack overflow - "Show fullscreen image onTap in Flutter"
-                                                            ? GestureDetector(
-                                                                onTap: () {
-                                                                  showImageViewer(
-                                                                      context,
-                                                                      messages[index -
-                                                                              1]
-                                                                          .additionalListings!,
-                                                                      swipeDismissible:
-                                                                          true);
-                                                                },
-                                                                child:
-                                                                    Positioned(
-                                                                  top: 0,
-                                                                  right: 0,
-                                                                  left: 0,
-                                                                  bottom: 0,
-                                                                  child: Image(
-                                                                      image: messages[index -
-                                                                              1]
-                                                                          .additionalListings!,
-                                                                      fit: BoxFit
-                                                                          .cover),
-                                                                ))
-                                                            : GestureDetector(
-                                                                onTap: () {
-                                                                  showImageViewer(
-                                                                      context,
-                                                                      messages[index -
-                                                                              1]
-                                                                          .additionalListings!,
-                                                                      swipeDismissible:
-                                                                          true);
-                                                                },
-                                                                child:
-                                                                    Positioned(
-                                                                  top: 0,
-                                                                  right: 0,
-                                                                  left: 0,
-                                                                  bottom: 0,
-                                                                  child: Image(
-                                                                      image: messages[index -
-                                                                              1]
-                                                                          .additionalListings!,
-                                                                      fit: BoxFit
-                                                                          .cover),
-                                                                ),
-                                                              ),
-                                                        Text("Is this showing"),
-                                                      ],
-                                                    )),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: kIsWeb
+                                                      //Stack overflow - "Show fullscreen image onTap in Flutter"
+                                                      ? GestureDetector(
+                                                          onTap: () {
+                                                            showImageViewer(
+                                                                context,
+                                                                messages[index -
+                                                                        1]
+                                                                    .additionalListings!,
+                                                                swipeDismissible:
+                                                                    true);
+                                                          },
+                                                          child: Image(
+                                                              image: messages[
+                                                                      index - 1]
+                                                                  .additionalListings!,
+                                                              fit:
+                                                                  BoxFit.cover),
+                                                        )
+                                                      : GestureDetector(
+                                                          onTap: () {
+                                                            showImageViewer(
+                                                                context,
+                                                                messages[index -
+                                                                        1]
+                                                                    .additionalListings!,
+                                                                swipeDismissible:
+                                                                    true);
+                                                          },
+                                                          child: Image(
+                                                              image: messages[
+                                                                      index - 1]
+                                                                  .additionalListings!,
+                                                              fit:
+                                                                  BoxFit.cover),
+
+                                                          // Handle tap event
+                                                        ),
+                                                ),
                                               ),
                                     const SizedBox(height: 5),
-                                    Text(
-                                      messages[index - 1].time,
-                                      style: const TextStyle(fontSize: 10),
-                                    ),
+                                    messages[index - 1].messageType ==
+                                            "receiver"
+                                        ? Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Visibility(
+                                                    visible: messages[index - 1]
+                                                            .type !=
+                                                        "listing",
+                                                    child: Text(
+                                                      messages[index - 1].time,
+                                                      style: const TextStyle(
+                                                          fontSize: 10),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 20),
+                                                    child: Visibility(
+                                                      visible:
+                                                          messages[index - 1]
+                                                                  .type ==
+                                                              "listing",
+                                                      child: const Text(
+                                                          "Accept item into trade?"),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 80),
+                                                    child: Visibility(
+                                                      visible:
+                                                          messages[index - 1]
+                                                                  .type ==
+                                                              "listing",
+                                                      child: IconButton(
+                                                        icon: const Icon(
+                                                            Icons
+                                                                .check_circle_outline,
+                                                            size: kIsWeb
+                                                                ? 24
+                                                                : 24),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Visibility(
+                                                    visible: messages[index - 1]
+                                                            .type ==
+                                                        "listing",
+                                                    child: IconButton(
+                                                      icon: const Icon(
+                                                          Icons.cancel_outlined,
+                                                          size:
+                                                              kIsWeb ? 24 : 24),
+                                                      onPressed: () {},
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          )
+                                        : Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 20),
+                                                    child: Visibility(
+                                                      visible:
+                                                          messages[index - 1]
+                                                                  .type ==
+                                                              "listing",
+                                                      child: const Text(
+                                                          "Accept item into trade?"),
+                                                    ),
+                                                  ),
+                                                  Visibility(
+                                                    visible: messages[index - 1]
+                                                            .type !=
+                                                        "listing",
+                                                    child: Text(
+                                                      messages[index - 1].time,
+                                                      style: const TextStyle(
+                                                          fontSize: 10),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Visibility(
+                                                    visible: messages[index - 1]
+                                                            .type ==
+                                                        "listing",
+                                                    child: IconButton(
+                                                      icon: const Icon(
+                                                          Icons
+                                                              .check_circle_outline,
+                                                          size:
+                                                              kIsWeb ? 24 : 24),
+                                                      onPressed: () {},
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: kIsWeb
+                                                                ? 60
+                                                                : 50),
+                                                    child: Visibility(
+                                                      visible:
+                                                          messages[index - 1]
+                                                                  .type ==
+                                                              "listing",
+                                                      child: IconButton(
+                                                        icon: const Icon(
+                                                            Icons
+                                                                .cancel_outlined,
+                                                            size: kIsWeb
+                                                                ? 24
+                                                                : 24),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          )
                                   ],
                                 )),
                           );
