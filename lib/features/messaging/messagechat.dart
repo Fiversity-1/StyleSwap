@@ -10,12 +10,13 @@ import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
+import 'package:flutter_image_stack/flutter_image_stack.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class MessageChat extends StatefulWidget {
-  const MessageChat({super.key, required this.title, this.clothingFile});
-  final XFile? clothingFile;
+  const MessageChat({super.key, required this.title});
+
   final String title;
   @override
   State<MessageChat> createState() => _MessageChatState();
@@ -37,7 +38,7 @@ class _MessageChatState extends State<MessageChat> {
         : null);
     _sendText.clear();
     _scroller.animateTo(
-      _scroller.position.maxScrollExtent + 90,
+      _scroller.position.maxScrollExtent + 100,
       curve: Curves.easeOut,
       duration: const Duration(milliseconds: 500),
     );
@@ -58,12 +59,58 @@ class _MessageChatState extends State<MessageChat> {
     );
   }
 
+  //https://pub.dev/packages/flutter_image_stack
+  final List<Widget> _imagesLeft = [
+    ClipOval(
+      child: Image.asset(
+        'lib/images/1.jpg',
+        width: 100,
+        height: 100,
+        fit: BoxFit.cover,
+      ),
+    ),
+    ClipOval(
+      child: Image.asset(
+        'lib/images/5.jpg',
+        width: 100,
+        height: 100,
+        fit: BoxFit.cover,
+      ),
+    ),
+  ];
+
+  final List<Widget> _imagesRight = [
+    ClipOval(
+      child: Image.asset(
+        'lib/images/2.jpg',
+        width: 100,
+        height: 100,
+        fit: BoxFit.cover,
+      ),
+    ),
+    ClipOval(
+      child: Image.asset(
+        'lib/images/3.jpg',
+        width: 100,
+        height: 100,
+        fit: BoxFit.cover,
+      ),
+    ),
+    ClipOval(
+      child: Image.asset(
+        'lib/images/4.jpg',
+        width: 100,
+        height: 100,
+        fit: BoxFit.cover,
+      ),
+    ),
+  ];
+
   final ImagePicker _picker = ImagePicker();
   XFile? _image;
 
   @override
   Widget build(BuildContext context) {
-    final clothingFile = ModalRoute.of(context)?.settings.arguments;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -79,7 +126,8 @@ class _MessageChatState extends State<MessageChat> {
               Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: (10.0), top: 5),
+                    padding:
+                        const EdgeInsets.only(left: (10.0), top: 5, bottom: 5),
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back_ios),
                       iconSize: 25,
@@ -132,30 +180,39 @@ class _MessageChatState extends State<MessageChat> {
                           // Return the image as the first item
                           return Column(
                             children: [
-                              clothingFile != null
-                                  ? ClipOval(
-                                      child: Image.asset(
-                                        clothingFile.toString(),
-                                        width: 100,
-                                        height: 100,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )
-                                  : ClipOval(
-                                      child: Image.asset(
-                                        'lib/images/1.jpg',
-                                        width: 100,
-                                        height: 100,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  FlutterImageStack.widgets(
+                                    showTotalCount: true,
+                                    totalCount: _imagesLeft.length,
+                                    itemRadius: 70, // Radius of each images
+                                    itemCount: _imagesLeft
+                                        .length, // Maximum number of images to be shown in stack
+                                    itemBorderWidth: 3,
+                                    children:
+                                        _imagesLeft, // Border width around the images
+                                  ),
+                                  const Icon(Icons.swap_horiz, size: 30),
+                                  FlutterImageStack.widgets(
+                                    showTotalCount: true,
+                                    totalCount: _imagesRight.length,
+                                    itemRadius: 70, // Radius of each images
+                                    itemCount: _imagesRight
+                                        .length, // Maximum number of images to be shown in stack
+                                    itemBorderWidth: 3,
+                                    children:
+                                        _imagesRight, // Border width around the images
+                                  ),
+                                ],
+                              )
                             ],
                           );
                         } else {
                           //End chat GPT code
                           return Container(
                             padding: const EdgeInsets.only(
-                                left: 24, right: 24, top: 10, bottom: 10),
+                                left: 24, right: 24, top: 30, bottom: 10),
                             child: Align(
                                 alignment: (messages[index - 1].messageType ==
                                         "receiver"
@@ -254,45 +311,63 @@ class _MessageChatState extends State<MessageChat> {
                                                 height: 300,
                                                 width: 300,
                                                 child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  child: kIsWeb
-                                                      //Stack overflow - "Show fullscreen image onTap in Flutter"
-                                                      ? GestureDetector(
-                                                          onTap: () {
-                                                            showImageViewer(
-                                                                context,
-                                                                messages[index -
-                                                                        1]
-                                                                    .additionalListings!,
-                                                                swipeDismissible:
-                                                                    true);
-                                                          },
-                                                          child: Image(
-                                                              image: messages[
-                                                                      index - 1]
-                                                                  .additionalListings!,
-                                                              fit:
-                                                                  BoxFit.cover),
-                                                        )
-                                                      : GestureDetector(
-                                                          onTap: () {
-                                                            showImageViewer(
-                                                                context,
-                                                                messages[index -
-                                                                        1]
-                                                                    .additionalListings!,
-                                                                swipeDismissible:
-                                                                    true);
-                                                          },
-                                                          child: Image(
-                                                              image: messages[
-                                                                      index - 1]
-                                                                  .additionalListings!,
-                                                              fit:
-                                                                  BoxFit.cover),
-                                                        ),
-                                                ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    child: Stack(
+                                                      children: [
+                                                        kIsWeb
+                                                            //Stack overflow - "Show fullscreen image onTap in Flutter"
+                                                            ? GestureDetector(
+                                                                onTap: () {
+                                                                  showImageViewer(
+                                                                      context,
+                                                                      messages[index -
+                                                                              1]
+                                                                          .additionalListings!,
+                                                                      swipeDismissible:
+                                                                          true);
+                                                                },
+                                                                child:
+                                                                    Positioned(
+                                                                  top: 0,
+                                                                  right: 0,
+                                                                  left: 0,
+                                                                  bottom: 0,
+                                                                  child: Image(
+                                                                      image: messages[index -
+                                                                              1]
+                                                                          .additionalListings!,
+                                                                      fit: BoxFit
+                                                                          .cover),
+                                                                ))
+                                                            : GestureDetector(
+                                                                onTap: () {
+                                                                  showImageViewer(
+                                                                      context,
+                                                                      messages[index -
+                                                                              1]
+                                                                          .additionalListings!,
+                                                                      swipeDismissible:
+                                                                          true);
+                                                                },
+                                                                child:
+                                                                    Positioned(
+                                                                  top: 0,
+                                                                  right: 0,
+                                                                  left: 0,
+                                                                  bottom: 0,
+                                                                  child: Image(
+                                                                      image: messages[index -
+                                                                              1]
+                                                                          .additionalListings!,
+                                                                      fit: BoxFit
+                                                                          .cover),
+                                                                ),
+                                                              ),
+                                                        Text("Is this showing"),
+                                                      ],
+                                                    )),
                                               ),
                                     const SizedBox(height: 5),
                                     Text(
