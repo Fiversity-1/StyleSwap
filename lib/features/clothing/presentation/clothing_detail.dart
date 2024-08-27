@@ -27,98 +27,98 @@ class ClothingDetailSwipe extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                    icon: const Icon(Icons.swipe_down),
-                    iconSize: 25,
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/swipe');
-                    }),
+                Padding(
+                  padding: const EdgeInsets.only(top: (0.0)),
+                  child: IconButton(
+                      icon: const Icon(
+                          kIsWeb ? Icons.arrow_upward : Icons.swipe_down),
+                      iconSize: kIsWeb ? 35 : 30,
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/swipe');
+                      }),
+                ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: (0.0)),
-              child: ListView(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                padding:
-                    kIsWeb ? const EdgeInsets.all(16) : const EdgeInsets.all(8),
-                children: [
-                  ListTile(
-                    title: Text(
-                      swipeImages[0].details.bio,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    leading: const Icon(Icons.info),
+            ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(16),
+              children: [
+                ListTile(
+                  title: Text(
+                    swipeImages[0].details.bio,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  ListTile(
+                  leading: const Icon(Icons.info),
+                ),
+                ListTile(
+                  title: Text(
+                    "Type",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  subtitle: Text(
+                    swipeImages[0].details.type,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  leading: const Icon(Icons.category),
+                ),
+                ListTile(
+                  title: Text(
+                    "Size",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  subtitle: Text(
+                    swipeImages[0].details.size.toString(),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  leading: const Icon(Icons.numbers),
+                ),
+                ListTile(
+                    selected: true,
                     title: Text(
-                      "Type",
+                      "Gender",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      swipeImages[0].details.type,
+                      swipeImages[0].details.gender,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    leading: const Icon(Icons.category),
-                  ),
-                  ListTile(
+                    leading: const Icon(
+                      Icons.person,
+                    ),
+                    trailing: const Icon(
+                      Icons.star,
+                      color: Colors.yellow,
+                    )),
+                ListTile(
+                    selected: true,
                     title: Text(
-                      "Size",
+                      "Condition",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      swipeImages[0].details.size.toString(),
+                      swipeImages[0].details.condition,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    leading: const Icon(Icons.numbers),
+                    leading: const Icon(
+                      Icons.gpp_good_outlined,
+                    ),
+                    trailing: const Icon(
+                      Icons.star,
+                      color: Colors.yellow,
+                    )),
+                ListTile(
+                  title: Text(
+                    "Colour",
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  ListTile(
-                      selected: true,
-                      title: Text(
-                        "Gender",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      subtitle: Text(
-                        swipeImages[0].details.gender,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      leading: const Icon(
-                        Icons.person,
-                      ),
-                      trailing: const Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      )),
-                  ListTile(
-                      selected: true,
-                      title: Text(
-                        "Condition",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      subtitle: Text(
-                        swipeImages[0].details.condition,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      leading: const Icon(
-                        Icons.gpp_good_outlined,
-                      ),
-                      trailing: const Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      )),
-                  ListTile(
-                    title: Text(
-                      "Colour",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    subtitle: Text(
-                      swipeImages[0].details.colours.join(", "),
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    leading: const Icon(Icons.palette),
+                  subtitle: Text(
+                    swipeImages[0].details.colours.join(", "),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                ],
-              ),
+                  leading: const Icon(Icons.palette),
+                ),
+              ],
             ),
             SizedBox(height: height * 0.025, width: width),
             GridView.builder(

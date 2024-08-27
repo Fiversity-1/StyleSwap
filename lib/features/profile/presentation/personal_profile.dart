@@ -201,296 +201,312 @@ class _ProfileState extends State<Profile> {
                       ),
                     ],
                   )),
-              Visibility(
-                visible: !edited,
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: kIsWeb ? 3 : 2,
-                    mainAxisSpacing: 2,
-                    crossAxisSpacing: 2,
-                  ),
-                  itemBuilder: (_, index) => GridTile(
-                    child: GestureDetector(
-                      onLongPress: () {
-                        edited = !edited;
-                        setState(() {});
-                      },
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          //PhotoViewGallery Code from pubdev photo_view modified with ChatGPT to stack icon on top
-                          MaterialPageRoute(
-                              builder: (context) => Scaffold(
-                                      body: Stack(
-                                    children: [
-                                      PhotoViewGallery.builder(
-                                        itemCount: personalProfileExample
-                                            .personalListings!.length,
-                                        builder: (context, index) {
-                                          return PhotoViewGalleryPageOptions(
-                                            imageProvider:
-                                                personalProfileExample
-                                                    .personalListings![index],
-                                            minScale: PhotoViewComputedScale
-                                                    .contained *
-                                                0.8,
-                                            maxScale:
-                                                PhotoViewComputedScale.covered *
-                                                    2,
-                                          );
-                                        },
-                                        pageController: _pageController =
-                                            PageController(initialPage: index),
-                                        scrollPhysics:
-                                            const BouncingScrollPhysics(),
-                                        enableRotation: true,
-                                      ),
-                                      Column(children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 25),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 25, left: 5),
-                                                child: IconButton(
-                                                    icon: const Icon(
-                                                      Icons.info,
-                                                    ),
-                                                    iconSize: 25,
-                                                    onPressed: () {
-                                                      showModalBottomSheet(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return Wrap(
-                                                              children: [
-                                                                const ListTile(
-                                                                  leading: Icon(
-                                                                      Icons
-                                                                          .date_range),
-                                                                  title: Text(
-                                                                      'Date Listed:'),
-                                                                  subtitle: Text(
-                                                                      '27/08/2024'),
-                                                                ),
-                                                                const ListTile(
-                                                                    leading: Icon(
-                                                                        Icons
-                                                                            .people),
-                                                                    title: Text(
-                                                                        'Views'),
-                                                                    subtitle: Text(
-                                                                        "15")),
-                                                                const ListTile(
-                                                                  leading: Icon(
-                                                                      Icons
-                                                                          .swap_horiz),
-                                                                  title: Text(
-                                                                      'Interested People'),
-                                                                  subtitle:
-                                                                      Text(
-                                                                          "15"),
-                                                                ),
-                                                                Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .only(
-                                                                        bottom:
-                                                                            5),
-                                                                    child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        ElevatedButton(
-                                                                          onPressed:
-                                                                              () async {
-                                                                            if (await confirm(
-                                                                              context,
-                                                                              title: const Text('Confirm'),
-                                                                              content: const Text('Would you like to remove?'),
-                                                                              textOK: Text('Yes', style: Theme.of(context).textTheme.bodyLarge),
-                                                                              textCancel: Text('No', style: Theme.of(context).textTheme.bodyLarge),
-                                                                            )) {
-                                                                              setState(() {
-                                                                                personalProfileExample.personalListings!.removeAt(index);
-                                                                              });
-                                                                            }
-                                                                          },
-                                                                          child:
-                                                                              const Text("Delete Listing"),
-                                                                        )
-                                                                      ],
-                                                                    ))
-                                                              ],
-                                                            );
-                                                          });
-                                                    }),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 5.0, left: 5),
-                                                child: IconButton(
-                                                    icon: const Icon(
-                                                      Icons.close,
-                                                    ),
-                                                    iconSize: 25,
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    }),
-                                              ),
-                                            ],
-                                          ),
+              Padding(
+                padding: const EdgeInsets.only(top: kIsWeb ? 15 : 5),
+                child: Visibility(
+                  visible: !edited,
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: kIsWeb ? 4 : 2,
+                      mainAxisSpacing: 2,
+                      crossAxisSpacing: 2,
+                    ),
+                    itemBuilder: (_, index) => GridTile(
+                      child: GestureDetector(
+                        onLongPress: () {
+                          edited = !edited;
+                          setState(() {});
+                        },
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            //PhotoViewGallery Code from pubdev photo_view modified with ChatGPT to stack icon on top
+                            MaterialPageRoute(
+                                builder: (context) => Scaffold(
+                                        body: Stack(
+                                      children: [
+                                        PhotoViewGallery.builder(
+                                          itemCount: personalProfileExample
+                                              .personalListings!.length,
+                                          builder: (context, index) {
+                                            return PhotoViewGalleryPageOptions(
+                                              imageProvider:
+                                                  personalProfileExample
+                                                      .personalListings![index],
+                                              minScale: PhotoViewComputedScale
+                                                      .contained *
+                                                  0.8,
+                                              maxScale: PhotoViewComputedScale
+                                                      .covered *
+                                                  2,
+                                            );
+                                          },
+                                          pageController: _pageController =
+                                              PageController(
+                                                  initialPage: index),
+                                          scrollPhysics:
+                                              const BouncingScrollPhysics(),
+                                          enableRotation: true,
                                         ),
-                                        SizedBox(height: height * 0.4),
-                                        Visibility(
-                                            visible: kIsWeb,
+                                        Column(children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: kIsWeb ? 0 : 25),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
                                               children: [
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          left: 50),
-                                                  child: ElevatedButton(
-                                                      child: const Icon(
-                                                        Icons.arrow_back,
-                                                        size: 35,
+                                                          top: 5, left: 5),
+                                                  child: IconButton(
+                                                      icon: const Icon(
+                                                        Icons.info,
                                                       ),
+                                                      iconSize: 25,
                                                       onPressed: () {
-                                                        _pageController.previousPage(
-                                                            duration:
-                                                                const Duration(
-                                                                    milliseconds:
-                                                                        500),
-                                                            curve: Curves
-                                                                .easeInOut);
+                                                        showModalBottomSheet(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return Wrap(
+                                                                children: [
+                                                                  const ListTile(
+                                                                    leading: Icon(
+                                                                        Icons
+                                                                            .date_range),
+                                                                    title: Text(
+                                                                        'Date Listed:'),
+                                                                    subtitle: Text(
+                                                                        '27/08/2024'),
+                                                                  ),
+                                                                  const ListTile(
+                                                                      leading: Icon(
+                                                                          Icons
+                                                                              .people),
+                                                                      title: Text(
+                                                                          'Views'),
+                                                                      subtitle:
+                                                                          Text(
+                                                                              "15")),
+                                                                  const ListTile(
+                                                                    leading: Icon(
+                                                                        Icons
+                                                                            .swap_horiz),
+                                                                    title: Text(
+                                                                        'Interested People'),
+                                                                    subtitle:
+                                                                        Text(
+                                                                            "15"),
+                                                                  ),
+                                                                  Padding(
+                                                                      padding: const EdgeInsets
+                                                                          .only(
+                                                                          bottom:
+                                                                              5),
+                                                                      child:
+                                                                          Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          ElevatedButton(
+                                                                            onPressed:
+                                                                                () async {
+                                                                              if (await confirm(
+                                                                                context,
+                                                                                title: const Text('Confirm'),
+                                                                                content: const Text('Would you like to remove?'),
+                                                                                textOK: Text('Yes', style: Theme.of(context).textTheme.bodyLarge),
+                                                                                textCancel: Text('No', style: Theme.of(context).textTheme.bodyLarge),
+                                                                              )) {
+                                                                                setState(() {
+                                                                                  personalProfileExample.personalListings!.removeAt(index);
+                                                                                });
+                                                                              }
+                                                                            },
+                                                                            child:
+                                                                                const Text("Delete Listing"),
+                                                                          )
+                                                                        ],
+                                                                      ))
+                                                                ],
+                                                              );
+                                                            });
                                                       }),
                                                 ),
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          right: 50),
-                                                  child: ElevatedButton(
-                                                      child: const Icon(
-                                                        Icons.arrow_forward,
-                                                        size: 35,
+                                                          top: 5, left: 5),
+                                                  child: IconButton(
+                                                      icon: const Icon(
+                                                        Icons.close,
                                                       ),
+                                                      iconSize: 25,
                                                       onPressed: () {
-                                                        _pageController.nextPage(
-                                                            duration:
-                                                                const Duration(
-                                                                    milliseconds:
-                                                                        500),
-                                                            curve: Curves
-                                                                .easeInOut);
+                                                        Navigator.pop(context);
                                                       }),
                                                 ),
                                               ],
-                                            ))
-                                      ])
-                                    ],
-                                  ))),
-                        );
-                      },
-                      child: Image(
-                        image: personalProfileExample.personalListings![index],
-                        fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          SizedBox(height: height * 0.4),
+                                          Visibility(
+                                              visible: kIsWeb,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 50),
+                                                    child: ElevatedButton(
+                                                        child: const Icon(
+                                                          Icons.arrow_back,
+                                                          size: 35,
+                                                        ),
+                                                        onPressed: () {
+                                                          _pageController.previousPage(
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          500),
+                                                              curve: Curves
+                                                                  .easeInOut);
+                                                        }),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 50),
+                                                    child: ElevatedButton(
+                                                        child: const Icon(
+                                                          Icons.arrow_forward,
+                                                          size: 35,
+                                                        ),
+                                                        onPressed: () {
+                                                          _pageController.nextPage(
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          500),
+                                                              curve: Curves
+                                                                  .easeInOut);
+                                                        }),
+                                                  ),
+                                                ],
+                                              ))
+                                        ])
+                                      ],
+                                    ))),
+                          );
+                        },
+                        child: Image(
+                          image:
+                              personalProfileExample.personalListings![index],
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
+                    itemCount: personalProfileExample.personalListings!.length,
                   ),
-                  itemCount: personalProfileExample.personalListings!.length,
                 ),
               ),
-              Visibility(
-                visible: edited,
-                child: ReorderableGridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  dragStartDelay: Duration.zero,
-                  onReorder: (oldIndex, newIndex) {
-                    setState(() {
-                      var val = personalProfileExample.personalListings!
-                          .removeAt(oldIndex);
-                      personalProfileExample.personalListings!
-                          .insert(newIndex, val);
-                    });
-                  },
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: kIsWeb ? 3 : 2,
-                    mainAxisSpacing: 2,
-                    crossAxisSpacing: 2,
-                  ),
-                  itemBuilder: (_, index) => GridTile(
-                      key: ValueKey(
-                          personalProfileExample.personalListings![index]),
-                      child: Stack(
-                        children: [
-                          //3 lines from chatgpt, suggested to use infinity with sized box
-                          //as having weird format when added icon on top
-                          SizedBox(
-                              width: double.infinity,
-                              height: double.infinity,
-                              //end chatgpt
-                              child: Image(
-                                  image: personalProfileExample
-                                      .personalListings![index],
-                                  fit: BoxFit.cover)),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Padding(
+                  padding: const EdgeInsets.only(top: kIsWeb ? 15 : 5),
+                  child: Visibility(
+                    visible: edited,
+                    child: ReorderableGridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      dragStartDelay: Duration.zero,
+                      onReorder: (oldIndex, newIndex) {
+                        setState(() {
+                          var val = personalProfileExample.personalListings!
+                              .removeAt(oldIndex);
+                          personalProfileExample.personalListings!
+                              .insert(newIndex, val);
+                        });
+                      },
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: kIsWeb ? 4 : 2,
+                        mainAxisSpacing: 2,
+                        crossAxisSpacing: 2,
+                      ),
+                      itemBuilder: (_, index) => GridTile(
+                          key: ValueKey(
+                              personalProfileExample.personalListings![index]),
+                          child: Stack(
                             children: [
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.remove_circle,
-                                  color: Colors.black,
-                                ),
-                                iconSize: 25,
-                                //pubdev confirm dialog
-                                onPressed: () async {
-                                  if (await confirm(
-                                    context,
-                                    title: const Text('Confirm'),
-                                    content:
-                                        const Text('Would you like to remove?'),
-                                    textOK: Text('Yes',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge),
-                                    textCancel: Text('No',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge),
-                                  )) {
-                                    setState(() {
-                                      personalProfileExample.personalListings!
-                                          .removeAt(index);
-                                    });
-                                  }
-                                },
-                              ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.open_with,
-                                  color: Colors.black,
-                                ),
-                                iconSize: 25,
-                                onPressed: () {},
-                              ),
+                              //3 lines from chatgpt, suggested to use infinity with sized box
+                              //as having weird format when added icon on top
+                              SizedBox(
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  //end chatgpt
+                                  child: Image(
+                                      image: personalProfileExample
+                                          .personalListings![index],
+                                      fit: BoxFit.cover)),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.remove_circle,
+                                      color: Colors.black,
+                                    ),
+                                    iconSize: 25,
+                                    //pubdev confirm dialog
+                                    onPressed: () async {
+                                      if (await confirm(
+                                        context,
+                                        title: const Text('Confirm'),
+                                        content: const Text(
+                                            'Would you like to remove?'),
+                                        textOK: Text('Yes',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge),
+                                        textCancel: Text('No',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge),
+                                      )) {
+                                        setState(() {
+                                          personalProfileExample
+                                              .personalListings!
+                                              .removeAt(index);
+                                        });
+                                      }
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.open_with,
+                                      color: Colors.black,
+                                    ),
+                                    iconSize: 25,
+                                    onPressed: () {},
+                                  ),
+                                ],
+                              )
                             ],
-                          )
-                        ],
-                      )),
-                  itemCount: personalProfileExample.personalListings!.length,
-                ),
-              )
+                          )),
+                      itemCount:
+                          personalProfileExample.personalListings!.length,
+                    ),
+                  )),
             ],
           ),
         ),

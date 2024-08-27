@@ -88,7 +88,7 @@ class _PublicProfileState extends State<PublicProfile> {
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: kIsWeb ? 3 : 2,
+                  crossAxisCount: kIsWeb ? 4 : 2,
                   mainAxisSpacing: 2,
                   crossAxisSpacing: 2,
                 ),
@@ -135,7 +135,9 @@ class _PublicProfileState extends State<PublicProfile> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          top: 7.5, left: 5),
+                                                          top:
+                                                              kIsWeb ? 7.5 : 25,
+                                                          left: 5),
                                                   child: IconButton(
                                                       icon: const Icon(
                                                         Icons.info,
@@ -150,7 +152,9 @@ class _PublicProfileState extends State<PublicProfile> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          top: 7.5),
+                                                          top: kIsWeb
+                                                              ? 7.5
+                                                              : 25),
                                                   child: IconButton(
                                                     icon: const Icon(
                                                       Icons.swap_horiz,
@@ -199,7 +203,8 @@ class _PublicProfileState extends State<PublicProfile> {
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  top: 5.0, left: 5),
+                                                  top: kIsWeb ? 7.5 : 25,
+                                                  left: 5),
                                               child: IconButton(
                                                   icon: const Icon(
                                                     Icons.close,
