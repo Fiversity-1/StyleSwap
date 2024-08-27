@@ -37,18 +37,32 @@ class _MessageState extends State<Message> {
                   key: ValueKey(inbox[index]),
 
                   endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-
+                    motion: const StretchMotion(),
+                    extentRatio: 0.75,
                     // A pane can dismiss the Slidable.
-                    dismissible: DismissiblePane(
-                      onDismissed: () {
-                        setState(() {
-                          inbox.removeAt(index);
-                        });
-                      },
-                    ),
+
                     // All actions are defined in the children parameter.
                     children: [
+                      Visibility(
+                        visible: !inbox[index].opened,
+                        child: SlidableAction(
+                          onPressed: (context) {
+                            //CHatp GPT for future delay - allow slideable to go back before setState
+                            Future.delayed(
+                              const Duration(milliseconds: 200),
+                              () {
+                                setState(() {
+                                  inbox[index].opened = true;
+                                });
+                              },
+                            );
+                          },
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          icon: Icons.mark_chat_read,
+                          label: 'Read',
+                        ),
+                      ),
                       SlidableAction(
                         onPressed: (context) {
                           setState(() {
@@ -59,20 +73,6 @@ class _MessageState extends State<Message> {
                         foregroundColor: Colors.white,
                         icon: Icons.person,
                         label: 'Block',
-                      ),
-                      Visibility(
-                        visible: !inbox[index].opened,
-                        child: SlidableAction(
-                          onPressed: (context) {
-                            setState(() {
-                              inbox[index].opened = true;
-                            });
-                          },
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
-                          icon: Icons.mark_chat_read,
-                          label: 'Mark as Read',
-                        ),
                       ),
                       SlidableAction(
                         onPressed: (context) {

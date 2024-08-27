@@ -24,15 +24,21 @@ class ClothingDetailProfile extends StatelessWidget {
       body: Center(
         child: SingleChildScrollView(
           child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                    child: const Text("Back"),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: (5.0), left: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                      ),
+                      iconSize: 25,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }),
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: (0.0)),
