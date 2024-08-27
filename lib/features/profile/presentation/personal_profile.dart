@@ -58,22 +58,43 @@ class _ProfileState extends State<Profile> {
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0, bottom: 5),
                     child: SizedBox(
-                      height: 150,
-                      width: 150,
-                      child: CircleAvatar(
-                        radius: 75,
-                        backgroundImage: (_image == null)
-                            ? personalProfileExample.profilePicture
-                            : kIsWeb
-                                ? Image.network(_image!.path, fit: BoxFit.cover)
-                                    .image
-                                : FileImage(
-                                    (File(
-                                      _image!.path,
-                                    )),
-                                  ),
-                      ),
-                    ),
+                        height: 150,
+                        width: 200,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              left: 25,
+                              child: CircleAvatar(
+                                radius: 75,
+                                backgroundImage: (_image == null)
+                                    ? personalProfileExample.profilePicture
+                                    : kIsWeb
+                                        ? Image.network(_image!.path,
+                                                fit: BoxFit.cover)
+                                            .image
+                                        : FileImage(
+                                            (File(
+                                              _image!.path,
+                                            )),
+                                          ),
+                              ),
+                            ),
+                            Positioned(
+                              right: 0,
+                              bottom: 0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: IconButton(
+                                  icon: Icon(edited ? Icons.check : Icons.edit),
+                                  onPressed: () {
+                                    edited = !edited;
+                                    setState(() {});
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
                   ),
                   Visibility(
                     visible: edited,
@@ -104,23 +125,6 @@ class _ProfileState extends State<Profile> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  Positioned(
-                    top: 5,
-                    right: 65,
-                    bottom: 10,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        edited = !edited;
-                        setState(() {});
-                      },
-                      style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(7)),
-                      child: Text(
-                        !edited ? 'Edit Profile' : 'Done',
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  )
                 ],
               ),
               Padding(
