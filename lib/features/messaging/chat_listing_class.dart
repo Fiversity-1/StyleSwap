@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChatListing {
@@ -54,17 +55,23 @@ class ChatMessage {
   final String messageType;
   final String time;
   XFile? images;
+  //can be XFile later on but for sake of testing other listings
+  ImageProvider? additionalListings;
+  String type;
   //Image
   ChatMessage(
       {required this.messageContent,
       required this.messageType,
       required this.time,
-      this.images});
+      required this.type,
+      this.images,
+      this.additionalListings});
 }
 
 List<ChatMessage> messages = [
   ChatMessage(
       messageContent: "Hey are you keen on trading?",
       messageType: "receiver",
+      type: "message",
       time: "5:45pm"),
 ];

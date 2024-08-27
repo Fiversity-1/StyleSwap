@@ -33,7 +33,7 @@ class _MessageChatState extends State<MessageChat> {
             messageContent: _sendText.text,
             messageType: "sender",
             time: "5:45pm",
-          ))
+            type: "message"))
         : null);
     _sendText.clear();
     _scroller.animateTo(
@@ -48,7 +48,8 @@ class _MessageChatState extends State<MessageChat> {
         messageContent: "",
         messageType: "sender",
         time: "5:45pm",
-        images: image)));
+        images: image,
+        type: "image")));
     _scroller.animateTo(
       //scroll image size
       _scroller.position.maxScrollExtent + 350,
@@ -167,7 +168,7 @@ class _MessageChatState extends State<MessageChat> {
                                           ? CrossAxisAlignment.start
                                           : CrossAxisAlignment.end,
                                   children: [
-                                    messages[index - 1].messageContent != ""
+                                    messages[index - 1].type == "message"
                                         ? Container(
                                             decoration: BoxDecoration(
                                               borderRadius:
@@ -194,56 +195,105 @@ class _MessageChatState extends State<MessageChat> {
                                               style:
                                                   const TextStyle(fontSize: 15),
                                             ))
-                                        : SizedBox(
-                                            height: 300,
-                                            width: 300,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              child: kIsWeb
-                                                  //Stack overflow - "Show fullscreen image onTap in Flutter"
-                                                  ? GestureDetector(
-                                                      onTap: () {
-                                                        showImageViewer(
-                                                            context,
-                                                            Image.network(messages[
-                                                                        index -
-                                                                            1]
-                                                                    .images!
-                                                                    .path)
-                                                                .image,
-                                                            swipeDismissible:
-                                                                true);
-                                                      },
-                                                      child: Image.network(
-                                                          messages[index - 1]
-                                                              .images!
-                                                              .path,
-                                                          fit: BoxFit.cover),
-                                                    )
-                                                  : GestureDetector(
-                                                      onTap: () {
-                                                        showImageViewer(
-                                                            context,
-                                                            //ChatGPT suggested using FileImage instead of Image.File
-                                                            FileImage(
+                                        : messages[index - 1].type == "image"
+                                            ? SizedBox(
+                                                height: 300,
+                                                width: 300,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: kIsWeb
+                                                      //Stack overflow - "Show fullscreen image onTap in Flutter"
+                                                      ? GestureDetector(
+                                                          onTap: () {
+                                                            showImageViewer(
+                                                                context,
+                                                                Image.network(messages[
+                                                                            index -
+                                                                                1]
+                                                                        .images!
+                                                                        .path)
+                                                                    .image,
+                                                                swipeDismissible:
+                                                                    true);
+                                                          },
+                                                          child: Image.network(
+                                                              messages[
+                                                                      index - 1]
+                                                                  .images!
+                                                                  .path,
+                                                              fit:
+                                                                  BoxFit.cover),
+                                                        )
+                                                      : GestureDetector(
+                                                          onTap: () {
+                                                            showImageViewer(
+                                                                context,
+                                                                //ChatGPT suggested using FileImage instead of Image.File
+                                                                FileImage(
+                                                                  File(messages[
+                                                                          index -
+                                                                              1]
+                                                                      .images!
+                                                                      .path),
+                                                                ),
+                                                                swipeDismissible:
+                                                                    true);
+                                                          },
+                                                          child: Image.file(
                                                               File(messages[
                                                                       index - 1]
                                                                   .images!
                                                                   .path),
-                                                            ),
-                                                            swipeDismissible:
-                                                                true);
-                                                      },
-                                                      child: Image.file(
-                                                          File(messages[
-                                                                  index - 1]
-                                                              .images!
-                                                              .path),
-                                                          fit: BoxFit.cover),
-                                                    ),
-                                            ),
-                                          ),
+                                                              fit:
+                                                                  BoxFit.cover),
+                                                        ),
+                                                ),
+                                              )
+                                            : SizedBox(
+                                                height: 300,
+                                                width: 300,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: kIsWeb
+                                                      //Stack overflow - "Show fullscreen image onTap in Flutter"
+                                                      ? GestureDetector(
+                                                          onTap: () {
+                                                            showImageViewer(
+                                                                context,
+                                                                messages[index -
+                                                                        1]
+                                                                    .additionalListings!,
+                                                                swipeDismissible:
+                                                                    true);
+                                                          },
+                                                          child: Image(
+                                                              image: messages[
+                                                                      index - 1]
+                                                                  .additionalListings!,
+                                                              fit:
+                                                                  BoxFit.cover),
+                                                        )
+                                                      : GestureDetector(
+                                                          onTap: () {
+                                                            showImageViewer(
+                                                                context,
+                                                                messages[index -
+                                                                        1]
+                                                                    .additionalListings!,
+                                                                swipeDismissible:
+                                                                    true);
+                                                          },
+                                                          child: Image(
+                                                              image: messages[
+                                                                      index - 1]
+                                                                  .additionalListings!,
+                                                              fit:
+                                                                  BoxFit.cover),
+                                                        ),
+                                                ),
+                                              ),
                                     const SizedBox(height: 5),
                                     Text(
                                       messages[index - 1].time,

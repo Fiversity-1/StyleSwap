@@ -174,24 +174,21 @@ class _PublicProfileState extends State<PublicProfile> {
                                                                 .textTheme
                                                                 .bodyLarge),
                                                       )) {
+                                                        messages.add(ChatMessage(
+                                                            messageContent: "",
+                                                            messageType:
+                                                                "sender",
+                                                            time: "5:45pm",
+                                                            additionalListings:
+                                                                publicProfileExample
+                                                                        .personalListings![
+                                                                    index],
+                                                            type: "listing"));
                                                         Navigator.pushNamed(
-                                                            // ignore: use_build_context_synchronously
-                                                            context,
-                                                            '/chat');
-
-                                                        setState(() {
-                                                          messages.add(ChatMessage(
-                                                              messageContent:
-                                                                  "",
-                                                              messageType:
-                                                                  "sender",
-                                                              time: "5:45pm",
-                                                              images: publicProfileExample
-                                                                      .personalListings![
-                                                                  _pageController
-                                                                          .page
-                                                                      as int]);
-                                                        });
+                                                          // ignore: use_build_context_synchronously
+                                                          context,
+                                                          '/chat',
+                                                        );
                                                       }
                                                     },
                                                   ),

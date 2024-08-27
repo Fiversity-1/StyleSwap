@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 
@@ -35,6 +37,8 @@ class _ProfileState extends State<Profile> {
   XFile? _image;
   @override
   Widget build(BuildContext context) {
+    PageController _pageController;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 3,
@@ -214,42 +218,195 @@ class _ProfileState extends State<Profile> {
                         setState(() {});
                       },
                       onTap: () {
-                        setState(() {
-                          _flipImage[index].flipcard();
-                        });
+                        Navigator.push(
+                          context,
+                          //PhotoViewGallery Code from pubdev photo_view modified with ChatGPT to stack icon on top
+                          MaterialPageRoute(
+                              builder: (context) => Scaffold(
+                                      body: Stack(
+                                    children: [
+                                      PhotoViewGallery.builder(
+                                        itemCount: publicProfileExample
+                                            .personalListings!.length,
+                                        builder: (context, index) {
+                                          return PhotoViewGalleryPageOptions(
+                                            imageProvider: publicProfileExample
+                                                .personalListings![index],
+                                            minScale: PhotoViewComputedScale
+                                                    .contained *
+                                                0.8,
+                                            maxScale:
+                                                PhotoViewComputedScale.covered *
+                                                    2,
+                                          );
+                                        },
+                                        pageController: _pageController =
+                                            PageController(initialPage: index),
+                                        scrollPhysics:
+                                            const BouncingScrollPhysics(),
+                                        enableRotation: true,
+                                      ),
+                                      Column(children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 5),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 7.5, left: 5),
+                                                child: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.info,
+                                                    ),
+                                                    iconSize: 25,
+                                                    onPressed: () {
+                                                      showModalBottomSheet(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return Wrap(
+                                                              children: [
+                                                                const ListTile(
+                                                                  leading: Icon(
+                                                                      Icons
+                                                                          .date_range),
+                                                                  title: Text(
+                                                                      'Date Listed:'),
+                                                                  subtitle: Text(
+                                                                      '27/08/2024'),
+                                                                ),
+                                                                const ListTile(
+                                                                    leading: Icon(
+                                                                        Icons
+                                                                            .people),
+                                                                    title: Text(
+                                                                        'Views'),
+                                                                    subtitle: Text(
+                                                                        "15")),
+                                                                const ListTile(
+                                                                  leading: Icon(
+                                                                      Icons
+                                                                          .swap_horiz),
+                                                                  title: Text(
+                                                                      'Interested People'),
+                                                                  subtitle:
+                                                                      Text(
+                                                                          "15"),
+                                                                ),
+                                                                Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .only(
+                                                                        bottom:
+                                                                            5),
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        ElevatedButton(
+                                                                          onPressed:
+                                                                              () async {
+                                                                            if (await confirm(
+                                                                              context,
+                                                                              title: const Text('Confirm'),
+                                                                              content: const Text('Would you like to remove?'),
+                                                                              textOK: Text('Yes', style: Theme.of(context).textTheme.bodyLarge),
+                                                                              textCancel: Text('No', style: Theme.of(context).textTheme.bodyLarge),
+                                                                            )) {
+                                                                              setState(() {
+                                                                                personalProfileExample.personalListings!.removeAt(index);
+                                                                              });
+                                                                            }
+                                                                          },
+                                                                          child:
+                                                                              const Text("Delete Listing"),
+                                                                        )
+                                                                      ],
+                                                                    ))
+                                                              ],
+                                                            );
+                                                          });
+                                                    }),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 5.0, left: 5),
+                                                child: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.close,
+                                                    ),
+                                                    iconSize: 25,
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    }),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(height: height * 0.4),
+                                        Visibility(
+                                            visible: kIsWeb,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 50),
+                                                  child: ElevatedButton(
+                                                      child: const Icon(
+                                                        Icons.arrow_back,
+                                                        size: 35,
+                                                      ),
+                                                      onPressed: () {
+                                                        _pageController.previousPage(
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        500),
+                                                            curve: Curves
+                                                                .easeInOut);
+                                                      }),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 50),
+                                                  child: ElevatedButton(
+                                                      child: const Icon(
+                                                        Icons.arrow_forward,
+                                                        size: 35,
+                                                      ),
+                                                      onPressed: () {
+                                                        _pageController.nextPage(
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        500),
+                                                            curve: Curves
+                                                                .easeInOut);
+                                                      }),
+                                                ),
+                                              ],
+                                            ))
+                                      ])
+                                    ],
+                                  ))),
+                        );
                       },
-                      child: FlipCard(
-                        frontWidget: Image(
-                            image:
-                                personalProfileExample.personalListings![index],
-                            fit: BoxFit.cover),
-                        backWidget: Container(
-                          padding: const EdgeInsets.all(3.0),
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              border: Border.all(
-                                  color: Theme.of(context).hoverColor,
-                                  width: 5)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Date Listed: 22/08/24",
-                                  style: Theme.of(context).textTheme.bodyLarge),
-                              Text(" Total Views: 56",
-                                  style: Theme.of(context).textTheme.bodyLarge),
-                              Text(" Total Interested: 5",
-                                  style: Theme.of(context).textTheme.bodyLarge),
-                            ],
-                          ),
-                        ),
-                        controller: _flipImage[index],
-                        rotateSide: RotateSide.right,
+                      child: Image(
+                        image: publicProfileExample.personalListings![index],
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
-
-                  //End modified code
-                  itemCount: personalProfileExample.personalListings!.length,
+                  itemCount: publicProfileExample.personalListings!.length,
                 ),
               ),
               Visibility(
