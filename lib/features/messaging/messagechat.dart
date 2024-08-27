@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 
 class MessageChat extends StatefulWidget {
@@ -24,7 +25,7 @@ class MessageChat extends StatefulWidget {
 
 class _MessageChatState extends State<MessageChat> {
   final _sendText = TextEditingController();
-  var _scroller = ScrollController();
+  final _scroller = ScrollController();
 
   @override
   void didChangeDependencies() {
@@ -67,6 +68,67 @@ class _MessageChatState extends State<MessageChat> {
       curve: Curves.easeOut,
       duration: const Duration(milliseconds: 500),
     );
+  }
+
+//Chat modified
+  void _handleTrade(String type, int index) async {
+    setState(() {
+      if (type == "accepted") {
+        if (messages[index].accepted != null) {
+          messages[index].accepted = !messages[index].accepted!;
+        }
+
+        if (messages[index].declined == true) {
+          messages[index].declined = false;
+        }
+      } else {
+        if (messages[index].declined != null) {
+          messages[index].declined = !messages[index].declined!;
+        }
+
+        if (messages[index].accepted == true) {
+          messages[index].accepted = false;
+        }
+      }
+      //Now add/remove image right or left
+      if (messages[index].accepted != null) {
+        if (messages[index].accepted == true) {
+          if (messages[index].messageType == "sender") {
+            _imagesRight.add(
+              ClipOval(
+                child: Image(
+                  image: messages[index].additionalListings!,
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          } else {
+            _imagesLeft.add(
+              ClipOval(
+                child: Image(
+                  image: messages[index].additionalListings!,
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          }
+        }
+      }
+      if (messages[index].declined != null) {
+        if (messages[index].declined == true ||
+            messages[index].accepted == false) {
+          if (messages[index].messageType == "sender") {
+            _imagesRight.removeLast();
+          } else {
+            _imagesLeft.removeLast();
+          }
+        }
+      }
+    });
   }
 
   //https://pub.dev/packages/flutter_image_stack
@@ -408,14 +470,34 @@ class _MessageChatState extends State<MessageChat> {
                                                           messages[index - 1]
                                                                   .type ==
                                                               "listing",
-                                                      child: IconButton(
-                                                        icon: const Icon(
-                                                            Icons
-                                                                .check_circle_outline,
-                                                            size: kIsWeb
-                                                                ? 24
-                                                                : 24),
-                                                        onPressed: () {},
+                                                      child: LikeButton(
+                                                        size: 20,
+                                                        isLiked:
+                                                            messages[index - 1]
+                                                                .accepted,
+                                                        onTap: (isLiked) async {
+                                                          _handleTrade(
+                                                              "accepted",
+                                                              index - 1);
+
+                                                          return messages[
+                                                                  index - 1]
+                                                              .accepted;
+                                                        },
+                                                        likeCountPadding:
+                                                            const EdgeInsets
+                                                                .all(10),
+                                                        likeBuilder: (isLiked) {
+                                                          final colour = isLiked
+                                                              ? Theme.of(
+                                                                      context)
+                                                                  .hoverColor
+                                                              : null;
+                                                          return Icon(
+                                                              Icons
+                                                                  .check_circle_outline,
+                                                              color: colour);
+                                                        },
                                                       ),
                                                     ),
                                                   ),
@@ -423,12 +505,31 @@ class _MessageChatState extends State<MessageChat> {
                                                     visible: messages[index - 1]
                                                             .type ==
                                                         "listing",
-                                                    child: IconButton(
-                                                      icon: const Icon(
-                                                          Icons.cancel_outlined,
-                                                          size:
-                                                              kIsWeb ? 24 : 24),
-                                                      onPressed: () {},
+                                                    child: LikeButton(
+                                                      size: 20,
+                                                      isLiked:
+                                                          messages[index - 1]
+                                                              .declined,
+                                                      onTap: (isLiked) async {
+                                                        _handleTrade("declined",
+                                                            index - 1);
+
+                                                        return messages[
+                                                                index - 1]
+                                                            .declined;
+                                                      },
+                                                      likeCountPadding:
+                                                          const EdgeInsets.all(
+                                                              10),
+                                                      likeBuilder: (isLiked) {
+                                                        final colour = isLiked
+                                                            ? Colors.red
+                                                            : null;
+                                                        return Icon(
+                                                            Icons
+                                                                .remove_circle_outline,
+                                                            color: colour);
+                                                      },
                                                     ),
                                                   ),
                                                 ],
@@ -474,13 +575,32 @@ class _MessageChatState extends State<MessageChat> {
                                                     visible: messages[index - 1]
                                                             .type ==
                                                         "listing",
-                                                    child: IconButton(
-                                                      icon: const Icon(
-                                                          Icons
-                                                              .check_circle_outline,
-                                                          size:
-                                                              kIsWeb ? 24 : 24),
-                                                      onPressed: () {},
+                                                    child: LikeButton(
+                                                      size: 20,
+                                                      isLiked:
+                                                          messages[index - 1]
+                                                              .accepted,
+                                                      onTap: (isLiked) async {
+                                                        _handleTrade("accepted",
+                                                            index - 1);
+
+                                                        return messages[
+                                                                index - 1]
+                                                            .accepted;
+                                                      },
+                                                      likeCountPadding:
+                                                          const EdgeInsets.all(
+                                                              10),
+                                                      likeBuilder: (isLiked) {
+                                                        final colour = isLiked
+                                                            ? Theme.of(context)
+                                                                .hoverColor
+                                                            : null;
+                                                        return Icon(
+                                                            Icons
+                                                                .check_circle_outline,
+                                                            color: colour);
+                                                      },
                                                     ),
                                                   ),
                                                   Padding(
@@ -494,14 +614,32 @@ class _MessageChatState extends State<MessageChat> {
                                                           messages[index - 1]
                                                                   .type ==
                                                               "listing",
-                                                      child: IconButton(
-                                                        icon: const Icon(
-                                                            Icons
-                                                                .cancel_outlined,
-                                                            size: kIsWeb
-                                                                ? 24
-                                                                : 24),
-                                                        onPressed: () {},
+                                                      child: LikeButton(
+                                                        size: 20,
+                                                        isLiked:
+                                                            messages[index - 1]
+                                                                .declined,
+                                                        onTap: (isLiked) async {
+                                                          _handleTrade(
+                                                              "declined",
+                                                              index - 1);
+
+                                                          return messages[
+                                                                  index - 1]
+                                                              .declined;
+                                                        },
+                                                        likeCountPadding:
+                                                            const EdgeInsets
+                                                                .all(10),
+                                                        likeBuilder: (isLiked) {
+                                                          final colour = isLiked
+                                                              ? Colors.red
+                                                              : null;
+                                                          return Icon(
+                                                              Icons
+                                                                  .remove_circle_outline,
+                                                              color: colour);
+                                                        },
                                                       ),
                                                     ),
                                                   ),

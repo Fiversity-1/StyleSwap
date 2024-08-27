@@ -56,8 +56,9 @@ class ChatMessage {
   final String time;
   XFile? images;
   //can be XFile later on but for sake of testing other listings
-
   ImageProvider? additionalListings;
+  bool? accepted;
+  bool? declined;
   String type;
   //Image
   ChatMessage(
@@ -66,7 +67,9 @@ class ChatMessage {
       required this.time,
       required this.type,
       this.images,
-      this.additionalListings});
+      this.additionalListings,
+      this.accepted,
+      this.declined});
 }
 
 List<ChatMessage> messages = [

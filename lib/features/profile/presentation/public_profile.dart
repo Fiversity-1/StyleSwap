@@ -183,7 +183,9 @@ class _PublicProfileState extends State<PublicProfile> {
                                                                 publicProfileExample
                                                                         .personalListings![
                                                                     index],
-                                                            type: "listing"));
+                                                            type: "listing",
+                                                            accepted: false,
+                                                            declined: false));
                                                         Navigator.pushNamed(
                                                           // ignore: use_build_context_synchronously
                                                           context,
