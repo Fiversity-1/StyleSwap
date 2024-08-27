@@ -144,7 +144,7 @@ class _PublicProfileState extends State<PublicProfile> {
                                                       onPressed: () {
                                                         Navigator.pushNamed(
                                                             context,
-                                                            '/clothing_detail');
+                                                            '/clothing_detail_profile');
                                                       }),
                                                 ),
                                                 Padding(

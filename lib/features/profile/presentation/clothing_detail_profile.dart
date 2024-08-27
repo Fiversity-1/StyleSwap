@@ -5,8 +5,8 @@ import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-class ClothingDetailSwipe extends StatelessWidget {
-  const ClothingDetailSwipe({super.key});
+class ClothingDetailProfile extends StatelessWidget {
+  const ClothingDetailProfile({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +27,10 @@ class ClothingDetailSwipe extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                    icon: const Icon(Icons.swipe_down),
-                    iconSize: 25,
+                ElevatedButton(
+                    child: const Text("Back"),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/swipe');
+                      Navigator.pop(context);
                     }),
               ],
             ),
@@ -73,39 +72,31 @@ class ClothingDetailSwipe extends StatelessWidget {
                     leading: const Icon(Icons.numbers),
                   ),
                   ListTile(
-                      selected: true,
-                      title: Text(
-                        "Gender",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      subtitle: Text(
-                        swipeImages[0].details.gender,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      leading: const Icon(
-                        Icons.person,
-                      ),
-                      trailing: const Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      )),
+                    title: Text(
+                      "Gender",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      swipeImages[0].details.gender,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    leading: const Icon(
+                      Icons.person,
+                    ),
+                  ),
                   ListTile(
-                      selected: true,
-                      title: Text(
-                        "Condition",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      subtitle: Text(
-                        swipeImages[0].details.condition,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      leading: const Icon(
-                        Icons.gpp_good_outlined,
-                      ),
-                      trailing: const Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      )),
+                    title: Text(
+                      "Condition",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      swipeImages[0].details.condition,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    leading: const Icon(
+                      Icons.gpp_good_outlined,
+                    ),
+                  ),
                   ListTile(
                     title: Text(
                       "Colour",
