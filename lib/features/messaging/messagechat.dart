@@ -56,8 +56,6 @@ class _MessageChatState extends State<MessageChat> {
       duration: const Duration(milliseconds: 500),
     );
     myFocusNode.requestFocus();
-    // //ChatGpt to unfocus keyboard
-    // FocusScope.of(context).unfocus();
   }
 
   void _handleImage(XFile image) {
@@ -294,6 +292,9 @@ class _MessageChatState extends State<MessageChat> {
                   padding: EdgeInsets.only(bottom: height * 0.074),
                   child: GestureDetector(
                     onTap: () {
+                      FocusScope.of(context).unfocus();
+                    },
+                    onLongPress: () {
                       FocusScope.of(context).unfocus();
                     },
                     child: ListView.builder(
