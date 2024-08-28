@@ -2,6 +2,7 @@
 
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/widgets/browse_photos.dart';
 
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
@@ -99,174 +100,12 @@ class _PublicProfileState extends State<PublicProfile> {
                         context,
                         //PhotoViewGallery Code from pubdev photo_view modified with ChatGPT to stack icon on top
                         MaterialPageRoute(
-                            builder: (context) => Scaffold(
-                                    body: Stack(
-                                  children: [
-                                    PhotoViewGallery.builder(
-                                      itemCount: publicProfileExample
-                                          .personalListings!.length,
-                                      builder: (context, index) {
-                                        return PhotoViewGalleryPageOptions(
-                                          imageProvider: publicProfileExample
-                                              .personalListings![index],
-                                          minScale:
-                                              PhotoViewComputedScale.contained *
-                                                  0.8,
-                                          maxScale:
-                                              PhotoViewComputedScale.covered *
-                                                  2,
-                                        );
-                                      },
-                                      pageController: _pageController =
-                                          PageController(initialPage: index),
-                                      scrollPhysics:
-                                          const BouncingScrollPhysics(),
-                                      enableRotation: true,
-                                    ),
-                                    Column(children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 5),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top:
-                                                              kIsWeb ? 7.5 : 25,
-                                                          left: 5),
-                                                  child: IconButton(
-                                                      icon: const Icon(
-                                                        Icons.info,
-                                                      ),
-                                                      iconSize: 25,
-                                                      onPressed: () {
-                                                        Navigator.pushNamed(
-                                                            context,
-                                                            '/clothing_detail_profile');
-                                                      }),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: kIsWeb
-                                                              ? 7.5
-                                                              : 25),
-                                                  child: IconButton(
-                                                    icon: const Icon(
-                                                      Icons.swap_horiz,
-                                                    ),
-                                                    iconSize: 25,
-                                                    onPressed: () async {
-                                                      if (await confirm(
-                                                        context,
-                                                        title:
-                                                            const Text('Trade'),
-                                                        content: const Text(
-                                                            'Would you like to propose a trade on this item as well?'),
-                                                        textCancel: Text('No',
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .bodyLarge),
-                                                        textOK: Text('Yes',
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .bodyLarge),
-                                                      )) {
-                                                        messages.add(ChatMessage(
-                                                            messageContent: "",
-                                                            messageType:
-                                                                "sender",
-                                                            time: "5:45pm",
-                                                            additionalListings:
-                                                                publicProfileExample
-                                                                        .personalListings![
-                                                                    index],
-                                                            type: "listing",
-                                                            accepted: false,
-                                                            declined: false));
-                                                        Navigator.pushNamed(
-                                                          // ignore: use_build_context_synchronously
-                                                          context,
-                                                          '/chat',
-                                                        );
-                                                      }
-                                                    },
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: kIsWeb ? 7.5 : 25,
-                                                  left: 5),
-                                              child: IconButton(
-                                                  icon: const Icon(
-                                                    Icons.close,
-                                                  ),
-                                                  iconSize: 25,
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  }),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(height: height * 0.4),
-                                      Visibility(
-                                          visible: kIsWeb,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 50),
-                                                child: ElevatedButton(
-                                                    child: const Icon(
-                                                      Icons.arrow_back,
-                                                      size: 35,
-                                                    ),
-                                                    onPressed: () {
-                                                      _pageController.previousPage(
-                                                          duration:
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                      500),
-                                                          curve:
-                                                              Curves.easeInOut);
-                                                    }),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 50),
-                                                child: ElevatedButton(
-                                                    child: const Icon(
-                                                      Icons.arrow_forward,
-                                                      size: 35,
-                                                    ),
-                                                    onPressed: () {
-                                                      _pageController.nextPage(
-                                                          duration:
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                      500),
-                                                          curve:
-                                                              Curves.easeInOut);
-                                                    }),
-                                              ),
-                                            ],
-                                          ))
-                                    ])
-                                  ],
-                                ))),
+                            builder: (context) => BrowsePhoto(
+                                  title: "public",
+                                  gridIndex: index,
+                                  photoListings:
+                                      publicProfileExample.personalListings!,
+                                )),
                       );
                     },
                     child: Image(

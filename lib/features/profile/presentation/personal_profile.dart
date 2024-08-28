@@ -1,15 +1,13 @@
 // profile.dart
 import 'dart:io';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/photo_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_flip_card/flutter_flip_card.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 
@@ -26,9 +24,6 @@ class _ProfileState extends State<Profile> {
   bool editedBio = false;
 
 //List generate line from chatgpt
-  final List<FlipCardController> _flipImage = List.generate(
-      personalProfileExample.personalListings!.length,
-      (index) => FlipCardController());
 
   final _changeBio = TextEditingController();
 
@@ -227,190 +222,14 @@ class _ProfileState extends State<Profile> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            //PhotoViewGallery Code from pubdev photo_view modified with ChatGPT to stack icon on top
+                            //PhotoViewGallery Code (within BrowsePhoto) from pubdev photo_view modified with ChatGPT to stack icon on top
                             MaterialPageRoute(
-                                builder: (context) => Scaffold(
-                                        body: Stack(
-                                      children: [
-                                        PhotoViewGallery.builder(
-                                          itemCount: personalProfileExample
-                                              .personalListings!.length,
-                                          builder: (context, index) {
-                                            return PhotoViewGalleryPageOptions(
-                                              imageProvider:
-                                                  personalProfileExample
-                                                      .personalListings![index],
-                                              minScale: PhotoViewComputedScale
-                                                      .contained *
-                                                  0.8,
-                                              maxScale: PhotoViewComputedScale
-                                                      .covered *
-                                                  2,
-                                            );
-                                          },
-                                          pageController: _pageController =
-                                              PageController(
-                                                  initialPage: index),
-                                          scrollPhysics:
-                                              const BouncingScrollPhysics(),
-                                          enableRotation: true,
-                                        ),
-                                        Column(children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: kIsWeb ? 0 : 25),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 5, left: 5),
-                                                  child: IconButton(
-                                                      icon: const Icon(
-                                                        Icons.info,
-                                                      ),
-                                                      iconSize: 25,
-                                                      onPressed: () {
-                                                        showModalBottomSheet(
-                                                            context: context,
-                                                            builder: (context) {
-                                                              return Wrap(
-                                                                children: [
-                                                                  const ListTile(
-                                                                    leading: Icon(
-                                                                        Icons
-                                                                            .date_range),
-                                                                    title: Text(
-                                                                        'Date Listed:'),
-                                                                    subtitle: Text(
-                                                                        '27/08/2024'),
-                                                                  ),
-                                                                  const ListTile(
-                                                                      leading: Icon(
-                                                                          Icons
-                                                                              .people),
-                                                                      title: Text(
-                                                                          'Views'),
-                                                                      subtitle:
-                                                                          Text(
-                                                                              "15")),
-                                                                  const ListTile(
-                                                                    leading: Icon(
-                                                                        Icons
-                                                                            .swap_horiz),
-                                                                    title: Text(
-                                                                        'Interested People'),
-                                                                    subtitle:
-                                                                        Text(
-                                                                            "15"),
-                                                                  ),
-                                                                  Padding(
-                                                                      padding: const EdgeInsets
-                                                                          .only(
-                                                                          bottom:
-                                                                              5),
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                        children: [
-                                                                          ElevatedButton(
-                                                                            onPressed:
-                                                                                () async {
-                                                                              if (await confirm(
-                                                                                context,
-                                                                                title: const Text('Confirm'),
-                                                                                content: const Text('Would you like to remove?'),
-                                                                                textOK: Text('Yes', style: Theme.of(context).textTheme.bodyLarge),
-                                                                                textCancel: Text('No', style: Theme.of(context).textTheme.bodyLarge),
-                                                                              )) {
-                                                                                setState(() {
-                                                                                  personalProfileExample.personalListings!.removeAt(index);
-                                                                                });
-                                                                              }
-                                                                            },
-                                                                            child:
-                                                                                const Text("Delete Listing"),
-                                                                          )
-                                                                        ],
-                                                                      ))
-                                                                ],
-                                                              );
-                                                            });
-                                                      }),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 5, left: 5),
-                                                  child: IconButton(
-                                                      icon: const Icon(
-                                                        Icons.close,
-                                                      ),
-                                                      iconSize: 25,
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      }),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(height: height * 0.4),
-                                          Visibility(
-                                              visible: kIsWeb,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 50),
-                                                    child: ElevatedButton(
-                                                        child: const Icon(
-                                                          Icons.arrow_back,
-                                                          size: 35,
-                                                        ),
-                                                        onPressed: () {
-                                                          _pageController.previousPage(
-                                                              duration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          500),
-                                                              curve: Curves
-                                                                  .easeInOut);
-                                                        }),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 50),
-                                                    child: ElevatedButton(
-                                                        child: const Icon(
-                                                          Icons.arrow_forward,
-                                                          size: 35,
-                                                        ),
-                                                        onPressed: () {
-                                                          _pageController.nextPage(
-                                                              duration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          500),
-                                                              curve: Curves
-                                                                  .easeInOut);
-                                                        }),
-                                                  ),
-                                                ],
-                                              ))
-                                        ])
-                                      ],
-                                    ))),
+                                builder: (context) => BrowsePhoto(
+                                      title: "personal",
+                                      gridIndex: index,
+                                      photoListings: personalProfileExample
+                                          .personalListings!,
+                                    )),
                           );
                         },
                         child: Image(

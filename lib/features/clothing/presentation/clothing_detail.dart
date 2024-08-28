@@ -1,18 +1,21 @@
 import 'package:clothing_swap/features/clothing/presentation/clothing_item.dart';
-import 'package:easy_image_viewer/easy_image_viewer.dart';
+import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
-class ClothingDetailSwipe extends StatelessWidget {
-  const ClothingDetailSwipe({super.key});
+class ClothingDetail extends StatelessWidget {
+  const ClothingDetail({super.key});
+  //Need a matching algorithm - based on preferences/ latest search
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
+    PageController _pageController;
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
@@ -34,7 +37,7 @@ class ClothingDetailSwipe extends StatelessWidget {
                           kIsWeb ? Icons.arrow_upward : Icons.swipe_down),
                       iconSize: kIsWeb ? 35 : 30,
                       onPressed: () {
-                        Navigator.pushNamed(context, '/swipe');
+                        Navigator.pop(context);
                       }),
                 ),
               ],
@@ -132,15 +135,15 @@ class ClothingDetailSwipe extends StatelessWidget {
               itemBuilder: (_, index) => GridTile(
                 child: GestureDetector(
                   onTap: () {
-                    MultiImageProvider multiImageProvider = MultiImageProvider(
-                        swipeImages[0].details.images,
-                        initialIndex: index);
-                    showImageViewerPager(
+                    Navigator.push(
                       context,
-                      //ChatGPT suggested using FileImage instead of Image.File
-                      multiImageProvider,
-                      swipeDismissible: true,
-                      doubleTapZoomable: true,
+                      //PhotoViewGallery Code from pubdev photo_view modified with ChatGPT to stack icon on top
+                      MaterialPageRoute(
+                          builder: (context) => BrowsePhoto(
+                                title: "details",
+                                gridIndex: index,
+                                photoListings: swipeImages[0].details.images!,
+                              )),
                     );
                   },
                   child: Image(

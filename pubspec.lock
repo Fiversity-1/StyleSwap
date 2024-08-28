@@ -222,14 +222,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.1"
-  flutter_scroll_to_top:
-    dependency: "direct main"
-    description:
-      name: flutter_scroll_to_top
-      sha256: "85ebcbb9deda26eb1c98645c441d921cc25808cbaab3f5487badb91f155db106"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.0"
   flutter_slidable:
     dependency: "direct main"
     description:
@@ -605,6 +597,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  swipe:
+    dependency: "direct main"
+    description:
+      name: swipe
+      sha256: e2f823093ef0161698cc380f5f868a6be380cb5c90c1c0ddc7fa2b0a7eadfa0e
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   term_glyph:
     dependency: transitive
     description:

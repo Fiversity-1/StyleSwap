@@ -11,7 +11,7 @@ class SwipePage extends StatelessWidget {
     return Scaffold(
       body: PageView(
         scrollDirection: Axis.vertical,
-        children: const [SwipePageTop(), ClothingDetailSwipe()],
+        children: const [SwipePageTop(), ClothingDetail()],
       ),
     );
   }
