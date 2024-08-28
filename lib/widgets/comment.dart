@@ -16,16 +16,6 @@ class CommentsState extends State<Comments> {
   final _sendComment = TextEditingController();
   final _scroller = ScrollController();
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   // You can use didChangeDependencies to restore scroll position if necessary
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     _scroller.animateTo(_scroller.position.maxScrollExtent,
-  //         curve: Curves.easeOut, duration: const Duration(milliseconds: 500));
-  //   });
-  // }
-
   void _handleReaction(String value, int index) {
     setState(() {
       String lastReaction = "";
@@ -102,6 +92,8 @@ class CommentsState extends State<Comments> {
         : null);
     _sendComment.clear();
     myFocusNode.requestFocus();
+    _scroller.animateTo(0,
+        curve: Curves.easeOut, duration: const Duration(milliseconds: 500));
   }
 
   final FocusNode myFocusNode = FocusNode();
@@ -151,11 +143,11 @@ class CommentsState extends State<Comments> {
                       width: kIsWeb ? width * 0.6 : width * 0.9,
                       height: height * 0.65,
                       child: SingleChildScrollView(
+                        controller: _scroller,
                         child: SizedBox(
                           width: width * 0.6,
                           child: ListView.builder(
                               reverse: true,
-                              controller: _scroller,
                               shrinkWrap: true,
 
                               //physics line  from chatGPT
