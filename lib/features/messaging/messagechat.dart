@@ -32,8 +32,10 @@ class _MessageChatState extends State<MessageChat> {
     super.didChangeDependencies();
     // You can use didChangeDependencies to restore scroll position if necessary
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scroller.animateTo(_scroller.position.maxScrollExtent + 500,
-          curve: Curves.easeOut, duration: const Duration(milliseconds: 500));
+      if (messages[messages.length - 1].type == "listing") {
+        _scroller.animateTo(_scroller.position.maxScrollExtent,
+            curve: Curves.easeOut, duration: const Duration(milliseconds: 500));
+      }
     });
   }
 
@@ -181,6 +183,22 @@ class _MessageChatState extends State<MessageChat> {
     ),
   ];
 
+  final List<Widget> _empty = [
+    ClipOval(
+      //Chatgpt for transform scale - changes image scale
+      child: Transform.scale(
+        scale: 0.6, // Adjust the scale factor as needed
+        child: Image.asset(
+          'lib/images/noImage.png',
+          width: 100,
+          height: 100,
+          fit: BoxFit
+              .none, // You might want to use BoxFit.cover to fill the oval
+        ),
+      ),
+    )
+  ];
+
   final ImagePicker _picker = ImagePicker();
   XFile? _image;
 
@@ -264,35 +282,41 @@ class _MessageChatState extends State<MessageChat> {
                                       builder: (context) {
                                         return StatefulBuilder(
                                           builder: (BuildContext context,
-                                              StateSetter
-                                                  setState /*You can rename this!*/) {
-                                            return ListView.builder(
-                                                shrinkWrap: true,
-                                                itemCount: _imagesLeft.length,
-                                                itemBuilder: (context, index) {
-                                                  return ListTile(
-                                                    minLeadingWidth: 150,
-                                                    minTileHeight: 150,
-                                                    leading: Text(
-                                                        "Your item $index"),
-                                                    trailing: IconButton(
-                                                      icon: const Icon(Icons
-                                                          .remove_circle_outline),
-                                                      onPressed: () {
-                                                        setState(() {
+                                              StateSetter setBottomState) {
+                                            return SizedBox(
+                                              width: kIsWeb
+                                                  ? width * 0.25
+                                                  : width * 0.5,
+                                              child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: _imagesLeft.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                      minLeadingWidth: 0,
+                                                      title: CircleAvatar(
+                                                          radius: 50,
+                                                          child: _imagesLeft[
+                                                              index]),
+                                                      trailing: IconButton(
+                                                        icon: const Icon(Icons
+                                                            .remove_circle_outline),
+                                                        onPressed: () {
                                                           _imagesLeft
                                                               .removeAt(index);
-                                                          if (_imagesLeft
-                                                              .isEmpty) {
-                                                            Navigator.pop(
-                                                                context);
-                                                          }
-                                                        });
-                                                      },
-                                                    ),
-                                                    title: _imagesLeft[index],
-                                                  );
-                                                });
+                                                          setState(() {
+                                                            if (_imagesLeft
+                                                                .isEmpty) {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            }
+                                                          });
+                                                          setBottomState(() {});
+                                                        },
+                                                      ),
+                                                    );
+                                                  }),
+                                            );
                                           },
                                         );
                                       });
@@ -301,25 +325,28 @@ class _MessageChatState extends State<MessageChat> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     FlutterImageStack.widgets(
-                                      showTotalCount: true,
-                                      totalCount: _imagesLeft.length,
-                                      itemRadius: 70, // Radius of each images
-                                      itemCount: _imagesLeft
-                                          .length, // Maximum number of images to be shown in stack
-                                      itemBorderWidth: 3,
-                                      children:
-                                          _imagesLeft, // Border width around the images
-                                    ),
+                                        showTotalCount: true,
+                                        totalCount: _imagesLeft.length,
+                                        itemRadius: 70,
+                                        itemCount: _imagesLeft.isNotEmpty
+                                            ? _imagesLeft.length
+                                            : _empty.length,
+                                        itemBorderWidth: 3,
+                                        children: _imagesLeft.isNotEmpty
+                                            ? _imagesLeft
+                                            : _empty),
                                     const Icon(Icons.swap_horiz, size: 30),
                                     FlutterImageStack.widgets(
                                       showTotalCount: true,
                                       totalCount: _imagesRight.length,
-                                      itemRadius: 70, // Radius of each images
-                                      itemCount: _imagesRight
-                                          .length, // Maximum number of images to be shown in stack
+                                      itemRadius: 70,
+                                      itemCount: _imagesRight.isNotEmpty
+                                          ? _imagesRight.length
+                                          : _empty.length,
                                       itemBorderWidth: 3,
-                                      children:
-                                          _imagesRight, // Border width around the images
+                                      children: _imagesRight.isNotEmpty
+                                          ? _imagesRight
+                                          : _empty,
                                     ),
                                   ],
                                 ),
