@@ -52,6 +52,7 @@ dependencies:
   easy_image_viewer: ^1.5.1
   photo_view: ^0.15.0
   flutter_image_stack: ^0.0.7
+  flutter_scroll_to_top: ^2.2.4
 
   
   

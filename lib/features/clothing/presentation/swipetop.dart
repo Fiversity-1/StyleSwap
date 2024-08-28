@@ -80,142 +80,169 @@ class _SwipePageTopState extends State<SwipePageTop> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-        bottomNavigationBar: const CustomBottomNavBar(
-          currentIndex: 1,
-        ),
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: CustomTopAppBar(),
-        ),
-        body: Stack(
-          alignment: Alignment.center,
-          children: [
-            Positioned.fill(
-              child: Opacity(
-                opacity: 0.10,
-                child:
-                    Image.asset('lib/images/backdrop3.jpg', fit: BoxFit.cover),
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+      bottomNavigationBar: const CustomBottomNavBar(
+        currentIndex: 1,
+      ),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: CustomTopAppBar(),
+      ),
+      body: Row(
+        children: [
+          Visibility(
+            visible: kIsWeb,
+            child: Expanded(
+                flex: 1,
+                child: Container(
+                  color: Theme.of(context).canvasColor,
+                )),
+          ),
+          Expanded(
+            flex: 4,
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: (10)),
-                  child: Container(
-                    key: _tapingKey,
-                    color: Theme.of(context)
-                        .scaffoldBackgroundColor
-                        .withOpacity(0.9),
-                    width: (kIsWeb) ? width * 0.50625 : width * 0.9125,
-                    height: (kIsWeb) ? height * 0.675 : height * 0.58,
+                Positioned.fill(
+                  child: Opacity(
+                    opacity: 0.10,
+                    child: Image.asset('lib/images/backdrop3.jpg',
+                        fit: BoxFit.cover),
                   ),
                 ),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(),
-                  child: SizedBox(
-                    height: (kIsWeb) ? height * 0.7 : height * 0.6,
-                    width: (kIsWeb) ? width * 0.525 : width * 0.925,
-                    child: CardSwiper(
-                      cardsCount: swipeImages.length,
-                      scale: 0.6,
-                      numberOfCardsDisplayed: 3,
-                      onSwipe: (previousIndex, currentIndex, direction) {
-                        _incrementCounter();
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: (10)),
+                      child: Container(
+                        key: _tapingKey,
+                        color: Theme.of(context)
+                            .scaffoldBackgroundColor
+                            .withOpacity(0.9),
+                        width: (kIsWeb) ? width * 0.50625 : width * 0.9125,
+                        height: (kIsWeb) ? height * 0.675 : height * 0.58,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(),
+                      child: SizedBox(
+                        height: (kIsWeb) ? height * 0.7 : height * 0.6,
+                        width: (kIsWeb) ? width * 0.525 : width * 0.925,
+                        child: CardSwiper(
+                          cardsCount: swipeImages.length,
+                          scale: 0.6,
+                          numberOfCardsDisplayed: 3,
+                          onSwipe: (previousIndex, currentIndex, direction) {
+                            _incrementCounter();
 
-                        if (direction.name == 'right') {
-                          //modified from pubdev toastification package
-                          toastification.showCustom(
-                            context: context,
-                            autoCloseDuration: const Duration(seconds: 3),
-                            alignment: Alignment.bottomRight,
-                            builder: (BuildContext context,
-                                ToastificationItem holder) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Theme.of(context).hoverColor,
-                                ),
-                                padding: const EdgeInsets.all(16),
-                                margin: const EdgeInsets.all(8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text('You\'ve got a New Match!',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    const SizedBox(height: 16),
-                                    Row(
+                            if (direction.name == 'right') {
+                              //modified from pubdev toastification package
+                              toastification.showCustom(
+                                context: context,
+                                autoCloseDuration: const Duration(seconds: 3),
+                                alignment: Alignment.bottomRight,
+                                builder: (BuildContext context,
+                                    ToastificationItem holder) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: Theme.of(context).hoverColor,
+                                    ),
+                                    padding: const EdgeInsets.all(16),
+                                    margin: const EdgeInsets.all(8),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.pushNamed(
-                                                context, '/chat');
-                                          },
-                                          child: const Text('Message Now!'),
+                                        const Text('You\'ve got a New Match!',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                        const SizedBox(height: 16),
+                                        Row(
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pushNamed(
+                                                    context, '/chat');
+                                              },
+                                              child: const Text('Message Now!'),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
+                                  );
+                                },
                               );
-                            },
-                          );
-                        }
-                        return true;
-                      },
-                      allowedSwipeDirection: const AllowedSwipeDirection.only(
-                          left: true, right: true),
-                      cardBuilder: (context, index, percentThresholdX,
-                          percentThresholdY) {
-                        final safeIndex = index % swipeImages.length;
-                        return ClothingCard(item: swipeImages[safeIndex]);
-                      },
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        swipeImages[_counter].name,
-                        style: Theme.of(context).textTheme.headlineMedium,
+                            }
+                            return true;
+                          },
+                          allowedSwipeDirection:
+                              const AllowedSwipeDirection.only(
+                                  left: true, right: true),
+                          cardBuilder: (context, index, percentThresholdX,
+                              percentThresholdY) {
+                            final safeIndex = index % swipeImages.length;
+                            return ClothingCard(item: swipeImages[safeIndex]);
+                          },
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(swipeImages[_counter].location,
-                          style: Theme.of(context).textTheme.headlineMedium),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: (7.5)),
-                  child: IconButton(
-                      icon: const Icon(
-                          kIsWeb ? Icons.arrow_downward : Icons.swipe_up),
-                      iconSize: 35,
-                      key: _moreDetailKey,
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/clothing_detail');
-                      }),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            swipeImages[_counter].name,
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(swipeImages[_counter].location,
+                              style:
+                                  Theme.of(context).textTheme.headlineMedium),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: (7.5)),
+                      child: IconButton(
+                          icon: const Icon(
+                              kIsWeb ? Icons.arrow_downward : Icons.swipe_up),
+                          iconSize: 35,
+                          key: _moreDetailKey,
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/clothing_detail');
+                          }),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ));
+          ),
+          Visibility(
+            visible: kIsWeb,
+            child: Expanded(
+                flex: 1,
+                child: Container(
+                  color: Theme.of(context).canvasColor,
+                )),
+          ),
+        ],
+      ),
+    );
   }
 
 //https://github.com/djshah17/Flutter-Tutorial-Coach-Mark-Sample/blob/master/lib/my_tutorial_coach_mark_screen.dart

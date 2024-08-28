@@ -1,5 +1,6 @@
 // signup.dart
 import 'package:clothing_swap/theme/theme.dart';
+import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
@@ -20,6 +21,9 @@ class _PreferencesState extends State<Preferences> {
         ? chosenValue = "Light"
         : chosenValue = "Dark";
     return Scaffold(
+      bottomNavigationBar: const CustomBottomNavBar(
+        currentIndex: 3,
+      ),
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
