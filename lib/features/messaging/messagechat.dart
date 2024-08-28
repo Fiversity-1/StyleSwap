@@ -75,9 +75,10 @@ class _MessageChatState extends State<MessageChat> {
     );
   }
 
-//Chat modified
+//Chat GPT modified of original code
   void _handleTrade(String type, int index) async {
     setState(() {
+      // Handle acceptance
       if (type == "accepted") {
         if (messages[index].accepted != null) {
           messages[index].accepted = !messages[index].accepted!;
@@ -86,7 +87,42 @@ class _MessageChatState extends State<MessageChat> {
         if (messages[index].declined == true) {
           messages[index].declined = false;
         }
-      } else {
+
+        // Add image if accepted
+        if (messages[index].accepted == true) {
+          ClipOval newClipOval = ClipOval(
+            child: Image(
+              image: messages[index].additionalListings!,
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
+            ),
+          );
+
+          if (messages[index].messageType == "sender") {
+            if (!_clipOvalExistsInList(
+                _imagesRight, messages[index].additionalListings!)) {
+              _imagesRight.add(newClipOval);
+            }
+          } else {
+            if (!_clipOvalExistsInList(
+                _imagesLeft, messages[index].additionalListings!)) {
+              _imagesLeft.add(newClipOval);
+            }
+          }
+        } else if (messages[index].accepted == false) {
+          // Remove image if no longer accepted
+          if (messages[index].messageType == "sender") {
+            _removeClipOvalFromList(
+                _imagesRight, messages[index].additionalListings!);
+          } else {
+            _removeClipOvalFromList(
+                _imagesLeft, messages[index].additionalListings!);
+          }
+        }
+      }
+      // Handle declination
+      else {
         if (messages[index].declined != null) {
           messages[index].declined = !messages[index].declined!;
         }
@@ -94,45 +130,40 @@ class _MessageChatState extends State<MessageChat> {
         if (messages[index].accepted == true) {
           messages[index].accepted = false;
         }
-      }
-      //Now add/remove image right or left
-      if (messages[index].accepted != null) {
-        if (messages[index].accepted == true) {
+
+        // Remove image if declined
+        if (messages[index].declined == true) {
           if (messages[index].messageType == "sender") {
-            _imagesRight.add(
-              ClipOval(
-                child: Image(
-                  image: messages[index].additionalListings!,
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            );
+            _removeClipOvalFromList(
+                _imagesRight, messages[index].additionalListings!);
           } else {
-            _imagesLeft.add(
-              ClipOval(
-                child: Image(
-                  image: messages[index].additionalListings!,
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            );
+            _removeClipOvalFromList(
+                _imagesLeft, messages[index].additionalListings!);
           }
         }
       }
-      if (messages[index].declined != null) {
-        if (messages[index].declined == true ||
-            messages[index].accepted == false) {
-          if (messages[index].messageType == "sender") {
-            _imagesRight.removeLast();
-          } else {
-            _imagesLeft.removeLast();
-          }
-        }
+    });
+  }
+
+// Helper function to check if a ClipOval containing a specific ImageProvider exists in the list
+  bool _clipOvalExistsInList(List<Widget> list, ImageProvider imageProvider) {
+    return list.any((widget) {
+      if (widget is ClipOval) {
+        Image? image = widget.child as Image?;
+        return image?.image == imageProvider;
       }
+      return false;
+    });
+  }
+
+// Helper function to remove a ClipOval containing a specific ImageProvider from the list
+  void _removeClipOvalFromList(List<Widget> list, ImageProvider imageProvider) {
+    list.removeWhere((widget) {
+      if (widget is ClipOval) {
+        Image? image = widget.child as Image?;
+        return image?.image == imageProvider;
+      }
+      return false;
     });
   }
 
@@ -159,7 +190,7 @@ class _MessageChatState extends State<MessageChat> {
   final List<Widget> _imagesRight = [
     ClipOval(
       child: Image.asset(
-        'lib/images/2.jpg',
+        'lib/images/op.jpg',
         width: 100,
         height: 100,
         fit: BoxFit.cover,
@@ -175,7 +206,7 @@ class _MessageChatState extends State<MessageChat> {
     ),
     ClipOval(
       child: Image.asset(
-        'lib/images/4.jpg',
+        'lib/images/backdrop.jpg',
         width: 100,
         height: 100,
         fit: BoxFit.cover,
