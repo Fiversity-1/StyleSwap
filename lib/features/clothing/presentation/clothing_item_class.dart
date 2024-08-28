@@ -52,8 +52,7 @@ List swipeImages = [
           condition: 'Good',
           colours: ['Black'],
           images: ([
-            const AssetImage('lib/images/1.jpg'),
-            const AssetImage('lib/images/1-extra.jpg'),
+            const AssetImage('lib/images/2.jpg'),
           ]))),
   ClothingItem(
       name: 'Bob',
@@ -70,8 +69,7 @@ List swipeImages = [
           condition: 'Good',
           colours: ['Black'],
           images: ([
-            const AssetImage('lib/images/1.jpg'),
-            const AssetImage('lib/images/1-extra.jpg'),
+            const AssetImage('lib/images/3.jpg'),
           ]))),
   ClothingItem(
     name: 'Jacob',
@@ -108,8 +106,7 @@ List swipeImages = [
         condition: 'Good',
         colours: ['Black'],
         images: ([
-          const AssetImage('lib/images/1.jpg'),
-          const AssetImage('lib/images/1-extra.jpg'),
+          const AssetImage('lib/images/4.jpg'),
         ])),
   ),
 ];

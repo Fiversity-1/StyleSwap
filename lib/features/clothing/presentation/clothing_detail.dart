@@ -1,11 +1,9 @@
-import 'package:clothing_swap/features/clothing/presentation/clothing_item.dart';
+import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
 import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:photo_view/photo_view.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 
 class ClothingDetail extends StatelessWidget {
   const ClothingDetail({super.key});

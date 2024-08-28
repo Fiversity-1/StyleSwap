@@ -1,10 +1,14 @@
+import 'package:clothing_swap/features/clothing/presentation/fun_fact.dart';
+import 'package:clothing_swap/features/clothing/presentation/fun_fact_class.dart';
+import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
+import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-import 'package:clothing_swap/features/clothing/presentation/clothing_item.dart';
+import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_build.dart';
 import 'package:toastification/toastification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,9 +70,13 @@ class _SwipePageTopState extends State<SwipePageTop> {
     if (_counter == swipeImages.length) {
       _counter = 0;
     }
-    if (_counter % 4 == 0 && _counter != 0) {
-      //Show fun fact
+  }
+
+  bool _checkCount() {
+    if (_counter % 3 == 0 && _counter != 0) {
+      return false;
     }
+    return true;
   }
 
   final GlobalKey _tapingKey = GlobalKey();
@@ -134,14 +142,15 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         height: (kIsWeb) ? height * 0.7 : height * 0.6,
                         width: (kIsWeb) ? width * 0.525 : width * 0.925,
                         child: CardSwiper(
-                          cardsCount: swipeImages.length,
+                          cardsCount: swipeImages.length +
+                              funFactExample.length, // Total count of cards
                           scale: 0.6,
+                          isLoop: true,
                           numberOfCardsDisplayed: 3,
                           onSwipe: (previousIndex, currentIndex, direction) {
-                            _incrementCounter();
+                            _incrementCounter(); // Increment count on swipe
 
                             if (direction.name == 'right') {
-                              //modified from pubdev toastification package
                               toastification.showCustom(
                                 context: context,
                                 autoCloseDuration: const Duration(seconds: 3),
@@ -187,8 +196,19 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                   left: true, right: true),
                           cardBuilder: (context, index, percentThresholdX,
                               percentThresholdY) {
-                            final safeIndex = index % swipeImages.length;
-                            return ClothingCard(item: swipeImages[safeIndex]);
+                            final cardIndex = index %
+                                (swipeImages.length + funFactExample.length);
+                            //ChatGPT modified original code for switching logic
+                            // Determine card type based on the cardIndex
+                            if ((cardIndex + 1) % 6 == 0) {
+                              final safeIndexFact =
+                                  (cardIndex ~/ 6) % funFactExample.length;
+                              return FunFactCard(
+                                  funFact: funFactExample[safeIndexFact]);
+                            } else {
+                              final safeIndex = cardIndex % swipeImages.length;
+                              return ClothingCard(item: swipeImages[safeIndex]);
+                            }
                           },
                         ),
                       ),
