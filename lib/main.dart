@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
         '/advanced_search': (context) => const AdvancedSearch(),
         '/message': (context) => const Message(title: 'Message'),
         '/swipe': (context) => const SwipePage(),
-        '/chat': (context) => const MessageChat(title: ''),
+        '/chat': (context) => const MessageChat(),
         '/comment': (context) => const Comments(),
         '/login': (context) => const Login(title: 'Login'),
         '/add_clothing_item': (context) => AddClothingItemPage(),

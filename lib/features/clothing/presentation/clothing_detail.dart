@@ -1,4 +1,5 @@
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
+import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
@@ -47,7 +48,7 @@ class ClothingDetail extends StatelessWidget {
               children: [
                 ListTile(
                   title: Text(
-                    swipeImages[0].details.bio,
+                    publicListings[0].details.bio,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   leading: const Icon(Icons.info),
@@ -58,7 +59,7 @@ class ClothingDetail extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   subtitle: Text(
-                    swipeImages[0].details.type,
+                    publicListings[0].details.type,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   leading: const Icon(Icons.category),
@@ -69,7 +70,7 @@ class ClothingDetail extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   subtitle: Text(
-                    swipeImages[0].details.size.toString(),
+                    publicListings[0].details.size.toString(),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   leading: const Icon(Icons.numbers),
@@ -81,7 +82,7 @@ class ClothingDetail extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      swipeImages[0].details.gender,
+                      publicListings[0].details.gender,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(
@@ -98,7 +99,7 @@ class ClothingDetail extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      swipeImages[0].details.condition,
+                      publicListings[0].details.condition,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(
@@ -114,7 +115,7 @@ class ClothingDetail extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   subtitle: Text(
-                    swipeImages[0].details.colours.join(", "),
+                    publicListings[0].details.colours.join(", "),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   leading: const Icon(Icons.palette),
@@ -140,16 +141,17 @@ class ClothingDetail extends StatelessWidget {
                           builder: (context) => BrowsePhoto(
                                 title: "details",
                                 gridIndex: index,
-                                photoListings: swipeImages[0].details.images!,
+                                photoListings:
+                                    publicListings[0].details.images!,
                               )),
                     );
                   },
                   child: Image(
                       fit: BoxFit.cover,
-                      image: swipeImages[0].details.images[index]),
+                      image: publicListings[0].details.images[index]),
                 ),
               ),
-              itemCount: swipeImages[0].details.images.length,
+              itemCount: publicListings[0].details.images.length,
             ),
           ]),
         ),

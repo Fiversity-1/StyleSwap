@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
+import 'package:provider/provider.dart';
 import 'package:swipe/swipe.dart';
 
 class BrowsePhoto extends StatefulWidget {
@@ -27,6 +28,8 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
 
   @override
   Widget build(BuildContext context) {
+    final chatManager = Provider.of<ChatManager>(context);
+    final chat = chatManager.selectedChat;
     double height = MediaQuery.of(context).size.height;
     PageController _pageController;
     return Scaffold(
@@ -175,15 +178,21 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                               .textTheme
                                               .bodyLarge),
                                     )) {
-                                      messages.add(ChatMessage(
-                                          messageContent: "",
-                                          messageType: "sender",
-                                          time: "5:45pm",
-                                          additionalListings: widget
-                                              .photoListings![widget.gridIndex],
-                                          type: "listing",
-                                          accepted: false,
-                                          declined: false));
+                                      chatManager.addChatMessage(
+                                          chat!.id,
+                                          ChatMessage(
+                                              senderUserId: chat.currentUserId,
+                                              receiverUserId: chat.otherUserId,
+                                              messageContent:
+                                                  "New trade proposed",
+                                              messageType: "sender",
+                                              time: "5:45pm",
+                                              additionalListings:
+                                                  widget.photoListings![
+                                                      widget.gridIndex],
+                                              type: "listing",
+                                              accepted: false,
+                                              declined: false));
                                       Navigator.pushNamed(
                                         // ignore: use_build_context_synchronously
                                         context,

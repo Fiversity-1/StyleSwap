@@ -53,6 +53,7 @@ dependencies:
   photo_view: ^0.15.0
   flutter_image_stack: ^0.0.7
   swipe: ^0.0.1
+  uuid: ^4.4.2
 
   
   

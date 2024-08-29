@@ -1,41 +1,74 @@
+import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
+//Original code modified by chatGPT to incorporate better state management
 
-//Original code modified to implement provider ChatGPT
 class ChatListing {
-  final String id; // Unique identifier for each chat
+  final String id;
   String name;
   String previewContent;
   String time;
   bool opened;
-  AssetImage image;
+  ImageProvider image;
   List<ChatMessage> messages;
+  final String otherUserId;
+  final String currentUserId;
 
   ChatListing({
-    required this.id, // Initialize the id field
+    String? id,
     required this.name,
     required this.previewContent,
     required this.time,
     required this.opened,
     required this.image,
+    required this.otherUserId,
+    required this.currentUserId,
     List<ChatMessage>? messages,
-  }) : messages = messages ?? [];
+  })  : id = id ?? const Uuid().v4(),
+        messages = messages ?? [];
+
+  void updatePreview(String content, String timestamp) {
+    previewContent = content;
+    time = timestamp;
+  }
+
+  void addMessage(ChatMessage message) {
+    messages.add(message);
+    updatePreview(message.messageContent, message.time);
+  }
 }
 
 class ChatManager with ChangeNotifier {
-  final UserManager userManager; // Reference to UserManager
+  final UserManager userManager;
+  final Uuid _uuid = const Uuid();
 
-  List<ChatListing> _chats =
-      []; // This list should be derived from the current user
+  List<ChatListing> _chats = [];
+  String? _selectedChatId;
 
   ChatManager(this.userManager) {
-    // Initialize _chats with the current user's chat listings
     _initializeChats();
   }
 
   List<ChatListing> get chats => _chats;
+  ChatListing? get selectedChat {
+    if (_selectedChatId == null) return null;
+    try {
+      return _chats.firstWhere((chat) => chat.id == _selectedChatId!);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  ChatListing? findChatByUserId(String userId) {
+    try {
+      return _chats.firstWhere((chat) => chat.otherUserId == userId);
+    } catch (e) {
+      return null; // Return null if no match is found
+    }
+  }
 
   void _initializeChats() {
     final currentUser = userManager.currentUser;
@@ -48,52 +81,69 @@ class ChatManager with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeChat(ChatListing chat) {
-    _chats.remove(chat);
+  void removeChat(String chatId) {
+    _chats.removeWhere((chat) => chat.id == chatId);
     notifyListeners();
   }
 
-  void updateChatMessage(String chatId, ChatMessage message) {
+  void addChatMessage(String chatId, ChatMessage message) {
     final chat = _chats.firstWhere((chat) => chat.id == chatId);
-    chat.messages.add(message);
-    chat.previewContent = message.messageContent.substring(0, 5);
-    chat.time = message.time;
+    chat.addMessage(message);
     notifyListeners();
   }
 
-  void setChatOpened(String chatId, bool opened) {
+  void updateTradeAcceptance(String chatId, String messageId) {
+    final chat = _chats.firstWhere((chat) => chat.id == chatId);
+    final message = chat.messages.firstWhere((msg) => msg.id == messageId);
+    message.accepted = !(message.accepted ?? false); // Toggle acceptance
+    notifyListeners();
+  }
+
+  void updateTradeDecline(String chatId, String messageId) {
+    final chat = _chats.firstWhere((chat) => chat.id == chatId);
+    final message = chat.messages.firstWhere((msg) => msg.id == messageId);
+    message.declined = !(message.declined ?? false); // Toggle decline
+    notifyListeners();
+  }
+
+  void setChatOpened(
+      String chatId, bool opened, String preview, String timestamp) {
     final chat = _chats.firstWhere((chat) => chat.id == chatId);
     chat.opened = opened;
+    chat.updatePreview(preview, timestamp);
+    notifyListeners();
+  }
+
+  void selectChat(String chatId) {
+    _selectedChatId = chatId;
     notifyListeners();
   }
 }
 
 class ChatMessage {
+  final String id; // Unique identifier for each message
   final String messageContent;
   final String messageType;
   final String time;
   XFile? images;
-  //can be XFile later on but for sake of testing other listings
   ImageProvider? additionalListings;
   bool? accepted;
   bool? declined;
   final String type;
-  //Image
-  ChatMessage(
-      {required this.messageContent,
-      required this.messageType,
-      required this.time,
-      required this.type,
-      this.images,
-      this.additionalListings,
-      this.accepted,
-      this.declined});
-}
+  final String senderUserId; // ID of the user who sent the message
+  final String receiverUserId; // ID of the user who received the message
 
-List<ChatMessage> messages = [
-  ChatMessage(
-      messageContent: "Hey are you keen on trading?",
-      messageType: "receiver",
-      type: "message",
-      time: "5:45pm"),
-];
+  ChatMessage({
+    String? id, // Optional id parameter
+    required this.messageContent,
+    required this.messageType,
+    required this.time,
+    required this.type,
+    required this.senderUserId, // Required parameter
+    required this.receiverUserId, // Required parameter
+    this.images,
+    this.additionalListings,
+    this.accepted,
+    this.declined,
+  }) : id = id ?? const Uuid().v4(); // Generate a unique ID if not provided
+}

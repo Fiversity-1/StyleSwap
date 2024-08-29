@@ -107,6 +107,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                               context, _picker, 50, null, null);
                           setState(() {
                             _image = image;
+                            //personalProfile.updateProfile(newProfilePicture: _image);
                           });
                         }),
                   ),
@@ -230,13 +231,22 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                 builder: (context) => BrowsePhoto(
                                       title: "personal",
                                       gridIndex: index,
-                                      photoListings:
-                                          personalProfile.personalListings,
+                                      photoListings: personalProfile
+                                          .personalListings
+                                          .map((item) => item.images.isNotEmpty
+                                              ? item.images[0]
+                                              : const AssetImage(
+                                                  'lib/images/noImage.png'))
+                                          .toList(),
                                     )),
                           );
                         },
                         child: Image(
-                          image: personalProfile.personalListings[index],
+                          image: personalProfile
+                                  .personalListings[index].images.isNotEmpty
+                              ? personalProfile
+                                  .personalListings[index].images[0]
+                              : const AssetImage('lib/images/noImage.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -275,13 +285,20 @@ class _PersonalProfileState extends State<PersonalProfile> {
                               //3 lines from chatgpt, suggested to use infinity with sized box
                               //as having weird format when added icon on top
                               SizedBox(
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  //end chatgpt
-                                  child: Image(
-                                      image: personalProfile
-                                          .personalListings[index],
-                                      fit: BoxFit.cover)),
+                                width: double.infinity,
+                                height: double.infinity,
+
+                                child: Image(
+                                  image: personalProfile.personalListings[index]
+                                          .images.isNotEmpty
+                                      ? personalProfile
+                                          .personalListings[index].images[0]
+                                      : const AssetImage(
+                                          'lib/images/noImage.png'),
+                                  fit: BoxFit.cover,
+                                ),
+                                //end chatgpt
+                              ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

@@ -1,4 +1,5 @@
 // profile.dart
+import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
@@ -17,11 +18,10 @@ class PublicProfile extends StatefulWidget {
 class PublicProfileState extends State<PublicProfile> {
   @override
   Widget build(BuildContext context) {
+    final chatManager = Provider.of<ChatManager>(context);
     final userManager = Provider.of<UserManager>(context);
-
-    // Select the public user based on whatever condition
-    userManager.selectUserBasedOnLastViewed();
-    final publicUser = userManager.currentUser;
+    final chatUserId = chatManager.selectedChat?.otherUserId;
+    final publicUser = userManager.getUserById(chatUserId!);
 
     double height = MediaQuery.of(context).size.height;
     PageController _pageController;
@@ -102,12 +102,20 @@ class PublicProfileState extends State<PublicProfile> {
                             builder: (context) => BrowsePhoto(
                                   title: "public",
                                   gridIndex: index,
-                                  photoListings: publicUser.personalListings,
+                                  photoListings: publicUser.personalListings
+                                      .map((item) => item.images.isNotEmpty
+                                          ? item.images[0]
+                                          : const AssetImage(
+                                              'lib/images/noImage.png'))
+                                      .toList(),
                                 )),
                       );
                     },
                     child: Image(
-                      image: publicUser.personalListings[index],
+                      image:
+                          publicUser.personalListings[index].images.isNotEmpty
+                              ? publicUser.personalListings[index].images[0]
+                              : const AssetImage('lib/images/noImage.png'),
                       fit: BoxFit.cover,
                     ),
                   ),

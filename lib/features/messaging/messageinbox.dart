@@ -56,7 +56,8 @@ class _MessageState extends State<Message> {
                               const Duration(milliseconds: 200),
                               () {
                                 setState(() {
-                                  chatManager.setChatOpened(chat.id, true);
+                                  chatManager.setChatOpened(chat.id, true,
+                                      chat.previewContent, "5:45pm");
                                 });
                               },
                             );
@@ -70,7 +71,7 @@ class _MessageState extends State<Message> {
                       SlidableAction(
                         onPressed: (context) {
                           setState(() {
-                            chatManager.removeChat(chat);
+                            chatManager.removeChat(chat.id);
                           });
                         },
                         backgroundColor: Colors.orange,
@@ -81,7 +82,7 @@ class _MessageState extends State<Message> {
                       SlidableAction(
                         onPressed: (context) {
                           setState(() {
-                            chatManager.removeChat(chat);
+                            chatManager.removeChat(chat.id);
                           });
                         },
                         backgroundColor: Colors.red,
@@ -99,7 +100,7 @@ class _MessageState extends State<Message> {
                     selected: !chat.opened,
                     selectedTileColor: Theme.of(context).cardColor,
                     onTap: () {
-                      chatManager.setChatOpened(chat.id, true);
+                      chatManager.selectChat(chat.id);
                       Navigator.pushNamed(context, '/chat');
                     },
                     hoverColor: Theme.of(context).primaryColor.withAlpha(240),

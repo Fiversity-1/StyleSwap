@@ -16,9 +16,8 @@ import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 
 class MessageChat extends StatefulWidget {
-  const MessageChat({super.key, required this.title});
+  const MessageChat({super.key});
 
-  final String title;
   @override
   State<MessageChat> createState() => _MessageChatState();
 }
@@ -30,9 +29,11 @@ class _MessageChatState extends State<MessageChat> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // You can use didChangeDependencies to restore scroll position if necessary
+
+    final chatManager = Provider.of<ChatManager>(context);
+    final chat = chatManager.selectedChat;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (messages[messages.length - 1].type == "listing") {
+      if (chat!.messages[chat.messages.length - 1].type == "listing") {
         _scroller.animateTo(_scroller.position.maxScrollExtent,
             curve: Curves.easeOut, duration: const Duration(milliseconds: 500));
       }
@@ -41,13 +42,17 @@ class _MessageChatState extends State<MessageChat> {
 
 //Void function idea to handle  both onSubmitted: and onPressed (icon) from chatGPT
 //code modified for personal implementation
-  void _handleSend(String value) {
+  void _handleSend(String value, ChatManager chatManager, ChatListing chat) {
     setState(() => _sendText.text.isNotEmpty
-        ? messages.add(ChatMessage(
-            messageContent: _sendText.text,
-            messageType: "sender",
-            time: "5:45pm",
-            type: "message"))
+        ? chatManager.addChatMessage(
+            chat.id,
+            (ChatMessage(
+                senderUserId: chat.currentUserId,
+                receiverUserId: chat.otherUserId,
+                messageContent: _sendText.text,
+                messageType: "sender",
+                time: "5:45pm",
+                type: "message")))
         : null);
     _sendText.clear();
     _scroller.animateTo(
@@ -58,13 +63,17 @@ class _MessageChatState extends State<MessageChat> {
     myFocusNode.requestFocus();
   }
 
-  void _handleImage(XFile image) {
-    setState(() => messages.add(ChatMessage(
-        messageContent: "",
-        messageType: "sender",
-        time: "5:45pm",
-        images: image,
-        type: "image")));
+  void _handleImage(XFile image, ChatManager chatManager, ChatListing chat) {
+    setState(() => chatManager.addChatMessage(
+        chat.id,
+        ChatMessage(
+            senderUserId: chat.currentUserId,
+            receiverUserId: chat.otherUserId,
+            messageContent: "Sent an image",
+            messageType: "sender",
+            time: "5:45pm",
+            images: image,
+            type: "image")));
     _scroller.animateTo(
       //scroll image size
       _scroller.position.maxScrollExtent + 350,
@@ -74,69 +83,68 @@ class _MessageChatState extends State<MessageChat> {
   }
 
 //Chat GPT modified of original code
-  void _handleTrade(String type, int index) async {
+  void _handleTrade(
+      String type, int index, ChatManager chatManager, ChatListing chat) async {
     setState(() {
       // Handle acceptance
       if (type == "accepted") {
-        if (messages[index].accepted != null) {
-          messages[index].accepted = !messages[index].accepted!;
-        }
+        chatManager.updateTradeAcceptance(chat.id, chat.messages[index].id);
 
-        if (messages[index].declined == true) {
-          messages[index].declined = false;
+        if (chat.messages[index].declined == true) {
+          chatManager.updateTradeDecline(chat.id, chat.messages[index].id);
         }
 
         // Add image if accepted
-        if (messages[index].accepted == true) {
+        if (chat.messages[index].accepted == true) {
           ClipOval newClipOval = ClipOval(
             child: Image(
-              image: messages[index].additionalListings!,
+              image: chat.messages[index].additionalListings!,
               width: 100,
               height: 100,
               fit: BoxFit.cover,
             ),
           );
 
-          if (messages[index].messageType == "sender") {
+          if (chat.messages[index].messageType == "sender") {
             if (!_clipOvalExistsInList(
-                _imagesRight, messages[index].additionalListings!)) {
+                _imagesRight, chat.messages[index].additionalListings!)) {
               _imagesRight.add(newClipOval);
             }
           } else {
             if (!_clipOvalExistsInList(
-                _imagesLeft, messages[index].additionalListings!)) {
+                _imagesLeft, chat.messages[index].additionalListings!)) {
               _imagesLeft.add(newClipOval);
             }
           }
-        } else if (messages[index].accepted == false) {
+        } else if (chat.messages[index].accepted == false) {
           // Remove image if no longer accepted
-          if (messages[index].messageType == "sender") {
+          if (chat.messages[index].messageType == "sender") {
             _removeClipOvalFromList(
-                _imagesRight, messages[index].additionalListings!);
+                _imagesRight, chat.messages[index].additionalListings!);
           } else {
             _removeClipOvalFromList(
-                _imagesLeft, messages[index].additionalListings!);
+                _imagesLeft, chat.messages[index].additionalListings!);
           }
         }
       }
       // Handle declination
       else {
-        if (messages[index].declined != null) {
-          messages[index].declined = !messages[index].declined!;
+        if (chat.messages[index].declined != null) {
+          chat.messages[index].declined = !chat.messages[index].declined!;
         }
 
-        if (messages[index].accepted == true) {
-          messages[index].accepted = false;
+        if (chat.messages[index].accepted == true) {
+          chat.messages[index].accepted = false;
         }
 
         // Remove image if declined
-        if (messages[index].declined == true) {
-          if (messages[index].messageType == "sender") {
+        if (chat.messages[index].declined == true) {
+          if (chat.messages[index].messageType == "sender") {
             _removeClipOvalFromList(
-                _imagesRight, messages[index].additionalListings!);
+                _imagesRight, chat.messages[index].additionalListings!);
           } else {
             _removeClipOvalFromList(
-                _imagesLeft, messages[index].additionalListings!);
+                _imagesLeft, chat.messages[index].additionalListings!);
           }
         }
       }
@@ -221,8 +229,7 @@ class _MessageChatState extends State<MessageChat> {
           'lib/images/noImage.png',
           width: 100,
           height: 100,
-          fit: BoxFit
-              .none, // You might want to use BoxFit.cover to fill the oval
+          fit: BoxFit.none,
         ),
       ),
     )
@@ -234,6 +241,9 @@ class _MessageChatState extends State<MessageChat> {
   final FocusNode myFocusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
+    final chatManager = Provider.of<ChatManager>(context);
+    final chat = chatManager.selectedChat;
+    chatManager.setChatOpened(chat!.id, true, chat.previewContent, "5:45pm");
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -267,7 +277,7 @@ class _MessageChatState extends State<MessageChat> {
                       },
                       child: CircleAvatar(
                         radius: 18,
-                        backgroundImage: AssetImage('lib/images/noImage.png'),
+                        backgroundImage: chat!.image,
                       ),
                     ),
                   ),
@@ -277,7 +287,7 @@ class _MessageChatState extends State<MessageChat> {
                       onTap: () {
                         Navigator.pushNamed(context, '/public_profile');
                       },
-                      child: Text("Steve",
+                      child: Text(chat.name,
                           style: Theme.of(context).textTheme.headlineMedium,
                           textAlign: TextAlign.center),
                     ),
@@ -299,7 +309,7 @@ class _MessageChatState extends State<MessageChat> {
                     },
                     child: ListView.builder(
                         //item count + 1 from chatgpt
-                        itemCount: messages.length + 1,
+                        itemCount: chat.messages.length + 1,
                         shrinkWrap: true,
                         controller: _scroller,
                         padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -401,18 +411,19 @@ class _MessageChatState extends State<MessageChat> {
                                   top: kIsWeb ? 30 : 20,
                                   bottom: 10),
                               child: Align(
-                                  alignment: (messages[index - 1].messageType ==
-                                          "receiver"
-                                      ? Alignment.topLeft
-                                      : Alignment.topRight),
+                                  alignment:
+                                      (chat.messages[index - 1].messageType ==
+                                              "receiver"
+                                          ? Alignment.topLeft
+                                          : Alignment.topRight),
                                   child: Column(
                                     crossAxisAlignment:
-                                        messages[index - 1].messageType ==
+                                        chat.messages[index - 1].messageType ==
                                                 "receiver"
                                             ? CrossAxisAlignment.start
                                             : CrossAxisAlignment.end,
                                     children: [
-                                      messages[index - 1].type == "message"
+                                      chat.messages[index - 1].type == "message"
                                           ? Container(
                                               decoration: BoxDecoration(
                                                 borderRadius:
@@ -421,12 +432,12 @@ class _MessageChatState extends State<MessageChat> {
                                                                 context)
                                                             .themeData ==
                                                         lightTheme
-                                                    ? (messages[index - 1]
+                                                    ? (chat.messages[index - 1]
                                                                 .messageType ==
                                                             "receiver"
                                                         ? Colors.green
                                                         : Colors.blue)
-                                                    : (messages[index - 1]
+                                                    : (chat.messages[index - 1]
                                                                 .messageType ==
                                                             "receiver"
                                                         ? Colors.purple
@@ -434,12 +445,13 @@ class _MessageChatState extends State<MessageChat> {
                                               ),
                                               padding: const EdgeInsets.all(16),
                                               child: Text(
-                                                messages[index - 1]
+                                                chat.messages[index - 1]
                                                     .messageContent,
                                                 style: const TextStyle(
                                                     fontSize: 15),
                                               ))
-                                          : messages[index - 1].type == "image"
+                                          : chat.messages[index - 1].type ==
+                                                  "image"
                                               ? SizedBox(
                                                   height: kIsWeb ? 300 : 200,
                                                   width: kIsWeb ? 300 : 200,
@@ -453,7 +465,8 @@ class _MessageChatState extends State<MessageChat> {
                                                             onTap: () {
                                                               showImageViewer(
                                                                   context,
-                                                                  Image.network(messages[index -
+                                                                  Image.network(chat
+                                                                          .messages[index -
                                                                               1]
                                                                           .images!
                                                                           .path)
@@ -462,8 +475,10 @@ class _MessageChatState extends State<MessageChat> {
                                                                       true);
                                                             },
                                                             child: Image.network(
-                                                                messages[index -
-                                                                        1]
+                                                                chat
+                                                                    .messages[
+                                                                        index -
+                                                                            1]
                                                                     .images!
                                                                     .path,
                                                                 fit: BoxFit
@@ -475,7 +490,8 @@ class _MessageChatState extends State<MessageChat> {
                                                                   context,
                                                                   //ChatGPT suggested using FileImage instead of Image.File
                                                                   FileImage(
-                                                                    File(messages[
+                                                                    File(chat
+                                                                        .messages[
                                                                             index -
                                                                                 1]
                                                                         .images!
@@ -485,7 +501,8 @@ class _MessageChatState extends State<MessageChat> {
                                                                       true);
                                                             },
                                                             child: Image.file(
-                                                                File(messages[
+                                                                File(chat
+                                                                    .messages[
                                                                         index -
                                                                             1]
                                                                     .images!
@@ -508,7 +525,8 @@ class _MessageChatState extends State<MessageChat> {
                                                             onTap: () {
                                                               showImageViewer(
                                                                   context,
-                                                                  messages[
+                                                                  chat
+                                                                      .messages[
                                                                           index -
                                                                               1]
                                                                       .additionalListings!,
@@ -516,7 +534,8 @@ class _MessageChatState extends State<MessageChat> {
                                                                       true);
                                                             },
                                                             child: Image(
-                                                                image: messages[
+                                                                image: chat
+                                                                    .messages[
                                                                         index -
                                                                             1]
                                                                     .additionalListings!,
@@ -527,7 +546,8 @@ class _MessageChatState extends State<MessageChat> {
                                                             onTap: () {
                                                               showImageViewer(
                                                                   context,
-                                                                  messages[
+                                                                  chat
+                                                                      .messages[
                                                                           index -
                                                                               1]
                                                                       .additionalListings!,
@@ -535,7 +555,8 @@ class _MessageChatState extends State<MessageChat> {
                                                                       true);
                                                             },
                                                             child: Image(
-                                                                image: messages[
+                                                                image: chat
+                                                                    .messages[
                                                                         index -
                                                                             1]
                                                                     .additionalListings!,
@@ -547,7 +568,7 @@ class _MessageChatState extends State<MessageChat> {
                                                   ),
                                                 ),
                                       const SizedBox(height: 5),
-                                      messages[index - 1].messageType ==
+                                      chat.messages[index - 1].messageType ==
                                               "receiver"
                                           ? Column(
                                               children: [
@@ -556,12 +577,13 @@ class _MessageChatState extends State<MessageChat> {
                                                       MainAxisAlignment.start,
                                                   children: [
                                                     Visibility(
-                                                      visible:
-                                                          messages[index - 1]
-                                                                  .type !=
-                                                              "listing",
+                                                      visible: chat
+                                                              .messages[
+                                                                  index - 1]
+                                                              .type !=
+                                                          "listing",
                                                       child: Text(
-                                                        messages[index - 1]
+                                                        chat.messages[index - 1]
                                                             .time,
                                                         style: const TextStyle(
                                                             fontSize: 10),
@@ -572,10 +594,11 @@ class _MessageChatState extends State<MessageChat> {
                                                           const EdgeInsets.only(
                                                               left: 20),
                                                       child: Visibility(
-                                                        visible:
-                                                            messages[index - 1]
-                                                                    .type ==
-                                                                "listing",
+                                                        visible: chat
+                                                                .messages[
+                                                                    index - 1]
+                                                                .type ==
+                                                            "listing",
                                                         child: const Text(
                                                             "Accept item into trade?"),
                                                       ),
@@ -589,22 +612,27 @@ class _MessageChatState extends State<MessageChat> {
                                                           const EdgeInsets.only(
                                                               left: 80),
                                                       child: Visibility(
-                                                        visible:
-                                                            messages[index - 1]
-                                                                    .type ==
-                                                                "listing",
+                                                        visible: chat
+                                                                .messages[
+                                                                    index - 1]
+                                                                .type ==
+                                                            "listing",
                                                         child: LikeButton(
                                                           size: 20,
-                                                          isLiked: messages[
+                                                          isLiked: chat
+                                                              .messages[
                                                                   index - 1]
                                                               .accepted,
                                                           onTap:
                                                               (isLiked) async {
                                                             _handleTrade(
                                                                 "accepted",
-                                                                index - 1);
+                                                                index - 1,
+                                                                chatManager,
+                                                                chat);
 
-                                                            return messages[
+                                                            return chat
+                                                                .messages[
                                                                     index - 1]
                                                                 .accepted;
                                                           },
@@ -627,21 +655,25 @@ class _MessageChatState extends State<MessageChat> {
                                                       ),
                                                     ),
                                                     Visibility(
-                                                      visible:
-                                                          messages[index - 1]
-                                                                  .type ==
-                                                              "listing",
+                                                      visible: chat
+                                                              .messages[
+                                                                  index - 1]
+                                                              .type ==
+                                                          "listing",
                                                       child: LikeButton(
                                                         size: 20,
-                                                        isLiked:
-                                                            messages[index - 1]
-                                                                .declined,
+                                                        isLiked: chat
+                                                            .messages[index - 1]
+                                                            .declined,
                                                         onTap: (isLiked) async {
                                                           _handleTrade(
                                                               "declined",
-                                                              index - 1);
+                                                              index - 1,
+                                                              chatManager,
+                                                              chat);
 
-                                                          return messages[
+                                                          return chat
+                                                              .messages[
                                                                   index - 1]
                                                               .declined;
                                                         },
@@ -674,21 +706,23 @@ class _MessageChatState extends State<MessageChat> {
                                                           const EdgeInsets.only(
                                                               right: 20),
                                                       child: Visibility(
-                                                        visible:
-                                                            messages[index - 1]
-                                                                    .type ==
-                                                                "listing",
+                                                        visible: chat
+                                                                .messages[
+                                                                    index - 1]
+                                                                .type ==
+                                                            "listing",
                                                         child: const Text(
                                                             "Accept item into trade?"),
                                                       ),
                                                     ),
                                                     Visibility(
-                                                      visible:
-                                                          messages[index - 1]
-                                                                  .type !=
-                                                              "listing",
+                                                      visible: chat
+                                                              .messages[
+                                                                  index - 1]
+                                                              .type !=
+                                                          "listing",
                                                       child: Text(
-                                                        messages[index - 1]
+                                                        chat.messages[index - 1]
                                                             .time,
                                                         style: const TextStyle(
                                                             fontSize: 10),
@@ -701,21 +735,25 @@ class _MessageChatState extends State<MessageChat> {
                                                       MainAxisAlignment.end,
                                                   children: [
                                                     Visibility(
-                                                      visible:
-                                                          messages[index - 1]
-                                                                  .type ==
-                                                              "listing",
+                                                      visible: chat
+                                                              .messages[
+                                                                  index - 1]
+                                                              .type ==
+                                                          "listing",
                                                       child: LikeButton(
                                                         size: 20,
-                                                        isLiked:
-                                                            messages[index - 1]
-                                                                .accepted,
+                                                        isLiked: chat
+                                                            .messages[index - 1]
+                                                            .accepted,
                                                         onTap: (isLiked) async {
                                                           _handleTrade(
                                                               "accepted",
-                                                              index - 1);
+                                                              index - 1,
+                                                              chatManager,
+                                                              chat);
 
-                                                          return messages[
+                                                          return chat
+                                                              .messages[
                                                                   index - 1]
                                                               .accepted;
                                                         },
@@ -742,22 +780,27 @@ class _MessageChatState extends State<MessageChat> {
                                                                   ? 60
                                                                   : 50),
                                                       child: Visibility(
-                                                        visible:
-                                                            messages[index - 1]
-                                                                    .type ==
-                                                                "listing",
+                                                        visible: chat
+                                                                .messages[
+                                                                    index - 1]
+                                                                .type ==
+                                                            "listing",
                                                         child: LikeButton(
                                                           size: 20,
-                                                          isLiked: messages[
+                                                          isLiked: chat
+                                                              .messages[
                                                                   index - 1]
                                                               .declined,
                                                           onTap:
                                                               (isLiked) async {
                                                             _handleTrade(
                                                                 "declined",
-                                                                index - 1);
+                                                                index - 1,
+                                                                chatManager,
+                                                                chat);
 
-                                                            return messages[
+                                                            return chat
+                                                                .messages[
                                                                     index - 1]
                                                                 .declined;
                                                           },
@@ -812,7 +855,7 @@ class _MessageChatState extends State<MessageChat> {
                                 context, _picker, 50, null, null);
 
                             _image = image;
-                            _handleImage(_image!);
+                            _handleImage(_image!, chatManager, chat);
                           },
                         ),
                       ),
@@ -823,7 +866,9 @@ class _MessageChatState extends State<MessageChat> {
                           width: width * 0.8,
                           child: TextField(
                             focusNode: myFocusNode,
-                            onSubmitted: _handleSend,
+                            onSubmitted: (text) {
+                              _handleSend(_sendText.text, chatManager, chat);
+                            },
                             onTap: () {},
                             textAlignVertical: TextAlignVertical.top,
                             controller: _sendText,
@@ -842,7 +887,8 @@ class _MessageChatState extends State<MessageChat> {
                                     size: kIsWeb ? 24 : 18),
                                 onPressed: () {
                                   //Idea from chatgpt to handle both enter and icon
-                                  _handleSend(_sendText.text);
+                                  _handleSend(
+                                      _sendText.text, chatManager, chat);
                                 },
                               ),
                             ),
