@@ -1,4 +1,3 @@
-import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,6 @@ class ClothingDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    PageController _pageController;
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
@@ -141,8 +139,7 @@ class ClothingDetail extends StatelessWidget {
                           builder: (context) => BrowsePhoto(
                                 title: "details",
                                 gridIndex: index,
-                                photoListings:
-                                    publicListings[0].details.images!,
+                                photoListings: publicListings[0].details.images,
                               )),
                     );
                   },

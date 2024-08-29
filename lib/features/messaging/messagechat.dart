@@ -2,7 +2,6 @@
 
 import 'dart:io';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
-import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/widgets/photo_modal.dart';
@@ -277,7 +276,7 @@ class _MessageChatState extends State<MessageChat> {
                       },
                       child: CircleAvatar(
                         radius: 18,
-                        backgroundImage: chat!.image,
+                        backgroundImage: chat.image,
                       ),
                     ),
                   ),

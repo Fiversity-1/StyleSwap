@@ -35,8 +35,6 @@ class _PersonalProfileState extends State<PersonalProfile> {
     final userManager = Provider.of<UserManager>(context);
     final personalProfile = userManager.currentUser;
 
-    PageController _pageController;
-    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 3,

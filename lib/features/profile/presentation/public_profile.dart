@@ -23,8 +23,6 @@ class PublicProfileState extends State<PublicProfile> {
     final chatUserId = chatManager.selectedChat?.otherUserId;
     final publicUser = userManager.getUserById(chatUserId!);
 
-    double height = MediaQuery.of(context).size.height;
-    PageController _pageController;
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 3,

@@ -1,4 +1,3 @@
-import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -43,7 +42,6 @@ class ChatListing {
 
 class ChatManager with ChangeNotifier {
   final UserManager userManager;
-  final Uuid _uuid = const Uuid();
 
   List<ChatListing> _chats = [];
   String? _selectedChatId;
