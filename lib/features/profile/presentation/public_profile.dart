@@ -1,18 +1,10 @@
 // profile.dart
-
-import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/browse_photos.dart';
-
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
-import 'package:confirm_dialog/confirm_dialog.dart';
-import 'package:image_picker/image_picker.dart';
-
-import 'package:photo_view/photo_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:photo_view/photo_view_gallery.dart';
 
 class PublicProfile extends StatefulWidget {
   const PublicProfile({super.key});

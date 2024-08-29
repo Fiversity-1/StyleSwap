@@ -1,9 +1,7 @@
 import 'package:clothing_swap/features/clothing/presentation/fun_fact.dart';
 import 'package:clothing_swap/features/clothing/presentation/fun_fact_class.dart';
-import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
-import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
