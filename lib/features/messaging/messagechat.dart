@@ -267,7 +267,7 @@ class _MessageChatState extends State<MessageChat> {
                       },
                       child: CircleAvatar(
                         radius: 18,
-                        backgroundImage: publicProfileExample.profilePicture,
+                        backgroundImage: AssetImage('lib/images/noImage.png'),
                       ),
                     ),
                   ),
@@ -277,7 +277,7 @@ class _MessageChatState extends State<MessageChat> {
                       onTap: () {
                         Navigator.pushNamed(context, '/public_profile');
                       },
-                      child: Text(publicProfileExample.name,
+                      child: Text("Steve",
                           style: Theme.of(context).textTheme.headlineMedium,
                           textAlign: TextAlign.center),
                     ),

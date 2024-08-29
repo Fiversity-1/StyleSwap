@@ -8,18 +8,18 @@ import 'package:clothing_swap/widgets/photo_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key, required this.title});
+class PersonalProfile extends StatefulWidget {
+  const PersonalProfile({super.key});
 
-  final String title;
   @override
-  State<Profile> createState() => _ProfileState();
+  State<PersonalProfile> createState() => _PersonalProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _PersonalProfileState extends State<PersonalProfile> {
   bool edited = false;
   bool editedBio = false;
 
@@ -32,6 +32,9 @@ class _ProfileState extends State<Profile> {
   XFile? _image;
   @override
   Widget build(BuildContext context) {
+    final userManager = Provider.of<UserManager>(context);
+    final personalProfile = userManager.currentUser;
+
     PageController _pageController;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -62,7 +65,7 @@ class _ProfileState extends State<Profile> {
                               child: CircleAvatar(
                                 radius: 75,
                                 backgroundImage: (_image == null)
-                                    ? personalProfileExample.profilePicture
+                                    ? personalProfile.profilePicture
                                     : kIsWeb
                                         ? Image.network(_image!.path,
                                                 fit: BoxFit.cover)
@@ -115,7 +118,7 @@ class _ProfileState extends State<Profile> {
                     height: 50,
                     width: 375,
                     child: Text(
-                      personalProfileExample.name,
+                      personalProfile.name,
                       style: Theme.of(context).textTheme.headlineLarge,
                       textAlign: TextAlign.center,
                     ),
@@ -164,8 +167,8 @@ class _ProfileState extends State<Profile> {
                                             size: kIsWeb ? 24 : 18),
                                         onPressed: () {
                                           //Idea from chatgpt to handle both enter and icon
-                                          personalProfileExample.bio =
-                                              _changeBio.text;
+                                          personalProfile.updateProfile(
+                                              newBio: _changeBio.text);
                                           editedBio = !editedBio;
                                           setState(() {});
                                         },
@@ -177,7 +180,7 @@ class _ProfileState extends State<Profile> {
                               Visibility(
                                 visible: !editedBio,
                                 child: Text(
-                                  personalProfileExample.bio,
+                                  personalProfile.bio,
                                   style: Theme.of(context).textTheme.bodyLarge,
                                   textAlign: TextAlign.center,
                                   softWrap: true,
@@ -227,19 +230,18 @@ class _ProfileState extends State<Profile> {
                                 builder: (context) => BrowsePhoto(
                                       title: "personal",
                                       gridIndex: index,
-                                      photoListings: personalProfileExample
-                                          .personalListings!,
+                                      photoListings:
+                                          personalProfile.personalListings,
                                     )),
                           );
                         },
                         child: Image(
-                          image:
-                              personalProfileExample.personalListings![index],
+                          image: personalProfile.personalListings[index],
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                    itemCount: personalProfileExample.personalListings!.length,
+                    itemCount: personalProfile.personalListings.length,
                   ),
                 ),
               ),
@@ -253,9 +255,9 @@ class _ProfileState extends State<Profile> {
                       dragStartDelay: Duration.zero,
                       onReorder: (oldIndex, newIndex) {
                         setState(() {
-                          var val = personalProfileExample.personalListings!
+                          var val = personalProfile.personalListings
                               .removeAt(oldIndex);
-                          personalProfileExample.personalListings!
+                          personalProfile.personalListings
                               .insert(newIndex, val);
                         });
                       },
@@ -266,8 +268,8 @@ class _ProfileState extends State<Profile> {
                         crossAxisSpacing: 2,
                       ),
                       itemBuilder: (_, index) => GridTile(
-                          key: ValueKey(
-                              personalProfileExample.personalListings![index]),
+                          key:
+                              ValueKey(personalProfile.personalListings[index]),
                           child: Stack(
                             children: [
                               //3 lines from chatgpt, suggested to use infinity with sized box
@@ -277,8 +279,8 @@ class _ProfileState extends State<Profile> {
                                   height: double.infinity,
                                   //end chatgpt
                                   child: Image(
-                                      image: personalProfileExample
-                                          .personalListings![index],
+                                      image: personalProfile
+                                          .personalListings[index],
                                       fit: BoxFit.cover)),
                               Row(
                                 mainAxisAlignment:
@@ -307,8 +309,7 @@ class _ProfileState extends State<Profile> {
                                                 .bodyLarge),
                                       )) {
                                         setState(() {
-                                          personalProfileExample
-                                              .personalListings!
+                                          personalProfile.personalListings
                                               .removeAt(index);
                                         });
                                       }
@@ -326,8 +327,7 @@ class _ProfileState extends State<Profile> {
                               )
                             ],
                           )),
-                      itemCount:
-                          personalProfileExample.personalListings!.length,
+                      itemCount: personalProfile.personalListings.length,
                     ),
                   )),
             ],

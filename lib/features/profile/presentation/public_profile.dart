@@ -5,17 +5,24 @@ import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:provider/provider.dart';
 
 class PublicProfile extends StatefulWidget {
   const PublicProfile({super.key});
 
   @override
-  State<PublicProfile> createState() => _PublicProfileState();
+  State<PublicProfile> createState() => PublicProfileState();
 }
 
-class _PublicProfileState extends State<PublicProfile> {
+class PublicProfileState extends State<PublicProfile> {
   @override
   Widget build(BuildContext context) {
+    final userManager = Provider.of<UserManager>(context);
+
+    // Select the public user based on whatever condition
+    userManager.selectUserBasedOnLastViewed();
+    final publicUser = userManager.currentUser;
+
     double height = MediaQuery.of(context).size.height;
     PageController _pageController;
     return Scaffold(
@@ -41,7 +48,7 @@ class _PublicProfileState extends State<PublicProfile> {
                       width: 150,
                       child: CircleAvatar(
                           radius: 75,
-                          backgroundImage: publicProfileExample.profilePicture),
+                          backgroundImage: publicUser.profilePicture),
                     ),
                   ),
                 ],
@@ -50,7 +57,7 @@ class _PublicProfileState extends State<PublicProfile> {
                 height: 50,
                 width: 375,
                 child: Text(
-                  publicProfileExample.name,
+                  publicUser.name,
                   style: Theme.of(context).textTheme.headlineLarge,
                   textAlign: TextAlign.center,
                 ),
@@ -69,7 +76,7 @@ class _PublicProfileState extends State<PublicProfile> {
                             color: Theme.of(context).highlightColor,
                             borderRadius: BorderRadius.circular(10)),
                         child: Text(
-                          personalProfileExample.bio,
+                          publicUser.bio,
                           style: Theme.of(context).textTheme.bodyLarge,
                           textAlign: TextAlign.center,
                           softWrap: true,
@@ -95,18 +102,17 @@ class _PublicProfileState extends State<PublicProfile> {
                             builder: (context) => BrowsePhoto(
                                   title: "public",
                                   gridIndex: index,
-                                  photoListings:
-                                      publicProfileExample.personalListings!,
+                                  photoListings: publicUser.personalListings,
                                 )),
                       );
                     },
                     child: Image(
-                      image: publicProfileExample.personalListings![index],
+                      image: publicUser.personalListings[index],
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                itemCount: publicProfileExample.personalListings!.length,
+                itemCount: publicUser.personalListings.length,
               ),
             ],
           ),

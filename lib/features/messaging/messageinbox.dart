@@ -4,6 +4,7 @@ import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 
 class Message extends StatefulWidget {
   const Message({super.key, required this.title});
@@ -16,6 +17,8 @@ class Message extends StatefulWidget {
 class _MessageState extends State<Message> {
   @override
   Widget build(BuildContext context) {
+    final chatManager = Provider.of<ChatManager>(context);
+
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 2,
@@ -29,12 +32,13 @@ class _MessageState extends State<Message> {
         children: [
           Expanded(
             child: ListView(
-              children: List.generate(
-                inbox.length,
-                //Slideable example modified from https://pub.dev/packages/flutter_slidable
-                (index) => Slidable(
-                  // Key from chatgpt
-                  key: ValueKey(inbox[index]),
+              children: List.generate(chatManager.chats.length,
+                  //Slideable example modified from https://pub.dev/packages/flutter_slidable
+                  (index) {
+                final chat = chatManager.chats[index];
+                return Slidable(
+                  // Key, chat from chatgpt
+                  key: ValueKey(chat),
 
                   endActionPane: ActionPane(
                     motion: const StretchMotion(),
@@ -44,7 +48,7 @@ class _MessageState extends State<Message> {
                     // All actions are defined in the children parameter.
                     children: [
                       Visibility(
-                        visible: !inbox[index].opened,
+                        visible: !chat.opened,
                         child: SlidableAction(
                           onPressed: (context) {
                             //CHatp GPT for future delay - allow slideable to go back before setState
@@ -52,7 +56,7 @@ class _MessageState extends State<Message> {
                               const Duration(milliseconds: 200),
                               () {
                                 setState(() {
-                                  inbox[index].opened = true;
+                                  chatManager.setChatOpened(chat.id, true);
                                 });
                               },
                             );
@@ -66,7 +70,7 @@ class _MessageState extends State<Message> {
                       SlidableAction(
                         onPressed: (context) {
                           setState(() {
-                            inbox.removeAt(index);
+                            chatManager.removeChat(chat);
                           });
                         },
                         backgroundColor: Colors.orange,
@@ -77,7 +81,7 @@ class _MessageState extends State<Message> {
                       SlidableAction(
                         onPressed: (context) {
                           setState(() {
-                            inbox.removeAt(index);
+                            chatManager.removeChat(chat);
                           });
                         },
                         backgroundColor: Colors.red,
@@ -92,10 +96,10 @@ class _MessageState extends State<Message> {
                     minTileHeight: 85,
                     minVerticalPadding: 12.5,
                     horizontalTitleGap: 20,
-                    selected: !inbox[index].opened,
+                    selected: !chat.opened,
                     selectedTileColor: Theme.of(context).cardColor,
                     onTap: () {
-                      inbox[index].opened = true;
+                      chatManager.setChatOpened(chat.id, true);
                       Navigator.pushNamed(context, '/chat');
                     },
                     hoverColor: Theme.of(context).primaryColor.withAlpha(240),
@@ -107,31 +111,29 @@ class _MessageState extends State<Message> {
                     ),
                     title: Row(
                       children: [
-                        Text('${inbox[index].name} ',
+                        Text('${chat.name} ',
                             style: const TextStyle(
                               fontSize: 24,
                             )),
-                        Icon(!inbox[index].opened
-                            ? Icons.mark_chat_unread
-                            : null),
+                        Icon(!chat.opened ? Icons.mark_chat_unread : null),
                       ],
                     ),
-                    subtitle: Text(inbox[index].previewContent,
+                    subtitle: Text(chat.previewContent,
                         style: Theme.of(context).textTheme.bodyMedium),
-                    leading: const CircleAvatar(
-                      backgroundImage: AssetImage('lib/images/1.jpg'),
+                    leading: CircleAvatar(
+                      backgroundImage: chat.image,
                     ),
                     trailing: Wrap(
                       spacing: 18, // space between two icons
                       children: [
-                        Text(inbox[index].time,
+                        Text(chat.time,
                             style: Theme.of(context).textTheme.bodyMedium),
                         const Icon(Icons.arrow_forward_ios),
                       ],
                     ),
                   ),
-                ),
-              ),
+                );
+              }),
             ),
           ),
         ],
