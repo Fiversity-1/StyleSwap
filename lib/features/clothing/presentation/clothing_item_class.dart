@@ -1,14 +1,22 @@
-//Generative Code
+import 'package:flutter/material.dart';
+
+//Modified by chat for uuid
 class ClothingItem {
+  final String id;
+  final String userId;
   final String name;
-  final String location;
-  final List<String> images;
   int currentIndex;
+  final String location;
+  final List<AssetImage> images;
+  final ClothingItemDetail details;
 
   ClothingItem(
-      {required this.name,
+      {required this.id,
+      required this.userId,
+      required this.name,
       required this.location,
       required this.images,
+      required this.details,
       this.currentIndex = 0});
 }
 
@@ -20,7 +28,7 @@ class ClothingItemDetail {
 
   final String condition;
   final List<String> colours;
-  final List<String> images;
+  final List<ImageProvider> images;
   ClothingItemDetail({
     required this.bio,
     required this.type,

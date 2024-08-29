@@ -44,7 +44,9 @@ class _SearchPageState extends State<SearchPage> {
               ),
               Text('What are you looking for?',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineLarge),
+                  style: kIsWeb
+                      ? Theme.of(context).textTheme.headlineLarge
+                      : Theme.of(context).textTheme.headlineMedium),
               Padding(
                 padding: const EdgeInsets.only(top: (20.0), bottom: (8.5)),
                 child: SizedBox(

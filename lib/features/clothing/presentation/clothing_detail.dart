@@ -1,4 +1,5 @@
-import 'package:clothing_swap/features/clothing/presentation/clothing_item.dart';
+import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
@@ -6,29 +7,12 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ClothingDetail extends StatelessWidget {
   const ClothingDetail({super.key});
+  //Need a matching algorithm - based on preferences/ latest search
 
   @override
   Widget build(BuildContext context) {
-    ClothingItemDetail item = ClothingItemDetail(
-        bio:
-            'This is an awesome black shirt that I really like a lot a lot a lot a lot a lot.',
-        type: 'Shirt',
-        size: 54,
-        gender: 'Male',
-        condition: 'Good',
-        colours: [
-          'Black',
-          'Grey'
-        ],
-        images: [
-          'lib/images/0.jpg',
-          'lib/images/watermelon.png',
-          'lib/images/watermelon2.jpg'
-        ]);
-
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
@@ -43,98 +27,98 @@ class ClothingDetail extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                    icon: const Icon(Icons.swipe_down),
-                    iconSize: 25,
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/swipe');
-                    }),
+                Padding(
+                  padding: const EdgeInsets.only(top: (0.0)),
+                  child: IconButton(
+                      icon: const Icon(
+                          kIsWeb ? Icons.arrow_upward : Icons.swipe_down),
+                      iconSize: kIsWeb ? 35 : 30,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }),
+                ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: (0.0)),
-              child: ListView(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                padding:
-                    kIsWeb ? const EdgeInsets.all(16) : const EdgeInsets.all(8),
-                children: [
-                  ListTile(
-                    title: Text(
-                      item.bio,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    leading: const Icon(Icons.info),
+            ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(16),
+              children: [
+                ListTile(
+                  title: Text(
+                    publicListings[0].details.bio,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  ListTile(
+                  leading: const Icon(Icons.info),
+                ),
+                ListTile(
+                  title: Text(
+                    "Type",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  subtitle: Text(
+                    publicListings[0].details.type,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  leading: const Icon(Icons.category),
+                ),
+                ListTile(
+                  title: Text(
+                    "Size",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  subtitle: Text(
+                    publicListings[0].details.size.toString(),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  leading: const Icon(Icons.numbers),
+                ),
+                ListTile(
+                    selected: true,
                     title: Text(
-                      "Type",
+                      "Gender",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      item.type,
+                      publicListings[0].details.gender,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    leading: const Icon(Icons.category),
-                  ),
-                  ListTile(
+                    leading: const Icon(
+                      Icons.person,
+                    ),
+                    trailing: const Icon(
+                      Icons.star,
+                      color: Colors.yellow,
+                    )),
+                ListTile(
+                    selected: true,
                     title: Text(
-                      "Size",
+                      "Condition",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      item.size.toString(),
+                      publicListings[0].details.condition,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    leading: const Icon(Icons.numbers),
+                    leading: const Icon(
+                      Icons.gpp_good_outlined,
+                    ),
+                    trailing: const Icon(
+                      Icons.star,
+                      color: Colors.yellow,
+                    )),
+                ListTile(
+                  title: Text(
+                    "Colour",
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  ListTile(
-                      selected: true,
-                      title: Text(
-                        "Gender",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      subtitle: Text(
-                        item.gender,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      leading: const Icon(
-                        Icons.person,
-                      ),
-                      trailing: const Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      )),
-                  ListTile(
-                      selected: true,
-                      title: Text(
-                        "Condition",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      subtitle: Text(
-                        item.condition,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      leading: const Icon(
-                        Icons.gpp_good_outlined,
-                      ),
-                      trailing: const Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      )),
-                  ListTile(
-                    title: Text(
-                      "Colour",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    subtitle: Text(
-                      item.colours.join(", "),
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    leading: const Icon(Icons.palette),
+                  subtitle: Text(
+                    publicListings[0].details.colours.join(", "),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                ],
-              ),
+                  leading: const Icon(Icons.palette),
+                ),
+              ],
             ),
             SizedBox(height: height * 0.025, width: width),
             GridView.builder(
@@ -147,19 +131,24 @@ class ClothingDetail extends StatelessWidget {
               ),
               itemBuilder: (_, index) => GridTile(
                 child: GestureDetector(
-                  onTap: () {},
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/gallery');
-                    },
-                    splashColor: Colors.white,
-                    child: Ink.image(
-                        fit: BoxFit.cover,
-                        image: AssetImage(item.images[index])),
-                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      //PhotoViewGallery Code from pubdev photo_view modified with ChatGPT to stack icon on top
+                      MaterialPageRoute(
+                          builder: (context) => BrowsePhoto(
+                                title: "details",
+                                gridIndex: index,
+                                photoListings: publicListings[0].details.images,
+                              )),
+                    );
+                  },
+                  child: Image(
+                      fit: BoxFit.cover,
+                      image: publicListings[0].details.images[index]),
                 ),
               ),
-              itemCount: item.images.length,
+              itemCount: publicListings[0].details.images.length,
             ),
           ]),
         ),

@@ -1,8 +1,10 @@
 // signup.dart
+import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 
 class Message extends StatefulWidget {
   const Message({super.key, required this.title});
@@ -15,6 +17,8 @@ class Message extends StatefulWidget {
 class _MessageState extends State<Message> {
   @override
   Widget build(BuildContext context) {
+    final chatManager = Provider.of<ChatManager>(context);
+
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 2,
@@ -28,30 +32,46 @@ class _MessageState extends State<Message> {
         children: [
           Expanded(
             child: ListView(
-              children: List.generate(
-                inbox.length,
-                //Slideable example modified from https://pub.dev/packages/flutter_slidable
-                (index) => Slidable(
-                  // Key from chatgpt
-                  key: ValueKey(inbox[index]),
+              children: List.generate(chatManager.chats.length,
+                  //Slideable example modified from https://pub.dev/packages/flutter_slidable
+                  (index) {
+                final chat = chatManager.chats[index];
+                return Slidable(
+                  // Key, chat from chatgpt
+                  key: ValueKey(chat),
 
                   endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-
+                    motion: const StretchMotion(),
+                    extentRatio: 0.75,
                     // A pane can dismiss the Slidable.
-                    dismissible: DismissiblePane(
-                      onDismissed: () {
-                        setState(() {
-                          inbox.removeAt(index);
-                        });
-                      },
-                    ),
+
                     // All actions are defined in the children parameter.
                     children: [
+                      Visibility(
+                        visible: !chat.opened,
+                        child: SlidableAction(
+                          onPressed: (context) {
+                            //CHatp GPT for future delay - allow slideable to go back before setState
+                            Future.delayed(
+                              const Duration(milliseconds: 200),
+                              () {
+                                setState(() {
+                                  chatManager.setChatOpened(chat.id, true,
+                                      chat.previewContent, "5:45pm");
+                                });
+                              },
+                            );
+                          },
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          icon: Icons.mark_chat_read,
+                          label: 'Read',
+                        ),
+                      ),
                       SlidableAction(
                         onPressed: (context) {
                           setState(() {
-                            inbox.removeAt(index);
+                            chatManager.removeChat(chat.id);
                           });
                         },
                         backgroundColor: Colors.orange,
@@ -59,24 +79,10 @@ class _MessageState extends State<Message> {
                         icon: Icons.person,
                         label: 'Block',
                       ),
-                      Visibility(
-                        visible: !inbox[index].opened,
-                        child: SlidableAction(
-                          onPressed: (context) {
-                            setState(() {
-                              inbox[index].opened = true;
-                            });
-                          },
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
-                          icon: Icons.mark_chat_read,
-                          label: 'Mark as Read',
-                        ),
-                      ),
                       SlidableAction(
                         onPressed: (context) {
                           setState(() {
-                            inbox.removeAt(index);
+                            chatManager.removeChat(chat.id);
                           });
                         },
                         backgroundColor: Colors.red,
@@ -91,10 +97,10 @@ class _MessageState extends State<Message> {
                     minTileHeight: 85,
                     minVerticalPadding: 12.5,
                     horizontalTitleGap: 20,
-                    selected: !inbox[index].opened,
+                    selected: !chat.opened,
                     selectedTileColor: Theme.of(context).cardColor,
                     onTap: () {
-                      inbox[index].opened = true;
+                      chatManager.selectChat(chat.id);
                       Navigator.pushNamed(context, '/chat');
                     },
                     hoverColor: Theme.of(context).primaryColor.withAlpha(240),
@@ -106,31 +112,29 @@ class _MessageState extends State<Message> {
                     ),
                     title: Row(
                       children: [
-                        Text('${inbox[index].name} ',
+                        Text('${chat.name} ',
                             style: const TextStyle(
                               fontSize: 24,
                             )),
-                        Icon(!inbox[index].opened
-                            ? Icons.mark_chat_unread
-                            : null),
+                        Icon(!chat.opened ? Icons.mark_chat_unread : null),
                       ],
                     ),
-                    subtitle: Text(inbox[index].previewContent,
+                    subtitle: Text(chat.previewContent,
                         style: Theme.of(context).textTheme.bodyMedium),
-                    leading: const CircleAvatar(
-                      backgroundImage: AssetImage('lib/images/1.jpg'),
+                    leading: CircleAvatar(
+                      backgroundImage: chat.image,
                     ),
                     trailing: Wrap(
                       spacing: 18, // space between two icons
                       children: [
-                        Text(inbox[index].time,
+                        Text(chat.time,
                             style: Theme.of(context).textTheme.bodyMedium),
                         const Icon(Icons.arrow_forward_ios),
                       ],
                     ),
                   ),
-                ),
-              ),
+                );
+              }),
             ),
           ),
         ],
@@ -138,38 +142,3 @@ class _MessageState extends State<Message> {
     );
   }
 }
-
-class ChatListing {
-  String name;
-  String previewContent;
-  String time;
-  bool opened;
-  ChatListing(
-      {required this.name,
-      required this.previewContent,
-      required this.time,
-      required this.opened});
-}
-
-List<ChatListing> inbox = [
-  ChatListing(
-      name: "Jacob",
-      previewContent: "New Clothing Match!",
-      time: "5:45pm",
-      opened: true),
-  ChatListing(
-      name: "Steve",
-      previewContent: "New Clothing Match!",
-      time: "7:30pm",
-      opened: false),
-  ChatListing(
-      name: "Bob",
-      previewContent: "New Clothing Match!",
-      time: "7:45pm",
-      opened: true),
-  ChatListing(
-      name: "Karen",
-      previewContent: "New Clothing Match!",
-      time: "8pm",
-      opened: true),
-];

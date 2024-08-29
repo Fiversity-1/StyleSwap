@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reorderable_grid_view/widgets/reorderable_builder.dart';
 import 'package:image_picker/image_picker.dart';
@@ -118,44 +119,42 @@ class ImageSelectionField extends FormField<List<XFile>> {
               });
 
               return Column(
-
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-              Expanded(
-              child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                    child: ReorderableBuilder(
-                      lockedIndices: [state.value!.length],
-                      nonDraggableIndices: [state.value!.length],
-                    scrollController: state.scrollController,
-                    builder: (children) {
-                      return GridView(
-                        key: state.gridViewKey,
-                          controller: state.scrollController,
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 16,
-                          crossAxisSpacing: 16,
-                          childAspectRatio: 3 / 4,
-                          ),
-                          children: children,
-                        );
-                      },
-                      onReorder: onReorder,
-                      dragChildBoxDecoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                          BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          spreadRadius: 4,
-                          blurRadius: 8,
-                          ),
-                          ],
-                        ),
-                  children: generatedChildren,
-                    )
-                  ))
-
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                      child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: ReorderableBuilder(
+                            lockedIndices: [state.value!.length],
+                            nonDraggableIndices: [state.value!.length],
+                            scrollController: state.scrollController,
+                            builder: (children) {
+                              return GridView(
+                                key: state.gridViewKey,
+                                controller: state.scrollController,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 16,
+                                  crossAxisSpacing: 16,
+                                  childAspectRatio: 3 / 4,
+                                ),
+                                children: children,
+                              );
+                            },
+                            onReorder: onReorder,
+                            dragChildBoxDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.25),
+                                  spreadRadius: 4,
+                                  blurRadius: 8,
+                                ),
+                              ],
+                            ),
+                            children: generatedChildren,
+                          )))
                 ],
               );
             });
@@ -195,11 +194,9 @@ class ImageWithCloseIcon extends StatelessWidget {
     return Stack(
       children: [
         Positioned.fill(
-          child: Image.file(
-            File(imageFile.path),
-            fit: BoxFit.cover,
-          ),
-        ),
+            child: kIsWeb
+                ? Image.network(imageFile.path, fit: BoxFit.cover)
+                : Image.file(File(imageFile.path), fit: BoxFit.cover)),
         Positioned(
           top: 8.0,
           right: 8.0,
