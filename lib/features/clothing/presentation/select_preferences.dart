@@ -14,38 +14,59 @@ class ClothesPreferences extends StatefulWidget {
   State<ClothesPreferences> createState() => _ClothesPreferencesState();
 }
 
-void _incrementCounter(context) {
-  _counter++;
-  if (_counter == 4) {
-    Navigator.pushNamed(context, '/swipe');
+Map<Enum, FaIcon> _pickCatgory(String option) {
+  switch (option) {
+    case "Type":
+      return clothingTypeIcons;
+    case "Size":
+      return letteredSizeIcons;
+    case "Condition":
+      return clothingConditionIcons;
+    case "Colour":
+      return clothingColourIcons;
   }
+  return clothingColourIcons;
 }
 
-int _counter = 0;
-List<Map> categories = [clothingTypeIcons, clothingConditionIcons];
-
-List<String> categoriesName = ["Size", "Colour", "Type", "Condition"];
+List<Enum> preferences = [];
 
 class _ClothesPreferencesState extends State<ClothesPreferences> {
-  late String chosenValue;
+  late String categories;
+  late List<bool> _pressedStates;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Extract the 'categories' argument from the route
+    categories = ModalRoute.of(context)!.settings.arguments as String;
+    Map<Enum, FaIcon> category = _pickCatgory(categories);
+    _pressedStates = List.generate(category.length, (_) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
+    Map<Enum, FaIcon> category = _pickCatgory(categories);
+
     return Scaffold(
-        bottomNavigationBar: const CustomBottomNavBar(
-          currentIndex: 3,
-        ),
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: CustomTopAppBar(),
-        ),
-        body: Center(
-          child: Column(children: [
-            Text(
-              categoriesName[_counter],
-              style: Theme.of(context).textTheme.headlineMedium,
+      bottomNavigationBar: const CustomBottomNavBar(
+        currentIndex: 3,
+      ),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: CustomTopAppBar(),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Text(
+                "Select $categories",
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.only(top: 25, left: 10, right: 10),
               child: GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -58,109 +79,122 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
                   child: GestureDetector(
                     onLongPress: () {
                       setState(() {
-                        _incrementCounter(context);
+                        //preferences.add(category.entries[index]);
+                        _pressedStates[index] = !_pressedStates[index];
                       });
                     },
                     onTap: () {
                       setState(() {
-                        _incrementCounter(context);
+                        _pressedStates[index] = !_pressedStates[index];
                       });
                     },
-                    //GPT recommended this package and icon mapping seen below
-                    child: Column(
-                      children: [
-                        Text(
-                          categories[_counter]
-                              .keys
-                              .toList()[index]
-                              .toString()
-                              .split('.')
-                              .last
-                              .capitalize,
-                        ),
-                        IconButton(
-                          icon: categories[_counter].values.toList()[index],
-                          onPressed: () {
-                            _incrementCounter(context);
-                          },
-                        ),
-                      ],
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _pressedStates[index]
+                            ? Theme.of(context).hoverColor
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                              category.keys
+                                  .toList()[index]
+                                  .toString()
+                                  .split('.')
+                                  .last
+                                  .capitalize,
+                              style: Theme.of(context).textTheme.bodyLarge),
+                          IconButton(
+                            icon: category.values.toList()[index],
+                            onPressed: () {
+                              setState(() {
+                                _pressedStates[index] = !_pressedStates[index];
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-                itemCount: categories[_counter].values.toList().length,
+                itemCount: category.values.toList().length,
               ),
             ),
-          ]),
-        ));
+            Padding(
+              padding: const EdgeInsets.only(top: 25),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).hoverColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+                child: const Text('Save'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
 const Map<LetteredSize, FaIcon> letteredSizeIcons = {
-  LetteredSize.xxs: FaIcon(FontAwesomeIcons.s, size: 100),
-  LetteredSize.xs: FaIcon(FontAwesomeIcons.x, size: 100),
-  LetteredSize.s: FaIcon(FontAwesomeIcons.caretDown, size: 100),
-  LetteredSize.m: FaIcon(FontAwesomeIcons.caretDown, size: 100),
-  LetteredSize.l: FaIcon(FontAwesomeIcons.caretDown, size: 100),
-  LetteredSize.xl: FaIcon(FontAwesomeIcons.caretDown, size: 100),
-  LetteredSize.xxl: FaIcon(FontAwesomeIcons.caretDown, size: 100),
+  LetteredSize.xxs: FaIcon(FontAwesomeIcons.s, size: 75),
+  LetteredSize.xs: FaIcon(FontAwesomeIcons.x, size: 75),
+  LetteredSize.s: FaIcon(FontAwesomeIcons.caretDown, size: 75),
+  LetteredSize.m: FaIcon(FontAwesomeIcons.caretDown, size: 75),
+  LetteredSize.l: FaIcon(FontAwesomeIcons.caretDown, size: 75),
+  LetteredSize.xl: FaIcon(FontAwesomeIcons.caretDown, size: 75),
+  LetteredSize.xxl: FaIcon(FontAwesomeIcons.caretDown, size: 75),
 };
 
 Map<ClothingColour, FaIcon> clothingColourIcons = {
   ClothingColour.red:
-      const FaIcon(FontAwesomeIcons.circle, size: 100, color: Colors.red),
+      const FaIcon(FontAwesomeIcons.square, size: 75, color: Colors.red),
   ClothingColour.green:
-      const FaIcon(FontAwesomeIcons.circle, size: 100, color: Colors.green),
+      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.green),
   ClothingColour.lightBlue:
-      const FaIcon(FontAwesomeIcons.circle, size: 100, color: Colors.lightBlue),
+      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.lightBlue),
   ClothingColour.darkBlue:
-      const FaIcon(FontAwesomeIcons.circle, size: 100, color: Colors.blue),
+      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.blue),
   ClothingColour.purple:
-      const FaIcon(FontAwesomeIcons.circle, size: 100, color: Colors.purple),
+      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.purple),
   ClothingColour.pink:
-      const FaIcon(FontAwesomeIcons.circle, size: 100, color: Colors.pink),
+      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.pink),
   ClothingColour.orange:
-      const FaIcon(FontAwesomeIcons.circle, size: 100, color: Colors.orange),
+      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.orange),
   ClothingColour.yellow:
-      const FaIcon(FontAwesomeIcons.circle, size: 100, color: Colors.yellow),
+      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.yellow),
   ClothingColour.white:
-      const FaIcon(FontAwesomeIcons.circle, size: 100, color: Colors.white),
+      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.white),
   ClothingColour.black:
-      const FaIcon(FontAwesomeIcons.circle, size: 100, color: Colors.black),
+      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.black),
   ClothingColour.lightGrey:
-      FaIcon(FontAwesomeIcons.circle, size: 100, color: Colors.grey[300]),
+      FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.grey[300]),
   ClothingColour.darkGrey:
-      FaIcon(FontAwesomeIcons.circle, size: 100, color: Colors.grey[800]),
+      FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.grey[800]),
   ClothingColour.brown:
-      const FaIcon(FontAwesomeIcons.circle, size: 100, color: Colors.brown),
+      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.brown),
 };
 
 const Map<ClothingType, FaIcon> clothingTypeIcons = {
-  ClothingType.hat: FaIcon(FontAwesomeIcons.hatCowboy, size: 100),
-  ClothingType.scarf: FaIcon(FontAwesomeIcons, size: 100),
-  ClothingType.tie: FaIcon(FontAwesomeIcons.necktie, size: 100),
-  ClothingType.shirt: FaIcon(FontAwesomeIcons.shirt, size: 100),
-  ClothingType.midriff: FaIcon(FontAwesomeIcons.shirt, size: 100),
-  ClothingType.belt: FaIcon(FontAwesomeIcons.belt, size: 100),
-  ClothingType.shorts: FaIcon(FontAwesomeIcons.shorts, size: 100),
-  ClothingType.pants: FaIcon(FontAwesomeIcons.pants, size: 100),
-  ClothingType.skirt: FaIcon(FontAwesomeIcons.skirt, size: 100),
-  ClothingType.dress: FaIcon(FontAwesomeIcons.dress, size: 100),
-  ClothingType.shoes: FaIcon(FontAwesomeIcons.shoePrints, size: 100),
-  ClothingType.jumper: FaIcon(FontAwesomeIcons.sweater, size: 100),
-  ClothingType.jacket: FaIcon(FontAwesomeIcons.jacket, size: 100),
-  ClothingType.sweater: FaIcon(FontAwesomeIcons.sweater, size: 100),
-  ClothingType.coat: FaIcon(FontAwesomeIcons.coat, size: 100),
-  ClothingType.gloves: FaIcon(FontAwesomeIcons.gloves, size: 100),
-  ClothingType.vest: FaIcon(FontAwesomeIcons.vest, size: 100),
-  ClothingType.leggings: FaIcon(FontAwesomeIcons.leggings, size: 100),
-  ClothingType.tights: FaIcon(FontAwesomeIcons.tights, size: 100),
+  ClothingType.hat: FaIcon(FontAwesomeIcons.hatCowboy, size: 75),
+  ClothingType.vest: FaIcon(FontAwesomeIcons.vest, size: 75),
+  ClothingType.shirt: FaIcon(FontAwesomeIcons.shirt, size: 75),
+  ClothingType.midriff: FaIcon(FontAwesomeIcons.shirt, size: 75),
 };
 
 const Map<ClothingCondition, FaIcon> clothingConditionIcons = {
-  ClothingCondition.newWithTags: FaIcon(FontAwesomeIcons.tag, size: 100),
-  ClothingCondition.newNoTags: FaIcon(FontAwesomeIcons.tag, size: 100),
-  ClothingCondition.likeNew: FaIcon(FontAwesomeIcons.star, size: 100),
-  ClothingCondition.worn: FaIcon(FontAwesomeIcons.heartbeat, size: 100),
-  ClothingCondition.wellWorn: FaIcon(FontAwesomeIcons.batteryHalf, size: 100),
+  ClothingCondition.newWithTags: FaIcon(FontAwesomeIcons.tag, size: 75),
+  ClothingCondition.newNoTags: FaIcon(FontAwesomeIcons.tag, size: 75),
+  ClothingCondition.likeNew: FaIcon(FontAwesomeIcons.star, size: 75),
+  ClothingCondition.worn: FaIcon(FontAwesomeIcons.heartbeat, size: 75),
+  ClothingCondition.wellWorn: FaIcon(FontAwesomeIcons.batteryHalf, size: 75),
 };

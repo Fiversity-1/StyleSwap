@@ -21,18 +21,14 @@ class _SearchPageState extends State<SearchPage> {
     int count = 0;
     List<List<Widget>> type = [[], [], [], []];
     List categories = [ClothingType.values, ClothingColour.values];
-    // for (var category in categories) {
-    //   for (var option in category) {
-    //     type[count].add(Tag(text: option.name.capitalize));
-    //     count = count + 1;
-    //   }
 
     type[count].add(
       Chip(
         label: IconButton(
           icon: const Icon(Icons.add),
           onPressed: () {
-            Navigator.pushNamed(context, '/clothes_preferences');
+            Navigator.pushNamed(context, '/clothes_preferences',
+                arguments: 'Type');
           },
         ),
         backgroundColor: Theme.of(context).hoverColor,
