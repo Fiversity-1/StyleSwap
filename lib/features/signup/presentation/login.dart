@@ -170,12 +170,21 @@ class _LoginPageState extends State<Login> {
       ),
       body: Center(
         child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/search');
-          },
-          child: const Text('Login'),
+          onPressed: _signInWithGoogle, 
+          //onPressed: () {
+          //  Navigator.pushNamed(context, '/personal_profile');
+          //},
+          child: const Text('Login with Google'),
         ),
       ),
     );
   }
+
+
+  Future<void> _signInWithGoogle() async {
+    print('Sign in with Google executing');
+
+  }
+
+
 }
