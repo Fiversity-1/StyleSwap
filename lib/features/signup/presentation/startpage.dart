@@ -92,16 +92,11 @@ class StartPage extends StatelessWidget {
   }
 
   Future<void> _signInWithGoogle() async {
-    print('Sign in with Google executing');
-
     final googleProvider = GoogleAuthProvider();
 
     try {
       await FirebaseAuth.instance.signInWithPopup(googleProvider);
-      // Optionally navigate to a different page upon successful login
-      // Navigator.pushNamed(context, '/personal_profile');
     } on FirebaseException catch (e) {
-      print('Error signing in with Google');
       print(e.message);
     }
   }
