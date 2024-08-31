@@ -151,6 +151,11 @@ class _LoginState extends State<Login> {
 
 
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+
 
 class Login extends StatefulWidget {
   final String title; 
@@ -184,7 +189,14 @@ class _LoginPageState extends State<Login> {
   Future<void> _signInWithGoogle() async {
     print('Sign in with Google executing');
 
+    final googleProvider = GoogleAuthProvider();
+
+    try {
+      await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      //Navigator.pushNamed(context, '/personal_profile');
+    } on FirebaseException catch (e) {
+      print('We have made it into this epic error handling function which defs includes alot of recovery');
+      print(e.message);
+    } 
   }
-
-
 }
