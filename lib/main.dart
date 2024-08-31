@@ -1,5 +1,6 @@
 import 'package:clothing_swap/features/clothing/presentation/advanced_search.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_detail.dart';
+import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
 import 'package:clothing_swap/features/community/event_class.dart';
 import 'package:clothing_swap/features/community/eventlist.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
         '/add_clothing_item': (context) => AddClothingItemPage(),
         '/clothing_detail': (context) => const ClothingDetail(),
         '/preferences': (context) => const Preferences(),
+        '/clothes_preferences': (context) => const ClothesPreferences(),
         '/events': (context) => EventPage(communityEvents: communityEvents),
       },
       debugShowCheckedModeBanner: false,

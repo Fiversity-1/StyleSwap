@@ -8,7 +8,7 @@ class CustomBottomNavBar extends StatelessWidget {
   void _onItemTapped(BuildContext context, int index) {
     switch (index) {
       case 0:
-        Navigator.pushReplacementNamed(context, '/search');
+        Navigator.pushReplacementNamed(context, '/swipe');
         break;
       case 1:
         Navigator.pushReplacementNamed(context, '/add_clothing_item');

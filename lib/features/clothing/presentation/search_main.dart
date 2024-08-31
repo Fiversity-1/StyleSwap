@@ -1,7 +1,10 @@
+import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
+import 'package:clothing_swap/widgets/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:string_extensions/string_extensions.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -11,15 +14,36 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final _submitCreds = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    int count = 0;
+    List<List<Widget>> type = [[], [], [], []];
+    List categories = [ClothingType.values, ClothingColour.values];
+    // for (var category in categories) {
+    //   for (var option in category) {
+    //     type[count].add(Tag(text: option.name.capitalize));
+    //     count = count + 1;
+    //   }
+
+    type[count].add(
+      Chip(
+        label: IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.pushNamed(context, '/clothes_preferences');
+          },
+        ),
+        backgroundColor: Theme.of(context).hoverColor,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30), // Rounded edges
+            side: BorderSide(color: Theme.of(context).hoverColor, width: 3)),
+      ),
+    );
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 0,
       ),
@@ -27,85 +51,76 @@ class _SearchPageState extends State<SearchPage> {
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
       ),
-      body: Center(
-          child: Stack(
+      body: Row(
         children: [
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0.10,
-              child: Image.asset('lib/images/1.jpg', fit: BoxFit.cover),
-            ),
+          Visibility(
+            visible: kIsWeb,
+            child: Expanded(
+                flex: 1,
+                child: Container(
+                  color: Theme.of(context).canvasColor,
+                )),
           ),
-          Column(
-            children: [
-              SizedBox(
-                height: height * 0.2,
-                width: width,
-              ),
-              Text('What are you looking for?',
-                  textAlign: TextAlign.center,
-                  style: kIsWeb
-                      ? Theme.of(context).textTheme.headlineLarge
-                      : Theme.of(context).textTheme.headlineMedium),
-              Padding(
-                padding: const EdgeInsets.only(top: (20.0), bottom: (8.5)),
-                child: SizedBox(
-                  height: kIsWeb ? height * 0.0625 : height * 0.08,
-                  width: kIsWeb ? width * 0.5 : width * 0.75,
-                  child: TextField(
-                    controller: _submitCreds,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                      hintText: 'E.g. Gucci Baggy Blue Shirt',
-                      filled: true,
-                      suffix: IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _submitCreds.clear();
-                        },
-                      ),
+          Expanded(
+              flex: 4,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Opacity(
+                      opacity: 0.05,
+                      child: Image.asset('lib/images/backdrop.jpg',
+                          fit: BoxFit.fitWidth),
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(top: (15.0)),
-                  child: Row(
-                    mainAxisAlignment: kIsWeb
-                        ? MainAxisAlignment.center
-                        : MainAxisAlignment.spaceEvenly,
+                  Column(
                     children: [
+                      SizedBox(
+                        height: height * 0.025,
+                        width: width,
+                      ),
+                      Text('Preferences',
+                          style: kIsWeb
+                              ? Theme.of(context).textTheme.headlineLarge
+                              : Theme.of(context).textTheme.headlineMedium),
                       Padding(
-                        padding: kIsWeb
-                            ? const EdgeInsets.only(right: (15.0))
-                            : const EdgeInsets.only(right: (0)),
-                        child: ElevatedButton(
-                          child: const Text(
-                            'Advanced Search',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/advanced_search');
-                          },
+                        padding: const EdgeInsets.only(
+                            top: 15, left: (15.0), bottom: 15),
+                        child: Row(
+                          children: [
+                            Text("Type",
+                                style: kIsWeb
+                                    ? Theme.of(context).textTheme.headlineSmall
+                                    : Theme.of(context).textTheme.headlineSmall)
+                          ],
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/swipe');
-                        },
-                        child: const Text(
-                          'Search',
-                          style: TextStyle(fontSize: 20),
+                      Wrap(spacing: 10, runSpacing: 10, children: type[0]),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 15, left: (15.0), bottom: 15),
+                        child: Row(
+                          children: [
+                            Text("Colour",
+                                style: kIsWeb
+                                    ? Theme.of(context).textTheme.headlineSmall
+                                    : Theme.of(context).textTheme.headlineSmall)
+                          ],
                         ),
                       ),
                     ],
-                  )),
-            ],
+                  ),
+                ],
+              )),
+          Visibility(
+            visible: kIsWeb,
+            child: Expanded(
+                flex: 1,
+                child: Container(
+                  color: Theme.of(context).canvasColor,
+                )),
           ),
         ],
-      )),
+      ),
     );
   }
 }

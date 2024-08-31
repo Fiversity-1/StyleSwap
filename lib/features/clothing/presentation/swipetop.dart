@@ -76,7 +76,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
 
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
-        currentIndex: 1,
+        currentIndex: 0,
       ),
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
@@ -234,6 +234,13 @@ class _SwipePageTopState extends State<SwipePageTop> {
                             publicListings[_counter].name,
                             style: Theme.of(context).textTheme.headlineMedium,
                           ),
+                          IconButton(
+                              icon: const Icon(Icons.tune),
+                              iconSize: 35,
+                              color: Colors.white,
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/search');
+                              }),
                         ],
                       ),
                     ),
