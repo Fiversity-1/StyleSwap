@@ -1,4 +1,5 @@
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
+import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
 import 'package:clothing_swap/widgets/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
@@ -18,25 +19,30 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    int count = 0;
-    List<List<Widget>> type = [[], [], [], []];
-    List categories = [ClothingType.values, ClothingColour.values];
 
-    type[count].add(
-      Chip(
-        label: IconButton(
-          icon: const Icon(Icons.add),
-          onPressed: () {
-            Navigator.pushNamed(context, '/clothes_preferences',
-                arguments: 'Type');
-          },
-        ),
-        backgroundColor: Theme.of(context).hoverColor,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30), // Rounded edges
-            side: BorderSide(color: Theme.of(context).hoverColor, width: 3)),
+    List<Widget> type = [];
+    for (int index = 0; index < typePreferences.length; index++) {
+      type.add(Tag(
+          text: typePreferences
+              .toList()[index]
+              .toString()
+              .split('.')
+              .last
+              .capitalize));
+    }
+    type.add(Chip(
+      label: IconButton(
+        icon: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.pushNamed(context, '/clothes_preferences',
+              arguments: 'Type');
+        },
       ),
-    );
+      backgroundColor: Theme.of(context).hoverColor,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30), // Rounded edges
+          side: BorderSide(color: Theme.of(context).hoverColor, width: 3)),
+    ));
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -65,7 +71,7 @@ class _SearchPageState extends State<SearchPage> {
                     child: Opacity(
                       opacity: 0.05,
                       child: Image.asset('lib/images/backdrop.jpg',
-                          fit: BoxFit.fitWidth),
+                          fit: kIsWeb ? BoxFit.fitWidth : BoxFit.fill),
                     ),
                   ),
                   Column(
@@ -90,7 +96,7 @@ class _SearchPageState extends State<SearchPage> {
                           ],
                         ),
                       ),
-                      Wrap(spacing: 10, runSpacing: 10, children: type[0]),
+                      Wrap(spacing: 10, runSpacing: 10, children: type),
                       Padding(
                         padding: const EdgeInsets.only(
                             top: 15, left: (15.0), bottom: 15),

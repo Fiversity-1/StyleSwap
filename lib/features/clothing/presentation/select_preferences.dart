@@ -28,8 +28,6 @@ Map<Enum, FaIcon> _pickCatgory(String option) {
   return clothingColourIcons;
 }
 
-List<Enum> preferences = [];
-
 class _ClothesPreferencesState extends State<ClothesPreferences> {
   late String categories;
   late List<bool> _pressedStates;
@@ -79,12 +77,23 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
                   child: GestureDetector(
                     onLongPress: () {
                       setState(() {
-                        //preferences.add(category.entries[index]);
+                        typePreferences.add(category.keys
+                            .toList()[index]
+                            .toString()
+                            .split('.')
+                            .last
+                            .capitalize);
                         _pressedStates[index] = !_pressedStates[index];
                       });
                     },
                     onTap: () {
                       setState(() {
+                        typePreferences.add(category.keys
+                            .toList()[index]
+                            .toString()
+                            .split('.')
+                            .last
+                            .capitalize);
                         _pressedStates[index] = !_pressedStates[index];
                       });
                     },
@@ -109,6 +118,12 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
                             icon: category.values.toList()[index],
                             onPressed: () {
                               setState(() {
+                                typePreferences.add(category.keys
+                                    .toList()[index]
+                                    .toString()
+                                    .split('.')
+                                    .last
+                                    .capitalize);
                                 _pressedStates[index] = !_pressedStates[index];
                               });
                             },
@@ -144,6 +159,8 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
     );
   }
 }
+
+List<String> typePreferences = [];
 
 const Map<LetteredSize, FaIcon> letteredSizeIcons = {
   LetteredSize.xxs: FaIcon(FontAwesomeIcons.s, size: 75),
