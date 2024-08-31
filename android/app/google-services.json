@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1042663527400",
+    "project_id": "newstyleswap",
+    "storage_bucket": "newstyleswap.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1042663527400:android:d162fba67b1ec2a8a80a5d",
+        "android_client_info": {
+          "package_name": "com.styleswap.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDcBsftiWktD4F2Kp0KYRIRpIMtX1i17I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

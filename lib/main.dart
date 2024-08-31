@@ -19,9 +19,15 @@ import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/features/profile/presentation/preferences.dart';
 import 'features/profile/presentation/public_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+
+
   //Provider code modified by GPT to include multiple instaces
   runApp(
     MultiProvider(
@@ -58,15 +64,21 @@ class MyApp extends StatelessWidget {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
+          print('Entered stream builder');
           if (snapshot.connectionState == ConnectionState.waiting) {
+            print('Waiting');
             return const CircularProgressIndicator();
           } else if (snapshot.hasData) {
+            print('Has data');
             return const PersonalProfile();
           } else if (snapshot.hasError) {
+            print('Error');
             return const Text('Error');
           } else {
+            print('Login');
             return const Login(title: 'Login');
           }
+          print('End of stream builder');
         },
       ),
       // above new

@@ -153,20 +153,20 @@ class _LoginState extends State<Login> {
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
-  final String title; // Add 'title' property to the class
+  final String title; 
 
-  const Login({super.key, required this.title}); // Corrected constructor with 'title'
+  const Login({super.key, required this.title}); 
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<Login> { // Corrected to State<Login>
+class _LoginPageState extends State<Login> { 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title), // Access 'title' using 'widget.title'
+        title: Text(widget.title), 
       ),
       body: Center(
         child: ElevatedButton(
