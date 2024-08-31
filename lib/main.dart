@@ -59,7 +59,6 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
 
-      // new
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -70,12 +69,10 @@ class MyApp extends StatelessWidget {
           } else if (snapshot.hasError) {
             return const Text('Error');
           } else {
-            //return const Login(title: 'Login');
             return const StartPage(title: 'StartPage');
           }
         },
       ),
-      // above new
 
       theme: themeSwitcher.themeData,
       routes: {

@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+
 class StartPage extends StatelessWidget {
   const StartPage({super.key, required this.title});
   final String title;
@@ -61,7 +62,7 @@ class StartPage extends StatelessWidget {
                               height: height * 0.07,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  _signInWithGoogle();
+                                  _signInWithGoogle(context);
                                 },
                                 child: const Text('Log in', style: TextStyle(fontSize: 24)),
                               ),
@@ -90,11 +91,11 @@ class StartPage extends StatelessWidget {
     );
   }
 
-  Future<void> _signInWithGoogle() async {
+  Future<void> _signInWithGoogle(BuildContext context) async {
     final googleProvider = GoogleAuthProvider();
-
     try {
       await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      Navigator.pushNamedAndRemoveUntil(context, '/personal_profile', (route) => false);
     } on FirebaseException catch (e) {
       debugPrint(e.message);
     }

@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
-
 class Preferences extends StatefulWidget {
   const Preferences({super.key});
 
@@ -29,8 +28,9 @@ class _PreferencesState extends State<Preferences> {
 
   Future<void> _logOutFunction() async {
     await FirebaseAuth.instance.signOut();
+
     if (mounted) {
-      Navigator.pushNamed(context, '/startpage');
+      Navigator.pushNamedAndRemoveUntil(context, '/startpage', (route) => false);
     }
   }
 
