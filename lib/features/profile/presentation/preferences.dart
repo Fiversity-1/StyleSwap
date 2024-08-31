@@ -88,6 +88,9 @@ import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
 
 class Preferences extends StatefulWidget {
   const Preferences({super.key});
@@ -109,6 +112,8 @@ class _PreferencesState extends State<Preferences> {
 
   Future<void> _logOutFunction() async {
     print('Log out function called');
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushNamed(context, '/login');
   }
 
   @override
