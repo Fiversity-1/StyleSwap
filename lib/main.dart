@@ -18,6 +18,8 @@ import 'package:provider/provider.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/features/profile/presentation/preferences.dart';
 import 'features/profile/presentation/public_profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 void main() {
   //Provider code modified by GPT to include multiple instaces
@@ -51,8 +53,25 @@ class MyApp extends StatelessWidget {
     final themeSwitcher = Provider.of<ThemeSwitcher>(context);
 
     return MaterialApp(
+
+      // new
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasData) {
+            return const PersonalProfile();
+          } else if (snapshot.hasError) {
+            return const Text('Error');
+          } else {
+            return const Login(title: 'Login');
+          }
+        },
+      ),
+      // above new
+
       theme: themeSwitcher.themeData,
-      home: const StartPage(title: 'StartPage'),
       routes: {
         '/startpage': (context) => const StartPage(title: 'StartPage'),
         '/personal_profile': (context) => const PersonalProfile(),

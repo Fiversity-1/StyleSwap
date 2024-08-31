@@ -1,4 +1,7 @@
 // signup.dart
+
+
+/*
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
@@ -136,6 +139,43 @@ class _LoginState extends State<Login> {
           ),
         ],
       )),
+    );
+  }
+}
+*/
+
+
+
+
+
+
+
+import 'package:flutter/material.dart';
+
+class Login extends StatefulWidget {
+  final String title; // Add 'title' property to the class
+
+  const Login({super.key, required this.title}); // Corrected constructor with 'title'
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<Login> { // Corrected to State<Login>
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title), // Access 'title' using 'widget.title'
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/search');
+          },
+          child: const Text('Login'),
+        ),
+      ),
     );
   }
 }
