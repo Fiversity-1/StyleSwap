@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key, required this.title});
@@ -97,7 +96,7 @@ class StartPage extends StatelessWidget {
     try {
       await FirebaseAuth.instance.signInWithPopup(googleProvider);
     } on FirebaseException catch (e) {
-      print(e.message);
+      debugPrint(e.message);
     }
   }
 }
