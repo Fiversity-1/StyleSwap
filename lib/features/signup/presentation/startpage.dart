@@ -70,19 +70,6 @@ class StartPage extends StatelessWidget {
                                           style: TextStyle(fontSize: 24)),
                                     ),
                                   )),
-                              SizedBox(
-                                width: kIsWeb ? width * 0.175 : width * 0.35,
-                                height: height * 0.07,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, '/signup');
-                                  },
-                                  child: const Text(
-                                    'Sign Up',
-                                    style: TextStyle(fontSize: 24),
-                                  ),
-                                ),
-                              )
                             ],
                           )),
                     ],
