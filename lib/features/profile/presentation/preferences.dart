@@ -29,7 +29,9 @@ class _PreferencesState extends State<Preferences> {
 
   Future<void> _logOutFunction() async {
     await FirebaseAuth.instance.signOut();
-    Navigator.pushNamed(context, '/startpage');
+    if (mounted) {
+      Navigator.pushNamed(context, '/startpage');
+    }
   }
 
   @override
