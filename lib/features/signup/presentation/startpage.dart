@@ -95,6 +95,7 @@ class StartPage extends StatelessWidget {
     final googleProvider = GoogleAuthProvider();
     try {
       await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      // ignore: use_build_context_synchronously
       Navigator.pushNamedAndRemoveUntil(context, '/personal_profile', (route) => false);
     } on FirebaseException catch (e) {
       debugPrint(e.message);
