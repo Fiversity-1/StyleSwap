@@ -66,16 +66,12 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           print('Entered stream builder');
           if (snapshot.connectionState == ConnectionState.waiting) {
-            print('Waiting');
             return const CircularProgressIndicator();
           } else if (snapshot.hasData) {
-            print('Has data');
             return const PersonalProfile();
           } else if (snapshot.hasError) {
-            print('Error');
             return const Text('Error');
           } else {
-            print('Login');
             return const Login(title: 'Login');
           }
           print('End of stream builder');
