@@ -13,7 +13,6 @@ import 'package:clothing_swap/features/signup/presentation/startpage.dart';
 import 'package:clothing_swap/features/profile/presentation/personal_profile.dart';
 import 'package:clothing_swap/features/clothing/presentation/search_main.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
-import 'package:clothing_swap/features/signup/presentation/login.dart';
 import 'package:provider/provider.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/features/profile/presentation/preferences.dart';
@@ -64,7 +63,6 @@ class MyApp extends StatelessWidget {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          print('Entered stream builder');
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
           } else if (snapshot.hasData) {
@@ -72,9 +70,9 @@ class MyApp extends StatelessWidget {
           } else if (snapshot.hasError) {
             return const Text('Error');
           } else {
-            return const Login(title: 'Login');
+            //return const Login(title: 'Login');
+            return const StartPage(title: 'StartPage');
           }
-          print('End of stream builder');
         },
       ),
       // above new
@@ -90,7 +88,6 @@ class MyApp extends StatelessWidget {
         '/swipe': (context) => const SwipePage(),
         '/chat': (context) => const MessageChat(),
         '/comment': (context) => const Comments(),
-        '/login': (context) => const Login(title: 'Login'),
         '/add_clothing_item': (context) => AddClothingItemPage(),
         '/clothing_detail': (context) => const ClothingDetail(),
         '/preferences': (context) => const Preferences(),

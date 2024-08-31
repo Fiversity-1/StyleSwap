@@ -4,6 +4,8 @@ import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key, required this.title});
@@ -24,8 +26,7 @@ class StartPage extends StatelessWidget {
               Positioned.fill(
                 child: Opacity(
                   opacity: 1,
-                  child:
-                      Image.asset('lib/images/backdrop.jpg', fit: BoxFit.cover),
+                  child: Image.asset('lib/images/backdrop.jpg', fit: BoxFit.cover),
                 ),
               ),
               Positioned(
@@ -53,25 +54,22 @@ class StartPage extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                          padding: const EdgeInsets.only(top: (25.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                  padding: const EdgeInsets.only(right: (30.0)),
-                                  child: SizedBox(
-                                    width: kIsWeb ? width * 0.175 : width * 0.3,
-                                    height: height * 0.07,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pushNamed(context, '/login');
-                                      },
-                                      child: const Text('Log in',
-                                          style: TextStyle(fontSize: 24)),
-                                    ),
-                                  )),
-                            ],
-                          )),
+                        padding: const EdgeInsets.only(top: (25.0)),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: kIsWeb ? width * 0.175 : width * 0.3,
+                              height: height * 0.07,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  _signInWithGoogle();
+                                },
+                                child: const Text('Log in', style: TextStyle(fontSize: 24)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -91,5 +89,20 @@ class StartPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _signInWithGoogle() async {
+    print('Sign in with Google executing');
+
+    final googleProvider = GoogleAuthProvider();
+
+    try {
+      await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      // Optionally navigate to a different page upon successful login
+      // Navigator.pushNamed(context, '/personal_profile');
+    } on FirebaseException catch (e) {
+      print('Error signing in with Google');
+      print(e.message);
+    }
   }
 }
