@@ -7,6 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
+import 'package:firebase_auth_platform_interface/src/method_channel/method_channel_firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 class StartPage extends StatelessWidget {
   const StartPage({super.key, required this.title});
   final String title;
@@ -91,14 +94,31 @@ class StartPage extends StatelessWidget {
     );
   }
 
+
   Future<void> _signInWithGoogle(BuildContext context) async {
-    final googleProvider = GoogleAuthProvider();
     try {
-      await FirebaseAuth.instance.signInWithPopup(googleProvider);
-      // ignore: use_build_context_synchronously
+      if (kIsWeb) {
+        // Web sign-in
+        final googleProvider = GoogleAuthProvider();
+        await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      } else {
+        // Mobile sign-in
+        final GoogleSignIn googleSignIn = GoogleSignIn();
+        final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+        if (googleUser != null) {
+          final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+          await FirebaseAuth.instance.signInWithCredential(credential);
+        }
+      }
       Navigator.pushNamedAndRemoveUntil(context, '/personal_profile', (route) => false);
-    } on FirebaseException catch (e) {
+    } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
     }
   }
+
 }
