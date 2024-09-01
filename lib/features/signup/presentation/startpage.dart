@@ -1,13 +1,9 @@
-// startpage.dart
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-
-import 'package:firebase_auth_platform_interface/src/method_channel/method_channel_firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class StartPage extends StatelessWidget {
@@ -94,7 +90,6 @@ class StartPage extends StatelessWidget {
     );
   }
 
-
   Future<void> _signInWithGoogle(BuildContext context) async {
     try {
       if (kIsWeb) {
@@ -115,10 +110,12 @@ class StartPage extends StatelessWidget {
           await FirebaseAuth.instance.signInWithCredential(credential);
         }
       }
-      Navigator.pushNamedAndRemoveUntil(context, '/personal_profile', (route) => false);
+      // Successful login
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushNamedAndRemoveUntil(context, '/personal_profile', (route) => false);
+      });
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
     }
   }
-
 }
