@@ -28,7 +28,7 @@ Map<Enum, FaIcon> _pickCatgory(String option) {
     case "Colour":
       return clothingColourIcons;
     case "Gender":
-      return clothingColourIcons;
+      return clothingGenderIcons;
   }
   return clothingColourIcons;
 }
@@ -76,119 +76,121 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Text(
-                "Select $categories",
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 25, left: 10, right: 10),
-              child: GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: kIsWeb ? 6 : 2,
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 8,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Text(
+                  "Select $categories",
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                itemBuilder: (_, index) => GridTile(
-                  child: GestureDetector(
-                    onLongPress: () {
-                      _handlePress(
-                          index,
-                          category,
-                          //Chat GPT to transform into correct format
-                          category.keys
-                              .toList()[index]
-                              .toString()
-                              .split('.')
-                              .last
-                              .capitalize,
-                          preferencesNotifier,
-                          preferences);
-                    },
-                    onTap: () {
-                      _handlePress(
-                          index,
-                          category,
-                          category.keys
-                              .toList()[index]
-                              .toString()
-                              .split('.')
-                              .last
-                              .capitalize,
-                          preferencesNotifier,
-                          preferences);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: preferences.contains(category.keys
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 25, left: 10, right: 10),
+                child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: kIsWeb ? 6 : 2,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                  ),
+                  itemBuilder: (_, index) => GridTile(
+                    child: GestureDetector(
+                      onLongPress: () {
+                        _handlePress(
+                            index,
+                            category,
+                            //Chat GPT to transform into correct format
+                            category.keys
                                 .toList()[index]
                                 .toString()
                                 .split('.')
                                 .last
-                                .capitalize)
-                            ? Theme.of(context).hoverColor
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                              category.keys
+                                .capitalize,
+                            preferencesNotifier,
+                            preferences);
+                      },
+                      onTap: () {
+                        _handlePress(
+                            index,
+                            category,
+                            category.keys
+                                .toList()[index]
+                                .toString()
+                                .split('.')
+                                .last
+                                .capitalize,
+                            preferencesNotifier,
+                            preferences);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: preferences.contains(category.keys
                                   .toList()[index]
                                   .toString()
                                   .split('.')
                                   .last
-                                  .capitalize,
-                              style: Theme.of(context).textTheme.bodyLarge),
-                          IconButton(
-                            icon: category.values.toList()[index],
-                            onPressed: () {
-                              _handlePress(
-                                  index,
-                                  category,
-                                  category.keys
-                                      .toList()[index]
-                                      .toString()
-                                      .split('.')
-                                      .last
-                                      .capitalize,
-                                  preferencesNotifier,
-                                  preferences);
-                            },
-                          ),
-                        ],
+                                  .capitalize)
+                              ? Theme.of(context).hoverColor
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                                category.keys
+                                    .toList()[index]
+                                    .toString()
+                                    .split('.')
+                                    .last
+                                    .capitalize,
+                                style: Theme.of(context).textTheme.bodyLarge),
+                            IconButton(
+                              icon: category.values.toList()[index],
+                              onPressed: () {
+                                _handlePress(
+                                    index,
+                                    category,
+                                    category.keys
+                                        .toList()[index]
+                                        .toString()
+                                        .split('.')
+                                        .last
+                                        .capitalize,
+                                    preferencesNotifier,
+                                    preferences);
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
+                  itemCount: category.values.toList().length,
                 ),
-                itemCount: category.values.toList().length,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 25),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).hoverColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+              Padding(
+                padding: const EdgeInsets.only(top: 25),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).hoverColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
+                  onPressed: () {
+                    setState(() {
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: const Text('Save'),
                 ),
-                onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                  });
-                },
-                child: const Text('Save'),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -208,44 +210,70 @@ const Map<LetteredSize, FaIcon> letteredSizeIcons = {
 
 Map<ClothingColour, FaIcon> clothingColourIcons = {
   ClothingColour.red:
-      const FaIcon(FontAwesomeIcons.square, size: 75, color: Colors.red),
+      const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.red),
   ClothingColour.green:
-      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.green),
+      const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.green),
   ClothingColour.lightBlue:
-      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.lightBlue),
+      const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.lightBlue),
   ClothingColour.darkBlue:
-      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.blue),
+      const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.blue),
   ClothingColour.purple:
-      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.purple),
+      const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.purple),
   ClothingColour.pink:
-      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.pink),
+      const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.pink),
   ClothingColour.orange:
-      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.orange),
+      const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.orange),
   ClothingColour.yellow:
-      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.yellow),
+      const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.yellow),
   ClothingColour.white:
-      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.white),
+      const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.white),
   ClothingColour.black:
-      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.black),
+      const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.black),
   ClothingColour.lightGrey:
-      FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.grey[300]),
+      FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.grey[300]),
   ClothingColour.darkGrey:
-      FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.grey[800]),
+      FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.grey[800]),
   ClothingColour.brown:
-      const FaIcon(FontAwesomeIcons.circle, size: 75, color: Colors.brown),
+      const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.brown),
 };
 
 const Map<ClothingType, FaIcon> clothingTypeIcons = {
-  ClothingType.hat: FaIcon(FontAwesomeIcons.hatCowboy, size: 75),
+  // ClothingType.hat: FaIcon(FontAwesomeIcons.hatCowboy, size: 75),
+  // ClothingType.scarf: FaIcon(FontAwesomeIcons.scarf, size: 75),
+  // ClothingType.tie: FaIcon(FontAwesomeIcons.necktie, size: 75),
+  // ClothingType.shirt: FaIcon(FontAwesomeIcons.shirt, size: 75),
+  // ClothingType.midriff: FaIcon(FontAwesomeIcons.shirt, size: 75), // No specific midriff icon, using shirt
+  // ClothingType.belt: FaIcon(FontAwesomeIcons.belt, size: 75),
+  // ClothingType.shorts: FaIcon(FontAwesomeIcons.shorts, size: 75),
+  // ClothingType.pants: FaIcon(FontAwesomeIcons.pants, size: 75), // No specific pants icon, using trousers
+  // ClothingType.skirt: FaIcon(FontAwesomeIcons.skirt, size: 75),
+  // ClothingType.dress: FaIcon(FontAwesomeIcons.dress, size: 75),
+  // ClothingType.shoes: FaIcon(FontAwesomeIcons.shoePrints, size: 75),
+  // ClothingType.jumper: FaIcon(FontAwesomeIcons.sweater, size: 75),
+  // ClothingType.jacket: FaIcon(FontAwesomeIcons.jacket, size: 75),
+  // ClothingType.sweater: FaIcon(FontAwesomeIcons.sweater, size: 75),
+  // ClothingType.coat: FaIcon(FontAwesomeIcons.coat, size: 75),
+  // ClothingType.gloves: FaIcon(FontAwesomeIcons.gloves, size: 75),
   ClothingType.vest: FaIcon(FontAwesomeIcons.vest, size: 75),
-  ClothingType.shirt: FaIcon(FontAwesomeIcons.shirt, size: 75),
-  ClothingType.midriff: FaIcon(FontAwesomeIcons.shirt, size: 75),
+  // ClothingType.leggings: FaIcon(FontAwesomeIcons.leggings, size: 75),
+  // ClothingType.tights: FaIcon(FontAwesomeIcons.leggings, size: 75), // No specific tights icon, using leggings
 };
 
 const Map<ClothingCondition, FaIcon> clothingConditionIcons = {
-  ClothingCondition.newWithTags: FaIcon(FontAwesomeIcons.tag, size: 75),
-  ClothingCondition.newNoTags: FaIcon(FontAwesomeIcons.tag, size: 75),
-  ClothingCondition.likeNew: FaIcon(FontAwesomeIcons.star, size: 75),
-  ClothingCondition.worn: FaIcon(FontAwesomeIcons.heartbeat, size: 75),
-  ClothingCondition.wellWorn: FaIcon(FontAwesomeIcons.batteryHalf, size: 75),
+  ClothingCondition.newWithTags:
+      FaIcon(FontAwesomeIcons.solidStar, size: 75), // Tags for new with tags
+  ClothingCondition.newNoTags: FaIcon(FontAwesomeIcons.solidStar,
+      size: 75), // Single tag for new without tags
+  ClothingCondition.likeNew:
+      FaIcon(FontAwesomeIcons.solidStar, size: 75), // Check circle for like new
+  ClothingCondition.worn:
+      FaIcon(FontAwesomeIcons.solidStar, size: 75), // Trash for worn
+  ClothingCondition.wellWorn:
+      FaIcon(FontAwesomeIcons.solidStar, size: 75), // Cogs for well worn
+};
+
+const Map<ClothingGender, FaIcon> clothingGenderIcons = {
+  ClothingGender.male: FaIcon(FontAwesomeIcons.mars, size: 75),
+  ClothingGender.female: FaIcon(FontAwesomeIcons.venus, size: 75),
+  ClothingGender.unisex: FaIcon(FontAwesomeIcons.venusMars, size: 75),
 };

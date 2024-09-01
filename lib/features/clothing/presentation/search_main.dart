@@ -1,4 +1,3 @@
-import 'package:clothing_swap/features/clothing/presentation/advanced_search.dart';
 import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
 import 'package:clothing_swap/widgets/preference_row.dart';
 import 'package:clothing_swap/widgets/tag.dart';
@@ -40,23 +39,53 @@ class _SearchPageState extends State<SearchPage> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    List<Widget> type = [];
-    for (int index = 0; index < preferences.length; index++) {
-      type.add(Tag(text: preferences[index]));
+    List<List<Widget>> tags = [[], [], [], [], []];
+    for (int i = 0; i < 5; i++) {
+      for (int index = 0; index < allPreferences[i].length; index++) {
+        tags[i].add(Tag(
+          text: allPreferences[i][index],
+          category: i == 0
+              ? 'Type'
+              : i == 1
+                  ? 'Size'
+                  : i == 2
+                      ? 'Colour'
+                      : i == 3
+                          ? 'Condition'
+                          : 'Gender',
+        ));
+      }
+      tags[i].add(Chip(
+        labelPadding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        label: SizedBox(
+          width: 20,
+          height: 20,
+          child: IconButton(
+            icon: const Icon(
+              Icons.add,
+              size: 20,
+            ),
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            onPressed: () {
+              Navigator.pushNamed(context, '/clothes_preferences',
+                  arguments: i == 0
+                      ? 'Type'
+                      : i == 1
+                          ? 'Size'
+                          : i == 2
+                              ? 'Colour'
+                              : i == 3
+                                  ? 'Condition'
+                                  : 'Gender');
+            },
+          ),
+        ),
+        backgroundColor: Theme.of(context).hoverColor,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20), // Rounded edges
+            side: BorderSide(color: Theme.of(context).hoverColor, width: 3)),
+      ));
     }
-    type.add(Chip(
-      label: IconButton(
-        icon: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.pushNamed(context, '/clothes_preferences',
-              arguments: 'Type');
-        },
-      ),
-      backgroundColor: Theme.of(context).hoverColor,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30), // Rounded edges
-          side: BorderSide(color: Theme.of(context).hoverColor, width: 3)),
-    ));
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -98,7 +127,11 @@ class _SearchPageState extends State<SearchPage> {
                           style: kIsWeb
                               ? Theme.of(context).textTheme.headlineLarge
                               : Theme.of(context).textTheme.headlineMedium),
-                      PreferenceRow(category: "Type", tags: type)
+                      PreferenceRow(category: "Type", tags: tags[0]),
+                      PreferenceRow(category: "Size", tags: tags[1]),
+                      PreferenceRow(category: "Colour", tags: tags[2]),
+                      PreferenceRow(category: "Condition", tags: tags[3]),
+                      PreferenceRow(category: "Gender", tags: tags[4])
                     ],
                   ),
                 ],

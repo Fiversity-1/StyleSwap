@@ -14,7 +14,7 @@ class PreferencesNotifier extends ChangeNotifier {
         return _typePreferences;
       case 'Size':
         return _sizePreferences;
-      case 'Color':
+      case 'Colour':
         return _colorPreferences;
       case 'Condition':
         return _conditionPreferences;
@@ -33,7 +33,7 @@ class PreferencesNotifier extends ChangeNotifier {
       case 'Size':
         _sizePreferences.add(preference);
         break;
-      case 'Color':
+      case 'Colour':
         _colorPreferences.add(preference);
         break;
       case 'Condition':
