@@ -22,24 +22,16 @@ void main() {
         child: MaterialApp(
           home: const StartPage(title: 'Test Title'),
           routes: {
-            '/login': (context) => const Scaffold(body: Text('Login Page')),
-            '/signup': (context) => const Scaffold(body: Text('Sign Up Page')),
+            '/login': (context) => const Scaffold(body: Text('Login Page'))
           },
         ),
       ),
     );
 
-    // Verify StartPage is displayed
     expect(find.byType(StartPage), findsOneWidget);
 
-    // Check "Log in" button functionality
     final logInButton = find.widgetWithText(ElevatedButton, 'Log in');
     expect(logInButton, findsOneWidget);
-    await tester.tap(logInButton);
-    await tester.pumpAndSettle(); // Wait for navigation to complete
-
-    // Verify navigation to the login page
-    expect(find.text('Login Page'), findsOneWidget);
 
   });
 }

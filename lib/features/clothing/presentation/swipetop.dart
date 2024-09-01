@@ -58,12 +58,12 @@ class _SwipePageTopState extends State<SwipePageTop> {
     }
   }
 
-  bool _checkCount() {
-    if (_counter % 3 == 0 && _counter != 0) {
-      return false;
-    }
-    return true;
-  }
+  //bool _checkCount() {
+  //   if (_counter % 3 == 0 && _counter != 0) {
+  //    return false;
+  //  }
+  //  return true;
+  //}
 
   final GlobalKey _tapingKey = GlobalKey();
   final GlobalKey _moreDetailKey = GlobalKey();
