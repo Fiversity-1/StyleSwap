@@ -37,7 +37,6 @@ dependencies:
   reorderable_grid_view: ^2.2.8
   confirm_dialog: ^1.0.3
   string_extensions: ^0.7.3
-  simple_tags: ^0.0.6
   font_awesome_flutter: ^10.1.0
   provider:
 

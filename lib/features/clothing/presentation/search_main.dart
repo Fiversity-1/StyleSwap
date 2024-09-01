@@ -1,11 +1,12 @@
-import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
-import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
+import 'package:clothing_swap/features/clothing/presentation/advanced_search.dart';
+import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
+import 'package:clothing_swap/widgets/preference_row.dart';
 import 'package:clothing_swap/widgets/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:string_extensions/string_extensions.dart';
+import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -17,18 +18,31 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
+    //Chat GPT for tracking preference changes
+    List<String> typePreferences =
+        context.watch<PreferencesNotifier>().getPreferences("Type");
+    List<String> sizePreferences =
+        context.watch<PreferencesNotifier>().getPreferences("Size");
+    List<String> colourPreferences =
+        context.watch<PreferencesNotifier>().getPreferences("Colour");
+    List<String> conditionPreferences =
+        context.watch<PreferencesNotifier>().getPreferences("Condition");
+    List<String> genderPreferences =
+        context.watch<PreferencesNotifier>().getPreferences("Gender");
+    List<List<String>> allPreferences = [
+      typePreferences,
+      sizePreferences,
+      colourPreferences,
+      conditionPreferences,
+      genderPreferences
+    ];
+
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
     List<Widget> type = [];
-    for (int index = 0; index < typePreferences.length; index++) {
-      type.add(Tag(
-          text: typePreferences
-              .toList()[index]
-              .toString()
-              .split('.')
-              .last
-              .capitalize));
+    for (int index = 0; index < preferences.length; index++) {
+      type.add(Tag(text: preferences[index]));
     }
     type.add(Chip(
       label: IconButton(
@@ -84,31 +98,7 @@ class _SearchPageState extends State<SearchPage> {
                           style: kIsWeb
                               ? Theme.of(context).textTheme.headlineLarge
                               : Theme.of(context).textTheme.headlineMedium),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 15, left: (15.0), bottom: 15),
-                        child: Row(
-                          children: [
-                            Text("Type",
-                                style: kIsWeb
-                                    ? Theme.of(context).textTheme.headlineSmall
-                                    : Theme.of(context).textTheme.headlineSmall)
-                          ],
-                        ),
-                      ),
-                      Wrap(spacing: 10, runSpacing: 10, children: type),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 15, left: (15.0), bottom: 15),
-                        child: Row(
-                          children: [
-                            Text("Colour",
-                                style: kIsWeb
-                                    ? Theme.of(context).textTheme.headlineSmall
-                                    : Theme.of(context).textTheme.headlineSmall)
-                          ],
-                        ),
-                      ),
+                      PreferenceRow(category: "Type", tags: type)
                     ],
                   ),
                 ],

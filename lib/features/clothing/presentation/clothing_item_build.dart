@@ -13,19 +13,20 @@ class ClothingCard extends StatefulWidget {
   ClothingCardState createState() => ClothingCardState();
 }
 
-//60% Generative Code
 class ClothingCardState extends State<ClothingCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
         setState(() {
+          //Generative Code
           widget.item.currentIndex =
               (widget.item.currentIndex + 1) % widget.item.images.length;
         });
       },
       onTap: () {
         setState(() {
+          //Generative Code
           widget.item.currentIndex =
               (widget.item.currentIndex + 1) % widget.item.images.length;
         });

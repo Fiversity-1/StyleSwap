@@ -1,10 +1,13 @@
 // signup.dart
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
+import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
+import 'package:clothing_swap/features/clothing/presentation/search_main.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:string_extensions/string_extensions.dart';
 
 class ClothesPreferences extends StatefulWidget {
@@ -24,27 +27,47 @@ Map<Enum, FaIcon> _pickCatgory(String option) {
       return clothingConditionIcons;
     case "Colour":
       return clothingColourIcons;
+    case "Gender":
+      return clothingColourIcons;
   }
   return clothingColourIcons;
 }
 
 class _ClothesPreferencesState extends State<ClothesPreferences> {
   late String categories;
-  late List<bool> _pressedStates;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Extract the 'categories' argument from the route
+    // Extract the 'categories' argument from the route, Chat GPT suggested code
     categories = ModalRoute.of(context)!.settings.arguments as String;
-    Map<Enum, FaIcon> category = _pickCatgory(categories);
-    _pressedStates = List.generate(category.length, (_) => false);
+  }
+
+  void _handlePress(int index, Map<Enum, FaIcon> category, String currentOption,
+      PreferencesNotifier preferencesNotifier, List<String> preferences) {
+    setState(() {
+      if (preferences.contains(currentOption)) {
+        preferencesNotifier.removePreference(categories, currentOption);
+      } else {
+        preferencesNotifier.addPreference(
+            categories,
+            category.keys
+                .toList()[index]
+                .toString()
+                .split('.')
+                .last
+                .capitalize);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     Map<Enum, FaIcon> category = _pickCatgory(categories);
-
+    //Chat GPT for tracking changes via provider
+    final preferencesNotifier = context.watch<PreferencesNotifier>();
+    List<String> preferences =
+        context.watch<PreferencesNotifier>().getPreferences(categories);
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 3,
@@ -76,30 +99,40 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
                 itemBuilder: (_, index) => GridTile(
                   child: GestureDetector(
                     onLongPress: () {
-                      setState(() {
-                        typePreferences.add(category.keys
-                            .toList()[index]
-                            .toString()
-                            .split('.')
-                            .last
-                            .capitalize);
-                        _pressedStates[index] = !_pressedStates[index];
-                      });
+                      _handlePress(
+                          index,
+                          category,
+                          //Chat GPT to transform into correct format
+                          category.keys
+                              .toList()[index]
+                              .toString()
+                              .split('.')
+                              .last
+                              .capitalize,
+                          preferencesNotifier,
+                          preferences);
                     },
                     onTap: () {
-                      setState(() {
-                        typePreferences.add(category.keys
-                            .toList()[index]
-                            .toString()
-                            .split('.')
-                            .last
-                            .capitalize);
-                        _pressedStates[index] = !_pressedStates[index];
-                      });
+                      _handlePress(
+                          index,
+                          category,
+                          category.keys
+                              .toList()[index]
+                              .toString()
+                              .split('.')
+                              .last
+                              .capitalize,
+                          preferencesNotifier,
+                          preferences);
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: _pressedStates[index]
+                        color: preferences.contains(category.keys
+                                .toList()[index]
+                                .toString()
+                                .split('.')
+                                .last
+                                .capitalize)
                             ? Theme.of(context).hoverColor
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(10),
@@ -117,15 +150,17 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
                           IconButton(
                             icon: category.values.toList()[index],
                             onPressed: () {
-                              setState(() {
-                                typePreferences.add(category.keys
-                                    .toList()[index]
-                                    .toString()
-                                    .split('.')
-                                    .last
-                                    .capitalize);
-                                _pressedStates[index] = !_pressedStates[index];
-                              });
+                              _handlePress(
+                                  index,
+                                  category,
+                                  category.keys
+                                      .toList()[index]
+                                      .toString()
+                                      .split('.')
+                                      .last
+                                      .capitalize,
+                                  preferencesNotifier,
+                                  preferences);
                             },
                           ),
                         ],
@@ -160,8 +195,7 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
   }
 }
 
-List<String> typePreferences = [];
-
+//Generative AI for icon generation
 const Map<LetteredSize, FaIcon> letteredSizeIcons = {
   LetteredSize.xxs: FaIcon(FontAwesomeIcons.s, size: 75),
   LetteredSize.xs: FaIcon(FontAwesomeIcons.x, size: 75),
