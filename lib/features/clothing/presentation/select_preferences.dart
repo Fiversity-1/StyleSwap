@@ -94,7 +94,7 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
           int crossAxisCount = constraints.maxWidth > 600
               ? 8
               : constraints.maxWidth > 400
-                  ? 4
+                  ? 3
                   : 2;
           return Stack(
             children: [
@@ -120,7 +120,7 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
                       ),
                       Padding(
                         padding:
-                            const EdgeInsets.only(top: 25, left: 10, right: 10),
+                            const EdgeInsets.only(top: 10, left: 10, right: 10),
                         child: GridView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -159,6 +159,7 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
                                         _getText(category, index) ==
@@ -261,11 +262,11 @@ Map<ClothingColour, FaIcon> clothingColourIcons = {
       size: iconSize, color: Colors.white),
   ClothingColour.black: const FaIcon(FontAwesomeIcons.solidCircle,
       size: iconSize, color: Colors.black),
-  ClothingColour.lightGrey:
-      FaIcon(FontAwesomeIcons.palette, size: iconSize, color: Colors.grey[300]),
-  ClothingColour.darkGrey:
-      FaIcon(FontAwesomeIcons.palette, size: iconSize, color: Colors.grey[800]),
-  ClothingColour.brown: const FaIcon(FontAwesomeIcons.palette,
+  ClothingColour.lightGrey: FaIcon(FontAwesomeIcons.solidCircle,
+      size: iconSize, color: Colors.grey[300]),
+  ClothingColour.darkGrey: FaIcon(FontAwesomeIcons.solidCircle,
+      size: iconSize, color: Colors.grey[800]),
+  ClothingColour.brown: const FaIcon(FontAwesomeIcons.solidCircle,
       size: iconSize, color: Colors.brown),
 };
 

@@ -108,7 +108,7 @@ class _SearchPageState extends State<SearchPage> {
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('lib/images/backdrop4.jpg'),
-                    opacity: 0.2,
+                    opacity: 0.1,
                     fit: BoxFit.cover,
                   ),
                 ),
