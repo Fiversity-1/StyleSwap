@@ -1,7 +1,6 @@
 // signup.dart
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
 import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
-import 'package:clothing_swap/features/clothing/presentation/search_main.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart';
@@ -61,6 +60,10 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
     });
   }
 
+  String _getText(Map<Enum, FaIcon> category, int index) {
+    return category.keys.toList()[index].toString().split('.').last.capitalize;
+  }
+
   @override
   Widget build(BuildContext context) {
     Map<Enum, FaIcon> category = _pickCatgory(categories);
@@ -104,36 +107,19 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
                             index,
                             category,
                             //Chat GPT to transform into correct format
-                            category.keys
-                                .toList()[index]
-                                .toString()
-                                .split('.')
-                                .last
-                                .capitalize,
+                            _getText(category, index),
                             preferencesNotifier,
                             preferences);
                       },
                       onTap: () {
-                        _handlePress(
-                            index,
-                            category,
-                            category.keys
-                                .toList()[index]
-                                .toString()
-                                .split('.')
-                                .last
-                                .capitalize,
-                            preferencesNotifier,
-                            preferences);
+                        _handlePress(index, category, _getText(category, index),
+                            preferencesNotifier, preferences);
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: preferences.contains(category.keys
-                                  .toList()[index]
-                                  .toString()
-                                  .split('.')
-                                  .last
-                                  .capitalize)
+                          color: preferences.contains(
+                            _getText(category, index),
+                          )
                               ? Theme.of(context).hoverColor
                               : Colors.transparent,
                           borderRadius: BorderRadius.circular(10),
@@ -141,12 +127,16 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
                         child: Column(
                           children: [
                             Text(
-                                category.keys
-                                    .toList()[index]
-                                    .toString()
-                                    .split('.')
-                                    .last
-                                    .capitalize,
+                                _getText(category, index) == "Newwithtags"
+                                    ? "New with tags"
+                                    : _getText(category, index) == "Newnotags"
+                                        ? "New no tags"
+                                        : _getText(category, index) == "Likenew"
+                                            ? "Like new"
+                                            : _getText(category, index) ==
+                                                    "Wellworn"
+                                                ? "Well worn"
+                                                : _getText(category, index),
                                 style: Theme.of(context).textTheme.bodyLarge),
                             IconButton(
                               icon: category.values.toList()[index],
@@ -154,12 +144,7 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
                                 _handlePress(
                                     index,
                                     category,
-                                    category.keys
-                                        .toList()[index]
-                                        .toString()
-                                        .split('.')
-                                        .last
-                                        .capitalize,
+                                    _getText(category, index),
                                     preferencesNotifier,
                                     preferences);
                               },

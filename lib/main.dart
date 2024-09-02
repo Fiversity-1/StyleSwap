@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:clothing_swap/features/signup/presentation/startpage.dart';
 import 'package:clothing_swap/features/signup/presentation/signup.dart';
 import 'package:clothing_swap/features/profile/presentation/personal_profile.dart';
-import 'package:clothing_swap/features/clothing/presentation/search_main.dart';
+import 'package:clothing_swap/features/clothing/presentation/search_pref.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
 import 'package:clothing_swap/features/signup/presentation/login.dart';
 import 'package:provider/provider.dart';
