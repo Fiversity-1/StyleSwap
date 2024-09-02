@@ -82,204 +82,223 @@ class _SwipePageTopState extends State<SwipePageTop> {
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
       ),
-      body: Row(
-        children: [
-          Visibility(
-            visible: kIsWeb,
-            child: Expanded(
-                flex: 1,
-                child: Container(
-                  color: Theme.of(context).canvasColor,
-                )),
-          ),
-          Expanded(
-            flex: 4,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Positioned.fill(
-                  child: Opacity(
-                    opacity: 0.10,
-                    child: Image.asset('lib/images/backdrop3.jpg',
-                        fit: BoxFit.cover),
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // Define grid column count based on available width
+          bool sideBars = constraints.maxWidth > 960;
+
+          return Row(
+            children: [
+              Visibility(
+                visible: sideBars,
+                child: Expanded(
+                    flex: 1,
+                    child: Container(
+                      color: Theme.of(context).canvasColor,
+                    )),
+              ),
+              Expanded(
+                flex: 3,
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: (10)),
-                      child: Container(
-                        key: _tapingKey,
-                        color: Theme.of(context)
-                            .scaffoldBackgroundColor
-                            .withOpacity(0.9),
-                        width: (kIsWeb) ? width * 0.50625 : width * 0.9125,
-                        height: (kIsWeb) ? height * 0.675 : height * 0.58,
+                    Positioned.fill(
+                      child: Opacity(
+                        opacity: 0.10,
+                        child: Image.asset('lib/images/backdrop3.jpg',
+                            fit: BoxFit.cover),
                       ),
                     ),
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(),
-                      child: SizedBox(
-                        height: (kIsWeb) ? height * 0.7 : height * 0.6,
-                        width: (kIsWeb) ? width * 0.525 : width * 0.925,
-                        child: CardSwiper(
-                          cardsCount: publicListings.length +
-                              funFactExample.length, // Total count of cards
-                          scale: 0.6,
-                          isLoop: true,
-                          numberOfCardsDisplayed: 3,
-                          onSwipe: (previousIndex, currentIndex, direction) {
-                            _incrementCounter(); // Increment count on swipe
-                            //Chat modified for provider logic
-                            if (direction.name == 'right') {
-                              final userManager = Provider.of<UserManager>(
-                                  context,
-                                  listen: false);
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: (10)),
+                          child: Container(
+                            key: _tapingKey,
+                            color: Theme.of(context)
+                                .scaffoldBackgroundColor
+                                .withOpacity(0.9),
+                            width: (kIsWeb) ? width * 0.50625 : width * 0.9125,
+                            height: (kIsWeb) ? height * 0.675 : height * 0.58,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(),
+                          child: SizedBox(
+                            height: (kIsWeb) ? height * 0.7 : height * 0.6,
+                            width: (kIsWeb) ? width * 0.525 : width * 0.925,
+                            child: CardSwiper(
+                              cardsCount: publicListings.length +
+                                  funFactExample.length, // Total count of cards
+                              scale: 0.6,
+                              isLoop: true,
+                              numberOfCardsDisplayed: 3,
+                              onSwipe:
+                                  (previousIndex, currentIndex, direction) {
+                                _incrementCounter(); // Increment count on swipe
+                                //Chat modified for provider logic
+                                if (direction.name == 'right') {
+                                  final userManager = Provider.of<UserManager>(
+                                      context,
+                                      listen: false);
 
-                              final currentUser = userManager.currentUser;
-                              final listerProfile = userManager.getUserById(
-                                  publicListings[previousIndex].userId);
+                                  final currentUser = userManager.currentUser;
+                                  final listerProfile = userManager.getUserById(
+                                      publicListings[previousIndex].userId);
 
-                              currentUser.addInterestedListing(ChatListing(
-                                currentUserId: currentUser.id,
-                                otherUserId: listerProfile.id,
-                                name: listerProfile.name,
-                                previewContent: "New Match",
-                                time: "Now",
-                                opened: false,
-                                image: publicListings[previousIndex].images[0],
-                              ));
-                              toastification.showCustom(
-                                context: context,
-                                autoCloseDuration: const Duration(seconds: 3),
-                                alignment: Alignment.bottomRight,
-                                builder: (BuildContext context,
-                                    ToastificationItem holder) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: Theme.of(context).hoverColor,
-                                    ),
-                                    padding: const EdgeInsets.all(16),
-                                    margin: const EdgeInsets.all(8),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text('You\'ve got a New Match!',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                        const SizedBox(height: 16),
-                                        Row(
+                                  currentUser.addInterestedListing(ChatListing(
+                                    currentUserId: currentUser.id,
+                                    otherUserId: listerProfile.id,
+                                    name: listerProfile.name,
+                                    previewContent: "New Match",
+                                    time: "Now",
+                                    opened: false,
+                                    image:
+                                        publicListings[previousIndex].images[0],
+                                  ));
+                                  toastification.showCustom(
+                                    context: context,
+                                    autoCloseDuration:
+                                        const Duration(seconds: 3),
+                                    alignment: Alignment.bottomRight,
+                                    builder: (BuildContext context,
+                                        ToastificationItem holder) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: Theme.of(context).hoverColor,
+                                        ),
+                                        padding: const EdgeInsets.all(16),
+                                        margin: const EdgeInsets.all(8),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                final chat = chatManager
-                                                    .findChatByUserId(
-                                                        listerProfile.id);
-                                                chatManager
-                                                    .selectChat(chat!.id);
-                                                Navigator.pushNamed(
-                                                    context, '/chat');
-                                              },
-                                              child: const Text('Message Now!'),
+                                            const Text(
+                                                'You\'ve got a New Match!',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const SizedBox(height: 16),
+                                            Row(
+                                              children: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    final chat = chatManager
+                                                        .findChatByUserId(
+                                                            listerProfile.id);
+                                                    chatManager
+                                                        .selectChat(chat!.id);
+                                                    Navigator.pushNamed(
+                                                        context, '/chat');
+                                                  },
+                                                  child: const Text(
+                                                      'Message Now!'),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
-                                      ],
-                                    ),
+                                      );
+                                    },
                                   );
-                                },
-                              );
-                            }
-                            return true;
-                          },
-                          allowedSwipeDirection:
-                              const AllowedSwipeDirection.only(
-                                  left: true, right: true),
-                          cardBuilder: (context, index, percentThresholdX,
-                              percentThresholdY) {
-                            final cardIndex = index %
-                                (publicListings.length + funFactExample.length);
+                                }
+                                return true;
+                              },
+                              allowedSwipeDirection:
+                                  const AllowedSwipeDirection.only(
+                                      left: true, right: true),
+                              cardBuilder: (context, index, percentThresholdX,
+                                  percentThresholdY) {
+                                final cardIndex = index %
+                                    (publicListings.length +
+                                        funFactExample.length);
 
-                            //ChatGPT modified original code for switching logic
-                            // Determine card type based on the cardIndex
-                            if ((cardIndex + 1) % 6 == 0) {
-                              final safeIndexFact =
-                                  (cardIndex ~/ 6) % funFactExample.length;
-                              return FunFactCard(
-                                  funFact: funFactExample[safeIndexFact]);
-                            } else {
-                              final safeIndex =
-                                  cardIndex % publicListings.length;
-                              return ClothingCard(
-                                  item: publicListings[safeIndex]);
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20, top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            publicListings[_counter].name,
-                            style: Theme.of(context).textTheme.headlineMedium,
+                                //ChatGPT modified original code for switching logic
+                                // Determine card type based on the cardIndex
+                                if ((cardIndex + 1) % 6 == 0) {
+                                  final safeIndexFact =
+                                      (cardIndex ~/ 6) % funFactExample.length;
+                                  return FunFactCard(
+                                      funFact: funFactExample[safeIndexFact]);
+                                } else {
+                                  final safeIndex =
+                                      cardIndex % publicListings.length;
+                                  return ClothingCard(
+                                      item: publicListings[safeIndex]);
+                                }
+                              },
+                            ),
                           ),
-                          IconButton(
-                              icon: const Icon(Icons.tune),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                publicListings[_counter].name,
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              IconButton(
+                                  icon: const Icon(Icons.tune),
+                                  iconSize: 35,
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, '/search');
+                                  }),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(publicListings[_counter].location,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: (7.5)),
+                          child: IconButton(
+                              icon: const Icon(kIsWeb
+                                  ? Icons.arrow_downward
+                                  : Icons.swipe_up),
                               iconSize: 35,
-                              color: Colors.white,
+                              key: _moreDetailKey,
                               onPressed: () {
-                                Navigator.pushNamed(context, '/search');
+                                Navigator.pushNamed(
+                                    context, '/clothing_detail');
                               }),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(publicListings[_counter].location,
-                              style:
-                                  Theme.of(context).textTheme.headlineMedium),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: (7.5)),
-                      child: IconButton(
-                          icon: const Icon(
-                              kIsWeb ? Icons.arrow_downward : Icons.swipe_up),
-                          iconSize: 35,
-                          key: _moreDetailKey,
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/clothing_detail');
-                          }),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          Visibility(
-            visible: kIsWeb,
-            child: Expanded(
-                flex: 1,
-                child: Container(
-                  color: Theme.of(context).canvasColor,
-                )),
-          ),
-        ],
+              ),
+              Visibility(
+                visible: sideBars,
+                child: Expanded(
+                    flex: 1,
+                    child: Container(
+                      color: Theme.of(context).canvasColor,
+                    )),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
