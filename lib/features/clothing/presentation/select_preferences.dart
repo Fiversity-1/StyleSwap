@@ -193,13 +193,13 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
 
 //Generative AI for icon generation
 const Map<LetteredSize, FaIcon> letteredSizeIcons = {
-  LetteredSize.xxs: FaIcon(FontAwesomeIcons.s, size: 75),
-  LetteredSize.xs: FaIcon(FontAwesomeIcons.x, size: 75),
-  LetteredSize.s: FaIcon(FontAwesomeIcons.caretDown, size: 75),
-  LetteredSize.m: FaIcon(FontAwesomeIcons.caretDown, size: 75),
-  LetteredSize.l: FaIcon(FontAwesomeIcons.caretDown, size: 75),
-  LetteredSize.xl: FaIcon(FontAwesomeIcons.caretDown, size: 75),
-  LetteredSize.xxl: FaIcon(FontAwesomeIcons.caretDown, size: 75),
+  LetteredSize.xxs: FaIcon(FontAwesomeIcons.ruler, size: 75),
+  LetteredSize.xs: FaIcon(FontAwesomeIcons.ruler, size: 75),
+  LetteredSize.s: FaIcon(FontAwesomeIcons.ruler, size: 75),
+  LetteredSize.m: FaIcon(FontAwesomeIcons.ruler, size: 75),
+  LetteredSize.l: FaIcon(FontAwesomeIcons.ruler, size: 75),
+  LetteredSize.xl: FaIcon(FontAwesomeIcons.ruler, size: 75),
+  LetteredSize.xxl: FaIcon(FontAwesomeIcons.ruler, size: 75),
 };
 
 Map<ClothingColour, FaIcon> clothingColourIcons = {
@@ -254,8 +254,8 @@ const Map<ClothingType, FaIcon> clothingTypeIcons = {
 };
 
 const Map<ClothingCondition, FaIcon> clothingConditionIcons = {
-  ClothingCondition.newWithTags:
-      FaIcon(FontAwesomeIcons.solidStar, size: 75), // Tags for new with tags
+  ClothingCondition.newWithTags: FaIcon(FontAwesomeIcons.heartCircleBolt,
+      size: 75), // Tags for new with tags
   ClothingCondition.newNoTags: FaIcon(FontAwesomeIcons.solidStar,
       size: 75), // Single tag for new without tags
   ClothingCondition.likeNew:

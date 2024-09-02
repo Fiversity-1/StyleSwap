@@ -27,6 +27,12 @@ ThemeData lightTheme = ThemeData(
       tileColor: Colors.white,
       selectedTileColor: Colors.lightBlue,
       selectedColor: Colors.white),
+  sliderTheme: const SliderThemeData(
+    thumbColor: Colors.black,
+    valueIndicatorTextStyle: TextStyle(
+      color: Colors.black, // Change the label color here
+    ),
+  ),
 );
 
 ThemeData darkTheme = ThemeData(
@@ -60,6 +66,12 @@ ThemeData darkTheme = ThemeData(
       iconColor: Colors.white,
       selectedTileColor: Colors.deepPurple,
       selectedColor: Colors.white,
+    ),
+    sliderTheme: const SliderThemeData(
+      thumbColor: Colors.white,
+      valueIndicatorTextStyle: TextStyle(
+        color: Colors.white, // Change the label color here
+      ),
     ),
     inputDecorationTheme: const InputDecorationTheme(
         fillColor: Color.fromARGB(255, 50, 47, 47),

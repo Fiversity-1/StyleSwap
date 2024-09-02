@@ -15,6 +15,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  double _currentSliderValue = 10;
+
   @override
   Widget build(BuildContext context) {
     //Chat GPT for tracking preference changes
@@ -131,7 +133,44 @@ class _SearchPageState extends State<SearchPage> {
                       PreferenceRow(category: "Size", tags: tags[1]),
                       PreferenceRow(category: "Colour", tags: tags[2]),
                       PreferenceRow(category: "Condition", tags: tags[3]),
-                      PreferenceRow(category: "Gender", tags: tags[4])
+                      PreferenceRow(category: "Gender", tags: tags[4]),
+                      Padding(
+                          padding: const EdgeInsets.only(left: (25.0)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 15, left: (5.0), bottom: 15),
+                                child: Row(
+                                  children: [
+                                    Text("Distance",
+                                        style: kIsWeb
+                                            ? Theme.of(context)
+                                                .textTheme
+                                                .headlineSmall
+                                            : Theme.of(context)
+                                                .textTheme
+                                                .headlineSmall),
+                                    //FlutterMap Slider Tutorial
+                                    Slider(
+                                        value: _currentSliderValue,
+                                        max: 100,
+                                        min: 1,
+                                        divisions: 20,
+                                        label: _currentSliderValue
+                                            .round()
+                                            .toString(),
+                                        onChanged: (double value) {
+                                          setState(() {
+                                            _currentSliderValue = value;
+                                          });
+                                        })
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ))
                     ],
                   ),
                 ],
