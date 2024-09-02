@@ -28,53 +28,51 @@ class _PreferencesState extends State<Preferences> {
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Preferences',
-                  style: Theme.of(context).textTheme.headlineLarge,
-                  textAlign: TextAlign.center,
-                ),
-                Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          'Colour Theme:',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                        DropdownButton(
-                          value: chosenValue,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              chosenValue = newValue!;
-                              Provider.of<ThemeSwitcher>(context, listen: false)
-                                  .toggleTheme(chosenValue, context);
-                            });
-                          },
-                          items: const [
-                            DropdownMenuItem<String>(
-                                value: 'Light', child: Text('Light')),
-                            DropdownMenuItem<String>(
-                                value: 'Dark', child: Text('Dark')),
-                            DropdownMenuItem<String>(
-                                value: 'High Constrast',
-                                child: Text('High Constrast')),
-                            DropdownMenuItem<String>(
-                                value: 'System', child: Text('System')),
-                          ],
-                        ),
-                      ],
-                    )),
-              ],
-            ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 15),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                'Preferences',
+                style: Theme.of(context).textTheme.headlineLarge,
+                textAlign: TextAlign.center,
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        'Colour Theme:',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                      DropdownButton(
+                        value: chosenValue,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            chosenValue = newValue!;
+                            Provider.of<ThemeSwitcher>(context, listen: false)
+                                .toggleTheme(chosenValue, context);
+                          });
+                        },
+                        items: const [
+                          DropdownMenuItem<String>(
+                              value: 'Light', child: Text('Light')),
+                          DropdownMenuItem<String>(
+                              value: 'Dark', child: Text('Dark')),
+                          DropdownMenuItem<String>(
+                              value: 'High Constrast',
+                              child: Text('High Constrast')),
+                          DropdownMenuItem<String>(
+                              value: 'System', child: Text('System')),
+                        ],
+                      ),
+                    ],
+                  )),
+            ],
           ),
         ),
       ),

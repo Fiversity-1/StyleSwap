@@ -23,13 +23,43 @@ class _EventPageState extends State<EventPage> {
         child: CustomTopAppBar(),
       ),
       bottomNavigationBar: const CustomBottomNavBar(currentIndex: 2),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: (20.0)),
-          child: SizedBox(
-              width: width * 0.85,
-              child: EventList(listings: widget.communityEvents)),
-        ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // Define grid column count based on available width
+          bool sideBars = constraints.maxWidth > 600;
+
+          return Row(
+            children: [
+              Visibility(
+                visible: sideBars,
+                child: Expanded(
+                    flex: 2,
+                    child: Container(
+                      color: Theme.of(context).canvasColor,
+                    )),
+              ),
+              Expanded(
+                flex: 5,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: (20.0)),
+                    child: SizedBox(
+                        width: width * 0.85,
+                        child: EventList(listings: widget.communityEvents)),
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: sideBars,
+                child: Expanded(
+                    flex: 2,
+                    child: Container(
+                      color: Theme.of(context).canvasColor,
+                    )),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

@@ -98,87 +98,108 @@ class _SearchPageState extends State<SearchPage> {
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
       ),
-      body: SingleChildScrollView(
-        child: Row(
-          children: [
-            Visibility(
-              visible: kIsWeb,
-              child: Expanded(
-                  flex: 1,
-                  child: Container(
-                    color: Theme.of(context).canvasColor,
-                  )),
-            ),
-            Expanded(
-              flex: 4,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: height * 0.025,
-                    width: width,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // Define grid column count based on available width
+
+          return Stack(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('lib/images/backdrop4.jpg'),
+                    opacity: 0.2,
+                    fit: BoxFit.cover,
                   ),
-                  Text('Preferences',
-                      style: kIsWeb
-                          ? Theme.of(context).textTheme.headlineLarge
-                          : Theme.of(context).textTheme.headlineMedium),
-                  PreferenceRow(category: "Type", tags: tags[0]),
-                  PreferenceRow(category: "Size", tags: tags[1]),
-                  PreferenceRow(category: "Colour", tags: tags[2]),
-                  PreferenceRow(category: "Condition", tags: tags[3]),
-                  PreferenceRow(category: "Gender", tags: tags[4]),
-                  Padding(
-                      padding: const EdgeInsets.only(left: (25.0)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 15, left: (5.0), bottom: 15),
-                            child: Row(
-                              children: [
-                                Text(
-                                    _currentSliderValue == 0
-                                        ? "Distance within 5 km"
-                                        : _currentSliderValue == 100
-                                            ? "Distance 100 km +"
-                                            : "Distance ${_currentSliderValue.round().toString()} km",
-                                    style: kIsWeb
-                                        ? Theme.of(context)
-                                            .textTheme
-                                            .headlineSmall
-                                        : Theme.of(context)
-                                            .textTheme
-                                            .headlineSmall),
-                                //FlutterMap Slider Tutorial
-                              ],
-                            ),
-                          ),
-                          Slider(
-                              value: _currentSliderValue,
-                              max: 100,
-                              min: 0,
-                              divisions: 20,
-                              label: _currentSliderValue.round().toString(),
-                              onChanged: (double value) {
-                                setState(() {
-                                  _currentSliderValue = value;
-                                });
-                              })
-                        ],
-                      ))
-                ],
+                ),
               ),
-            ),
-            Visibility(
-              visible: kIsWeb,
-              child: Expanded(
-                  flex: 1,
-                  child: Container(
-                    color: Theme.of(context).canvasColor,
-                  )),
-            ),
-          ],
-        ),
+              SingleChildScrollView(
+                child: Row(
+                  children: [
+                    Visibility(
+                      visible: kIsWeb,
+                      child: Expanded(
+                          flex: 1,
+                          child: Container(
+                            color: Theme.of(context).canvasColor,
+                          )),
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: height * 0.025,
+                            width: width,
+                          ),
+                          Text('Search Preferences',
+                              style: kIsWeb
+                                  ? Theme.of(context).textTheme.headlineLarge
+                                  : Theme.of(context).textTheme.headlineMedium),
+                          PreferenceRow(category: "Type", tags: tags[0]),
+                          PreferenceRow(category: "Size", tags: tags[1]),
+                          PreferenceRow(category: "Colour", tags: tags[2]),
+                          PreferenceRow(category: "Condition", tags: tags[3]),
+                          PreferenceRow(category: "Gender", tags: tags[4]),
+                          Padding(
+                              padding: const EdgeInsets.only(left: (25.0)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 15, left: (5.0), bottom: 15),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                            _currentSliderValue == 0
+                                                ? "Distance within 5 km"
+                                                : _currentSliderValue == 100
+                                                    ? "Distance 100 km +"
+                                                    : "Distance ${_currentSliderValue.round().toString()} km",
+                                            style: kIsWeb
+                                                ? Theme.of(context)
+                                                    .textTheme
+                                                    .headlineSmall
+                                                : Theme.of(context)
+                                                    .textTheme
+                                                    .headlineSmall),
+                                        //FlutterMap Slider Tutorial
+                                      ],
+                                    ),
+                                  ),
+                                  Slider(
+                                      value: _currentSliderValue,
+                                      max: 100,
+                                      min: 0,
+                                      divisions: 20,
+                                      label: _currentSliderValue
+                                          .round()
+                                          .toString(),
+                                      onChanged: (double value) {
+                                        setState(() {
+                                          _currentSliderValue = value;
+                                        });
+                                      })
+                                ],
+                              ))
+                        ],
+                      ),
+                    ),
+                    Visibility(
+                      visible: kIsWeb,
+                      child: Expanded(
+                          flex: 1,
+                          child: Container(
+                            color: Theme.of(context).canvasColor,
+                          )),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

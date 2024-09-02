@@ -67,6 +67,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
 
   final GlobalKey _tapingKey = GlobalKey();
   final GlobalKey _moreDetailKey = GlobalKey();
+  final GlobalKey _preferenceKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -251,8 +252,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
                               ),
                               IconButton(
                                   icon: const Icon(Icons.tune),
+                                  key: _preferenceKey,
                                   iconSize: 35,
-                                  color: Colors.white,
                                   onPressed: () {
                                     Navigator.pushNamed(context, '/search');
                                   }),
@@ -341,6 +342,26 @@ class _SwipePageTopState extends State<SwipePageTop> {
           children: [
             Text(
               "Swipe or Tap up for more info",
+              style: TextStyle(fontSize: 22, color: Colors.white),
+              textAlign: TextAlign.end,
+            ),
+          ],
+        )),
+      ],
+      shape: ShapeLightFocus.Circle,
+    ));
+
+    listTargets.add(TargetFocus(
+      color: const Color.fromARGB(255, 69, 65, 65),
+      identify: "Target 4",
+      keyTarget: _preferenceKey,
+      contents: [
+        TargetContent(
+            child: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Press to set search preferences",
               style: TextStyle(fontSize: 22, color: Colors.white),
               textAlign: TextAlign.end,
             ),
