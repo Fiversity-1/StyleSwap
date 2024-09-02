@@ -21,10 +21,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
+// temp to be removed
+import 'package:clothing_swap/backend/api_service.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+
+
+  // temp to be removed
+  final apiService = ApiService();
+
+  try {
+    final healthResponse = await apiService.health();
+    print('Health response: $healthResponse');
+  } catch (e) {
+    print('Health response error: $e');
+  }
 
 
   //Provider code modified by GPT to include multiple instaces
