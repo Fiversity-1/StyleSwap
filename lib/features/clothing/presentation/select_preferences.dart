@@ -50,18 +50,27 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
       } else {
         preferencesNotifier.addPreference(
             categories,
-            category.keys
-                .toList()[index]
-                .toString()
-                .split('.')
-                .last
-                .capitalize);
+            category == letteredSizeIcons
+                ? category.keys
+                    .toList()[index]
+                    .toString()
+                    .split('.')
+                    .last
+                    .toUpperCase()
+                : category.keys
+                    .toList()[index]
+                    .toString()
+                    .split('.')
+                    .last
+                    .capitalize);
       }
     });
   }
 
   String _getText(Map<Enum, FaIcon> category, int index) {
-    return category.keys.toList()[index].toString().split('.').last.capitalize;
+    return category == letteredSizeIcons
+        ? category.keys.toList()[index].toString().split('.').last.toUpperCase()
+        : category.keys.toList()[index].toString().split('.').last.capitalize;
   }
 
   @override
