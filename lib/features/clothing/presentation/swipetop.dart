@@ -239,7 +239,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 20, top: 10),
+                          padding: const EdgeInsets.only(
+                              left: 20, top: kIsWeb ? 0 : 5),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -266,7 +267,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                               Text(publicListings[_counter].location,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headlineMedium),
+                                      .headlineSmall),
                             ],
                           ),
                         ),
