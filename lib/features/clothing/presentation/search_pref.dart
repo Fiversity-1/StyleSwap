@@ -60,12 +60,12 @@ class _SearchPageState extends State<SearchPage> {
       tags[i].add(Chip(
         labelPadding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         label: SizedBox(
-          width: 20,
-          height: 20,
+          width: 15,
+          height: 15,
           child: IconButton(
             icon: const Icon(
               Icons.add,
-              size: 20,
+              size: 15,
             ),
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
             onPressed: () {
@@ -84,7 +84,7 @@ class _SearchPageState extends State<SearchPage> {
         ),
         backgroundColor: Theme.of(context).hoverColor,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20), // Rounded edges
+            borderRadius: BorderRadius.circular(100), // Rounded edges
             side: BorderSide(color: Theme.of(context).hoverColor, width: 3)),
       ));
     }
@@ -98,92 +98,87 @@ class _SearchPageState extends State<SearchPage> {
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
       ),
-      body: Row(
-        children: [
-          Visibility(
-            visible: kIsWeb,
-            child: Expanded(
-                flex: 1,
-                child: Container(
-                  color: Theme.of(context).canvasColor,
-                )),
-          ),
-          Expanded(
+      body: SingleChildScrollView(
+        child: Row(
+          children: [
+            Visibility(
+              visible: kIsWeb,
+              child: Expanded(
+                  flex: 1,
+                  child: Container(
+                    color: Theme.of(context).canvasColor,
+                  )),
+            ),
+            Expanded(
               flex: 4,
-              child: Stack(
+              child: Column(
                 children: [
-                  Positioned.fill(
-                    child: Opacity(
-                      opacity: 0.05,
-                      child: Image.asset('lib/images/backdrop.jpg',
-                          fit: kIsWeb ? BoxFit.fitWidth : BoxFit.fill),
-                    ),
+                  SizedBox(
+                    height: height * 0.025,
+                    width: width,
                   ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: height * 0.025,
-                        width: width,
-                      ),
-                      Text('Preferences',
-                          style: kIsWeb
-                              ? Theme.of(context).textTheme.headlineLarge
-                              : Theme.of(context).textTheme.headlineMedium),
-                      PreferenceRow(category: "Type", tags: tags[0]),
-                      PreferenceRow(category: "Size", tags: tags[1]),
-                      PreferenceRow(category: "Colour", tags: tags[2]),
-                      PreferenceRow(category: "Condition", tags: tags[3]),
-                      PreferenceRow(category: "Gender", tags: tags[4]),
-                      Padding(
-                          padding: const EdgeInsets.only(left: (25.0)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 15, left: (5.0), bottom: 15),
-                                child: Row(
-                                  children: [
-                                    Text("Distance",
-                                        style: kIsWeb
-                                            ? Theme.of(context)
-                                                .textTheme
-                                                .headlineSmall
-                                            : Theme.of(context)
-                                                .textTheme
-                                                .headlineSmall),
-                                    //FlutterMap Slider Tutorial
-                                    Slider(
-                                        value: _currentSliderValue,
-                                        max: 100,
-                                        min: 1,
-                                        divisions: 20,
-                                        label: _currentSliderValue
-                                            .round()
-                                            .toString(),
-                                        onChanged: (double value) {
-                                          setState(() {
-                                            _currentSliderValue = value;
-                                          });
-                                        })
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ))
-                    ],
-                  ),
+                  Text('Preferences',
+                      style: kIsWeb
+                          ? Theme.of(context).textTheme.headlineLarge
+                          : Theme.of(context).textTheme.headlineMedium),
+                  PreferenceRow(category: "Type", tags: tags[0]),
+                  PreferenceRow(category: "Size", tags: tags[1]),
+                  PreferenceRow(category: "Colour", tags: tags[2]),
+                  PreferenceRow(category: "Condition", tags: tags[3]),
+                  PreferenceRow(category: "Gender", tags: tags[4]),
+                  Padding(
+                      padding: const EdgeInsets.only(left: (25.0)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 15, left: (5.0), bottom: 15),
+                            child: Row(
+                              children: [
+                                Text(
+                                    _currentSliderValue == 0
+                                        ? "Distance within 5 km"
+                                        : _currentSliderValue == 100
+                                            ? "Distance 100 km +"
+                                            : "Distance ${_currentSliderValue.round().toString()} km",
+                                    style: kIsWeb
+                                        ? Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall
+                                        : Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall),
+                                //FlutterMap Slider Tutorial
+                              ],
+                            ),
+                          ),
+                          Slider(
+                              value: _currentSliderValue,
+                              max: 100,
+                              min: 0,
+                              divisions: 20,
+                              label: _currentSliderValue.round().toString(),
+                              onChanged: (double value) {
+                                setState(() {
+                                  _currentSliderValue = value;
+                                });
+                              })
+                        ],
+                      ))
                 ],
-              )),
-          Visibility(
-            visible: kIsWeb,
-            child: Expanded(
-                flex: 1,
-                child: Container(
-                  color: Theme.of(context).canvasColor,
-                )),
-          ),
-        ],
+              ),
+            ),
+            Visibility(
+              visible: kIsWeb,
+              child: Expanded(
+                  flex: 1,
+                  child: Container(
+                    color: Theme.of(context).canvasColor,
+                  )),
+            ),
+          ],
+        ),
       ),
     );
   }

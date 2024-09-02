@@ -209,8 +209,8 @@ Map<ClothingColour, FaIcon> clothingColourIcons = {
       const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.green),
   ClothingColour.lightBlue:
       const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.lightBlue),
-  ClothingColour.darkBlue:
-      const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.blue),
+  ClothingColour.darkBlue: const FaIcon(FontAwesomeIcons.palette,
+      size: 75, color: Colors.blueAccent),
   ClothingColour.purple:
       const FaIcon(FontAwesomeIcons.palette, size: 75, color: Colors.purple),
   ClothingColour.pink:
@@ -232,30 +232,33 @@ Map<ClothingColour, FaIcon> clothingColourIcons = {
 };
 
 const Map<ClothingType, FaIcon> clothingTypeIcons = {
-  // ClothingType.hat: FaIcon(FontAwesomeIcons.hatCowboy, size: 75),
-  // ClothingType.scarf: FaIcon(FontAwesomeIcons.scarf, size: 75),
-  // ClothingType.tie: FaIcon(FontAwesomeIcons.necktie, size: 75),
-  // ClothingType.shirt: FaIcon(FontAwesomeIcons.shirt, size: 75),
-  // ClothingType.midriff: FaIcon(FontAwesomeIcons.shirt, size: 75), // No specific midriff icon, using shirt
+  ClothingType.hat: FaIcon(FontAwesomeIcons.hatCowboy, size: 75),
+  //ClothingType.pants: FaIcon(FontAwesomeIcons.clothe,
+  //     size: 75), // No specific pants icon, using trousers
+  // ClothingType.scarf: FaIcon(FontAwesomeIcons., size: 75),
+  ClothingType.tie: FaIcon(FontAwesomeIcons.blackTie, size: 75),
+  ClothingType.shirt: FaIcon(FontAwesomeIcons.shirt, size: 75),
+  // ClothingType.leggings: FaIcon(FontAwesomeIcons.leggings, size: 75),
   // ClothingType.belt: FaIcon(FontAwesomeIcons.belt, size: 75),
   // ClothingType.shorts: FaIcon(FontAwesomeIcons.shorts, size: 75),
-  // ClothingType.pants: FaIcon(FontAwesomeIcons.pants, size: 75), // No specific pants icon, using trousers
-  // ClothingType.skirt: FaIcon(FontAwesomeIcons.skirt, size: 75),
-  // ClothingType.dress: FaIcon(FontAwesomeIcons.dress, size: 75),
-  // ClothingType.shoes: FaIcon(FontAwesomeIcons.shoePrints, size: 75),
+
+  ClothingType.skirt: FaIcon(FontAwesomeIcons.personDress, size: 75),
+
+  ClothingType.shoes: FaIcon(FontAwesomeIcons.shoePrints, size: 75),
   // ClothingType.jumper: FaIcon(FontAwesomeIcons.sweater, size: 75),
   // ClothingType.jacket: FaIcon(FontAwesomeIcons.jacket, size: 75),
-  // ClothingType.sweater: FaIcon(FontAwesomeIcons.sweater, size: 75),
+  //ClothingType.sweater: FaIcon(FontAwesomeIcons.sweater, size: 75),
   // ClothingType.coat: FaIcon(FontAwesomeIcons.coat, size: 75),
-  // ClothingType.gloves: FaIcon(FontAwesomeIcons.gloves, size: 75),
+  ClothingType.gloves: FaIcon(FontAwesomeIcons.mitten, size: 75),
   ClothingType.vest: FaIcon(FontAwesomeIcons.vest, size: 75),
-  // ClothingType.leggings: FaIcon(FontAwesomeIcons.leggings, size: 75),
-  // ClothingType.tights: FaIcon(FontAwesomeIcons.leggings, size: 75), // No specific tights icon, using leggings
+  // ClothingType.tights: FaIcon(FontAwesomeIcons.leggings, size: 75),
+  ClothingType.dress: FaIcon(FontAwesomeIcons.personDress, size: 75),
+  ClothingType.midriff: FaIcon(FontAwesomeIcons.shirt, size: 75),
 };
 
 const Map<ClothingCondition, FaIcon> clothingConditionIcons = {
-  ClothingCondition.newWithTags: FaIcon(FontAwesomeIcons.heartCircleBolt,
-      size: 75), // Tags for new with tags
+  ClothingCondition.newWithTags:
+      FaIcon(FontAwesomeIcons.solidStar, size: 75), // Tags for new with tags
   ClothingCondition.newNoTags: FaIcon(FontAwesomeIcons.solidStar,
       size: 75), // Single tag for new without tags
   ClothingCondition.likeNew:

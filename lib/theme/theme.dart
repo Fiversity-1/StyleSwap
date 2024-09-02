@@ -69,6 +69,7 @@ ThemeData darkTheme = ThemeData(
     ),
     sliderTheme: const SliderThemeData(
       thumbColor: Colors.white,
+      trackHeight: 10,
       valueIndicatorTextStyle: TextStyle(
         color: Colors.white, // Change the label color here
       ),
