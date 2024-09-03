@@ -2,6 +2,8 @@ import 'package:clothing_swap/features/clothing/presentation/fun_fact.dart';
 import 'package:clothing_swap/features/clothing/presentation/fun_fact_class.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/theme/theme.dart';
+import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +73,14 @@ class _SwipePageTopState extends State<SwipePageTop> {
 
   @override
   Widget build(BuildContext context) {
+    List<FunFact> funFactExample =
+        (!kIsWeb && Provider.of<ThemeSwitcher>(context).themeData == lightTheme)
+            ? funFactLightPhone
+            : (kIsWeb &&
+                    Provider.of<ThemeSwitcher>(context).themeData == lightTheme)
+                ? funFactLightWeb
+                : funFactDarkWeb;
+
     final chatManager = Provider.of<ChatManager>(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;

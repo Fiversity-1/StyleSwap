@@ -16,7 +16,7 @@ class FunFactCardState extends State<FunFactCard> {
     return Card(
       child: Image(
         image: widget.funFact.image,
-        fit: BoxFit.fill,
+        fit: BoxFit.contain,
       ),
     );
   }
