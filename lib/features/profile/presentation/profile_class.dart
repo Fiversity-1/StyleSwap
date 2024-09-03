@@ -243,7 +243,10 @@ List<ClothingItem> publicListings = [
     userId: publicProfileUUID, // Assign Profile UUID
     name: 'Clothing E',
     location: 'Location E',
-    images: [const AssetImage('lib/images/1.jpg')],
+    images: [
+      const AssetImage('lib/images/1.jpg'),
+      const AssetImage('lib/images/1-extra.jpg')
+    ],
     details: ClothingItemDetail(
       bio: 'Description for Clothing E',
       type: 'Type E',

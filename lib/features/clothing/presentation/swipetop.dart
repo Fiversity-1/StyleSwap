@@ -1,4 +1,5 @@
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_build.dart';
+import 'package:clothing_swap/features/clothing/presentation/search_provider.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
@@ -43,7 +44,6 @@ class _SwipePageTopState extends State<SwipePageTop> {
     _hasRun = prefs.getBool('hasRun') ?? false;
 
     if (!_hasRun) {
-      // Run your code here
       await prefs.setBool('hasRun', true);
     }
   }
@@ -55,8 +55,6 @@ class _SwipePageTopState extends State<SwipePageTop> {
     });
   }
 
-  //3 is length of fun facts
-
   String _checkCardType(List displayCards) {
     if (_counter < displayCards.length) {
       if (displayCards[_counter] is FunFactCard) {
@@ -66,6 +64,10 @@ class _SwipePageTopState extends State<SwipePageTop> {
       }
     }
     return "Empty";
+  }
+
+  void _handleRemove(int previousIndex, Search searchResults) {
+    searchResults.removeListing(previousIndex);
   }
 
   final GlobalKey _tapingKey = GlobalKey();
@@ -90,13 +92,15 @@ class _SwipePageTopState extends State<SwipePageTop> {
           index: funFactCount,
         ));
         funFactCount++;
+        //End
       }
     }
-    //End
+
     final chatManager = Provider.of<ChatManager>(context);
+    final searchResults = Provider.of<Search>(context, listen: false);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
+    searchResults.setListings(displayCards);
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 0,
@@ -154,107 +158,133 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         Padding(
                           padding: const EdgeInsets.only(),
                           child: SizedBox(
-                            height: (kIsWeb) ? height * 0.7 : height * 0.6,
-                            width: (kIsWeb) ? width * 0.525 : width * 0.925,
-                            child: CardSwiper(
-                              cardsCount: displayCards.length,
-                              scale: 0.6,
-                              isLoop: false,
-                              numberOfCardsDisplayed: 3,
-                              onSwipe:
-                                  (previousIndex, currentIndex, direction) {
-                                _incrementCounter();
-                                if (direction.name == 'left' &&
-                                    displayCards[previousIndex]
-                                        is! FunFactCard) {
-                                  displayCards.removeAt(previousIndex);
-                                } else if (direction.name == 'right' &&
-                                    displayCards[previousIndex]
-                                        is! FunFactCard) {
-                                  //Chat provided provider logic, has been modified
-                                  final userManager = Provider.of<UserManager>(
-                                      context,
-                                      listen: false);
+                              height: (kIsWeb) ? height * 0.7 : height * 0.6,
+                              width: (kIsWeb) ? width * 0.525 : width * 0.925,
+                              child: _checkCardType(
+                                          searchResults.getListing()) !=
+                                      "Empty"
+                                  ? CardSwiper(
+                                      cardsCount:
+                                          searchResults.getListing().length,
+                                      scale: 0.6,
+                                      isLoop: false,
+                                      numberOfCardsDisplayed: 3,
+                                      onSwipe: (previousIndex, currentIndex,
+                                          direction) {
+                                        _incrementCounter();
+                                        if (direction.name == 'left') {
+                                          if (searchResults
+                                                  .getListing()[previousIndex]
+                                              is! FunFactCard) {
+                                            _handleRemove(
+                                                previousIndex, searchResults);
+                                          }
+                                        } else if (direction.name == 'right' &&
+                                            searchResults
+                                                    .getListing()[previousIndex]
+                                                is! FunFactCard) {
+                                          //Chat provided provider logic, has been modified
+                                          final userManager =
+                                              Provider.of<UserManager>(context,
+                                                  listen: false);
 
-                                  final currentUser = userManager.currentUser;
-                                  final listerProfile = userManager.getUserById(
-                                      displayCards[previousIndex].item.userId);
+                                          final currentUser =
+                                              userManager.currentUser;
+                                          final listerProfile = userManager
+                                              .getUserById(searchResults
+                                                  .getListing()[previousIndex]
+                                                  .item
+                                                  .userId);
 
-                                  currentUser.addInterestedListing(ChatListing(
-                                    currentUserId: currentUser.id,
-                                    otherUserId: listerProfile.id,
-                                    name: listerProfile.name,
-                                    previewContent: "New Match",
-                                    time: "Now",
-                                    opened: false,
-                                    image: displayCards[previousIndex]
-                                        .item
-                                        .images[0],
-                                  ));
-                                  displayCards.removeAt(previousIndex);
+                                          currentUser
+                                              .addInterestedListing(ChatListing(
+                                            currentUserId: currentUser.id,
+                                            otherUserId: listerProfile.id,
+                                            name: listerProfile.name,
+                                            previewContent: "New Match",
+                                            time: "Now",
+                                            opened: false,
+                                            image: searchResults
+                                                .getListing()[previousIndex]
+                                                .item
+                                                .images[0],
+                                          ));
+                                          _handleRemove(
+                                              previousIndex, searchResults);
 
-                                  toastification.showCustom(
-                                    context: context,
-                                    autoCloseDuration:
-                                        const Duration(seconds: 3),
-                                    alignment: Alignment.bottomRight,
-                                    builder: (BuildContext context,
-                                        ToastificationItem holder) {
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: Theme.of(context).hoverColor,
-                                        ),
-                                        padding: const EdgeInsets.all(16),
-                                        margin: const EdgeInsets.all(8),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                                'You\'ve got a New Match!',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                            const SizedBox(height: 16),
-                                            Row(
-                                              children: [
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    final chat = chatManager
-                                                        .findChatByUserId(
-                                                            listerProfile.id);
-                                                    chatManager
-                                                        .selectChat(chat!.id);
-                                                    Navigator.pushNamed(
-                                                        context, '/chat');
-                                                  },
-                                                  child: const Text(
-                                                      'Message Now!'),
+                                          toastification.showCustom(
+                                            context: context,
+                                            autoCloseDuration:
+                                                const Duration(seconds: 3),
+                                            alignment: Alignment.bottomRight,
+                                            builder: (BuildContext context,
+                                                ToastificationItem holder) {
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  color: Theme.of(context)
+                                                      .hoverColor,
                                                 ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  );
-                                }
+                                                padding:
+                                                    const EdgeInsets.all(16),
+                                                margin: const EdgeInsets.all(8),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const Text(
+                                                        'You\'ve got a New Match!',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                    const SizedBox(height: 16),
+                                                    Row(
+                                                      children: [
+                                                        ElevatedButton(
+                                                          onPressed: () {
+                                                            final chat = chatManager
+                                                                .findChatByUserId(
+                                                                    listerProfile
+                                                                        .id);
+                                                            chatManager
+                                                                .selectChat(
+                                                                    chat!.id);
+                                                            Navigator.pushNamed(
+                                                                context,
+                                                                '/chat');
+                                                          },
+                                                          child: const Text(
+                                                              'Message Now!'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        }
 
-                                return true;
-                              },
-                              allowedSwipeDirection:
-                                  const AllowedSwipeDirection.only(
-                                      left: true, right: true),
-                              cardBuilder: (context, index, percentThresholdX,
-                                  percentThresholdY) {
-                                if (displayCards.isNotEmpty) {
-                                  return displayCards[index];
-                                }
-                              },
-                            ),
-                          ),
+                                        return true;
+                                      },
+                                      allowedSwipeDirection:
+                                          const AllowedSwipeDirection.only(
+                                              left: true, right: true),
+                                      cardBuilder: (context,
+                                          index,
+                                          percentThresholdX,
+                                          percentThresholdY) {
+                                        if (searchResults
+                                            .getListing()
+                                            .isNotEmpty) {
+                                          return searchResults
+                                              .getListing()[index];
+                                        }
+                                      },
+                                    )
+                                  : const NoResultCard()),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -263,9 +293,15 @@ class _SwipePageTopState extends State<SwipePageTop> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                _checkCardType(displayCards) == "Clothes"
-                                    ? displayCards[_counter].item.name
-                                    : _checkCardType(displayCards) == "Fact"
+                                _checkCardType(searchResults.getListing()) ==
+                                        "Clothes"
+                                    ? searchResults
+                                        .getListing()[_counter]
+                                        .item
+                                        .name
+                                    : _checkCardType(
+                                                searchResults.getListing()) ==
+                                            "Fact"
                                         ? "Fun Fact!"
                                         : "Sorry!",
                                 style:
@@ -287,9 +323,15 @@ class _SwipePageTopState extends State<SwipePageTop> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                  _checkCardType(displayCards) == "Clothes"
-                                      ? displayCards[_counter].item.location
-                                      : _checkCardType(displayCards) == "Fact"
+                                  _checkCardType(searchResults.getListing()) ==
+                                          "Clothes"
+                                      ? searchResults
+                                          .getListing()[_counter]
+                                          .item
+                                          .location
+                                      : _checkCardType(
+                                                  searchResults.getListing()) ==
+                                              "Fact"
                                           ? ""
                                           : "No Cards left!",
                                   style: Theme.of(context)

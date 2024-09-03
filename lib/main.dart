@@ -1,6 +1,7 @@
 import 'package:clothing_swap/features/clothing/presentation/advanced_search.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_detail.dart';
 import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
+import 'package:clothing_swap/features/clothing/presentation/search_provider.dart';
 import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
 import 'package:clothing_swap/features/community/event_class.dart';
 import 'package:clothing_swap/features/community/eventlist.dart';
@@ -40,6 +41,7 @@ void main() {
             return ChatManager(userManager);
           },
         ),
+        ChangeNotifierProvider(create: (context) => Search()),
       ],
       child: const MyApp(),
     ),
