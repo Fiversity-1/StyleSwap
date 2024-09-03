@@ -100,8 +100,8 @@ String personalProfileUUID = uuid.v4();
 String publicProfileUUID = uuid.v4();
 
 // Generate UUIDs for ClothingItems
-List<String> personalItemUUIDs = List.generate(4, (_) => uuid.v4());
-List<String> publicItemUUIDs = List.generate(4, (_) => uuid.v4());
+List<String> personalItemUUIDs = List.generate(5, (_) => uuid.v4());
+List<String> publicItemUUIDs = List.generate(5, (_) => uuid.v4());
 
 // Update Profiles and ClothingItems with UUIDs
 List<ClothingItem> personalListings = [
@@ -185,7 +185,9 @@ List<ClothingItem> publicListings = [
       gender: 'Male',
       condition: 'Good',
       colours: ['ColorA'],
-      images: [const AssetImage('lib/images/backdrop.jpg')],
+      images: [
+        const AssetImage('lib/images/backdrop.jpg'),
+      ],
     ),
   ),
   ClothingItem(
@@ -234,6 +236,25 @@ List<ClothingItem> publicListings = [
       condition: 'Good',
       colours: ['ColorD'],
       images: [const AssetImage('lib/images/5.jpg')],
+    ),
+  ),
+  ClothingItem(
+    id: publicItemUUIDs[4], // Use generated UUID
+    userId: publicProfileUUID, // Assign Profile UUID
+    name: 'Clothing E',
+    location: 'Location E',
+    images: [const AssetImage('lib/images/1.jpg')],
+    details: ClothingItemDetail(
+      bio: 'Description for Clothing E',
+      type: 'Type E',
+      size: 54,
+      gender: 'Male',
+      condition: 'Good',
+      colours: ['ColorE'],
+      images: [
+        const AssetImage('lib/images/1.jpg'),
+        const AssetImage('lib/images/1-extra.jpg')
+      ],
     ),
   ),
 ];

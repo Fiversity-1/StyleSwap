@@ -1,17 +1,15 @@
-import 'package:clothing_swap/features/clothing/presentation/fun_fact.dart';
-import 'package:clothing_swap/features/clothing/presentation/fun_fact_class.dart';
+import 'package:clothing_swap/features/clothing/presentation/clothing_item_build.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
-import 'package:clothing_swap/theme/theme.dart';
-import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
+import 'package:clothing_swap/widgets/fun_fact.dart';
+import 'package:clothing_swap/widgets/no_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-import 'package:clothing_swap/features/clothing/presentation/clothing_item_build.dart';
 import 'package:toastification/toastification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -55,16 +53,19 @@ class _SwipePageTopState extends State<SwipePageTop> {
     setState(() {
       _counter++;
     });
-    if (_counter == publicListings.length) {
-      _counter = 0;
-    }
   }
 
-  bool _checkCount() {
-    if (_counter % 3 == 0 && _counter != 0) {
-      return false;
+  //3 is length of fun facts
+
+  String _checkCardType(List displayCards) {
+    if (_counter < displayCards.length) {
+      if (displayCards[_counter] is FunFactCard) {
+        return "Fact";
+      } else if (displayCards[_counter] is! FunFactCard) {
+        return "Clothes";
+      }
     }
-    return true;
+    return "Empty";
   }
 
   final GlobalKey _tapingKey = GlobalKey();
@@ -73,14 +74,25 @@ class _SwipePageTopState extends State<SwipePageTop> {
 
   @override
   Widget build(BuildContext context) {
-    List<FunFact> funFactExample =
-        (!kIsWeb && Provider.of<ThemeSwitcher>(context).themeData == lightTheme)
-            ? funFactLightPhone
-            : (kIsWeb &&
-                    Provider.of<ThemeSwitcher>(context).themeData == lightTheme)
-                ? funFactLightWeb
-                : funFactDarkWeb;
+    //Chat GPT modified code to handle funFacts and Display Cards
+    final List displayCards = [];
+    int funFactCount = 0;
+    int totalItems = publicListings.length;
+    int funFactInterval = 3;
 
+    for (int i = 0; i < totalItems; i++) {
+      displayCards.add(ClothingCard(item: publicListings[i]));
+
+      // Insert a fun fact after every 3 items, but only if there are more fun facts available
+      if ((i + 1) % funFactInterval == 0 &&
+          funFactCount < funFactDarkPhone.length) {
+        displayCards.add(FunFactCard(
+          index: funFactCount,
+        ));
+        funFactCount++;
+      }
+    }
+    //End
     final chatManager = Provider.of<ChatManager>(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -145,23 +157,28 @@ class _SwipePageTopState extends State<SwipePageTop> {
                             height: (kIsWeb) ? height * 0.7 : height * 0.6,
                             width: (kIsWeb) ? width * 0.525 : width * 0.925,
                             child: CardSwiper(
-                              cardsCount: publicListings.length +
-                                  funFactExample.length, // Total count of cards
+                              cardsCount: displayCards.length,
                               scale: 0.6,
-                              isLoop: true,
+                              isLoop: false,
                               numberOfCardsDisplayed: 3,
                               onSwipe:
                                   (previousIndex, currentIndex, direction) {
-                                _incrementCounter(); // Increment count on swipe
-                                //Chat modified for provider logic
-                                if (direction.name == 'right') {
+                                _incrementCounter();
+                                if (direction.name == 'left' &&
+                                    displayCards[previousIndex]
+                                        is! FunFactCard) {
+                                  displayCards.removeAt(previousIndex);
+                                } else if (direction.name == 'right' &&
+                                    displayCards[previousIndex]
+                                        is! FunFactCard) {
+                                  //Chat provided provider logic, has been modified
                                   final userManager = Provider.of<UserManager>(
                                       context,
                                       listen: false);
 
                                   final currentUser = userManager.currentUser;
                                   final listerProfile = userManager.getUserById(
-                                      publicListings[previousIndex].userId);
+                                      displayCards[previousIndex].item.userId);
 
                                   currentUser.addInterestedListing(ChatListing(
                                     currentUserId: currentUser.id,
@@ -170,9 +187,12 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                     previewContent: "New Match",
                                     time: "Now",
                                     opened: false,
-                                    image:
-                                        publicListings[previousIndex].images[0],
+                                    image: displayCards[previousIndex]
+                                        .item
+                                        .images[0],
                                   ));
+                                  displayCards.removeAt(previousIndex);
+
                                   toastification.showCustom(
                                     context: context,
                                     autoCloseDuration:
@@ -221,6 +241,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                     },
                                   );
                                 }
+
                                 return true;
                               },
                               allowedSwipeDirection:
@@ -228,22 +249,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                       left: true, right: true),
                               cardBuilder: (context, index, percentThresholdX,
                                   percentThresholdY) {
-                                final cardIndex = index %
-                                    (publicListings.length +
-                                        funFactExample.length);
-
-                                //ChatGPT modified original code for switching logic
-                                // Determine card type based on the cardIndex
-                                if ((cardIndex + 1) % 6 == 0) {
-                                  final safeIndexFact =
-                                      (cardIndex ~/ 6) % funFactExample.length;
-                                  return FunFactCard(
-                                      funFact: funFactExample[safeIndexFact]);
-                                } else {
-                                  final safeIndex =
-                                      cardIndex % publicListings.length;
-                                  return ClothingCard(
-                                      item: publicListings[safeIndex]);
+                                if (displayCards.isNotEmpty) {
+                                  return displayCards[index];
                                 }
                               },
                             ),
@@ -256,7 +263,11 @@ class _SwipePageTopState extends State<SwipePageTop> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                publicListings[_counter].name,
+                                _checkCardType(displayCards) == "Clothes"
+                                    ? displayCards[_counter].item.name
+                                    : _checkCardType(displayCards) == "Fact"
+                                        ? "Fun Fact!"
+                                        : "Sorry!",
                                 style:
                                     Theme.of(context).textTheme.headlineMedium,
                               ),
@@ -275,7 +286,12 @@ class _SwipePageTopState extends State<SwipePageTop> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(publicListings[_counter].location,
+                              Text(
+                                  _checkCardType(displayCards) == "Clothes"
+                                      ? displayCards[_counter].item.location
+                                      : _checkCardType(displayCards) == "Fact"
+                                          ? ""
+                                          : "No Cards left!",
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineSmall),
