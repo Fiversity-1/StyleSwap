@@ -1,27 +1,40 @@
-import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
+import 'package:clothing_swap/features/clothing/presentation/clothing_item_build.dart';
+import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/widgets/fun_fact.dart';
 import 'package:flutter/material.dart';
 
+//Original code modified by chat to include _generatedisplayCards
+//Need to replace publicListings to whatever search returns
+
 class Search with ChangeNotifier {
-  List listings = [];
+  List _listings = [];
+  final int _funFactInterval = 3;
+  List searchResults = publicListings;
 
-  //Get listings
+  void setListings() {
+    final List displayCards = [];
+    int funFactCount = 0;
+    int totalItems = searchResults.length;
 
-  void resetSearch() {
-    listings = [];
+    for (int i = 0; i < totalItems; i++) {
+      displayCards.add(ClothingCard(item: searchResults[i]));
+
+      if ((i + 1) % _funFactInterval == 0 &&
+          funFactCount < funFactDarkPhone.length) {
+        displayCards.add(FunFactCard(index: funFactCount));
+        funFactCount++;
+      }
+    }
+    _listings = displayCards;
+    notifyListeners();
+  }
+
+  List<dynamic> getListing() {
+    return _listings;
   }
 
   void removeListing(int index) {
-    listings.removeAt(index);
+    _listings.removeAt(index);
     notifyListeners();
-  }
-
-  // Method to add an interested listing
-  void setListings(List searchResults) {
-    listings = searchResults;
-    notifyListeners();
-  }
-
-  List getListing() {
-    return listings;
   }
 }

@@ -22,12 +22,13 @@ class SwipePageTop extends StatefulWidget {
 }
 
 class _SwipePageTopState extends State<SwipePageTop> {
+  late List displayCards;
   //use this for indexing queries/views
   late TutorialCoachMark explainer;
   List<TargetFocus> listTargets = [];
   int _counter = 0;
   bool _hasRun = false;
-//Start Chat GPT, tutorial runs once per device
+//Start Chat GPT, tutorial runs once per device, delay searchResult init
   @override
   void initState() {
     super.initState();
@@ -36,6 +37,13 @@ class _SwipePageTopState extends State<SwipePageTop> {
         createTutorial();
         showTutorial();
       }
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final searchResults = Provider.of<Search>(context, listen: false);
+      searchResults.setListings();
+      setState(() {
+        displayCards = searchResults.getListing();
+      });
     });
   }
 
@@ -55,19 +63,21 @@ class _SwipePageTopState extends State<SwipePageTop> {
     });
   }
 
-  String _checkCardType(List displayCards) {
-    if (_counter < displayCards.length) {
-      if (displayCards[_counter] is FunFactCard) {
+  String _checkCardType(Search searchResults) {
+    if (_counter < searchResults.getListing().length) {
+      if (searchResults.getListing()[_counter] is FunFactCard) {
         return "Fact";
-      } else if (displayCards[_counter] is! FunFactCard) {
+      } else if (searchResults.getListing()[_counter] is! FunFactCard) {
         return "Clothes";
       }
     }
     return "Empty";
   }
 
-  void _handleRemove(int previousIndex, Search searchResults) {
-    searchResults.removeListing(previousIndex);
+  void _handleRemove(Search searchResults) {
+    setState(() {
+      searchResults.removeListing(0);
+    });
   }
 
   final GlobalKey _tapingKey = GlobalKey();
@@ -76,31 +86,14 @@ class _SwipePageTopState extends State<SwipePageTop> {
 
   @override
   Widget build(BuildContext context) {
-    //Chat GPT modified code to handle funFacts and Display Cards
-    final List displayCards = [];
-    int funFactCount = 0;
-    int totalItems = publicListings.length;
-    int funFactInterval = 3;
-
-    for (int i = 0; i < totalItems; i++) {
-      displayCards.add(ClothingCard(item: publicListings[i]));
-
-      // Insert a fun fact after every 3 items, but only if there are more fun facts available
-      if ((i + 1) % funFactInterval == 0 &&
-          funFactCount < funFactDarkPhone.length) {
-        displayCards.add(FunFactCard(
-          index: funFactCount,
-        ));
-        funFactCount++;
-        //End
-      }
-    }
+    //Need to update for whatever search returns, publicListing will be
+    //replaced and need to be updated
+    final searchResults = Provider.of<Search>(context);
 
     final chatManager = Provider.of<ChatManager>(context);
-    final searchResults = Provider.of<Search>(context, listen: false);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    searchResults.setListings(displayCards);
+
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 0,
@@ -160,15 +153,13 @@ class _SwipePageTopState extends State<SwipePageTop> {
                           child: SizedBox(
                               height: (kIsWeb) ? height * 0.7 : height * 0.6,
                               width: (kIsWeb) ? width * 0.525 : width * 0.925,
-                              child: _checkCardType(
-                                          searchResults.getListing()) !=
-                                      "Empty"
+                              child: _checkCardType(searchResults) != "Empty"
                                   ? CardSwiper(
                                       cardsCount:
                                           searchResults.getListing().length,
                                       scale: 0.6,
                                       isLoop: false,
-                                      numberOfCardsDisplayed: 3,
+                                      numberOfCardsDisplayed: 2,
                                       onSwipe: (previousIndex, currentIndex,
                                           direction) {
                                         _incrementCounter();
@@ -176,8 +167,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                           if (searchResults
                                                   .getListing()[previousIndex]
                                               is! FunFactCard) {
-                                            _handleRemove(
-                                                previousIndex, searchResults);
+                                            _handleRemove(searchResults);
                                           }
                                         } else if (direction.name == 'right' &&
                                             searchResults
@@ -209,8 +199,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                                 .item
                                                 .images[0],
                                           ));
-                                          _handleRemove(
-                                              previousIndex, searchResults);
+                                          _handleRemove(searchResults);
 
                                           toastification.showCustom(
                                             context: context,
@@ -276,11 +265,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                           index,
                                           percentThresholdX,
                                           percentThresholdY) {
-                                        if (searchResults
-                                            .getListing()
-                                            .isNotEmpty) {
-                                          return searchResults
-                                              .getListing()[index];
+                                        if (displayCards.isNotEmpty) {
+                                          return displayCards[index];
                                         }
                                       },
                                     )
@@ -293,15 +279,12 @@ class _SwipePageTopState extends State<SwipePageTop> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                _checkCardType(searchResults.getListing()) ==
-                                        "Clothes"
+                                _checkCardType(searchResults) == "Clothes"
                                     ? searchResults
                                         .getListing()[_counter]
                                         .item
                                         .name
-                                    : _checkCardType(
-                                                searchResults.getListing()) ==
-                                            "Fact"
+                                    : _checkCardType(searchResults) == "Fact"
                                         ? "Fun Fact!"
                                         : "Sorry!",
                                 style:
@@ -323,15 +306,12 @@ class _SwipePageTopState extends State<SwipePageTop> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                  _checkCardType(searchResults.getListing()) ==
-                                          "Clothes"
+                                  _checkCardType(searchResults) == "Clothes"
                                       ? searchResults
                                           .getListing()[_counter]
                                           .item
                                           .location
-                                      : _checkCardType(
-                                                  searchResults.getListing()) ==
-                                              "Fact"
+                                      : _checkCardType(searchResults) == "Fact"
                                           ? ""
                                           : "No Cards left!",
                                   style: Theme.of(context)

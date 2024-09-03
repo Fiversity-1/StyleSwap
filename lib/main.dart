@@ -34,6 +34,7 @@ void main() {
         ChangeNotifierProvider(
           create: (context) => UserManager(),
         ),
+        ChangeNotifierProvider(create: (context) => Search()),
         ChangeNotifierProvider(create: (context) => PreferencesNotifier()),
         ChangeNotifierProxyProvider<UserManager, ChatManager>(
           create: (context) => ChatManager(context.read<UserManager>()),
@@ -41,7 +42,6 @@ void main() {
             return ChatManager(userManager);
           },
         ),
-        ChangeNotifierProvider(create: (context) => Search()),
       ],
       child: const MyApp(),
     ),

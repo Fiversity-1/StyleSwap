@@ -1,9 +1,11 @@
+import 'package:clothing_swap/features/clothing/presentation/search_provider.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:provider/provider.dart';
 
 class ClothingDetail extends StatelessWidget {
   const ClothingDetail({super.key});
@@ -11,6 +13,8 @@ class ClothingDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final searchResults = Provider.of<Search>(context);
+
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -46,18 +50,18 @@ class ClothingDetail extends StatelessWidget {
               children: [
                 ListTile(
                   title: Text(
-                    publicListings[0].details.bio,
+                    searchResults.getListing()[0].item.details.bio,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   leading: const Icon(Icons.info),
                 ),
                 ListTile(
                   title: Text(
-                    "Type",
+                    searchResults.getListing().toString(),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   subtitle: Text(
-                    publicListings[0].details.type,
+                    searchResults.getListing()[0].item.details.type,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   leading: const Icon(Icons.category),
@@ -68,7 +72,7 @@ class ClothingDetail extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   subtitle: Text(
-                    publicListings[0].details.size.toString(),
+                    searchResults.getListing()[0].item.details.size.toString(),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   leading: const Icon(Icons.numbers),
@@ -80,7 +84,7 @@ class ClothingDetail extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      publicListings[0].details.gender,
+                      searchResults.getListing()[0].item.details.gender,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(
@@ -97,7 +101,7 @@ class ClothingDetail extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      publicListings[0].details.condition,
+                      searchResults.getListing()[0].item.details.condition,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(
@@ -113,7 +117,12 @@ class ClothingDetail extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   subtitle: Text(
-                    publicListings[0].details.colours.join(", "),
+                    searchResults
+                        .getListing()[0]
+                        .item
+                        .details
+                        .colours
+                        .join(", "),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   leading: const Icon(Icons.palette),
@@ -139,16 +148,25 @@ class ClothingDetail extends StatelessWidget {
                           builder: (context) => BrowsePhoto(
                                 title: "details",
                                 gridIndex: index,
-                                photoListings: publicListings[0].details.images,
+                                photoListings: searchResults
+                                    .getListing()[0]
+                                    .item
+                                    .details
+                                    .images,
                               )),
                     );
                   },
                   child: Image(
                       fit: BoxFit.cover,
-                      image: publicListings[0].details.images[index]),
+                      image: searchResults
+                          .getListing()[0]
+                          .item
+                          .details
+                          .images[index]),
                 ),
               ),
-              itemCount: publicListings[0].details.images.length,
+              itemCount:
+                  searchResults.getListing()[0].item.details.images.length,
             ),
           ]),
         ),
