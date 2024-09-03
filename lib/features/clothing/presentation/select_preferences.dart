@@ -91,8 +91,8 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           // Define grid column count based on available width
-          int crossAxisCount = constraints.maxWidth > 600
-              ? 8
+          int crossAxisCount = constraints.maxWidth > 800
+              ? 7
               : constraints.maxWidth > 400
                   ? 3
                   : 2;
