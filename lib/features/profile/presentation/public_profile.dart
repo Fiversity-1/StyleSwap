@@ -5,7 +5,6 @@ import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 
 class PublicProfile extends StatefulWidget {

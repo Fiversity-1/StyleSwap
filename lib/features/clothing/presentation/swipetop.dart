@@ -25,7 +25,6 @@ class _SwipePageTopState extends State<SwipePageTop> {
   //use this for indexing queries/views
   late TutorialCoachMark explainer;
   List<TargetFocus> listTargets = [];
-  int _counter = 0;
   bool _hasRun = false;
 //Start Chat GPT, tutorial runs once per device, delay searchResult init
   @override
@@ -55,12 +54,6 @@ class _SwipePageTopState extends State<SwipePageTop> {
     }
   }
 //End ChatGPT
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   void _handleRemove(Search searchResults, int previousIndex) {
     searchResults.removeListing(previousIndex);
@@ -146,7 +139,6 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                       numberOfCardsDisplayed: 2,
                                       onSwipe: (previousIndex, currentIndex,
                                           direction) {
-                                        _incrementCounter();
                                         if (direction.name == 'right' &&
                                             searchResults.getListing()[0]
                                                 is! FunFactCard) {

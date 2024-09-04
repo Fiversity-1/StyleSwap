@@ -1,5 +1,4 @@
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
-import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
 import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:flutter/material.dart';

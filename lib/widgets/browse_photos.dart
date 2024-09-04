@@ -31,7 +31,7 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
     final chatManager = Provider.of<ChatManager>(context);
     final chat = chatManager.selectedChat;
     double height = MediaQuery.of(context).size.height;
-    PageController _pageController;
+    PageController pageController;
     return Scaffold(
       body: Swipe(
           onSwipeDown: () {
@@ -51,7 +51,7 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                     maxScale: PhotoViewComputedScale.covered * 2,
                   );
                 },
-                pageController: _pageController =
+                pageController: pageController =
                     PageController(initialPage: widget.gridIndex),
                 scrollPhysics: const BouncingScrollPhysics(),
                 enableRotation: true,
@@ -236,14 +236,14 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                 size: 35,
                               ),
                               onPressed: () {
-                                if (_pageController.page == 0) {
-                                  _pageController.animateToPage(
+                                if (pageController.page == 0) {
+                                  pageController.animateToPage(
                                       widget.photoListings!.length - 1,
                                       duration:
                                           const Duration(milliseconds: 1000),
                                       curve: Curves.easeInOut);
                                 } else {
-                                  _pageController.previousPage(
+                                  pageController.previousPage(
                                       duration:
                                           const Duration(milliseconds: 500),
                                       curve: Curves.easeInOut);
@@ -258,14 +258,14 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                 size: 35,
                               ),
                               onPressed: () {
-                                if (_pageController.page ==
+                                if (pageController.page ==
                                     widget.photoListings!.length - 1) {
-                                  _pageController.animateToPage(0,
+                                  pageController.animateToPage(0,
                                       duration:
                                           const Duration(milliseconds: 1000),
                                       curve: Curves.easeInOut);
                                 } else {
-                                  _pageController.nextPage(
+                                  pageController.nextPage(
                                       duration:
                                           const Duration(milliseconds: 500),
                                       curve: Curves.easeInOut);

@@ -112,7 +112,7 @@ class UserManager with ChangeNotifier {
   }
 }
 
-var uuid = Uuid(); // Create a UUID generator
+var uuid = const Uuid(); // Create a UUID generator
 
 // Generate UUIDs for Profiles
 String personalProfileUUID = uuid.v4();
