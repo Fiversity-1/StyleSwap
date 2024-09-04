@@ -12,11 +12,9 @@ import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/features/signup/presentation/startpage.dart';
-import 'package:clothing_swap/features/signup/presentation/signup.dart';
 import 'package:clothing_swap/features/profile/presentation/personal_profile.dart';
 import 'package:clothing_swap/features/clothing/presentation/view_pref.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
-import 'package:clothing_swap/features/signup/presentation/login.dart';
 import 'package:provider/provider.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/features/profile/presentation/preferences.dart';
@@ -59,7 +57,6 @@ class MyApp extends StatelessWidget {
       theme: themeSwitcher.themeData,
       home: const StartPage(title: 'StartPage'),
       routes: {
-        '/signup': (context) => const SignUp(title: 'SignUp'),
         '/startpage': (context) => const StartPage(title: 'StartPage'),
         '/personal_profile': (context) => const PersonalProfile(),
         '/public_profile': (context) => const PublicProfile(),
@@ -68,7 +65,6 @@ class MyApp extends StatelessWidget {
         '/swipe': (context) => const SwipePage(),
         '/chat': (context) => const MessageChat(),
         '/comment': (context) => const Comments(),
-        '/login': (context) => const Login(title: 'Login'),
         '/add_clothing_item': (context) => AddClothingItemPage(),
         '/clothing_detail': (context) => const ClothingDetail(),
         '/preferences': (context) => const Preferences(),

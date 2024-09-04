@@ -1,9 +1,10 @@
-// startpage.dart
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key, required this.title});
@@ -53,38 +54,23 @@ class StartPage extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                          padding: const EdgeInsets.only(top: (25.0)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                  padding: const EdgeInsets.only(right: (30.0)),
-                                  child: SizedBox(
-                                    width: kIsWeb ? width * 0.175 : width * 0.3,
-                                    height: height * 0.07,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pushNamed(context, '/login');
-                                      },
-                                      child: const Text('Log in',
-                                          style: TextStyle(fontSize: 24)),
-                                    ),
-                                  )),
-                              SizedBox(
-                                width: kIsWeb ? width * 0.175 : width * 0.35,
-                                height: height * 0.07,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, '/signup');
-                                  },
-                                  child: const Text(
-                                    'Sign Up',
-                                    style: TextStyle(fontSize: 24),
-                                  ),
-                                ),
-                              )
-                            ],
-                          )),
+                        padding: const EdgeInsets.only(top: (25.0)),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: kIsWeb ? width * 0.175 : width * 0.3,
+                              height: height * 0.07,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  _signInWithGoogle(context);
+                                },
+                                child: const Text('Log in',
+                                    style: TextStyle(fontSize: 24)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -104,5 +90,36 @@ class StartPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _signInWithGoogle(BuildContext context) async {
+    try {
+      if (kIsWeb) {
+        // Web sign-in
+        final googleProvider = GoogleAuthProvider();
+        await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      } else {
+        // Mobile sign-in
+        final GoogleSignIn googleSignIn = GoogleSignIn();
+        final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+        if (googleUser != null) {
+          final GoogleSignInAuthentication googleAuth =
+              await googleUser.authentication;
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+          await FirebaseAuth.instance.signInWithCredential(credential);
+        }
+      }
+      // Successful login
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/personal_profile', (route) => false);
+      });
+    } on FirebaseAuthException catch (e) {
+      debugPrint(e.message);
+    }
   }
 }
