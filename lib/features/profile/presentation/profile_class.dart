@@ -132,8 +132,8 @@ List<ClothingItem> personalListings = [
     images: [const AssetImage('lib/images/4.jpg')],
     details: ClothingItemDetail(
       bio: 'Description for Clothing 1',
-      type: 'Type 1',
-      size: 54,
+      type: 'Shirt',
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['Color1'],
@@ -149,7 +149,7 @@ List<ClothingItem> personalListings = [
     details: ClothingItemDetail(
       bio: 'Description for Clothing 2',
       type: 'Type 2',
-      size: 54,
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['Color2'],
@@ -165,7 +165,7 @@ List<ClothingItem> personalListings = [
     details: ClothingItemDetail(
       bio: 'Description for Clothing 3',
       type: 'Type 3',
-      size: 54,
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['Color3'],
@@ -181,7 +181,7 @@ List<ClothingItem> personalListings = [
     details: ClothingItemDetail(
       bio: 'Description for Clothing 4',
       type: 'Type 4',
-      size: 54,
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['Color4'],
@@ -199,8 +199,8 @@ List<ClothingItem> publicListings = [
     images: [const AssetImage('lib/images/backdrop.jpg')],
     details: ClothingItemDetail(
       bio: 'Description for Clothing A',
-      type: 'Type A',
-      size: 54,
+      type: 'Shirt',
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['ColorA'],
@@ -218,7 +218,7 @@ List<ClothingItem> publicListings = [
     details: ClothingItemDetail(
       bio: 'Description for Clothing B',
       type: 'Type B',
-      size: 54,
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['ColorB'],
@@ -234,7 +234,7 @@ List<ClothingItem> publicListings = [
     details: ClothingItemDetail(
       bio: 'Description for Clothing C',
       type: 'Type C',
-      size: 54,
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['ColorC'],
@@ -250,7 +250,7 @@ List<ClothingItem> publicListings = [
     details: ClothingItemDetail(
       bio: 'Description for Clothing D',
       type: 'Type D',
-      size: 54,
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['ColorD'],
@@ -269,7 +269,7 @@ List<ClothingItem> publicListings = [
     details: ClothingItemDetail(
       bio: 'Description for Clothing E',
       type: 'Type E',
-      size: 54,
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['ColorE'],

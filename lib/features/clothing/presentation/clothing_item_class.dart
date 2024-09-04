@@ -22,7 +22,7 @@ class ClothingItem {
 class ClothingItemDetail {
   final String bio;
   final String type;
-  final int size;
+  final String size;
   final String gender;
 
   final String condition;

@@ -1,4 +1,5 @@
 import 'package:clothing_swap/features/clothing/presentation/search_provider.dart';
+import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
@@ -13,6 +14,8 @@ class ClothingDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userManager = context.watch<UserManager>();
+    final preferencesNotifier = userManager.currentUser.preferences;
     //GPT for modal route to collect argument
     final String? location =
         ModalRoute.of(context)!.settings.arguments as String?;
@@ -62,29 +65,56 @@ class ClothingDetail extends StatelessWidget {
                   leading: const Icon(Icons.info),
                 ),
                 ListTile(
-                  title: Text(
-                    "Type",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  subtitle: Text(
-                    searchResults.getListing()[0].item.details.type,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  leading: const Icon(Icons.category),
-                ),
+                    selected: preferencesNotifier
+                        .getPreferences("Type")
+                        .contains(
+                            searchResults.getListing()[0].item.details.type),
+                    title: Text(
+                      "Type",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      searchResults.getListing()[0].item.details.type,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    leading: const Icon(Icons.category),
+                    trailing: preferencesNotifier
+                            .getPreferences("Type")
+                            .contains(
+                                searchResults.getListing()[0].item.details.type)
+                        ? const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          )
+                        : null),
                 ListTile(
-                  title: Text(
-                    "Size",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  subtitle: Text(
-                    searchResults.getListing()[0].item.details.size.toString(),
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  leading: const Icon(Icons.numbers),
-                ),
+                    selected: preferencesNotifier
+                        .getPreferences("Size")
+                        .contains(
+                            searchResults.getListing()[0].item.details.size),
+                    title: Text(
+                      "Size",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      searchResults.getListing()[0].item.details.size,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    leading: const Icon(Icons.numbers),
+                    trailing: preferencesNotifier
+                            .getPreferences("Size")
+                            .contains(
+                                searchResults.getListing()[0].item.details.size)
+                        ? const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          )
+                        : null),
                 ListTile(
-                    selected: true,
+                    selected: preferencesNotifier
+                        .getPreferences("Gender")
+                        .contains(
+                            searchResults.getListing()[0].item.details.gender),
                     title: Text(
                       "Gender",
                       style: Theme.of(context).textTheme.bodyMedium,
@@ -96,12 +126,26 @@ class ClothingDetail extends StatelessWidget {
                     leading: const Icon(
                       Icons.person,
                     ),
-                    trailing: const Icon(
-                      Icons.star,
-                      color: Colors.yellow,
-                    )),
+                    trailing: preferencesNotifier
+                            .getPreferences("Gender")
+                            .contains(searchResults
+                                .getListing()[0]
+                                .item
+                                .details
+                                .gender)
+                        ? const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          )
+                        : null),
                 ListTile(
-                    selected: true,
+                    selected: preferencesNotifier
+                        .getPreferences("Condition")
+                        .contains(searchResults
+                            .getListing()[0]
+                            .item
+                            .details
+                            .condition),
                     title: Text(
                       "Condition",
                       style: Theme.of(context).textTheme.bodyMedium,
@@ -113,26 +157,49 @@ class ClothingDetail extends StatelessWidget {
                     leading: const Icon(
                       Icons.gpp_good_outlined,
                     ),
-                    trailing: const Icon(
-                      Icons.star,
-                      color: Colors.yellow,
-                    )),
+                    trailing: preferencesNotifier
+                            .getPreferences("Condition")
+                            .contains(searchResults
+                                .getListing()[0]
+                                .item
+                                .details
+                                .condition)
+                        ? const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          )
+                        : null),
                 ListTile(
-                  title: Text(
-                    "Colour",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  subtitle: Text(
-                    searchResults
-                        .getListing()[0]
-                        .item
-                        .details
-                        .colours
-                        .join(", "),
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  leading: const Icon(Icons.palette),
-                ),
+                    selected: preferencesNotifier
+                        .getPreferences("Colour")
+                        .contains(
+                            searchResults.getListing()[0].item.details.colours),
+                    title: Text(
+                      "Colour",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      searchResults
+                          .getListing()[0]
+                          .item
+                          .details
+                          .colours
+                          .join(", "),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    leading: const Icon(Icons.palette),
+                    trailing: preferencesNotifier
+                            .getPreferences("Colour")
+                            .contains(searchResults
+                                .getListing()[0]
+                                .item
+                                .details
+                                .colours)
+                        ? const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          )
+                        : null),
               ],
             ),
             SizedBox(height: height * 0.025, width: width),
