@@ -70,8 +70,6 @@ class MyApp extends StatelessWidget {
             return const CircularProgressIndicator();
           } else if (snapshot.hasData) {
             return const PersonalProfile();
-          } else if (snapshot.hasError) {
-            return const Text('Error');
           } else {
             return const StartPage(title: 'StartPage');
           }

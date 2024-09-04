@@ -2,10 +2,12 @@
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 
 class Preferences extends StatefulWidget {
@@ -27,12 +29,20 @@ class _PreferencesState extends State<Preferences> {
   }
 
   Future<void> _logOutFunction() async {
-    await FirebaseAuth.instance.signOut();
-
-    if (mounted) {
-      Navigator.pushNamedAndRemoveUntil(context, '/startpage', (route) => false);
+    try {
+      await FirebaseAuth.instance.signOut();
+      if (!kIsWeb) {
+        await GoogleSignIn().signOut();
+      }
+      // Check if the context is still valid before navigating
+      if (mounted) {
+        Navigator.pushNamedAndRemoveUntil(context, '/startpage', (route) => false);
+      }
+    } catch (e) {
+      debugPrint('Failed to sign out: $e');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

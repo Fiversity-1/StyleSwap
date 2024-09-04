@@ -96,17 +96,12 @@ class StartPage extends StatelessWidget {
     try {
       if (kIsWeb) {
         // Web sign-in
-        final googleProvider = GoogleAuthProvider();
-        await FirebaseAuth.instance.signInWithPopup(googleProvider);
+        await FirebaseAuth.instance.signInWithPopup(GoogleAuthProvider());
       } else {
         // Mobile sign-in
-        final GoogleSignIn googleSignIn = GoogleSignIn();
-        final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-
+        final googleUser = await GoogleSignIn().signIn();
         if (googleUser != null) {
-
-          final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
+          final googleAuth = await googleUser.authentication;
           final credential = GoogleAuthProvider.credential(
             accessToken: googleAuth.accessToken,
             idToken: googleAuth.idToken,
@@ -114,12 +109,10 @@ class StartPage extends StatelessWidget {
           await FirebaseAuth.instance.signInWithCredential(credential);
         }
       }
-      // Successful login
-      WidgetsBinding.instance.addPostFrameCallback((_) {
 
-        Navigator.pushNamedAndRemoveUntil(context, '/personal_profile', (route) => false);
-
-      });
+      // Navigate to profile on successful login
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamedAndRemoveUntil(context, '/personal_profile', (route) => false);
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
     }
