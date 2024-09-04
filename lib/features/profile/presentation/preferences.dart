@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 
 class Preferences extends StatefulWidget {
@@ -27,11 +28,10 @@ class _PreferencesState extends State<Preferences> {
   }
 
   Future<void> _logOutFunction() async {
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
     await FirebaseAuth.instance.signOut();
-
-    if (mounted) {
-      Navigator.pushNamedAndRemoveUntil(context, '/startpage', (route) => false);
-    }
+    await _googleSignIn.signOut();
+    Navigator.pushNamedAndRemoveUntil(context, '/startpage', (route) => false);
   }
 
   @override
