@@ -93,12 +93,14 @@ class StartPage extends StatelessWidget {
   }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
+    print("we have pressed the sign in button");
     try {
       if (kIsWeb) {
         // Web sign-in
         await FirebaseAuth.instance.signInWithPopup(GoogleAuthProvider());
       } else {
         // Mobile sign-in
+        print("are we getting here???????????????? wtf?????????");
         final googleUser = await GoogleSignIn().signIn();
         print("00000000000000000000000000");
         if (googleUser != null) {
