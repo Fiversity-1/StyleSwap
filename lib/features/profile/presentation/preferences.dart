@@ -2,6 +2,7 @@
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,9 @@ class _PreferencesState extends State<Preferences> {
   Future<void> _logOutFunction() async {
     try {
       await FirebaseAuth.instance.signOut();
-      await GoogleSignIn().signOut();
+      if (!kIsWeb) {
+        await GoogleSignIn().signOut();
+      }
       // Check if the context is still valid before navigating
       if (mounted) {
         Navigator.pushNamedAndRemoveUntil(context, '/startpage', (route) => false);
