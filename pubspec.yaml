@@ -59,8 +59,8 @@ dependencies:
   firebase_core: ^2.24.2
   firebase_auth: ^4.16.0
   google_sign_in: ^6.2.1
-
-  
+  flutter_native_splash: ^2.4.1
+  flutter_launcher_icons: ^0.13.1
   
   
 
@@ -118,3 +118,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "lib/images/1024.png"
