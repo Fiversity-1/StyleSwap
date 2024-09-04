@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-//Chat GPT generated
+//Chat GPT generated, modified
 class PreferencesNotifier extends ChangeNotifier {
   final List<String> _typePreferences = [];
   final List<String> _sizePreferences = [];

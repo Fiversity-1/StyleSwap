@@ -1,4 +1,3 @@
-import 'package:clothing_swap/features/clothing/presentation/clothing_item_build.dart';
 import 'package:clothing_swap/features/clothing/presentation/search_provider.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
@@ -22,7 +21,7 @@ class SwipePageTop extends StatefulWidget {
 }
 
 class _SwipePageTopState extends State<SwipePageTop> {
-  late List displayCards;
+  static List displayCards = [];
   //use this for indexing queries/views
   late TutorialCoachMark explainer;
   List<TargetFocus> listTargets = [];
@@ -42,7 +41,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
       final searchResults = Provider.of<Search>(context, listen: false);
       searchResults.setListings();
       setState(() {
-        displayCards = searchResults.getListing();
+        displayCards = List.from(searchResults.getListing());
       });
     });
   }
@@ -63,21 +62,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
     });
   }
 
-  String _checkCardType(Search searchResults) {
-    if (_counter < searchResults.getListing().length) {
-      if (searchResults.getListing()[_counter] is FunFactCard) {
-        return "Fact";
-      } else if (searchResults.getListing()[_counter] is! FunFactCard) {
-        return "Clothes";
-      }
-    }
-    return "Empty";
-  }
-
-  void _handleRemove(Search searchResults) {
-    setState(() {
-      searchResults.removeListing(0);
-    });
+  void _handleRemove(Search searchResults, int previousIndex) {
+    searchResults.removeListing(previousIndex);
   }
 
   final GlobalKey _tapingKey = GlobalKey();
@@ -89,7 +75,6 @@ class _SwipePageTopState extends State<SwipePageTop> {
     //Need to update for whatever search returns, publicListing will be
     //replaced and need to be updated
     final searchResults = Provider.of<Search>(context);
-
     final chatManager = Provider.of<ChatManager>(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -153,25 +138,17 @@ class _SwipePageTopState extends State<SwipePageTop> {
                           child: SizedBox(
                               height: (kIsWeb) ? height * 0.7 : height * 0.6,
                               width: (kIsWeb) ? width * 0.525 : width * 0.925,
-                              child: _checkCardType(searchResults) != "Empty"
+                              child: searchResults.checkCardType() != "Empty"
                                   ? CardSwiper(
-                                      cardsCount:
-                                          searchResults.getListing().length,
+                                      cardsCount: displayCards.length,
                                       scale: 0.6,
                                       isLoop: false,
                                       numberOfCardsDisplayed: 2,
                                       onSwipe: (previousIndex, currentIndex,
                                           direction) {
                                         _incrementCounter();
-                                        if (direction.name == 'left') {
-                                          if (searchResults
-                                                  .getListing()[previousIndex]
-                                              is! FunFactCard) {
-                                            _handleRemove(searchResults);
-                                          }
-                                        } else if (direction.name == 'right' &&
-                                            searchResults
-                                                    .getListing()[previousIndex]
+                                        if (direction.name == 'right' &&
+                                            searchResults.getListing()[0]
                                                 is! FunFactCard) {
                                           //Chat provided provider logic, has been modified
                                           final userManager =
@@ -182,7 +159,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                               userManager.currentUser;
                                           final listerProfile = userManager
                                               .getUserById(searchResults
-                                                  .getListing()[previousIndex]
+                                                  .getListing()[0]
                                                   .item
                                                   .userId);
 
@@ -195,11 +172,10 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                             time: "Now",
                                             opened: false,
                                             image: searchResults
-                                                .getListing()[previousIndex]
+                                                .getListing()[0]
                                                 .item
                                                 .images[0],
                                           ));
-                                          _handleRemove(searchResults);
 
                                           toastification.showCustom(
                                             context: context,
@@ -241,8 +217,9 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                                                 .selectChat(
                                                                     chat!.id);
                                                             Navigator.pushNamed(
-                                                                context,
-                                                                '/chat');
+                                                              context,
+                                                              '/chat',
+                                                            );
                                                           },
                                                           child: const Text(
                                                               'Message Now!'),
@@ -255,7 +232,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                             },
                                           );
                                         }
-
+                                        _handleRemove(searchResults, 0);
                                         return true;
                                       },
                                       allowedSwipeDirection:
@@ -265,9 +242,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                           index,
                                           percentThresholdX,
                                           percentThresholdY) {
-                                        if (displayCards.isNotEmpty) {
-                                          return displayCards[index];
-                                        }
+                                        return displayCards[index];
                                       },
                                     )
                                   : const NoResultCard()),
@@ -279,12 +254,9 @@ class _SwipePageTopState extends State<SwipePageTop> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                _checkCardType(searchResults) == "Clothes"
-                                    ? searchResults
-                                        .getListing()[_counter]
-                                        .item
-                                        .name
-                                    : _checkCardType(searchResults) == "Fact"
+                                searchResults.checkCardType() == "Clothes"
+                                    ? searchResults.getListing()[0].item.name
+                                    : searchResults.checkCardType() == "Fact"
                                         ? "Fun Fact!"
                                         : "Sorry!",
                                 style:
@@ -306,12 +278,12 @@ class _SwipePageTopState extends State<SwipePageTop> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                  _checkCardType(searchResults) == "Clothes"
+                                  searchResults.checkCardType() == "Clothes"
                                       ? searchResults
-                                          .getListing()[_counter]
+                                          .getListing()[0]
                                           .item
                                           .location
-                                      : _checkCardType(searchResults) == "Fact"
+                                      : searchResults.checkCardType() == "Fact"
                                           ? ""
                                           : "No Cards left!",
                                   style: Theme.of(context)
@@ -322,16 +294,20 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: (7.5)),
-                          child: IconButton(
-                              icon: const Icon(kIsWeb
-                                  ? Icons.arrow_downward
-                                  : Icons.swipe_up),
-                              iconSize: 35,
-                              key: _moreDetailKey,
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/clothing_detail');
-                              }),
+                          child: Visibility(
+                            visible: searchResults.checkCardType() == "Clothes",
+                            child: IconButton(
+                                icon: const Icon(kIsWeb
+                                    ? Icons.arrow_downward
+                                    : Icons.swipe_up),
+                                iconSize: 35,
+                                key: _moreDetailKey,
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/clothing_detail',
+                                      arguments: "tap");
+                                }),
+                          ),
                         ),
                       ],
                     ),

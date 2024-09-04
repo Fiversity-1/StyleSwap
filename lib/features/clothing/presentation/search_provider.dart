@@ -37,4 +37,15 @@ class Search with ChangeNotifier {
     _listings.removeAt(index);
     notifyListeners();
   }
+
+  String checkCardType() {
+    if (getListing().isNotEmpty) {
+      if (getListing()[0] is FunFactCard) {
+        return "Fact";
+      } else if (getListing()[0] is! FunFactCard) {
+        return "Clothes";
+      }
+    }
+    return "Empty";
+  }
 }

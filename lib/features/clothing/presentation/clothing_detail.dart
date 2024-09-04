@@ -1,5 +1,4 @@
 import 'package:clothing_swap/features/clothing/presentation/search_provider.dart';
-import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
@@ -8,11 +7,15 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 
 class ClothingDetail extends StatelessWidget {
-  const ClothingDetail({super.key});
+  final String? location;
+  const ClothingDetail({super.key, this.location});
   //Need a matching algorithm - based on preferences/ latest search
 
   @override
   Widget build(BuildContext context) {
+    //GPT for modal route to collect argument
+    final String? location =
+        ModalRoute.of(context)!.settings.arguments as String?;
     final searchResults = Provider.of<Search>(context);
 
     double height = MediaQuery.of(context).size.height;
@@ -33,13 +36,16 @@ class ClothingDetail extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: (0.0)),
-                  child: IconButton(
-                      icon: const Icon(
-                          kIsWeb ? Icons.arrow_upward : Icons.swipe_down),
-                      iconSize: kIsWeb ? 35 : 30,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }),
+                  child: Visibility(
+                    visible: location == "tap",
+                    child: IconButton(
+                        icon: const Icon(
+                            kIsWeb ? Icons.arrow_upward : Icons.swipe_down),
+                        iconSize: kIsWeb ? 35 : 30,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                  ),
                 ),
               ],
             ),
@@ -57,7 +63,7 @@ class ClothingDetail extends StatelessWidget {
                 ),
                 ListTile(
                   title: Text(
-                    searchResults.getListing().toString(),
+                    "Type",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   subtitle: Text(

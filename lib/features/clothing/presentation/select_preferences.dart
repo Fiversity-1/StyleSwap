@@ -1,4 +1,3 @@
-// signup.dart
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
 import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
