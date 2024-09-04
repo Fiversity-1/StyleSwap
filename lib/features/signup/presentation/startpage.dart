@@ -108,6 +108,7 @@ class StartPage extends StatelessWidget {
         }
       }
       // Navigate to profile on successful login
+      // ignore: use_build_context_synchronously
       Navigator.pushNamedAndRemoveUntil(context, '/personal_profile', (route) => false);
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
