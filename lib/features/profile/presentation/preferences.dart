@@ -28,11 +28,18 @@ class _PreferencesState extends State<Preferences> {
   }
 
   Future<void> _logOutFunction() async {
-    final GoogleSignIn _googleSignIn = GoogleSignIn();
-    await FirebaseAuth.instance.signOut();
-    await _googleSignIn.signOut();
-    Navigator.pushNamedAndRemoveUntil(context, '/startpage', (route) => false);
+    try {
+      await FirebaseAuth.instance.signOut();
+      await GoogleSignIn().signOut();
+      // Check if the context is still valid before navigating
+      if (mounted) {
+        Navigator.pushNamedAndRemoveUntil(context, '/startpage', (route) => false);
+      }
+    } catch (e) {
+      debugPrint('Failed to sign out: $e');
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
