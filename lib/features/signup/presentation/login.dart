@@ -123,7 +123,7 @@ class _LoginState extends State<Login> {
                   width: kIsWeb ? width * 0.2 : width * 0.45,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/search');
+                      Navigator.pushNamed(context, '/personal_profile');
                     },
                     child: const Text(
                       'Login',

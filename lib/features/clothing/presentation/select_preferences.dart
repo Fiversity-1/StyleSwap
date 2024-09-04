@@ -1,5 +1,6 @@
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
 import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
+import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart';
@@ -8,11 +9,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:string_extensions/string_extensions.dart';
 
-class ClothesPreferences extends StatefulWidget {
-  const ClothesPreferences({super.key});
+class AddClothesPreferences extends StatefulWidget {
+  const AddClothesPreferences({super.key, this.category});
+  final String? category;
 
   @override
-  State<ClothesPreferences> createState() => _ClothesPreferencesState();
+  State<AddClothesPreferences> createState() => _AddClothesPreferencesState();
 }
 
 Map<Enum, FaIcon> _pickCatgory(String option) {
@@ -31,7 +33,7 @@ Map<Enum, FaIcon> _pickCatgory(String option) {
   return clothingColourIcons;
 }
 
-class _ClothesPreferencesState extends State<ClothesPreferences> {
+class _AddClothesPreferencesState extends State<AddClothesPreferences> {
   late String categories;
 
   @override
@@ -74,11 +76,12 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
 
   @override
   Widget build(BuildContext context) {
-    Map<Enum, FaIcon> category = _pickCatgory(categories);
     //Chat GPT for tracking changes via provider
-    final preferencesNotifier = context.watch<PreferencesNotifier>();
-    List<String> preferences =
-        context.watch<PreferencesNotifier>().getPreferences(categories);
+    final userManager = context.watch<UserManager>();
+    final preferencesNotifier = userManager.currentUser.preferences;
+    Map<Enum, FaIcon> category = _pickCatgory(categories);
+    List<String> preferences = preferencesNotifier.getPreferences(categories);
+
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 3,
@@ -209,7 +212,8 @@ class _ClothesPreferencesState extends State<ClothesPreferences> {
                           ),
                           onPressed: () {
                             setState(() {
-                              Navigator.pop(context);
+                              Navigator.pushNamed(
+                                  context, '/view_clothes_preferences');
                             });
                           },
                           child: const Text('Save'),

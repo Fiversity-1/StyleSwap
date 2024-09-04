@@ -267,7 +267,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                   key: _preferenceKey,
                                   iconSize: 35,
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/search');
+                                    Navigator.pushNamed(
+                                        context, '/view_clothes_preferences');
                                   }),
                             ],
                           ),

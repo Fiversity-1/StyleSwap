@@ -28,6 +28,7 @@ class Search with ChangeNotifier {
     _listings = displayCards;
     notifyListeners();
   }
+  //End gpt
 
   List<dynamic> getListing() {
     return _listings;

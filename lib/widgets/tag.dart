@@ -1,6 +1,7 @@
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
 import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
 import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
+import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -15,22 +16,6 @@ class Tag extends StatefulWidget {
 }
 
 class TagState extends State<Tag> {
-  Map<Enum, FaIcon> _pickCatgory(String option) {
-    switch (option) {
-      case "Type":
-        return clothingTypeIcons;
-      case "Size":
-        return letteredSizeIcons;
-      case "Condition":
-        return clothingConditionIcons;
-      case "Colour":
-        return clothingColourIcons;
-      case "Gender":
-        return clothingGenderIcons;
-    }
-    return clothingColourIcons;
-  }
-
 //Modified Chat GPT to convert string to enum
   FaIcon? getIconForValue(String category, String value, {double? newSize}) {
     FaIcon? originalIcon;
@@ -89,8 +74,9 @@ class TagState extends State<Tag> {
 
   @override
   Widget build(BuildContext context) {
-    final preferencesNotifier = context.watch<PreferencesNotifier>();
-    Map<Enum, FaIcon> iconCategory = _pickCatgory(widget.category);
+    final userManager = context.watch<UserManager>();
+    final preferencesNotifier = userManager.currentUser.preferences;
+
     var icon = getIconForValue(widget.category, widget.text.toLowerCase());
     return Chip(
       label: Text(widget.text == "Newwithtags"

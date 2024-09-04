@@ -7,6 +7,15 @@ class PreferencesNotifier extends ChangeNotifier {
   final List<String> _colorPreferences = [];
   final List<String> _conditionPreferences = [];
   final List<String> _genderPreferences = [];
+  double locationDistance = 50;
+
+  double getDistance() {
+    return locationDistance;
+  }
+
+  void setDistance(double newValue) {
+    locationDistance = newValue;
+  }
 
   List<String> getPreferences(String category) {
     switch (category) {

@@ -1,4 +1,5 @@
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
+import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -12,6 +13,7 @@ class Profile with ChangeNotifier {
   AssetImage profilePicture;
   List<ClothingItem> personalListings;
   List<ChatListing> interestedListings;
+  PreferencesNotifier preferences; // Added PreferencesNotifier
 
   Profile({
     required this.id,
@@ -20,8 +22,11 @@ class Profile with ChangeNotifier {
     required this.profilePicture,
     List<ClothingItem>? personalListings,
     List<ChatListing>? interestedListings,
+    PreferencesNotifier? preferences, // Added PreferencesNotifier
   })  : personalListings = personalListings ?? [],
-        interestedListings = interestedListings ?? [];
+        interestedListings = interestedListings ?? [],
+        preferences = preferences ??
+            PreferencesNotifier(); // Initialize PreferencesNotifier
 
   // Method to add a personal listing
   void addPersonalListing(ClothingItem listing) {
@@ -90,6 +95,20 @@ class UserManager with ChangeNotifier {
       (user) => user.id == userId,
       orElse: () => throw StateError('No user found with id $userId'),
     );
+  }
+
+  List<String> getPreferences(String category) {
+    return _currentUser.preferences.getPreferences(category);
+  }
+
+  void addPreference(String category, String preference) {
+    _currentUser.preferences.addPreference(category, preference);
+    notifyListeners();
+  }
+
+  void removePreference(String category, String preference) {
+    _currentUser.preferences.removePreference(category, preference);
+    notifyListeners();
   }
 }
 

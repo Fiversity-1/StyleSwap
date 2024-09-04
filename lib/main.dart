@@ -1,4 +1,3 @@
-import 'package:clothing_swap/features/clothing/presentation/advanced_search.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_detail.dart';
 import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
 import 'package:clothing_swap/features/clothing/presentation/search_provider.dart';
@@ -15,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:clothing_swap/features/signup/presentation/startpage.dart';
 import 'package:clothing_swap/features/signup/presentation/signup.dart';
 import 'package:clothing_swap/features/profile/presentation/personal_profile.dart';
-import 'package:clothing_swap/features/clothing/presentation/search_pref.dart';
+import 'package:clothing_swap/features/clothing/presentation/view_pref.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
 import 'package:clothing_swap/features/signup/presentation/login.dart';
 import 'package:provider/provider.dart';
@@ -64,8 +63,7 @@ class MyApp extends StatelessWidget {
         '/startpage': (context) => const StartPage(title: 'StartPage'),
         '/personal_profile': (context) => const PersonalProfile(),
         '/public_profile': (context) => const PublicProfile(),
-        '/search': (context) => const SearchPage(),
-        '/advanced_search': (context) => const AdvancedSearch(),
+        '/view_clothes_preferences': (context) => const ViewPrefences(),
         '/message': (context) => const Message(title: 'Message'),
         '/swipe': (context) => const SwipePage(),
         '/chat': (context) => const MessageChat(),
@@ -74,7 +72,7 @@ class MyApp extends StatelessWidget {
         '/add_clothing_item': (context) => AddClothingItemPage(),
         '/clothing_detail': (context) => const ClothingDetail(),
         '/preferences': (context) => const Preferences(),
-        '/clothes_preferences': (context) => const ClothesPreferences(),
+        '/add_clothes_preferences': (context) => const AddClothesPreferences(),
         '/events': (context) => EventPage(communityEvents: communityEvents),
       },
       debugShowCheckedModeBanner: false,

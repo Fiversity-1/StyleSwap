@@ -1,4 +1,4 @@
-import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
+import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/preference_row.dart';
 import 'package:clothing_swap/widgets/tag.dart';
 import 'package:flutter/material.dart';
@@ -7,29 +7,27 @@ import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+class ViewPrefences extends StatefulWidget {
+  const ViewPrefences({super.key});
 
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  State<ViewPrefences> createState() => _ViewPrefencesState();
 }
 
-class _SearchPageState extends State<SearchPage> {
-  double _currentSliderValue = 10;
-
+class _ViewPrefencesState extends State<ViewPrefences> {
   @override
   Widget build(BuildContext context) {
     //Chat GPT for tracking preference changes
-    List<String> typePreferences =
-        context.watch<PreferencesNotifier>().getPreferences("Type");
-    List<String> sizePreferences =
-        context.watch<PreferencesNotifier>().getPreferences("Size");
+    final userManager = context.watch<UserManager>();
+    final preferencesNotifier = userManager.currentUser.preferences;
+    List<String> typePreferences = preferencesNotifier.getPreferences("Type");
+    List<String> sizePreferences = preferencesNotifier.getPreferences("Size");
     List<String> colourPreferences =
-        context.watch<PreferencesNotifier>().getPreferences("Colour");
+        preferencesNotifier.getPreferences("Colour");
     List<String> conditionPreferences =
-        context.watch<PreferencesNotifier>().getPreferences("Condition");
+        preferencesNotifier.getPreferences("Condition");
     List<String> genderPreferences =
-        context.watch<PreferencesNotifier>().getPreferences("Gender");
+        preferencesNotifier.getPreferences("Gender");
     List<List<String>> allPreferences = [
       typePreferences,
       sizePreferences,
@@ -69,7 +67,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
             onPressed: () {
-              Navigator.pushNamed(context, '/clothes_preferences',
+              Navigator.pushNamed(context, '/add_clothes_preferences',
                   arguments: i == 0
                       ? 'Type'
                       : i == 1
@@ -152,11 +150,14 @@ class _SearchPageState extends State<SearchPage> {
                                     child: Row(
                                       children: [
                                         Text(
-                                            _currentSliderValue == 0
+                                            preferencesNotifier.getDistance() ==
+                                                    0
                                                 ? "Distance within 5 km"
-                                                : _currentSliderValue == 100
+                                                : preferencesNotifier
+                                                            .getDistance() ==
+                                                        100
                                                     ? "Distance 100 km +"
-                                                    : "Distance ${_currentSliderValue.round().toString()} km",
+                                                    : "Distance ${preferencesNotifier.getDistance().round().toString()} km",
                                             style: kIsWeb
                                                 ? Theme.of(context)
                                                     .textTheme
@@ -169,16 +170,18 @@ class _SearchPageState extends State<SearchPage> {
                                     ),
                                   ),
                                   Slider(
-                                      value: _currentSliderValue,
+                                      value: preferencesNotifier.getDistance(),
                                       max: 100,
                                       min: 0,
                                       divisions: 20,
-                                      label: _currentSliderValue
+                                      label: preferencesNotifier
+                                          .getDistance()
                                           .round()
                                           .toString(),
                                       onChanged: (double value) {
                                         setState(() {
-                                          _currentSliderValue = value;
+                                          preferencesNotifier
+                                              .setDistance(value);
                                         });
                                       })
                                 ],
