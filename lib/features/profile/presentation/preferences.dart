@@ -1,10 +1,12 @@
-// signup.dart
+
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class Preferences extends StatefulWidget {
   const Preferences({super.key});
@@ -15,11 +17,25 @@ class Preferences extends StatefulWidget {
 
 class _PreferencesState extends State<Preferences> {
   late String chosenValue;
+
+  @override
+  void initState() {
+    super.initState();
+    chosenValue = Provider.of<ThemeSwitcher>(context, listen: false).themeData == lightTheme
+        ? "Light"
+        : "Dark";
+  }
+
+  Future<void> _logOutFunction() async {
+    await FirebaseAuth.instance.signOut();
+
+    if (mounted) {
+      Navigator.pushNamedAndRemoveUntil(context, '/startpage', (route) => false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Provider.of<ThemeSwitcher>(context).themeData == lightTheme
-        ? chosenValue = "Light"
-        : chosenValue = "Dark";
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 3,
@@ -40,38 +56,46 @@ class _PreferencesState extends State<Preferences> {
                 textAlign: TextAlign.center,
               ),
               Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        'Colour Theme:',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        textAlign: TextAlign.center,
-                      ),
-                      DropdownButton(
-                        value: chosenValue,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            chosenValue = newValue!;
-                            Provider.of<ThemeSwitcher>(context, listen: false)
-                                .toggleTheme(chosenValue, context);
-                          });
-                        },
-                        items: const [
-                          DropdownMenuItem<String>(
-                              value: 'Light', child: Text('Light')),
-                          DropdownMenuItem<String>(
-                              value: 'Dark', child: Text('Dark')),
-                          DropdownMenuItem<String>(
-                              value: 'High Constrast',
-                              child: Text('High Constrast')),
-                          DropdownMenuItem<String>(
-                              value: 'System', child: Text('System')),
-                        ],
-                      ),
-                    ],
-                  )),
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      'Colour Theme:',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                    DropdownButton<String>(
+                      value: chosenValue,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          chosenValue = newValue!;
+                          Provider.of<ThemeSwitcher>(context, listen: false)
+                              .toggleTheme(chosenValue, context);
+                        });
+                      },
+                      items: const [
+                        DropdownMenuItem<String>(
+                            value: 'Light', child: Text('Light')),
+                        DropdownMenuItem<String>(
+                            value: 'Dark', child: Text('Dark')),
+                        DropdownMenuItem<String>(
+                            value: 'High Constrast',
+                            child: Text('High Constrast')),
+                        DropdownMenuItem<String>(
+                            value: 'System', child: Text('System')),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ElevatedButton(
+                  onPressed: _logOutFunction,
+                  child: const Text('Log Out'),
+                ),
+              ),
             ],
           ),
         ),

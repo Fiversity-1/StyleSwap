@@ -55,9 +55,11 @@ class _SwipePageTopState extends State<SwipePageTop> {
   }
 //End ChatGPT
 
+
   void _handleRemove(Search searchResults, int previousIndex) {
     searchResults.removeListing(previousIndex);
   }
+
 
   final GlobalKey _tapingKey = GlobalKey();
   final GlobalKey _moreDetailKey = GlobalKey();

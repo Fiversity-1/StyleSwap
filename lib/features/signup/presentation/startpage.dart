@@ -25,8 +25,7 @@ class StartPage extends StatelessWidget {
               Positioned.fill(
                 child: Opacity(
                   opacity: 1,
-                  child:
-                      Image.asset('lib/images/backdrop.jpg', fit: BoxFit.cover),
+                  child: Image.asset('lib/images/backdrop.jpg', fit: BoxFit.cover),
                 ),
               ),
               Positioned(
@@ -64,8 +63,9 @@ class StartPage extends StatelessWidget {
                                 onPressed: () {
                                   _signInWithGoogle(context);
                                 },
-                                child: const Text('Log in',
-                                    style: TextStyle(fontSize: 24)),
+
+                                child: const Text('Log in', style: TextStyle(fontSize: 24)),
+
                               ),
                             ),
                           ],
@@ -104,8 +104,9 @@ class StartPage extends StatelessWidget {
         final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
         if (googleUser != null) {
-          final GoogleSignInAuthentication googleAuth =
-              await googleUser.authentication;
+
+          final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
           final credential = GoogleAuthProvider.credential(
             accessToken: googleAuth.accessToken,
             idToken: googleAuth.idToken,
@@ -115,11 +116,14 @@ class StartPage extends StatelessWidget {
       }
       // Successful login
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/personal_profile', (route) => false);
+
+        Navigator.pushNamedAndRemoveUntil(context, '/personal_profile', (route) => false);
+
       });
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
     }
   }
+
 }
+
