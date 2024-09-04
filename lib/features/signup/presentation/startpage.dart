@@ -100,13 +100,15 @@ class StartPage extends StatelessWidget {
       } else {
         // Mobile sign-in
         final googleUser = await GoogleSignIn().signIn();
+        print("00000000000000000000000000");
         if (googleUser != null) {
-          await GoogleSignIn().signOut();
+          print("1111111111111111111111111111111");
           final googleAuth = await googleUser.authentication;
           final credential = GoogleAuthProvider.credential(
             accessToken: googleAuth.accessToken,
             idToken: googleAuth.idToken,
           );
+          print("22222222222222222222222222222222");
           await FirebaseAuth.instance.signInWithCredential(credential);
         }
       }
@@ -117,6 +119,8 @@ class StartPage extends StatelessWidget {
           context, '/personal_profile', (route) => false);
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
+    } on Error catch (e) {
+      debugPrint("Explosion happened somewhere pahic");
     }
   }
 }

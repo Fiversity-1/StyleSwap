@@ -67,10 +67,13 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
+            print("lalalallalalalalallalaala");
             return const CircularProgressIndicator();
           } else if (snapshot.hasData) {
+            print("SUCESSSSSSSSSSSSSSS ROUTE TO PERSONAL");
             return const PersonalProfile();
           } else {
+            print("start paaaaaaaaaaaaaaaaaaaaaaaaaaagggggggggeeee");
             return const StartPage(title: 'StartPage');
           }
         },
