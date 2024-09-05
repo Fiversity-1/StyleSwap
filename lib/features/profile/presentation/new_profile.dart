@@ -2,6 +2,7 @@
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class NewProfile extends StatefulWidget {
@@ -17,6 +18,14 @@ class NewProfileState extends State<NewProfile> {
   final FocusNode myFocusNode = FocusNode();
   final _sendField = TextEditingController();
   final _scroller = ScrollController();
+
+  late GoogleMapController mapController;
+
+  final LatLng _center = const LatLng(-33.86, 151.20);
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +57,17 @@ class NewProfileState extends State<NewProfile> {
                       fit: BoxFit.cover),
                 ),
               ),
+              SizedBox(
+                height: 100,
+                width: 100,
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: _center,
+                    zoom: 11.0,
+                  ),
+                ),
+              ),
               Column(
                 children: [
                   Padding(
@@ -62,11 +82,6 @@ class NewProfileState extends State<NewProfile> {
                       ],
                     ),
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        _getCurrentLocation();
-                      },
-                      child: Text("location")),
                   Padding(
                       padding: const EdgeInsets.only(top: 25),
                       child: Row(
