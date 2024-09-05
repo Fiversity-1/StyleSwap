@@ -3,6 +3,9 @@ import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/place_type.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:provider/provider.dart';
 
 class NewProfile extends StatefulWidget {
@@ -18,8 +21,10 @@ class NewProfileState extends State<NewProfile> {
   final FocusNode myFocusNode = FocusNode();
   final _sendField = TextEditingController();
   final _scroller = ScrollController();
-
+  final _controller = TextEditingController();
   late GoogleMapController mapController;
+  String lat = "";
+  String long = "";
 
   final LatLng _center = const LatLng(-33.86, 151.20);
 
@@ -31,7 +36,9 @@ class NewProfileState extends State<NewProfile> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Center(
@@ -55,17 +62,6 @@ class NewProfileState extends State<NewProfile> {
                   opacity: 0.15,
                   child: Image.asset('lib/images/backdrop4.jpg',
                       fit: BoxFit.cover),
-                ),
-              ),
-              SizedBox(
-                height: 100,
-                width: 100,
-                child: GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: CameraPosition(
-                    target: _center,
-                    zoom: 11.0,
-                  ),
                 ),
               ),
               Column(
@@ -258,8 +254,72 @@ class NewProfileState extends State<NewProfile> {
                           ),
                         ],
                       )),
+                  //https://pub.dev/packages/google_places_flutter slightly modified for australia
+                  GooglePlaceAutoCompleteTextField(
+                    textEditingController: _controller,
+                    googleAPIKey: "AIzaSyB1h8eTsCt1ykA4awlzGB0nQ9eYewHXB88",
+                    inputDecoration: const InputDecoration(),
+                    debounceTime: 600, // default 600 ms,
+                    countries: const ["aus"], // optional by default null is set
+                    isLatLngRequired:
+                        true, // if you required coordinates from place detail
+                    getPlaceDetailWithLatLng: (Prediction prediction) {
+                      //Chat GPT update lat,long, delete later
+                      setState(() {
+                        lat = prediction.lat.toString();
+                        long = prediction.lng.toString();
+                      });
+                      // this method will return latlng with place detail
+                    }, // this callback is called when isLatLngRequired is true
+                    itemClick: (Prediction prediction) {
+                      _controller.text = prediction.description!;
+                      _controller.selection = TextSelection.fromPosition(
+                          TextPosition(offset: prediction.description!.length));
+                    },
+                    // if we want to make custom list item builder
+                    itemBuilder: (context, index, Prediction prediction) {
+                      return Container(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.location_on),
+                            const SizedBox(
+                              width: 7,
+                            ),
+                            Expanded(child: Text(prediction.description ?? ""))
+                          ],
+                        ),
+                      );
+                    },
+
+                    // if you want to add seperator between list items
+                    seperatedBuilder: const Divider(),
+                    // want to show close icon
+                    isCrossBtnShown: true,
+                    // optional container padding
+                    containerHorizontalPadding: 10,
+                    // place type
+                    placeType: PlaceType.geocode,
+                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 25, bottom: 25),
+                  //   child: SizedBox(
+                  //     height: width * 0.5,
+                  //     width: 250,
+                  //     child: GoogleMap(
+                  //       onMapCreated: _onMapCreated,
+                  //       initialCameraPosition: CameraPosition(
+                  //         target: _center,
+                  //         zoom: 11.0,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  Text("latitude $lat"),
+
+                  Text("longitude $long")
                 ],
-              )
+              ),
             ],
           ),
         ));

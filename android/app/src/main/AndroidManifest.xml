@@ -3,6 +3,8 @@
         android:label="clothing_swap"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyB1h8eTsCt1ykA4awlzGB0nQ9eYewHXB88"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -12,9 +14,6 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
-            <meta-data
-              android:name="com.google.android.geo.API_KEY"
-              android:value="${MAPS_API_KEY}" />
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
