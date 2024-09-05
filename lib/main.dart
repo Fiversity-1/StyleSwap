@@ -8,6 +8,7 @@ import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/messaging/messagechat.dart';
 import 'package:clothing_swap/features/messaging/messageinbox.dart';
 import 'package:clothing_swap/features/clothing/presentation/add_clothing_item.dart';
+import 'package:clothing_swap/features/profile/presentation/new_profile.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/comment.dart';
 import 'package:flutter/material.dart';
@@ -81,6 +82,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/startpage': (context) => const StartPage(title: 'StartPage'),
         '/personal_profile': (context) => const PersonalProfile(),
+        '/new_profile': (context) => const NewProfile(),
         '/public_profile': (context) => const PublicProfile(),
         '/view_clothes_preferences': (context) => const ViewPrefences(),
         '/message': (context) => const Message(title: 'Message'),
