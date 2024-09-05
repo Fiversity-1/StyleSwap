@@ -47,7 +47,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
           int crossAxisCount = constraints.maxWidth > 600
               ? 4
               : constraints.maxWidth > 400
-                  ? 3
+                  ? 2
                   : 2;
 
           return Center(

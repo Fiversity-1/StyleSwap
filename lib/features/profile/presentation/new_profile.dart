@@ -265,6 +265,7 @@ class NewProfileState extends State<NewProfile> {
                         true, // if you required coordinates from place detail
                     getPlaceDetailWithLatLng: (Prediction prediction) {
                       //Chat GPT update lat,long, delete later
+
                       setState(() {
                         lat = prediction.lat.toString();
                         long = prediction.lng.toString();

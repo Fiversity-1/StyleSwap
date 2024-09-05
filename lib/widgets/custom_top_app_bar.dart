@@ -19,7 +19,7 @@ class CustomTopAppBar extends StatelessWidget {
       ),
       leading: IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/new_profile');
+            Navigator.pushNamed(context, '/preferences');
           },
           icon: const Icon(Icons.settings)),
       centerTitle: true,
