@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-//Modified by chat for uuid
 class ClothingItem {
   final String id;
   final String userId;
@@ -23,7 +22,7 @@ class ClothingItem {
 class ClothingItemDetail {
   final String bio;
   final String type;
-  final int size;
+  final String size;
   final String gender;
 
   final String condition;

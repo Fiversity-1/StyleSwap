@@ -1,0 +1,11 @@
+flutter_native_splash:
+  background_image: "lib/images/background.png"
+  image: "lib/images/logo.png"
+  branding: "lib/images/brand.png"
+
+  android_12:
+#Chat for color
+    color: "#673AB7"
+    image: "lib/images/logoAndroid.png"
+    branding: "lib/images/brandAndroid.png"
+    

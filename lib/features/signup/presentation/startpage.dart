@@ -25,7 +25,8 @@ class StartPage extends StatelessWidget {
               Positioned.fill(
                 child: Opacity(
                   opacity: 1,
-                  child: Image.asset('lib/images/backdrop.jpg', fit: BoxFit.cover),
+                  child:
+                      Image.asset('lib/images/backdrop.jpg', fit: BoxFit.cover),
                 ),
               ),
               Positioned(
@@ -63,7 +64,8 @@ class StartPage extends StatelessWidget {
                                 onPressed: () {
                                   _signInWithGoogle(context);
                                 },
-                                child: const Text('Log in', style: TextStyle(fontSize: 24)),
+                                child: const Text('Log in',
+                                    style: TextStyle(fontSize: 24)),
                               ),
                             ),
                           ],
@@ -91,27 +93,36 @@ class StartPage extends StatelessWidget {
   }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
+    print("we have pressed the sign in button");
     try {
       if (kIsWeb) {
         // Web sign-in
         await FirebaseAuth.instance.signInWithPopup(GoogleAuthProvider());
       } else {
         // Mobile sign-in
+        print("are we getting here???????????????? wtf?????????");
         final googleUser = await GoogleSignIn().signIn();
+        print("00000000000000000000000000");
         if (googleUser != null) {
+          print("1111111111111111111111111111111");
           final googleAuth = await googleUser.authentication;
           final credential = GoogleAuthProvider.credential(
             accessToken: googleAuth.accessToken,
             idToken: googleAuth.idToken,
           );
+          print("22222222222222222222222222222222");
           await FirebaseAuth.instance.signInWithCredential(credential);
         }
       }
+
       // Navigate to profile on successful login
       // ignore: use_build_context_synchronously
-      Navigator.pushNamedAndRemoveUntil(context, '/personal_profile', (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/personal_profile', (route) => false);
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
+    } on Error catch (e) {
+      debugPrint("Explosion happened somewhere pahic");
     }
   }
 }

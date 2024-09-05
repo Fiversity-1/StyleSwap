@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "1042663527400-fcbee1prnes4q91ers975h7mpsak3kk9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "au.rowangray.clothing_swap",
+            "certificate_hash": "198c65c4b1da40dabc5b6ee7508175eb6dea5c3b"
+          }
+        },
+        {
           "client_id": "1042663527400-fac4osidmtjl726hbv911fm919loiuba.apps.googleusercontent.com",
           "client_type": 3
         }

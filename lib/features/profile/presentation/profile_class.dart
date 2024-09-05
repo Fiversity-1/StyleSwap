@@ -1,4 +1,5 @@
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
+import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -12,6 +13,7 @@ class Profile with ChangeNotifier {
   AssetImage profilePicture;
   List<ClothingItem> personalListings;
   List<ChatListing> interestedListings;
+  PreferencesNotifier preferences; // Added PreferencesNotifier
 
   Profile({
     required this.id,
@@ -20,8 +22,11 @@ class Profile with ChangeNotifier {
     required this.profilePicture,
     List<ClothingItem>? personalListings,
     List<ChatListing>? interestedListings,
+    PreferencesNotifier? preferences, // Added PreferencesNotifier
   })  : personalListings = personalListings ?? [],
-        interestedListings = interestedListings ?? [];
+        interestedListings = interestedListings ?? [],
+        preferences = preferences ??
+            PreferencesNotifier(); // Initialize PreferencesNotifier
 
   // Method to add a personal listing
   void addPersonalListing(ClothingItem listing) {
@@ -91,17 +96,33 @@ class UserManager with ChangeNotifier {
       orElse: () => throw StateError('No user found with id $userId'),
     );
   }
+
+  List<String> getPreferences(String category) {
+    return _currentUser.preferences.getPreferences(category);
+  }
+
+  void addPreference(String category, String preference) {
+    _currentUser.preferences.addPreference(category, preference);
+    notifyListeners();
+  }
+
+  void removePreference(String category, String preference) {
+    _currentUser.preferences.removePreference(category, preference);
+    notifyListeners();
+  }
 }
 
+
 const uuid = Uuid(); // Create a UUID generator
+
 
 // Generate UUIDs for Profiles
 String personalProfileUUID = uuid.v4();
 String publicProfileUUID = uuid.v4();
 
 // Generate UUIDs for ClothingItems
-List<String> personalItemUUIDs = List.generate(4, (_) => uuid.v4());
-List<String> publicItemUUIDs = List.generate(4, (_) => uuid.v4());
+List<String> personalItemUUIDs = List.generate(5, (_) => uuid.v4());
+List<String> publicItemUUIDs = List.generate(5, (_) => uuid.v4());
 
 // Update Profiles and ClothingItems with UUIDs
 List<ClothingItem> personalListings = [
@@ -113,8 +134,8 @@ List<ClothingItem> personalListings = [
     images: [const AssetImage('lib/images/4.jpg')],
     details: ClothingItemDetail(
       bio: 'Description for Clothing 1',
-      type: 'Type 1',
-      size: 54,
+      type: 'Shirt',
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['Color1'],
@@ -130,7 +151,7 @@ List<ClothingItem> personalListings = [
     details: ClothingItemDetail(
       bio: 'Description for Clothing 2',
       type: 'Type 2',
-      size: 54,
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['Color2'],
@@ -146,7 +167,7 @@ List<ClothingItem> personalListings = [
     details: ClothingItemDetail(
       bio: 'Description for Clothing 3',
       type: 'Type 3',
-      size: 54,
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['Color3'],
@@ -162,7 +183,7 @@ List<ClothingItem> personalListings = [
     details: ClothingItemDetail(
       bio: 'Description for Clothing 4',
       type: 'Type 4',
-      size: 54,
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['Color4'],
@@ -180,12 +201,14 @@ List<ClothingItem> publicListings = [
     images: [const AssetImage('lib/images/backdrop.jpg')],
     details: ClothingItemDetail(
       bio: 'Description for Clothing A',
-      type: 'Type A',
-      size: 54,
+      type: 'Shirt',
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['ColorA'],
-      images: [const AssetImage('lib/images/backdrop.jpg')],
+      images: [
+        const AssetImage('lib/images/backdrop.jpg'),
+      ],
     ),
   ),
   ClothingItem(
@@ -197,7 +220,7 @@ List<ClothingItem> publicListings = [
     details: ClothingItemDetail(
       bio: 'Description for Clothing B',
       type: 'Type B',
-      size: 54,
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['ColorB'],
@@ -213,7 +236,7 @@ List<ClothingItem> publicListings = [
     details: ClothingItemDetail(
       bio: 'Description for Clothing C',
       type: 'Type C',
-      size: 54,
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['ColorC'],
@@ -229,11 +252,33 @@ List<ClothingItem> publicListings = [
     details: ClothingItemDetail(
       bio: 'Description for Clothing D',
       type: 'Type D',
-      size: 54,
+      size: "S",
       gender: 'Male',
       condition: 'Good',
       colours: ['ColorD'],
       images: [const AssetImage('lib/images/5.jpg')],
+    ),
+  ),
+  ClothingItem(
+    id: publicItemUUIDs[4], // Use generated UUID
+    userId: publicProfileUUID, // Assign Profile UUID
+    name: 'Clothing E',
+    location: 'Location E',
+    images: [
+      const AssetImage('lib/images/1.jpg'),
+      const AssetImage('lib/images/1-extra.jpg')
+    ],
+    details: ClothingItemDetail(
+      bio: 'Description for Clothing E',
+      type: 'Type E',
+      size: "S",
+      gender: 'Male',
+      condition: 'Good',
+      colours: ['ColorE'],
+      images: [
+        const AssetImage('lib/images/1.jpg'),
+        const AssetImage('lib/images/1-extra.jpg')
+      ],
     ),
   ),
 ];

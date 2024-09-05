@@ -54,9 +54,9 @@ class _PreferencesState extends State<Preferences> {
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 10),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 15),
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

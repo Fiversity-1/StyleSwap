@@ -1,15 +1,15 @@
-import 'package:clothing_swap/features/clothing/presentation/fun_fact.dart';
-import 'package:clothing_swap/features/clothing/presentation/fun_fact_class.dart';
+import 'package:clothing_swap/features/clothing/presentation/search_provider.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
+import 'package:clothing_swap/widgets/fun_fact.dart';
+import 'package:clothing_swap/widgets/no_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-import 'package:clothing_swap/features/clothing/presentation/clothing_item_build.dart';
 import 'package:toastification/toastification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,12 +21,12 @@ class SwipePageTop extends StatefulWidget {
 }
 
 class _SwipePageTopState extends State<SwipePageTop> {
+  static List displayCards = [];
   //use this for indexing queries/views
   late TutorialCoachMark explainer;
   List<TargetFocus> listTargets = [];
-  int _counter = 0;
   bool _hasRun = false;
-//Start Chat GPT, tutorial runs once per device
+//Start Chat GPT, tutorial runs once per device, delay searchResult init
   @override
   void initState() {
     super.initState();
@@ -36,6 +36,13 @@ class _SwipePageTopState extends State<SwipePageTop> {
         showTutorial();
       }
     });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final searchResults = Provider.of<Search>(context, listen: false);
+      searchResults.setListings();
+      setState(() {
+        displayCards = List.from(searchResults.getListing());
+      });
+    });
   }
 
   Future<void> _checkIfRun() async {
@@ -43,236 +50,276 @@ class _SwipePageTopState extends State<SwipePageTop> {
     _hasRun = prefs.getBool('hasRun') ?? false;
 
     if (!_hasRun) {
-      // Run your code here
       await prefs.setBool('hasRun', true);
     }
   }
 //End ChatGPT
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-    if (_counter == publicListings.length) {
-      _counter = 0;
-    }
+
+  void _handleRemove(Search searchResults, int previousIndex) {
+    searchResults.removeListing(previousIndex);
   }
 
-  //bool _checkCount() {
-  //   if (_counter % 3 == 0 && _counter != 0) {
-  //    return false;
-  //  }
-  //  return true;
-  //}
 
   final GlobalKey _tapingKey = GlobalKey();
   final GlobalKey _moreDetailKey = GlobalKey();
+  final GlobalKey _preferenceKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
+    //Need to update for whatever search returns, publicListing will be
+    //replaced and need to be updated
+    final searchResults = Provider.of<Search>(context);
     final chatManager = Provider.of<ChatManager>(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
-        currentIndex: 1,
+        currentIndex: 0,
       ),
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: CustomTopAppBar(),
       ),
-      body: Row(
-        children: [
-          Visibility(
-            visible: kIsWeb,
-            child: Expanded(
-                flex: 1,
-                child: Container(
-                  color: Theme.of(context).canvasColor,
-                )),
-          ),
-          Expanded(
-            flex: 4,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Positioned.fill(
-                  child: Opacity(
-                    opacity: 0.10,
-                    child: Image.asset('lib/images/backdrop3.jpg',
-                        fit: BoxFit.cover),
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // Define grid column count based on available width
+          bool sideBars = constraints.maxWidth > 960;
+
+          return Row(
+            children: [
+              Visibility(
+                visible: sideBars,
+                child: Expanded(
+                    flex: 1,
+                    child: Container(
+                      color: Theme.of(context).canvasColor,
+                    )),
+              ),
+              Expanded(
+                flex: 3,
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: (10)),
-                      child: Container(
-                        key: _tapingKey,
-                        color: Theme.of(context)
-                            .scaffoldBackgroundColor
-                            .withOpacity(0.9),
-                        width: (kIsWeb) ? width * 0.50625 : width * 0.9125,
-                        height: (kIsWeb) ? height * 0.675 : height * 0.58,
+                    Positioned.fill(
+                      child: Opacity(
+                        opacity: 0.10,
+                        child: Image.asset('lib/images/backdrop3.jpg',
+                            fit: BoxFit.cover),
                       ),
                     ),
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(),
-                      child: SizedBox(
-                        height: (kIsWeb) ? height * 0.7 : height * 0.6,
-                        width: (kIsWeb) ? width * 0.525 : width * 0.925,
-                        child: CardSwiper(
-                          cardsCount: publicListings.length +
-                              funFactExample.length, // Total count of cards
-                          scale: 0.6,
-                          isLoop: true,
-                          numberOfCardsDisplayed: 3,
-                          onSwipe: (previousIndex, currentIndex, direction) {
-                            _incrementCounter(); // Increment count on swipe
-                            //Chat modified for provider logic
-                            if (direction.name == 'right') {
-                              final userManager = Provider.of<UserManager>(
-                                  context,
-                                  listen: false);
-
-                              final currentUser = userManager.currentUser;
-                              final listerProfile = userManager.getUserById(
-                                  publicListings[previousIndex].userId);
-
-                              currentUser.addInterestedListing(ChatListing(
-                                currentUserId: currentUser.id,
-                                otherUserId: listerProfile.id,
-                                name: listerProfile.name,
-                                previewContent: "New Match",
-                                time: "Now",
-                                opened: false,
-                                image: publicListings[previousIndex].images[0],
-                              ));
-                              toastification.showCustom(
-                                context: context,
-                                autoCloseDuration: const Duration(seconds: 3),
-                                alignment: Alignment.bottomRight,
-                                builder: (BuildContext context,
-                                    ToastificationItem holder) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: Theme.of(context).hoverColor,
-                                    ),
-                                    padding: const EdgeInsets.all(16),
-                                    margin: const EdgeInsets.all(8),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text('You\'ve got a New Match!',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                        const SizedBox(height: 16),
-                                        Row(
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                final chat = chatManager
-                                                    .findChatByUserId(
-                                                        listerProfile.id);
-                                                chatManager
-                                                    .selectChat(chat!.id);
-                                                Navigator.pushNamed(
-                                                    context, '/chat');
-                                              },
-                                              child: const Text('Message Now!'),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                            return true;
-                          },
-                          allowedSwipeDirection:
-                              const AllowedSwipeDirection.only(
-                                  left: true, right: true),
-                          cardBuilder: (context, index, percentThresholdX,
-                              percentThresholdY) {
-                            final cardIndex = index %
-                                (publicListings.length + funFactExample.length);
-
-                            //ChatGPT modified original code for switching logic
-                            // Determine card type based on the cardIndex
-                            if ((cardIndex + 1) % 6 == 0) {
-                              final safeIndexFact =
-                                  (cardIndex ~/ 6) % funFactExample.length;
-                              return FunFactCard(
-                                  funFact: funFactExample[safeIndexFact]);
-                            } else {
-                              final safeIndex =
-                                  cardIndex % publicListings.length;
-                              return ClothingCard(
-                                  item: publicListings[safeIndex]);
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20, top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            publicListings[_counter].name,
-                            style: Theme.of(context).textTheme.headlineMedium,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: (10)),
+                          child: Container(
+                            key: _tapingKey,
+                            color: Theme.of(context)
+                                .scaffoldBackgroundColor
+                                .withOpacity(0.9),
+                            width: (kIsWeb) ? width * 0.50625 : width * 0.9125,
+                            height: (kIsWeb) ? height * 0.675 : height * 0.58,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(publicListings[_counter].location,
-                              style:
-                                  Theme.of(context).textTheme.headlineMedium),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: (7.5)),
-                      child: IconButton(
-                          icon: const Icon(
-                              kIsWeb ? Icons.arrow_downward : Icons.swipe_up),
-                          iconSize: 35,
-                          key: _moreDetailKey,
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/clothing_detail');
-                          }),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(),
+                          child: SizedBox(
+                              height: (kIsWeb) ? height * 0.7 : height * 0.6,
+                              width: (kIsWeb) ? width * 0.525 : width * 0.925,
+                              child: searchResults.checkCardType() != "Empty"
+                                  ? CardSwiper(
+                                      cardsCount: displayCards.length,
+                                      scale: 0.6,
+                                      isLoop: false,
+                                      numberOfCardsDisplayed: 2,
+                                      onSwipe: (previousIndex, currentIndex,
+                                          direction) {
+                                        if (direction.name == 'right' &&
+                                            searchResults.getListing()[0]
+                                                is! FunFactCard) {
+                                          //Chat provided provider logic, has been modified
+                                          final userManager =
+                                              Provider.of<UserManager>(context,
+                                                  listen: false);
+
+                                          final currentUser =
+                                              userManager.currentUser;
+                                          final listerProfile = userManager
+                                              .getUserById(searchResults
+                                                  .getListing()[0]
+                                                  .item
+                                                  .userId);
+
+                                          currentUser
+                                              .addInterestedListing(ChatListing(
+                                            currentUserId: currentUser.id,
+                                            otherUserId: listerProfile.id,
+                                            name: listerProfile.name,
+                                            previewContent: "New Match",
+                                            time: "Now",
+                                            opened: false,
+                                            image: searchResults
+                                                .getListing()[0]
+                                                .item
+                                                .images[0],
+                                          ));
+
+                                          toastification.showCustom(
+                                            context: context,
+                                            autoCloseDuration:
+                                                const Duration(seconds: 3),
+                                            alignment: Alignment.bottomRight,
+                                            builder: (BuildContext context,
+                                                ToastificationItem holder) {
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  color: Theme.of(context)
+                                                      .hoverColor,
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.all(16),
+                                                margin: const EdgeInsets.all(8),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const Text(
+                                                        'You\'ve got a New Match!',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                    const SizedBox(height: 16),
+                                                    Row(
+                                                      children: [
+                                                        ElevatedButton(
+                                                          onPressed: () {
+                                                            final chat = chatManager
+                                                                .findChatByUserId(
+                                                                    listerProfile
+                                                                        .id);
+                                                            chatManager
+                                                                .selectChat(
+                                                                    chat!.id);
+                                                            Navigator.pushNamed(
+                                                              context,
+                                                              '/chat',
+                                                            );
+                                                          },
+                                                          child: const Text(
+                                                              'Message Now!'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        }
+                                        _handleRemove(searchResults, 0);
+                                        return true;
+                                      },
+                                      allowedSwipeDirection:
+                                          const AllowedSwipeDirection.only(
+                                              left: true, right: true),
+                                      cardBuilder: (context,
+                                          index,
+                                          percentThresholdX,
+                                          percentThresholdY) {
+                                        return displayCards[index];
+                                      },
+                                    )
+                                  : const NoResultCard()),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, top: kIsWeb ? 0 : 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                searchResults.checkCardType() == "Clothes"
+                                    ? searchResults.getListing()[0].item.name
+                                    : searchResults.checkCardType() == "Fact"
+                                        ? "Fun Fact!"
+                                        : "Sorry!",
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              IconButton(
+                                  icon: const Icon(Icons.tune),
+                                  key: _preferenceKey,
+                                  iconSize: 35,
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context, '/view_clothes_preferences');
+                                  }),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                  searchResults.checkCardType() == "Clothes"
+                                      ? searchResults
+                                          .getListing()[0]
+                                          .item
+                                          .location
+                                      : searchResults.checkCardType() == "Fact"
+                                          ? ""
+                                          : "No Cards left!",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: (7.5)),
+                          child: Visibility(
+                            visible: searchResults.checkCardType() == "Clothes",
+                            child: IconButton(
+                                icon: const Icon(kIsWeb
+                                    ? Icons.arrow_downward
+                                    : Icons.swipe_up),
+                                iconSize: 35,
+                                key: _moreDetailKey,
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/clothing_detail',
+                                      arguments: "tap");
+                                }),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          Visibility(
-            visible: kIsWeb,
-            child: Expanded(
-                flex: 1,
-                child: Container(
-                  color: Theme.of(context).canvasColor,
-                )),
-          ),
-        ],
+              ),
+              Visibility(
+                visible: sideBars,
+                child: Expanded(
+                    flex: 1,
+                    child: Container(
+                      color: Theme.of(context).canvasColor,
+                    )),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -314,6 +361,26 @@ class _SwipePageTopState extends State<SwipePageTop> {
           children: [
             Text(
               "Swipe or Tap up for more info",
+              style: TextStyle(fontSize: 22, color: Colors.white),
+              textAlign: TextAlign.end,
+            ),
+          ],
+        )),
+      ],
+      shape: ShapeLightFocus.Circle,
+    ));
+
+    listTargets.add(TargetFocus(
+      color: const Color.fromARGB(255, 69, 65, 65),
+      identify: "Target 4",
+      keyTarget: _preferenceKey,
+      contents: [
+        TargetContent(
+            child: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Press to set search preferences",
               style: TextStyle(fontSize: 22, color: Colors.white),
               textAlign: TextAlign.end,
             ),
