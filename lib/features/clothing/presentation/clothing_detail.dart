@@ -1,35 +1,28 @@
-import 'package:clothing_swap/features/clothing/presentation/clothing_item.dart';
+import 'package:clothing_swap/features/clothing/presentation/search_provider.dart';
+import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:provider/provider.dart';
 
 class ClothingDetail extends StatelessWidget {
-  const ClothingDetail({super.key});
+  final String? location;
+  const ClothingDetail({super.key, this.location});
+  //Need a matching algorithm - based on preferences/ latest search
 
   @override
   Widget build(BuildContext context) {
-    ClothingItemDetail item = ClothingItemDetail(
-        bio:
-            'This is an awesome black shirt that I really like a lot a lot a lot a lot a lot.',
-        type: 'Shirt',
-        size: 54,
-        gender: 'Male',
-        brand: 'Anko',
-        condition: 'Good',
-        colours: [
-          'Black',
-          'Grey'
-        ],
-        images: [
-          'lib/images/0.jpg',
-          'lib/images/watermelon.png',
-          'lib/images/watermelon2.jpg'
-        ]);
+    final userManager = context.watch<UserManager>();
+    final preferencesNotifier = userManager.currentUser.preferences;
+    //GPT for modal route to collect argument
+    final String? location =
+        ModalRoute.of(context)!.settings.arguments as String?;
+    final searchResults = Provider.of<Search>(context);
 
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
@@ -41,124 +34,173 @@ class ClothingDetail extends StatelessWidget {
       body: Center(
         child: SingleChildScrollView(
           child: Column(children: [
-            SizedBox(height: height * 0.015, width: width),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                    icon: const Icon(Icons.arrow_back_ios),
-                    iconSize: 25,
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/swipe');
-                    }),
-                Text(
-                  'Info',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: (4)),
-                ),
-                const Text(
-                  ' ',
+                Padding(
+                  padding: const EdgeInsets.only(top: (0.0)),
+                  child: Visibility(
+                    visible: location == "tap",
+                    child: IconButton(
+                        icon: const Icon(
+                            kIsWeb ? Icons.arrow_upward : Icons.swipe_down),
+                        iconSize: kIsWeb ? 35 : 30,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                  ),
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: (0.0)),
-              child: ListView(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                padding:
-                    kIsWeb ? const EdgeInsets.all(16) : const EdgeInsets.all(8),
-                children: [
-                  ListTile(
-                    title: Text(
-                      item.bio,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    leading: const Icon(Icons.info),
+            ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(16),
+              children: [
+                ListTile(
+                  title: Text(
+                    searchResults.getListing()[0].item.details.bio,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  ListTile(
+                  leading: const Icon(Icons.info),
+                ),
+                ListTile(
+                    selected: preferencesNotifier
+                        .getPreferences("Type")
+                        .contains(
+                            searchResults.getListing()[0].item.details.type),
                     title: Text(
                       "Type",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      item.type,
+                      searchResults.getListing()[0].item.details.type,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(Icons.category),
-                  ),
-                  ListTile(
+                    trailing: preferencesNotifier
+                            .getPreferences("Type")
+                            .contains(
+                                searchResults.getListing()[0].item.details.type)
+                        ? const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          )
+                        : null),
+                ListTile(
+                    selected: preferencesNotifier
+                        .getPreferences("Size")
+                        .contains(
+                            searchResults.getListing()[0].item.details.size),
                     title: Text(
                       "Size",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      item.size.toString(),
+                      searchResults.getListing()[0].item.details.size,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(Icons.numbers),
-                  ),
-                  ListTile(
-                      selected: true,
-                      title: Text(
-                        "Gender",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      subtitle: Text(
-                        item.gender,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      leading: const Icon(
-                        Icons.person,
-                      ),
-                      trailing: const Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      )),
-                  ListTile(
+                    trailing: preferencesNotifier
+                            .getPreferences("Size")
+                            .contains(
+                                searchResults.getListing()[0].item.details.size)
+                        ? const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          )
+                        : null),
+                ListTile(
+                    selected: preferencesNotifier
+                        .getPreferences("Gender")
+                        .contains(
+                            searchResults.getListing()[0].item.details.gender),
                     title: Text(
-                      "Brand",
+                      "Gender",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      item.brand,
+                      searchResults.getListing()[0].item.details.gender,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    leading: const Icon(Icons.type_specimen),
-                  ),
-                  ListTile(
-                      selected: true,
-                      title: Text(
-                        "Condition",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      subtitle: Text(
-                        item.condition,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      leading: const Icon(
-                        Icons.gpp_good_outlined,
-                      ),
-                      trailing: const Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      )),
-                  ListTile(
+                    leading: const Icon(
+                      Icons.person,
+                    ),
+                    trailing: preferencesNotifier
+                            .getPreferences("Gender")
+                            .contains(searchResults
+                                .getListing()[0]
+                                .item
+                                .details
+                                .gender)
+                        ? const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          )
+                        : null),
+                ListTile(
+                    selected: preferencesNotifier
+                        .getPreferences("Condition")
+                        .contains(searchResults
+                            .getListing()[0]
+                            .item
+                            .details
+                            .condition),
+                    title: Text(
+                      "Condition",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      searchResults.getListing()[0].item.details.condition,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    leading: const Icon(
+                      Icons.gpp_good_outlined,
+                    ),
+                    trailing: preferencesNotifier
+                            .getPreferences("Condition")
+                            .contains(searchResults
+                                .getListing()[0]
+                                .item
+                                .details
+                                .condition)
+                        ? const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          )
+                        : null),
+                ListTile(
+                    selected: preferencesNotifier
+                        .getPreferences("Colour")
+                        .contains(
+                            searchResults.getListing()[0].item.details.colours),
                     title: Text(
                       "Colour",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      item.colours.join(", "),
+                      searchResults
+                          .getListing()[0]
+                          .item
+                          .details
+                          .colours
+                          .join(", "),
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(Icons.palette),
-                  ),
-                ],
-              ),
+                    trailing: preferencesNotifier
+                            .getPreferences("Colour")
+                            .contains(searchResults
+                                .getListing()[0]
+                                .item
+                                .details
+                                .colours)
+                        ? const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          )
+                        : null),
+              ],
             ),
             SizedBox(height: height * 0.025, width: width),
             GridView.builder(
@@ -171,28 +213,33 @@ class ClothingDetail extends StatelessWidget {
               ),
               itemBuilder: (_, index) => GridTile(
                 child: GestureDetector(
-                  onTap: () {},
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/gallery');
-                    },
-                    splashColor: Colors.white,
-                    child: Ink.image(
-                        fit: BoxFit.cover,
-                        image: AssetImage(item.images[index])),
-                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      //PhotoViewGallery Code from pubdev photo_view modified with ChatGPT to stack icon on top
+                      MaterialPageRoute(
+                          builder: (context) => BrowsePhoto(
+                                title: "details",
+                                gridIndex: index,
+                                photoListings: searchResults
+                                    .getListing()[0]
+                                    .item
+                                    .details
+                                    .images,
+                              )),
+                    );
+                  },
+                  child: Image(
+                      fit: BoxFit.cover,
+                      image: searchResults
+                          .getListing()[0]
+                          .item
+                          .details
+                          .images[index]),
                 ),
               ),
-              itemCount: item.images.length,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: (10.0), bottom: (10)),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/swipe');
-                },
-                child: const Text('Back'),
-              ),
+              itemCount:
+                  searchResults.getListing()[0].item.details.images.length,
             ),
           ]),
         ),

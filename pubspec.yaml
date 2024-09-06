@@ -32,9 +32,12 @@ dependencies:
     sdk: flutter
   image_picker: ^1.0.7
   flutter_card_swiper: ^7.0.1
-  flip_card: ^0.7.0
+  flutter_flip_card: ^0.0.6
   tutorial_coach_mark: ^1.2.11
   reorderable_grid_view: ^2.2.8
+  confirm_dialog: ^1.0.3
+  string_extensions: ^0.7.3
+  font_awesome_flutter: ^10.7.0
   provider:
 
 
@@ -44,6 +47,23 @@ dependencies:
   flutter_hooks: ^0.20.5
   lottie: ^3.1.2
   flutter_reorderable_grid_view: ^5.0.1
+  like_button: ^2.0.5
+  toastification: ^2.1.0
+  shared_preferences: ^2.3.2
+  flutter_slidable: ^3.1.1
+  easy_image_viewer: ^1.5.1
+  photo_view: ^0.15.0
+  flutter_image_stack: ^0.0.7
+  swipe: ^0.0.1
+  uuid: ^4.4.2
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.16.0
+  google_sign_in: ^6.2.1
+  flutter_native_splash: ^2.4.1
+  flutter_launcher_icons: ^0.13.1
+  google_maps_flutter: ^2.9.0
+  google_places_flutter: ^2.0.9
+  
 
 
 dev_dependencies:
@@ -99,3 +119,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "lib/images/1024.png"

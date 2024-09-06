@@ -32,7 +32,7 @@ class ClothingInfo {
   }
 }
 
-enum style {
+enum Style {
   contemporary,
   naughties,
   nineties,
