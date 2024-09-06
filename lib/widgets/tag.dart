@@ -98,7 +98,11 @@ class TagState extends State<Tag> {
       labelStyle: Theme.of(context).textTheme.bodyLarge,
       deleteIcon: const Icon(Icons.close),
       onDeleted: () {
-        preferencesNotifier.removePreference(widget.category, widget.text);
+        setState(
+          () {
+            preferencesNotifier.removePreference(widget.category, widget.text);
+          },
+        );
       },
       deleteButtonTooltipMessage: '',
       //GPT for border modification
