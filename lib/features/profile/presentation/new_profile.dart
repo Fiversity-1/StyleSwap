@@ -17,7 +17,9 @@ class NewProfile extends StatefulWidget {
 class NewProfileState extends State<NewProfile> {
   final FocusNode myFocusNodeLocation = FocusNode();
   final FocusNode myFocusNodeAgreement = FocusNode();
+  final FocusNode myFocusNodeBio = FocusNode();
   final _controllerMap = TextEditingController();
+  final _controllerBio = TextEditingController();
   String lat = "";
   String long = "";
 
@@ -66,9 +68,9 @@ For any questions or concerns about these terms and conditions, please contact o
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
+    //GPT for fixing overflow pixels
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Center(
@@ -94,178 +96,202 @@ For any questions or concerns about these terms and conditions, please contact o
                 ),
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    FocusScope.of(context).unfocus();
-                  },
-                  onLongPress: () {
-                    FocusScope.of(context).unfocus();
-                  },
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(16.0),
-                    child: SizedBox(
-                      width: width * 0.9,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Register",
-                              style:
-                                  Theme.of(context).textTheme.headlineMedium),
-                          const SizedBox(height: 20),
-                          // Row(
-                          //   children: [
-                          //     Padding(
-                          //       padding:
-                          //           const EdgeInsets.only(bottom: 1, left: 4),
-                          //       child: Text("Profile Bio",
-                          //           style: Theme.of(context).textTheme.bodyLarge),
-                          //     ),
-                          //   ],
-                          // ),
-                          // TextField(
-                          //   focusNode: myFocusNodeBio,
-                          //   textInputAction: TextInputAction.done,
-                          //   onSubmitted: (text) {
-                          //     myFocusNodeLocation.requestFocus();
-                          //   },
-                          //   onTap: () {},
-                          //   textAlignVertical: TextAlignVertical.top,
-                          //   controller: _controllerBio,
-                          //   maxLines: 3,
-                          //   maxLength: 50,
-                          //   decoration: InputDecoration(
-                          //     fillColor: Colors.transparent,
-                          //     contentPadding: const EdgeInsets.only(
-                          //         top: 0, left: 12, right: 0),
-                          //     border: OutlineInputBorder(
-                          //       borderRadius: BorderRadius.circular(15),
-                          //     ),
-                          //     hintText: 'Aa',
-                          //     hintStyle: Theme.of(context).textTheme.bodyLarge,
-                          //     filled: true,
-                          //     suffix: IconButton(
-                          //       icon: const Icon(Icons.close, size: 24),
-                          //       onPressed: () {
-                          //         _controllerBio.text = "";
-                          //       },
-                          //     ),
-                          //   ),
-                          // ),
-                          // const SizedBox(height: 10),
-
-                          Row(
+            GestureDetector(
+              onTap: () {
+                // Unfocus any active input field
+                FocusScope.of(context).unfocus();
+              },
+              child: SingleChildScrollView(
+                // Adjusts padding to prevent overflow when the keyboard is shown
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                      },
+                      onLongPress: () {
+                        FocusScope.of(context).unfocus();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: SizedBox(
+                          width: width * 0.9,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(bottom: 1, left: 4),
-                                child: Text("Location",
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge),
+                              Text("Register",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 1, left: 4),
+                                    child: Text("Profile Bio",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge),
+                                  ),
+                                ],
+                              ),
+                              TextField(
+                                focusNode: myFocusNodeBio,
+                                textInputAction: TextInputAction.done,
+                                onSubmitted: (text) {
+                                  myFocusNodeLocation.requestFocus();
+                                },
+                                textAlignVertical: TextAlignVertical.top,
+                                controller: _controllerBio,
+                                maxLines: 3,
+                                maxLength: 50,
+                                decoration: InputDecoration(
+                                  fillColor: Colors.transparent,
+                                  contentPadding: const EdgeInsets.only(
+                                      top: 10, left: 12, right: 0),
+                                  hintText: 'Aa',
+                                  hintStyle:
+                                      Theme.of(context).textTheme.bodyLarge,
+                                  filled: true,
+                                  // Define the border style for both enabled and focused states
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).hoverColor,
+                                        width: 1), // Border color and width
+                                    borderRadius: BorderRadius.circular(
+                                        15), // Customize the border radius
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).hoverColor,
+                                        width:
+                                            1), // Same border for focused state
+                                    borderRadius: BorderRadius.circular(
+                                        8), // Customize the border radius
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 1, left: 4),
+                                    child: Text("Location",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge),
+                                  ),
+                                ],
+                              ),
+                              _placesAutoCompleteTextField(),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                height: 150,
+                                child: SingleChildScrollView(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8.0),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .listTileTheme
+                                          .tileColor,
+                                      borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(8),
+                                        topLeft: Radius.circular(8),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      termsAndConditions,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              CheckboxListTile(
+                                focusNode: myFocusNodeAgreement,
+                                title: const Text(
+                                    "I have read and accept all terms and conditions."),
+                                value: checkedValue,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(8),
+                                    bottomRight: Radius.circular(8),
+                                  ),
+                                ),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    checkedValue = newValue!;
+                                  });
+                                },
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                              ),
+                              const SizedBox(height: 20),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Theme.of(context).hoverColor,
+                                ),
+                                onPressed: () {
+                                  if ((checkedValue == false) ||
+                                      (lat == "" || long == "") ||
+                                      (_controllerBio.text == "")) {
+                                    toastification.showCustom(
+                                      context: context,
+                                      autoCloseDuration:
+                                          const Duration(seconds: 3),
+                                      alignment: Alignment.topCenter,
+                                      builder: (BuildContext context,
+                                          ToastificationItem holder) {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            color: Theme.of(context).hoverColor,
+                                          ),
+                                          padding: const EdgeInsets.all(16),
+                                          margin: const EdgeInsets.all(8),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                  (_controllerBio.text == "")
+                                                      ? "Please enter a bio"
+                                                      : (lat == "" ||
+                                                              long == "")
+                                                          ? "Please enter a valid location"
+                                                          : "Please read and accept the terms and conditions",
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                              const SizedBox(height: 16),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    Navigator.pushNamed(
+                                        context, '/personal_profile');
+                                  }
+                                },
+                                child: const Text('Complete',
+                                    style: TextStyle(fontSize: 20)),
                               ),
                             ],
                           ),
-                          _placesAutoCompleteTextField(),
-                          const SizedBox(height: 30),
-                          SizedBox(
-                            height: 250,
-                            //Chat modified to include scroll view embedded with container
-                            child: SingleChildScrollView(
-                              child: Container(
-                                padding: const EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(
-                                  color:
-                                      Theme.of(context).listTileTheme.tileColor,
-                                  borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(8),
-                                    topLeft: Radius.circular(8),
-                                  ),
-                                ),
-                                child: Text(
-                                  termsAndConditions,
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ),
-                            ),
-                          ),
-                          CheckboxListTile(
-                            focusNode: myFocusNodeAgreement,
-                            title: const Text(
-                                "I have read and accept all terms and conditions."),
-                            value: checkedValue,
-
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(8),
-                                bottomRight: Radius.circular(8),
-                              ),
-                            ),
-                            onChanged: (newValue) {
-                              setState(() {
-                                checkedValue = newValue!;
-                              });
-                            },
-                            controlAffinity: ListTileControlAffinity
-                                .leading, //  <-- leading Checkbox
-                          ),
-                          const SizedBox(height: 30),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).hoverColor,
-                            ),
-                            onPressed: () {
-                              if ((checkedValue == false) ||
-                                  (lat == "" || long == "")) {
-                                toastification.showCustom(
-                                  context: context,
-                                  autoCloseDuration: const Duration(seconds: 3),
-                                  alignment: Alignment.bottomCenter,
-                                  builder: (BuildContext context,
-                                      ToastificationItem holder) {
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Theme.of(context).hoverColor,
-                                      ),
-                                      padding: const EdgeInsets.all(16),
-                                      margin: const EdgeInsets.all(8),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                              (lat == "" || long == "")
-                                                  ? "Please enter a valid location"
-                                                  : "Please read and accept the terms and conditions",
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold)),
-                                          const SizedBox(height: 16),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                              } else {
-                                Navigator.pushNamed(
-                                    context, '/personal_profile');
-                              }
-
-                              //latitude longitude are not null
-                              //bio is not null
-                              //check is true
-                            },
-                            child: const Text('Complete',
-                                style: TextStyle(fontSize: 20)),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            )
+              ),
+            ),
           ],
         ),
       ),
@@ -281,9 +307,7 @@ For any questions or concerns about these terms and conditions, please contact o
         textEditingController: _controllerMap,
         boxDecoration: BoxDecoration(
           border: Border.all(
-            color: myFocusNodeLocation.hasFocus
-                ? Theme.of(context).hoverColor
-                : Theme.of(context).indicatorColor,
+            color: Theme.of(context).hoverColor,
             width: 1,
           ),
           borderRadius: BorderRadius.circular(15),
