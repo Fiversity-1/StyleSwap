@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
         '/swipe': (context) => const SwipePage(),
         '/chat': (context) => const MessageChat(),
         '/comment': (context) => const Comments(),
-        '/add_clothing_item': (context) => AddClothingItemPage(),
+        '/add_clothing_item': (context) => const AddClothingItemPage(),
         '/clothing_detail': (context) => const ClothingDetail(),
         '/preferences': (context) => const Preferences(),
         '/add_clothes_preferences': (context) => const AddClothesPreferences(),

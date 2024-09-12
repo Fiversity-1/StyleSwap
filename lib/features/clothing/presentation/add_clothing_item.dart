@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:string_extensions/string_extensions.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../../widgets/selection_tree_grid.dart';
 
@@ -46,8 +47,12 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
   ClothingInfo clothingInfo = ClothingInfo();
   int activeStep = 0;
   int typeIndex = 0;
+  bool imagePresent = false;
+  List<String> selectedColours = [];
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     Map<Enum, FaIcon> category = _pickCategory(activeStep);
     List<String> instructions = [
       "Select Clothing Category",
@@ -62,18 +67,6 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       "Add Description"
     ];
 
-    // List<Widget> steps = <Widget>[
-    //   TreeSelection(ClothingType.getTree()),
-    //   ImageSelectionField(
-    //     initialValue: clothingInfo.images,
-    //     onSaved: (List<XFile>? images) {
-    //       setState(() {
-    //         clothingInfo = clothingInfo.copyWith(images: images);
-    //       });
-    //     },
-    //     validator: (List<XFile>? images) =>
-    //         (images ?? []).isEmpty ? "Image required" : null,
-    //   ),
     //   SingleChildScrollView(
     //       padding: const EdgeInsets.all(16),
     //       child: Column(
@@ -116,7 +109,6 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
     // ];
 
     int numSteps = 9;
-    //Widget currentWidget = steps[activeStep];
 
     bool isMaxStep() {
       return activeStep == numSteps;
@@ -159,6 +151,71 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       });
     }
 
+//GPT suggest custom validation when not using form key
+    void colourValidation() {
+      if (selectedColours.isEmpty)
+      //End
+      {
+        toastification.showCustom(
+          context: context,
+          autoCloseDuration: const Duration(seconds: 3),
+          alignment: Alignment.topCenter,
+          builder: (BuildContext context, ToastificationItem holder) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Theme.of(context).hoverColor,
+              ),
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.all(8),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("Please select at least 1 colour",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  SizedBox(height: 16),
+                ],
+              ),
+            );
+          },
+        );
+      } else {
+        next(0);
+      }
+    }
+
+    void imageValidation() {
+      if (!imagePresent)
+      //End
+      {
+        toastification.showCustom(
+          context: context,
+          autoCloseDuration: const Duration(seconds: 3),
+          alignment: Alignment.topCenter,
+          builder: (BuildContext context, ToastificationItem holder) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Theme.of(context).hoverColor,
+              ),
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.all(8),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("Please select at least 1 image",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  SizedBox(height: 16),
+                ],
+              ),
+            );
+          },
+        );
+      } else {
+        next(0);
+      }
+    }
+
     String getText(Map<Enum, FaIcon> category, int index) {
       return category == letteredSizeIcons
           ? category.keys
@@ -168,6 +225,15 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
               .last
               .toUpperCase()
           : category.keys.toList()[index].toString().split('.').last.capitalize;
+    }
+
+    void handleColour(int index) {
+      if (selectedColours.contains(getText(category, index))) {
+        selectedColours.remove(getText(category, index));
+      } else {
+        selectedColours.add(getText(category, index));
+      }
+      setState(() {});
     }
 
     return Scaffold(
@@ -208,85 +274,156 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
                       ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10, left: 10, right: 10),
-                        child: GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: crossAxisCount,
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 8,
-                          ),
-                          itemBuilder: (_, index) => GridTile(
-                            child: GestureDetector(
-                              onLongPress: () {
-                                isMaxStep() ? null : next(index);
-                              },
-                              onTap: () {
-                                isMaxStep() ? null : next(index);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                        getText(category, index) ==
-                                                "Newwithtags"
-                                            ? "New with tags"
-                                            : getText(category, index) ==
-                                                    "Newnotags"
-                                                ? "New no tags"
-                                                : getText(category, index) ==
-                                                        "Likenew"
-                                                    ? "Like new"
-                                                    : getText(category,
-                                                                index) ==
-                                                            "Wellworn"
-                                                        ? "Well worn"
-                                                        : getText(
-                                                            category, index),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge),
-                                    IconButton(
-                                      icon: category.values.toList()[index],
-                                      onPressed: () {
-                                        isMaxStep() ? null : next(index);
-                                      },
-                                    ),
-                                  ],
+                      Visibility(
+                        visible: activeStep != 8,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 10, right: 10),
+                          child: GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: crossAxisCount,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 8,
+                            ),
+                            itemBuilder: (_, index) => GridTile(
+                              child: GestureDetector(
+                                onLongPress: () {
+                                  activeStep != 6
+                                      ? (isMaxStep() ? null : next(index))
+                                      : handleColour(index);
+                                },
+                                onTap: () {
+                                  activeStep != 6
+                                      ? (isMaxStep() ? null : next(index))
+                                      : handleColour(index);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: selectedColours.contains(
+                                      getText(category, index),
+                                    )
+                                        ? Theme.of(context).hoverColor
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                          getText(category, index) ==
+                                                  "Newwithtags"
+                                              ? "New with tags"
+                                              : getText(category, index) ==
+                                                      "Newnotags"
+                                                  ? "New no tags"
+                                                  : getText(category, index) ==
+                                                          "Likenew"
+                                                      ? "Like new"
+                                                      : getText(category,
+                                                                  index) ==
+                                                              "Wellworn"
+                                                          ? "Well worn"
+                                                          : getText(
+                                                              category, index),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge),
+                                      IconButton(
+                                        icon: category.values.toList()[index],
+                                        onPressed: () {
+                                          activeStep != 6
+                                              ? (isMaxStep()
+                                                  ? null
+                                                  : next(index))
+                                              : handleColour(index);
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
+                            itemCount: category.values.toList().length,
                           ),
-                          itemCount: category.values.toList().length,
                         ),
                       ),
                       Visibility(
-                        visible: !isFirstStep(),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 25),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).hoverColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                          visible: activeStep == 8,
+                          child: SizedBox(
+                            height: height * 0.775,
+                            width: width,
+                            child: ImageSelectionField(
+                              initialValue: clothingInfo.images,
+                              onSaved: (List<XFile>? images) {
+                                setState(() {
+                                  imagePresent = !imagePresent;
+                                  clothingInfo =
+                                      clothingInfo.copyWith(images: images);
+                                });
+                              },
+                            ),
+                          )),
+                      Row(
+                        mainAxisAlignment: activeStep == 6 || activeStep == 8
+                            ? MainAxisAlignment.spaceBetween
+                            : MainAxisAlignment.center,
+                        children: [
+                          Visibility(
+                            visible: !isFirstStep(),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: 20,
+                                  left: activeStep == 6 || activeStep == 8
+                                      ? 20
+                                      : 0),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Theme.of(context).hoverColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    isFirstStep() ? null : previous();
+                                  });
+                                },
+                                child: const Text('Back'),
                               ),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                isFirstStep() ? null : previous();
-                              });
-                            },
-                            child: const Text('Back'),
                           ),
-                        ),
+                          Visibility(
+                            visible: activeStep == 6 || activeStep == 8,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 20, right: 20),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Theme.of(context).hoverColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    //index doesn't matter here
+                                    isMaxStep()
+                                        ? null
+                                        : activeStep == 6
+                                            ? colourValidation()
+                                            : activeStep == 8
+                                                ? imageValidation()
+                                                : null;
+                                  });
+                                },
+                                child: const Text('Next'),
+                              ),
+                            ),
+                          )
+                        ],
                       )
                     ],
                   ),
@@ -299,24 +436,3 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
     );
   }
 }
-
-
-
-
-// Visibility(
-//                                 visible: !isFirstStep(),
-//                                 child: ElevatedButton(
-//                                   onPressed: isFirstStep() ? null : previous,
-//                                   child: const Text("Previous"),
-//                                 ),
-//                               ),
-//                               // ElevatedButton(
-//                               //   onPressed: isMaxStep() ? save : next,
-//                               //   style: ElevatedButton.styleFrom(
-//                               //     backgroundColor:
-//                               //         Theme.of(context).colorScheme.primary,
-//                               //     foregroundColor:
-//                               //         Theme.of(context).colorScheme.onPrimary,
-//                               //   ),
-//                               //   child: Text(isMaxStep() ? "Save" : "Next"),
-//                               // ),
