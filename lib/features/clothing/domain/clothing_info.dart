@@ -1,6 +1,8 @@
 
 import 'package:image_picker/image_picker.dart';
 
+import 'clothing_type.dart';
+
 class ClothingInfo {
   final List<XFile> images;
   final ClothingSize? size;
@@ -41,68 +43,75 @@ enum Style {
   vintage
 }
 
-enum ClothingCondition {
+enum ClothingCondition with DatabaseRepresentationMapper {
   newWithTags,
   newNoTags,
   likeNew,
   worn,
-  wellWorn
+  wellWorn;
+
+  @override
+  String getDatabaseRepresentation() {
+    return toString().split('.').last;
+  }
 }
 
-enum ClothingGender {
+enum ClothingGender with DatabaseRepresentationMapper  {
   male,
   female,
-  unisex
+  unisex;
+
+  @override
+  String getDatabaseRepresentation() {
+    return toString().split('.').last;
+  }
 }
 
-enum ClothingType {
-  hat,
-  scarf,
-  tie,
-  shirt,
-  midriff,
-  belt,
-  shorts,
-  pants,
-  skirt,
-  dress,
-  shoes,
-  jumper,
-  jacket,
-  sweater,
-  coat,
-  gloves,
-  vest,
-  leggings,
-  tights
-}
-
-sealed class ClothingSize {
+sealed class ClothingSize with DatabaseRepresentationMapper {
   const ClothingSize();
 }
 
-class LetteredSizing extends ClothingSize {
+class LetteredSizing extends ClothingSize with DatabaseRepresentationMapper {
   const LetteredSizing(this.size);
 
   final LetteredSize size;
 
   @override
   String toString() {
-    return size.toString().split('.').last.toUpperCase();
+    return size.toString();
+  }
+
+  @override
+  String getDatabaseRepresentation() {
+    return size.getDatabaseRepresentation();
   }
 }
 
-enum LetteredSize {
+enum LetteredSize with DatabaseRepresentationMapper {
   xxs,
   xs,
   s,
   m,
   l,
   xl,
-  xxl,
+  xxl;
+
+  @override
+  String toString() {
+    return getSizeUpper();
+  }
+
+  @override
+  String getDatabaseRepresentation() {
+    return getSizeUpper();
+  }
+
+  String getSizeUpper() {
+    return toString().split('.').last.toUpperCase();
+  }
 }
 
-class NumericalSizing extends ClothingSize {
+class NumericalSizing extends ClothingSize with DatabaseRepresentationMapper {
   const NumericalSizing(this.size, this.system);
 
   final int size;
@@ -112,6 +121,15 @@ class NumericalSizing extends ClothingSize {
   String toString() {
     return '$size (${system.toString().split('.').last.toUpperCase()})';
   }
+
+  @override
+  String getDatabaseRepresentation() {
+    return '$size:${system
+        .toString()
+        .split('.')
+        .last
+        .toUpperCase()}';
+  }
 }
 
 enum SizingSystem {
@@ -120,7 +138,7 @@ enum SizingSystem {
   us
 }
 
-enum ClothingColour {
+enum ClothingColour with DatabaseRepresentationMapper {
   red,
   green,
   lightBlue,
@@ -133,5 +151,14 @@ enum ClothingColour {
   black,
   lightGrey,
   darkGrey,
-  brown
+  brown;
+
+  @override
+  String getDatabaseRepresentation() {
+    return toString().split('.').last;
+  }
+}
+
+mixin DatabaseRepresentationMapper {
+  String getDatabaseRepresentation();
 }

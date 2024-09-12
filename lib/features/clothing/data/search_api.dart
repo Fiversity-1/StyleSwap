@@ -1,50 +1,44 @@
 
+import 'dart:convert';
+
 import 'package:clothing_swap/features/clothing/domain/clothing_search.dart';
+import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
-class SearchQuery {
-  ClothingSearch search;
+Future<List<dynamic>> searchClothes(ClothingSearch search) async {
+  try {
+    // Get the current user
+    User? user = FirebaseAuth.instance.currentUser;
 
-  SearchQuery(this.search);
+    if (user != null) {
+      // User ID
+      String userId = user.uid;
 
-  void setSearch(ClothingSearch search) {
-    this.search = search;
-  }
+      // API URL
+      String url = 'https://yourapi.com/api/clothes/search/$userId';
 
-  Future<void> searchClothes() async {
-    try {
-      // Get the current user
-      User? user = FirebaseAuth.instance.currentUser;
+      // Make the POST request
+      http.Response response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(search.getData()),
+      );
 
-      if (user != null) {
-        // User ID
-        String userId = user.uid;
-
-        // API URL
-        String url = 'https://yourapi.com/api/clothes/search/$userId';
-
-        // Make the POST request
-        http.Response response = await http.post(
-          Uri.parse(url),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode(data),
-        );
-
-        // Check the response status
-        if (response.statusCode == 200) {
-          print('Request successful: ${response.body}');
-        } else {
-          print('Request failed with status: ${response.statusCode}');
-        }
+      // Check the response status
+      if (response.statusCode == 200) {
+        print('Request successful: ${response.body}');
       } else {
-        print('No user is signed in.');
+        print('Request failed with status: ${response.statusCode}');
       }
-    } catch (e) {
-      print('Error: $e');
+    } else {
+      print('No user is signed in.');
     }
+  } catch (e) {
+    print('Error: $e');
   }
 
+  return [];
 }

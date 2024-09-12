@@ -64,13 +64,15 @@ class _SwipePageTopState extends State<SwipePageTop> {
   final GlobalKey _tapingKey = GlobalKey();
   final GlobalKey _moreDetailKey = GlobalKey();
   final GlobalKey _preferenceKey = GlobalKey();
+  late Search searchResults;
+  late ChatManager chatManager;
 
   @override
   Widget build(BuildContext context) {
     //Need to update for whatever search returns, publicListing will be
     //replaced and need to be updated
-    final searchResults = Provider.of<Search>(context);
-    final chatManager = Provider.of<ChatManager>(context);
+    searchResults = Provider.of<Search>(context);
+    chatManager = Provider.of<ChatManager>(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
@@ -139,96 +141,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                       scale: 0.6,
                                       isLoop: false,
                                       numberOfCardsDisplayed: 2,
-                                      onSwipe: (previousIndex, currentIndex,
-                                          direction) {
-                                        if (direction.name == 'right' &&
-                                            searchResults.getListing()[0]
-                                                is! FunFactCard) {
-                                          //Chat provided provider logic, has been modified
-                                          final userManager =
-                                              Provider.of<UserManager>(context,
-                                                  listen: false);
-
-                                          final currentUser =
-                                              userManager.currentUser;
-                                          final listerProfile = userManager
-                                              .getUserById(searchResults
-                                                  .getListing()[0]
-                                                  .item
-                                                  .userId);
-
-                                          currentUser
-                                              .addInterestedListing(ChatListing(
-                                            currentUserId: currentUser.id,
-                                            otherUserId: listerProfile.id,
-                                            name: listerProfile.name,
-                                            previewContent: "New Match",
-                                            time: "Now",
-                                            opened: false,
-                                            image: searchResults
-                                                .getListing()[0]
-                                                .item
-                                                .images[0],
-                                          ));
-
-                                          toastification.showCustom(
-                                            context: context,
-                                            autoCloseDuration:
-                                                const Duration(seconds: 3),
-                                            alignment: Alignment.bottomRight,
-                                            builder: (BuildContext context,
-                                                ToastificationItem holder) {
-                                              return Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  color: Theme.of(context)
-                                                      .hoverColor,
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.all(16),
-                                                margin: const EdgeInsets.all(8),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    const Text(
-                                                        'You\'ve got a New Match!',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                    const SizedBox(height: 16),
-                                                    Row(
-                                                      children: [
-                                                        ElevatedButton(
-                                                          onPressed: () {
-                                                            final chat = chatManager
-                                                                .findChatByUserId(
-                                                                    listerProfile
-                                                                        .id);
-                                                            chatManager
-                                                                .selectChat(
-                                                                    chat!.id);
-                                                            Navigator.pushNamed(
-                                                              context,
-                                                              '/chat',
-                                                            );
-                                                          },
-                                                          child: const Text(
-                                                              'Message Now!'),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        }
-                                        _handleRemove(searchResults, 0);
-                                        return true;
-                                      },
+                                      onSwipe: handleSwipe,
                                       allowedSwipeDirection:
                                           const AllowedSwipeDirection.only(
                                               left: true, right: true),
@@ -322,6 +235,98 @@ class _SwipePageTopState extends State<SwipePageTop> {
         },
       ),
     );
+  }
+
+  bool handleSwipe(int previousIndex, int? currentIndex,
+      CardSwiperDirection direction) {
+    if (direction.name == 'right' &&
+        searchResults.getListing()[0]
+        is! FunFactCard) {
+
+      //Chat provided provider logic, has been modified
+      final userManager = Provider.of<UserManager>(context,
+          listen: false);
+
+      final currentUser = userManager.currentUser;
+
+      final listerProfile = userManager
+          .getUserById(searchResults
+          .getListing()[0]
+          .item
+          .userId);
+
+      currentUser
+          .addInterestedListing(ChatListing(
+        currentUserId: currentUser.id,
+        otherUserId: listerProfile.id,
+        name: listerProfile.name,
+        previewContent: "New Match",
+        time: "Now",
+        opened: false,
+        image: searchResults
+            .getListing()[0]
+            .item
+            .images[0],
+      ));
+
+      toastification.showCustom(
+        context: context,
+        autoCloseDuration:
+        const Duration(seconds: 3),
+        alignment: Alignment.bottomRight,
+        builder: (BuildContext context,
+            ToastificationItem holder) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius:
+              BorderRadius.circular(8),
+              color: Theme
+                  .of(context)
+                  .hoverColor,
+            ),
+            padding:
+            const EdgeInsets.all(16),
+            margin: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment:
+              CrossAxisAlignment.start,
+              children: [
+                const Text(
+                    'You\'ve got a New Match!',
+                    style: TextStyle(
+                        fontWeight:
+                        FontWeight
+                            .bold)),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        final chat = chatManager
+                            .findChatByUserId(
+                            listerProfile
+                                .id);
+                        chatManager
+                            .selectChat(
+                            chat!.id);
+                        Navigator.pushNamed(
+                          context,
+                          '/chat',
+                        );
+                      },
+                      child: const Text(
+                          'Message Now!'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+    _handleRemove(searchResults, 0);
+    return true;
   }
 
 //https://github.com/djshah17/Flutter-Tutorial-Coach-Mark-Sample/blob/master/lib/my_tutorial_coach_mark_screen.dart

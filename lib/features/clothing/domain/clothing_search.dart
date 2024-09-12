@@ -2,6 +2,7 @@
 import 'dart:ffi';
 
 import 'clothing_info.dart';
+import 'clothing_type.dart';
 
 class ClothingSearch {
   final List<ClothingType>? types;
@@ -9,18 +10,33 @@ class ClothingSearch {
   final List<ClothingColour>? colours;
   final List<ClothingCondition>? conditions;
   final List<ClothingGender>? genders;
-  final UnsignedInt distance;
+  final int distance;
+  final double latitude;
+  final double longitude;
 
-  ClothingSearch(this.distance, {this.types, this.sizes, this.colours,
+  ClothingSearch(this.distance, this.latitude, this.longitude, {this.types, this.sizes, this.colours,
     this.conditions, this.genders});
 
-  Map<String, dynamic> getData {
-    return {
-      "size": ["XXL", "S"],
-      "colour": ["red", "blue"],
-      "type": ["hat", "jumper"],
-      "condition": ["new", "like-new"],
-      "gender": ["male", "unisex"]
-    };
+  Map<String, dynamic> getData() {
+    Map<String, dynamic> data = {};
+
+    addData(data, "type", types);
+    addData(data, "size", sizes);
+    addData(data, "colour", colours);
+    addData(data, "condition", conditions);
+    addData(data, "gender", genders);
+
+    data["distance"] = distance.toString();
+    data["lat"] = latitude.toString();
+    data["long"] = longitude.toString();
+
+    return data;
+  }
+
+  void addData(Map<String, dynamic> data, String key,
+      List<DatabaseRepresentationMapper>? props) {
+    if (props != null) {
+      data[key] = props.map((type) => type.getDatabaseRepresentation());
+    }
   }
 }

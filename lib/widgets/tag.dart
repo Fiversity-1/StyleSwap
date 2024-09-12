@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../features/clothing/domain/clothing_type.dart';
+
 class Tag extends StatefulWidget {
   const Tag({super.key, required this.text, required this.category, t});
   final String text;

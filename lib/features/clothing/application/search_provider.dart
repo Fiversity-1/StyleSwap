@@ -1,7 +1,13 @@
+import 'dart:ffi';
+
+import 'package:clothing_swap/features/clothing/domain/clothing_search.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_build.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/fun_fact.dart';
 import 'package:flutter/material.dart';
+
+import '../data/search_api.dart';
+import '../presentation/clothing_item_class.dart';
 
 //Original code modified by chat to include _generatedisplayCards
 //Need to replace publicListings to whatever search returns
@@ -10,9 +16,11 @@ class Search with ChangeNotifier {
   List _listings = [];
   final int _funFactInterval = 3;
   List searchResults = publicListings;
+  ClothingSearch searchParams = ClothingSearch(50, 0, 0);
+  bool searching = false;
 
-  void setSearch() {
-
+  void setSearchParams(ClothingSearch searchParams) {
+    this.searchParams = searchParams;
   }
 
   void setListings() {
@@ -34,8 +42,20 @@ class Search with ChangeNotifier {
   }
   //End gpt
 
-  List<dynamic> getListing() {
+  List getListing() {
+    if (_listings.length < 5 && !searching) {
+      updateListing();
+    }
+
     return _listings;
+  }
+
+  void updateListing() async {
+    searching = true;
+    var items = await searchClothes(searchParams);
+
+    _listings.addAll(items);
+    searching = false;
   }
 
   void removeListing(int index) {
