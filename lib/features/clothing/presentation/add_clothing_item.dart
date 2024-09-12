@@ -24,11 +24,11 @@ Map<Enum, FaIcon> _pickCategory(int order) {
     case 0:
       return clothingCategoryIcons;
     case 1:
-      return clothingTypeIcons;
+      return clothingTopIcons;
     case 2:
-      return clothingTypeIcons;
+      return clothingBottomIcons;
     case 3:
-      return clothingTypeIcons;
+      return clothingAccessoriesIcons;
     case 4:
       return letteredSizeIcons;
     case 5:
@@ -45,6 +45,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
   //final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ClothingInfo clothingInfo = ClothingInfo();
   int activeStep = 0;
+  int typeIndex = 0;
   @override
   Widget build(BuildContext context) {
     Map<Enum, FaIcon> category = _pickCategory(activeStep);
@@ -57,6 +58,8 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       "Select Condition",
       "Select Colours",
       "Select Gender",
+      "Add Images",
+      "Add Description"
     ];
 
     // List<Widget> steps = <Widget>[
@@ -112,7 +115,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
     //       )),
     // ];
 
-    int numSteps = 7;
+    int numSteps = 9;
     //Widget currentWidget = steps[activeStep];
 
     bool isMaxStep() {
@@ -121,7 +124,13 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
 
     void previous() {
       setState(() {
-        activeStep--;
+        if (activeStep == 4) {
+          activeStep = typeIndex;
+        } else if (activeStep == 1 || activeStep == 2 || activeStep == 3) {
+          activeStep = 0;
+        } else {
+          activeStep--;
+        }
       });
     }
 
@@ -133,12 +142,17 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       setState(() {
         if (activeStep == 0) {
           if (index == 0) {
-            activeStep == 1;
+            typeIndex = 1;
+            activeStep = 1;
           } else if (index == 1) {
-            activeStep == 2;
+            typeIndex = 2;
+            activeStep = 2;
           } else if (index == 2) {
-            activeStep == 3;
+            typeIndex = 3;
+            activeStep = 3;
           }
+        } else if (activeStep == 1 || activeStep == 2 || activeStep == 3) {
+          activeStep = 4;
         } else {
           activeStep++;
         }

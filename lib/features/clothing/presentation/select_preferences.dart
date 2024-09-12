@@ -284,24 +284,54 @@ Map<ClothingColour, FaIcon> clothingColourIcons = {
 };
 
 const Map<ClothingType, FaIcon> clothingTypeIcons = {
+  //Accessories 0-5
   ClothingType.hat: FaIcon(FontAwesomeIcons.hatCowboy, size: iconSize),
   ClothingType.tie: FaIcon(FontAwesomeIcons.blackTie, size: iconSize),
+  ClothingType.belt: FaIcon(FontAwesomeIcons.tape, size: iconSize),
+  ClothingType.scarf: FaIcon(FontAwesomeIcons.ribbon, size: iconSize),
+  ClothingType.gloves: FaIcon(FontAwesomeIcons.mitten, size: iconSize),
+  ClothingType.shoes: FaIcon(FontAwesomeIcons.shoePrints, size: iconSize),
+  //Top half 6-12
   ClothingType.jumper: FaIcon(FontAwesomeIcons.wind, size: iconSize),
   ClothingType.shirt: FaIcon(FontAwesomeIcons.shirt, size: iconSize),
-  ClothingType.skirt: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
-  ClothingType.shoes: FaIcon(FontAwesomeIcons.shoePrints, size: iconSize),
-  ClothingType.gloves: FaIcon(FontAwesomeIcons.mitten, size: iconSize),
   ClothingType.jacket: FaIcon(FontAwesomeIcons.wind, size: iconSize),
   ClothingType.vest: FaIcon(FontAwesomeIcons.vest, size: iconSize),
-  ClothingType.dress: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
-  ClothingType.midriff: FaIcon(FontAwesomeIcons.shirt, size: iconSize),
-  ClothingType.pants: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
-  ClothingType.sweater: FaIcon(FontAwesomeIcons.wind, size: iconSize),
-  ClothingType.scarf: FaIcon(FontAwesomeIcons.ribbon, size: iconSize),
-  ClothingType.leggings: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
-  ClothingType.belt: FaIcon(FontAwesomeIcons.tape, size: iconSize),
-  ClothingType.shorts: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
   ClothingType.coat: FaIcon(FontAwesomeIcons.wind, size: iconSize),
+  ClothingType.midriff: FaIcon(FontAwesomeIcons.shirt, size: iconSize),
+  ClothingType.dress: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
+
+  //Bottom half 13-17
+  ClothingType.skirt: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
+  ClothingType.pants: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
+  ClothingType.leggings: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
+  ClothingType.shorts: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
+};
+
+const Map<ClothingType, FaIcon> clothingAccessoriesIcons = {
+  ClothingType.hat: FaIcon(FontAwesomeIcons.hatCowboy, size: iconSize),
+  ClothingType.tie: FaIcon(FontAwesomeIcons.blackTie, size: iconSize),
+  ClothingType.belt: FaIcon(FontAwesomeIcons.tape, size: iconSize),
+  ClothingType.scarf: FaIcon(FontAwesomeIcons.ribbon, size: iconSize),
+  ClothingType.gloves: FaIcon(FontAwesomeIcons.mitten, size: iconSize),
+  ClothingType.shoes: FaIcon(FontAwesomeIcons.shoePrints, size: iconSize),
+};
+
+const Map<ClothingType, FaIcon> clothingBottomIcons = {
+  ClothingType.skirt: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
+  ClothingType.pants: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
+  ClothingType.leggings: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
+  ClothingType.shorts: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
+};
+
+const Map<ClothingType, FaIcon> clothingTopIcons = {
+  ClothingType.jumper: FaIcon(FontAwesomeIcons.wind, size: iconSize),
+  ClothingType.shirt: FaIcon(FontAwesomeIcons.shirt, size: iconSize),
+  ClothingType.jacket: FaIcon(FontAwesomeIcons.wind, size: iconSize),
+  ClothingType.vest: FaIcon(FontAwesomeIcons.vest, size: iconSize),
+  ClothingType.coat: FaIcon(FontAwesomeIcons.wind, size: iconSize),
+  ClothingType.midriff: FaIcon(FontAwesomeIcons.shirt, size: iconSize),
+  ClothingType.dress: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
+  ClothingType.sweater: FaIcon(FontAwesomeIcons.wind, size: iconSize),
 };
 
 const Map<ClothingCondition, FaIcon> clothingConditionIcons = {
