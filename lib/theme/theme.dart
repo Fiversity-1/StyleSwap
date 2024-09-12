@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 ThemeData lightTheme = ThemeData(
   useMaterial3: true,
@@ -17,6 +18,15 @@ ThemeData lightTheme = ThemeData(
         borderRadius: BorderRadius.circular(20),
       ),
     ),
+  ),
+  //GPT for generating all Text themedata
+  textTheme: TextTheme(
+    headlineLarge: GoogleFonts.roboto(),
+    headlineMedium: GoogleFonts.roboto(),
+    headlineSmall: GoogleFonts.roboto(),
+    bodyLarge: GoogleFonts.roboto(),
+    bodyMedium: GoogleFonts.roboto(),
+    bodySmall: GoogleFonts.roboto(),
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       selectedItemColor: Colors.blue,
@@ -66,6 +76,14 @@ ThemeData darkTheme = ThemeData(
       iconColor: Colors.white,
       selectedTileColor: Colors.deepPurple,
       selectedColor: Colors.white,
+    ),
+    textTheme: TextTheme(
+      headlineLarge: GoogleFonts.lato(),
+      headlineMedium: GoogleFonts.lato(),
+      headlineSmall: GoogleFonts.lato(),
+      bodyLarge: GoogleFonts.roboto(),
+      bodyMedium: GoogleFonts.roboto(),
+      bodySmall: GoogleFonts.roboto(),
     ),
     sliderTheme: const SliderThemeData(
       thumbColor: Colors.white,
