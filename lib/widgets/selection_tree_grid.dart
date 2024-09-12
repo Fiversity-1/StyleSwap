@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../features/clothing/domain/clothing_type.dart';
@@ -10,13 +9,11 @@ class TreeSelection<T extends IconMapper> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-        onGenerateRoute: (RouteSettings settings) {
-          return MaterialPageRoute(
-            builder: (context) => TreeSelectionSubScreen(selectionItems),
-          );
-        }
-    );
+    return Navigator(onGenerateRoute: (RouteSettings settings) {
+      return MaterialPageRoute(
+        builder: (context) => TreeSelectionSubScreen(selectionItems),
+      );
+    });
   }
 }
 
@@ -29,43 +26,53 @@ class TreeSelectionSubScreen<T extends IconMapper> extends StatelessWidget {
   Widget build(BuildContext context) {
     void onItemTap(SelectionTreeItem item) {
       if (item is SelectionNode) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) =>
-                TreeSelectionSubScreen(item.getChildren())));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    TreeSelectionSubScreen(item.getChildren())));
       } else if (item is SelectionItem) {
         Navigator.pop(context, item.getValue());
       }
     }
 
     return LayoutBuilder(
-          builder: (context, constraints) {
-            // Calculate the number of columns based on the available width
-            int columns = (constraints.maxWidth / 150).floor();
-            return GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: columns,
-                childAspectRatio: 1,
+      builder: (context, constraints) {
+        // Calculate the number of columns based on the available width
+        int columns = (constraints.maxWidth / 150).floor();
+        return GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: columns,
+            childAspectRatio: 1,
+          ),
+          itemCount: selectionItems.length,
+          itemBuilder: (context, index) {
+            final item = selectionItems[index];
+            return GestureDetector(
+              onLongPress: () => onItemTap(item),
+              onTap: () => onItemTap(item),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(item.toString(),
+                        style: Theme.of(context).textTheme.bodyLarge),
+                    Icon(
+                      item.getIcon(),
+                      size: 65,
+                    ),
+                  ],
+                ),
               ),
-              itemCount: selectionItems.length,
-              itemBuilder: (context, index) {
-                final item = selectionItems[index];
-                return GestureDetector(
-                  onTap: () => onItemTap(item),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(item.getIcon(), size: 50),
-                      const SizedBox(height: 8),
-                      Text(item.toString()),
-                    ],
-                  ),
-                );
-              },
             );
           },
         );
+      },
+    );
   }
-
 }
 
 abstract class SelectionTreeItem<T extends IconMapper> with IconMapper {
@@ -78,7 +85,8 @@ class SelectionNode<T extends IconMapper> extends SelectionTreeItem<T>
   final String label;
   final IconData icon;
 
-  const SelectionNode({required this.children, required this.label, required this.icon});
+  const SelectionNode(
+      {required this.children, required this.label, required this.icon});
 
   List<SelectionTreeItem<T>> getChildren() {
     return children;

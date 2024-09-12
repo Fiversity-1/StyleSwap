@@ -1,4 +1,3 @@
-
 import 'package:image_picker/image_picker.dart';
 
 import 'clothing_type.dart';
@@ -13,8 +12,15 @@ class ClothingInfo {
   final ClothingType? type;
   final List<ClothingColour>? colours;
 
-  ClothingInfo({this.images = const [], this.size, this.description,
-    this.brand, this.condition, this.gender, this.type, this.colours});
+  ClothingInfo(
+      {this.images = const [],
+      this.size,
+      this.description,
+      this.brand,
+      this.condition,
+      this.gender,
+      this.type,
+      this.colours});
 
   ClothingInfo copyWith({
     List<XFile>? images,
@@ -24,11 +30,17 @@ class ClothingInfo {
     ClothingCondition? condition,
     ClothingGender? gender,
     ClothingType? type,
-    List<ClothingColour>? colours,}) {
-    return ClothingInfo(size: size ?? this.size, images: images ?? this.images,
-      description: description ?? this.description, brand: brand ?? this.brand,
-      condition: condition ?? this.condition, gender: gender ?? this.gender,
-      type: type ?? this.type, colours: colours ?? this.colours);
+    List<ClothingColour>? colours,
+  }) {
+    return ClothingInfo(
+        size: size ?? this.size,
+        images: images ?? this.images,
+        description: description ?? this.description,
+        brand: brand ?? this.brand,
+        condition: condition ?? this.condition,
+        gender: gender ?? this.gender,
+        type: type ?? this.type,
+        colours: colours ?? this.colours);
   }
 }
 
@@ -43,19 +55,11 @@ enum Style {
   vintage
 }
 
-enum ClothingCondition {
-  newWithTags,
-  newNoTags,
-  likeNew,
-  worn,
-  wellWorn
-}
+enum ClothingCondition { newWithTags, newNoTags, likeNew, worn, wellWorn }
 
-enum ClothingGender {
-  male,
-  female,
-  unisex
-}
+enum ClothingCategory { top, bottom, accessories }
+
+enum ClothingGender { male, female, unisex }
 
 sealed class ClothingSize {
   const ClothingSize();
@@ -94,11 +98,7 @@ class NumericalSizing extends ClothingSize {
   }
 }
 
-enum SizingSystem {
-  eu,
-  uk,
-  us
-}
+enum SizingSystem { eu, uk, us }
 
 enum ClothingColour {
   red,

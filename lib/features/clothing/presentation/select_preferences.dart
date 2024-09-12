@@ -19,7 +19,7 @@ class AddClothesPreferences extends StatefulWidget {
   State<AddClothesPreferences> createState() => _AddClothesPreferencesState();
 }
 
-Map<Enum, FaIcon> _pickCatgory(String option) {
+Map<Enum, FaIcon> _pickCategory(String option) {
   switch (option) {
     case "Type":
       return clothingTypeIcons;
@@ -81,7 +81,7 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
     //Chat GPT for tracking changes via provider
     final userManager = context.watch<UserManager>();
     final preferencesNotifier = userManager.currentUser.preferences;
-    Map<Enum, FaIcon> category = _pickCatgory(categories);
+    Map<Enum, FaIcon> category = _pickCategory(categories);
     List<String> preferences = preferencesNotifier.getPreferences(categories);
 
     return Scaffold(
@@ -244,6 +244,14 @@ const Map<LetteredSize, FaIcon> letteredSizeIcons = {
   LetteredSize.l: FaIcon(FontAwesomeIcons.ruler, size: iconSize),
   LetteredSize.xl: FaIcon(FontAwesomeIcons.ruler, size: iconSize),
   LetteredSize.xxl: FaIcon(FontAwesomeIcons.ruler, size: iconSize),
+};
+
+Map<ClothingCategory, FaIcon> clothingCategoryIcons = {
+  ClothingCategory.top: const FaIcon(FontAwesomeIcons.shirt, size: iconSize),
+  ClothingCategory.bottom:
+      const FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
+  ClothingCategory.accessories:
+      const FaIcon(FontAwesomeIcons.blackTie, size: iconSize),
 };
 
 Map<ClothingColour, FaIcon> clothingColourIcons = {
