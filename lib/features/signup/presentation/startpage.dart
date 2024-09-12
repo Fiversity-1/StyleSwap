@@ -100,17 +100,13 @@ class StartPage extends StatelessWidget {
         await FirebaseAuth.instance.signInWithPopup(GoogleAuthProvider());
       } else {
         // Mobile sign-in
-        print("are we getting here???????????????? wtf?????????");
         final googleUser = await GoogleSignIn().signIn();
-        print("00000000000000000000000000");
         if (googleUser != null) {
-          print("1111111111111111111111111111111");
           final googleAuth = await googleUser.authentication;
           final credential = GoogleAuthProvider.credential(
             accessToken: googleAuth.accessToken,
             idToken: googleAuth.idToken,
           );
-          print("22222222222222222222222222222222");
           await FirebaseAuth.instance.signInWithCredential(credential);
         }
       }

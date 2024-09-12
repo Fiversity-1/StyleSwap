@@ -1,6 +1,6 @@
 // startpage.dart
 import 'package:clothing_swap/features/clothing/presentation/clothing_detail.dart';
-import 'package:clothing_swap/features/clothing/presentation/search_provider.dart';
+import 'package:clothing_swap/features/clothing/application/search_provider.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipetop.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

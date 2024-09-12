@@ -11,6 +11,10 @@ class Search with ChangeNotifier {
   final int _funFactInterval = 3;
   List searchResults = publicListings;
 
+  void setSearch() {
+
+  }
+
   void setListings() {
     final List displayCards = [];
     int funFactCount = 0;

@@ -1,4 +1,4 @@
-import 'package:clothing_swap/features/clothing/presentation/search_provider.dart';
+import 'package:clothing_swap/features/clothing/application/search_provider.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
