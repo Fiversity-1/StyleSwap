@@ -49,6 +49,10 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
   int typeIndex = 0;
   bool imagePresent = false;
   List<String> selectedColours = [];
+  final FocusNode myFocusNodeDescription = FocusNode();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _controllerDescription = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -66,47 +70,6 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       "Add Images",
       "Add Description"
     ];
-
-    //   SingleChildScrollView(
-    //       padding: const EdgeInsets.all(16),
-    //       child: Column(
-    //         children: [
-    //           TextFormField(
-    //             initialValue: clothingInfo.brand,
-    //             decoration: const InputDecoration(
-    //               border: OutlineInputBorder(),
-    //               labelText: 'Brand',
-    //             ),
-    //             validator: (String? text) =>
-    //                 (text?.length ?? 0) < 1 ? "Brand must be provided" : null,
-    //             onChanged: (String? text) {
-    //               setState(() {
-    //                 clothingInfo = clothingInfo.copyWith(brand: text);
-    //               });
-    //             },
-    //           ),
-    //           const SizedBox(height: 10),
-    //           SizedBox(
-    //               height: 300,
-    //               child: TextFormField(
-    //                   initialValue: clothingInfo.description,
-    //                   expands: true,
-    //                   textAlignVertical: TextAlignVertical.top,
-    //                   decoration: const InputDecoration(
-    //                     border: OutlineInputBorder(),
-    //                     labelText: 'Description',
-    //                   ),
-    //                   onChanged: (String? text) {
-    //                     setState(() {
-    //                       clothingInfo =
-    //                           clothingInfo.copyWith(description: text);
-    //                     });
-    //                   },
-    //                   keyboardType: TextInputType.multiline,
-    //                   maxLines: null)),
-    //         ],
-    //       )),
-    // ];
 
     int numSteps = 9;
 
@@ -130,25 +93,29 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       return activeStep == 0;
     }
 
+    void save() {
+      Navigator.pushNamed(context, '/personal_profile');
+    }
+
     void next(int index) {
-      setState(() {
-        if (activeStep == 0) {
-          if (index == 0) {
-            typeIndex = 1;
-            activeStep = 1;
-          } else if (index == 1) {
-            typeIndex = 2;
-            activeStep = 2;
-          } else if (index == 2) {
-            typeIndex = 3;
-            activeStep = 3;
-          }
-        } else if (activeStep == 1 || activeStep == 2 || activeStep == 3) {
-          activeStep = 4;
-        } else {
-          activeStep++;
+      //Skip other sub type categories after picked
+      if (activeStep == 0) {
+        if (index == 0) {
+          typeIndex = 1;
+          activeStep = 1;
+        } else if (index == 1) {
+          typeIndex = 2;
+          activeStep = 2;
+        } else if (index == 2) {
+          typeIndex = 3;
+          activeStep = 3;
         }
-      });
+      } else if (activeStep == 1 || activeStep == 2 || activeStep == 3) {
+        activeStep = 4;
+      } else {
+        activeStep++;
+      }
+      setState(() {});
     }
 
 //GPT suggest custom validation when not using form key
@@ -184,10 +151,38 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       }
     }
 
-    void imageValidation() {
-      if (!imagePresent)
-      //End
-      {
+    void descriptionValidation() {
+      if (_controllerDescription.text == "") {
+        toastification.showCustom(
+          context: context,
+          autoCloseDuration: const Duration(seconds: 3),
+          alignment: Alignment.topCenter,
+          builder: (BuildContext context, ToastificationItem holder) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Theme.of(context).hoverColor,
+              ),
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.all(8),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("Please provide a description",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  SizedBox(height: 16),
+                ],
+              ),
+            );
+          },
+        );
+      } else {
+        save();
+      }
+    }
+
+    void imageMissing(List<XFile>? images) {
+      if (images!.isEmpty) {
         toastification.showCustom(
           context: context,
           autoCloseDuration: const Duration(seconds: 3),
@@ -211,8 +206,9 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
             );
           },
         );
+        imagePresent = false;
       } else {
-        next(0);
+        imagePresent = true;
       }
     }
 
@@ -238,7 +234,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
 
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(
-        currentIndex: 3,
+        currentIndex: 1,
       ),
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
@@ -263,172 +259,239 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                   ),
                 ),
               ),
-              SingleChildScrollView(
-                child: Center(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15),
-                        child: Text(
-                          instructions[activeStep],
-                          style: Theme.of(context).textTheme.headlineMedium,
+              GestureDetector(
+                onTap: () {
+                  myFocusNodeDescription.unfocus();
+                },
+                child: SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Text(
+                            instructions[activeStep],
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: activeStep != 8,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10, left: 10, right: 10),
-                          child: GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: crossAxisCount,
-                              mainAxisSpacing: 8,
-                              crossAxisSpacing: 8,
-                            ),
-                            itemBuilder: (_, index) => GridTile(
-                              child: GestureDetector(
-                                onLongPress: () {
-                                  activeStep != 6
-                                      ? (isMaxStep() ? null : next(index))
-                                      : handleColour(index);
-                                },
-                                onTap: () {
-                                  activeStep != 6
-                                      ? (isMaxStep() ? null : next(index))
-                                      : handleColour(index);
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: selectedColours.contains(
-                                      getText(category, index),
-                                    )
-                                        ? Theme.of(context).hoverColor
-                                        : Colors.transparent,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                          getText(category, index) ==
-                                                  "Newwithtags"
-                                              ? "New with tags"
-                                              : getText(category, index) ==
-                                                      "Newnotags"
-                                                  ? "New no tags"
-                                                  : getText(category, index) ==
-                                                          "Likenew"
-                                                      ? "Like new"
-                                                      : getText(category,
-                                                                  index) ==
-                                                              "Wellworn"
-                                                          ? "Well worn"
-                                                          : getText(
-                                                              category, index),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge),
-                                      IconButton(
-                                        icon: category.values.toList()[index],
-                                        onPressed: () {
-                                          activeStep != 6
-                                              ? (isMaxStep()
-                                                  ? null
-                                                  : next(index))
-                                              : handleColour(index);
-                                        },
-                                      ),
-                                    ],
+                        Visibility(
+                          //Not visible for images and description
+                          visible: activeStep != 8 && activeStep != 9,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10, left: 10, right: 10),
+                            child: GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: crossAxisCount,
+                                mainAxisSpacing: 8,
+                                crossAxisSpacing: 8,
+                              ),
+                              itemBuilder: (_, index) => GridTile(
+                                child: GestureDetector(
+                                  onLongPress: () {
+                                    activeStep != 6
+                                        ? (isMaxStep() ? null : next(index))
+                                        : handleColour(index);
+                                  },
+                                  onTap: () {
+                                    activeStep != 6
+                                        ? (isMaxStep() ? null : next(index))
+                                        : handleColour(index);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: selectedColours.contains(
+                                        getText(category, index),
+                                      )
+                                          ? Theme.of(context).hoverColor
+                                          : Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                            getText(category, index) ==
+                                                    "Newwithtags"
+                                                ? "New with tags"
+                                                : getText(category, index) ==
+                                                        "Newnotags"
+                                                    ? "New no tags"
+                                                    : getText(category,
+                                                                index) ==
+                                                            "Likenew"
+                                                        ? "Like new"
+                                                        : getText(category,
+                                                                    index) ==
+                                                                "Wellworn"
+                                                            ? "Well worn"
+                                                            : getText(category,
+                                                                index),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge),
+                                        IconButton(
+                                          icon: category.values.toList()[index],
+                                          onPressed: () {
+                                            activeStep != 6
+                                                ? (isMaxStep()
+                                                    ? null
+                                                    : next(index))
+                                                : handleColour(index);
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
+                              itemCount: category.values.toList().length,
                             ),
-                            itemCount: category.values.toList().length,
                           ),
                         ),
-                      ),
-                      Visibility(
-                          visible: activeStep == 8,
+                        Visibility(
+                          visible: activeStep == 9,
                           child: SizedBox(
-                            height: height * 0.775,
-                            width: width,
-                            child: ImageSelectionField(
-                              initialValue: clothingInfo.images,
-                              onSaved: (List<XFile>? images) {
-                                setState(() {
-                                  imagePresent = !imagePresent;
-                                  clothingInfo =
-                                      clothingInfo.copyWith(images: images);
-                                });
-                              },
-                            ),
-                          )),
-                      Row(
-                        mainAxisAlignment: activeStep == 6 || activeStep == 8
-                            ? MainAxisAlignment.spaceBetween
-                            : MainAxisAlignment.center,
-                        children: [
-                          Visibility(
-                            visible: !isFirstStep(),
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: 20,
-                                  left: activeStep == 6 || activeStep == 8
-                                      ? 20
-                                      : 0),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Theme.of(context).hoverColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    isFirstStep() ? null : previous();
-                                  });
-                                },
-                                child: const Text('Back'),
-                              ),
-                            ),
-                          ),
-                          Visibility(
-                            visible: activeStep == 6 || activeStep == 8,
+                            width: width * 0.85,
                             child: Padding(
                               padding:
-                                  const EdgeInsets.only(bottom: 20, right: 20),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Theme.of(context).hoverColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
+                                  const EdgeInsets.only(top: 20, bottom: 20),
+                              child: TextField(
+                                focusNode: myFocusNodeDescription,
+                                textInputAction: TextInputAction.done,
+                                onSubmitted: (text) {},
+                                textAlignVertical: TextAlignVertical.top,
+                                controller: _controllerDescription,
+                                maxLines: 4,
+                                maxLength: 150,
+                                decoration: InputDecoration(
+                                  fillColor: Colors.transparent,
+                                  contentPadding: const EdgeInsets.only(
+                                      top: 10, left: 12, right: 0),
+                                  hintText: 'Aa',
+                                  hintStyle:
+                                      Theme.of(context).textTheme.bodyLarge,
+                                  filled: true,
+                                  // Define the border style for both enabled and focused states
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).hoverColor,
+                                        width: 1), // Border color and width
+                                    borderRadius: BorderRadius.circular(
+                                        15), // Customize the border radius
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).hoverColor,
+                                        width:
+                                            1), // Same border for focused state
+                                    borderRadius: BorderRadius.circular(
+                                        8), // Customize the border radius
                                   ),
                                 ),
-                                onPressed: () {
-                                  setState(() {
+                              ),
+                            ),
+                          ),
+                        ),
+                        Visibility(
+                            visible: activeStep == 8,
+                            child: SizedBox(
+                              height: (height *
+                                  (0.4 *
+                                      (clothingInfo.images.isNotEmpty
+                                          ? clothingInfo.images.length
+                                          : 1))),
+                              width: width,
+                              child: Form(
+                                key: _formKey,
+                                child: ImageSelectionField(
+                                    initialValue: clothingInfo.images,
+                                    onSaved: (List<XFile>? images) =>
+                                        clothingInfo = clothingInfo.copyWith(
+                                            images: images),
+                                    validator: (List<XFile>? images) {
+                                      imageMissing((images ?? []));
+                                    }),
+                              ),
+                            )),
+                        Row(
+                          mainAxisAlignment: activeStep == 6 ||
+                                  activeStep == 8 ||
+                                  activeStep == 9
+                              ? MainAxisAlignment.spaceBetween
+                              : MainAxisAlignment.center,
+                          children: [
+                            Visibility(
+                              visible: !isFirstStep(),
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: 20,
+                                    left: activeStep == 6 ||
+                                            activeStep == 8 ||
+                                            activeStep == 9
+                                        ? 20
+                                        : 0),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Theme.of(context).hoverColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    isFirstStep() ? null : previous();
+                                  },
+                                  child: const Text('Back'),
+                                ),
+                              ),
+                            ),
+                            Visibility(
+                              visible: activeStep == 6 ||
+                                  activeStep == 8 ||
+                                  activeStep == 9,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: 20, right: 20),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Theme.of(context).hoverColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                  onPressed: () {
                                     //index doesn't matter here
                                     isMaxStep()
-                                        ? null
+                                        ? descriptionValidation()
                                         : activeStep == 6
                                             ? colourValidation()
                                             : activeStep == 8
-                                                ? imageValidation()
-                                                : null;
-                                  });
-                                },
-                                child: const Text('Next'),
+                                                ? _formKey.currentState!
+                                                    .validate()
+                                                : activeStep == 9;
+
+                                    if (imagePresent && activeStep == 8) {
+                                      next(0);
+                                    }
+                                  },
+                                  child: Text(
+                                      activeStep != 9 ? 'Next' : 'Add Item'),
+                                ),
                               ),
-                            ),
-                          )
-                        ],
-                      )
-                    ],
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
+              )
             ],
           );
         },

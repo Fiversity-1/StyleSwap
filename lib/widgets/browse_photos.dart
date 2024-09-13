@@ -133,6 +133,9 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                                                     .photoListings!
                                                                     .removeAt(widget
                                                                         .gridIndex);
+                                                                Navigator.pushNamed(
+                                                                    context,
+                                                                    '/personal_profile');
                                                               });
                                                             }
                                                           },

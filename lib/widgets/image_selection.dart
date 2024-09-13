@@ -132,6 +132,7 @@ class ImageSelectionField extends FormField<List<XFile>> {
                               return GridView(
                                 key: state.gridViewKey,
                                 controller: state.scrollController,
+                                shrinkWrap: true,
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
@@ -154,7 +155,7 @@ class ImageSelectionField extends FormField<List<XFile>> {
                               ],
                             ),
                             children: generatedChildren,
-                          )))
+                          ))),
                 ],
               );
             });
