@@ -407,12 +407,8 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                         Visibility(
                             visible: activeStep == 8,
                             child: SizedBox(
-                              height: (height *
-                                  (0.4 *
-                                      (clothingInfo.images.isNotEmpty
-                                          ? clothingInfo.images.length
-                                          : 1))),
-                              width: width,
+                              height: height * 0.9,
+                              width: width * 0.9,
                               child: Form(
                                 key: _formKey,
                                 child: ImageSelectionField(
@@ -422,82 +418,53 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                                             images: images),
                                     validator: (List<XFile>? images) {
                                       imageMissing((images ?? []));
+                                      return null;
                                     }),
                               ),
                             )),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15),
-                          child: Row(
-                            mainAxisAlignment: activeStep == 6 ||
-                                    activeStep == 8 ||
-                                    activeStep == 9
-                                ? MainAxisAlignment.spaceBetween
-                                : MainAxisAlignment.center,
-                            children: [
-                              Visibility(
-                                visible: !isFirstStep(),
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      bottom: 20,
-                                      left: activeStep == 6 ||
-                                              activeStep == 8 ||
-                                              activeStep == 9
-                                          ? 20
-                                          : 0),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      isFirstStep() ? null : previous();
-                                    },
-                                    child: const Text('Back'),
-                                  ),
-                                ),
-                              ),
-                              Visibility(
-                                visible: activeStep == 6 ||
-                                    activeStep == 8 ||
-                                    activeStep == 9,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 20, right: 20),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      //index doesn't matter here
-                                      isMaxStep()
-                                          ? descriptionValidation()
-                                          : activeStep == 6
-                                              ? colourValidation()
-                                              : activeStep == 8
-                                                  ? _formKey.currentState!
-                                                      .validate()
-                                                  : activeStep == 9;
-
-                                      if (imagePresent && activeStep == 8) {
-                                        next(0);
-                                      }
-                                    },
-                                    child: Text(
-                                        activeStep != 9 ? 'Next' : 'Add Item'),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                   ),
                 ),
-              )
+              ),
+              //Chat GPT for floating action button, modified
+              Visibility(
+                visible: !isFirstStep(),
+                child: Positioned(
+                  left: 15,
+                  bottom:
+                      25, // Adjust this value to place it higher from the bottom
+                  child: FloatingActionButton(
+                      onPressed: () {
+                        isFirstStep() ? null : previous();
+                      },
+                      child: const Icon(Icons.arrow_back_ios)),
+                ),
+              ),
+              Visibility(
+                visible: activeStep == 6 || activeStep == 8 || activeStep == 9,
+                child: Positioned(
+                  right: 15,
+                  bottom:
+                      25, // Adjust this value to place it higher from the bottom
+                  child: FloatingActionButton(
+                      onPressed: () {
+                        //index doesn't matter here
+                        isMaxStep()
+                            ? descriptionValidation()
+                            : activeStep == 6
+                                ? colourValidation()
+                                : activeStep == 8
+                                    ? _formKey.currentState!.validate()
+                                    : activeStep == 9;
+
+                        if (imagePresent && activeStep == 8) {
+                          next(0);
+                        }
+                      },
+                      child: const Icon(Icons.arrow_forward_ios)),
+                ),
+              ),
             ],
           );
         },

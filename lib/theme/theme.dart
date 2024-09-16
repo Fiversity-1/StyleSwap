@@ -63,7 +63,7 @@ ThemeData darkTheme = ThemeData(
         backgroundColor: Colors.blue),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
