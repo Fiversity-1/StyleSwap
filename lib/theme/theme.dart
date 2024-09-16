@@ -50,7 +50,7 @@ ThemeData darkTheme = ThemeData(
     colorScheme: ColorScheme.fromSeed(
         seedColor: Colors.blue,
         primary: Colors.blue,
-        surface: const Color.fromRGBO(18, 18, 18, 1),
+        surface: Colors.purple,
         brightness: Brightness.dark),
     iconTheme: const IconThemeData(color: Colors.white),
     appBarTheme: const AppBarTheme(
@@ -63,7 +63,7 @@ ThemeData darkTheme = ThemeData(
         backgroundColor: Colors.blue),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.purple,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
