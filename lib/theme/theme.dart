@@ -21,12 +21,12 @@ ThemeData lightTheme = ThemeData(
   ),
   //GPT for generating all Text themedata
   textTheme: TextTheme(
-    headlineLarge: GoogleFonts.roboto(),
-    headlineMedium: GoogleFonts.roboto(),
-    headlineSmall: GoogleFonts.roboto(),
-    bodyLarge: GoogleFonts.roboto(),
-    bodyMedium: GoogleFonts.roboto(),
-    bodySmall: GoogleFonts.roboto(),
+    headlineLarge: GoogleFonts.poppins(),
+    headlineMedium: GoogleFonts.poppins(),
+    headlineSmall: GoogleFonts.poppins(),
+    bodyLarge: GoogleFonts.poppins(),
+    bodyMedium: GoogleFonts.poppins(),
+    bodySmall: GoogleFonts.poppins(),
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       selectedItemColor: Colors.blue,
@@ -48,43 +48,45 @@ ThemeData lightTheme = ThemeData(
 ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.deepPurple,
-        primary: Colors.deepPurple,
-        surface: const Color.fromARGB(255, 43, 41, 41),
+        seedColor: Colors.blue,
+        primary: Colors.blue,
+        surface: const Color.fromRGBO(18, 18, 18, 1),
         brightness: Brightness.dark),
     iconTheme: const IconThemeData(color: Colors.white),
     appBarTheme: const AppBarTheme(
-      color: Colors.deepPurple,
+      color: Colors.transparent,
       iconTheme: IconThemeData(color: Colors.white),
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        selectedItemColor: Colors.deepPurpleAccent,
-        unselectedItemColor: Colors.grey,
-        backgroundColor: Colors.black12),
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white,
+        backgroundColor: Colors.blue),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
       ),
     ),
-    hoverColor: Colors.deepPurpleAccent,
-    listTileTheme: const ListTileThemeData(
-      tileColor: Color.fromARGB(255, 59, 53, 53),
-      leadingAndTrailingTextStyle: TextStyle(color: Colors.white),
+    hoverColor: Colors.blue,
+    listTileTheme: ListTileThemeData(
+      tileColor: Colors.black.withOpacity(0.25),
+      leadingAndTrailingTextStyle: const TextStyle(color: Colors.white),
       iconColor: Colors.white,
-      selectedTileColor: Colors.deepPurple,
+      selectedTileColor: Colors.blue,
       selectedColor: Colors.white,
     ),
     textTheme: TextTheme(
-      headlineLarge: GoogleFonts.lato(),
-      headlineMedium: GoogleFonts.lato(),
-      headlineSmall: GoogleFonts.lato(),
-      bodyLarge: GoogleFonts.roboto(),
-      bodyMedium: GoogleFonts.roboto(),
-      bodySmall: GoogleFonts.roboto(),
+      headlineLarge: GoogleFonts.poppins(),
+      headlineMedium: GoogleFonts.poppins(),
+      headlineSmall: GoogleFonts.poppins(),
+      bodyLarge: GoogleFonts.poppins(),
+      bodyMedium: GoogleFonts.poppins(),
+      bodySmall: GoogleFonts.poppins(),
     ),
+    scaffoldBackgroundColor: const Color.fromRGBO(18, 18, 18, 1),
     sliderTheme: const SliderThemeData(
       thumbColor: Colors.white,
       trackHeight: 10,

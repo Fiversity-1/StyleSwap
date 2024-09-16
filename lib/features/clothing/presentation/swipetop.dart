@@ -1,6 +1,7 @@
 import 'package:clothing_swap/features/clothing/presentation/search_provider.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/fun_fact.dart';
@@ -55,11 +56,9 @@ class _SwipePageTopState extends State<SwipePageTop> {
   }
 //End ChatGPT
 
-
   void _handleRemove(Search searchResults, int previousIndex) {
     searchResults.removeListing(previousIndex);
   }
-
 
   final GlobalKey _tapingKey = GlobalKey();
   final GlobalKey _moreDetailKey = GlobalKey();
@@ -74,252 +73,241 @@ class _SwipePageTopState extends State<SwipePageTop> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      bottomNavigationBar: const CustomBottomNavBar(
-        currentIndex: 0,
-      ),
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: CustomTopAppBar(),
-      ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          // Define grid column count based on available width
-          bool sideBars = constraints.maxWidth > 960;
+    return GradientBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        bottomNavigationBar: const CustomBottomNavBar(
+          currentIndex: 0,
+        ),
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: CustomTopAppBar(),
+        ),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            // Define grid column count based on available width
+            bool sideBars = constraints.maxWidth > 960;
 
-          return Row(
-            children: [
-              Visibility(
-                visible: sideBars,
-                child: Expanded(
-                    flex: 1,
-                    child: Container(
-                      color: Theme.of(context).canvasColor,
-                    )),
-              ),
-              Expanded(
-                flex: 3,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Positioned.fill(
-                      child: Opacity(
-                        opacity: 0.10,
-                        child: Image.asset('lib/images/backdrop3.jpg',
-                            fit: BoxFit.cover),
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: (10)),
-                          child: Container(
-                            key: _tapingKey,
-                            color: Theme.of(context)
-                                .scaffoldBackgroundColor
-                                .withOpacity(0.9),
-                            width: (kIsWeb) ? width * 0.50625 : width * 0.9125,
-                            height: (kIsWeb) ? height * 0.675 : height * 0.58,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(),
-                          child: SizedBox(
-                              height: (kIsWeb) ? height * 0.7 : height * 0.6,
-                              width: (kIsWeb) ? width * 0.525 : width * 0.925,
-                              child: searchResults.checkCardType() != "Empty"
-                                  ? CardSwiper(
-                                      cardsCount: displayCards.length,
-                                      scale: 0.6,
-                                      isLoop: false,
-                                      numberOfCardsDisplayed: 2,
-                                      onSwipe: (previousIndex, currentIndex,
-                                          direction) {
-                                        if (direction.name == 'right' &&
-                                            searchResults.getListing()[0]
-                                                is! FunFactCard) {
-                                          //Chat provided provider logic, has been modified
-                                          final userManager =
-                                              Provider.of<UserManager>(context,
-                                                  listen: false);
+            return Row(
+              children: [
+                Visibility(
+                  visible: sideBars,
+                  child: Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: Theme.of(context).canvasColor,
+                      )),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(),
+                            child: SizedBox(
+                                height: (kIsWeb) ? height * 0.7 : height * 0.6,
+                                width: (kIsWeb) ? width * 0.525 : width * 0.925,
+                                child: searchResults.checkCardType() != "Empty"
+                                    ? CardSwiper(
+                                        cardsCount: displayCards.length,
+                                        scale: 0.6,
+                                        isLoop: false,
+                                        numberOfCardsDisplayed: 2,
+                                        onSwipe: (previousIndex, currentIndex,
+                                            direction) {
+                                          if (direction.name == 'right' &&
+                                              searchResults.getListing()[0]
+                                                  is! FunFactCard) {
+                                            //Chat provided provider logic, has been modified
+                                            final userManager =
+                                                Provider.of<UserManager>(
+                                                    context,
+                                                    listen: false);
 
-                                          final currentUser =
-                                              userManager.currentUser;
-                                          final listerProfile = userManager
-                                              .getUserById(searchResults
+                                            final currentUser =
+                                                userManager.currentUser;
+                                            final listerProfile = userManager
+                                                .getUserById(searchResults
+                                                    .getListing()[0]
+                                                    .item
+                                                    .userId);
+
+                                            currentUser.addInterestedListing(
+                                                ChatListing(
+                                              currentUserId: currentUser.id,
+                                              otherUserId: listerProfile.id,
+                                              name: listerProfile.name,
+                                              previewContent: "New Match",
+                                              time: "Now",
+                                              opened: false,
+                                              image: searchResults
                                                   .getListing()[0]
                                                   .item
-                                                  .userId);
+                                                  .images[0],
+                                            ));
 
-                                          currentUser
-                                              .addInterestedListing(ChatListing(
-                                            currentUserId: currentUser.id,
-                                            otherUserId: listerProfile.id,
-                                            name: listerProfile.name,
-                                            previewContent: "New Match",
-                                            time: "Now",
-                                            opened: false,
-                                            image: searchResults
-                                                .getListing()[0]
-                                                .item
-                                                .images[0],
-                                          ));
-
-                                          toastification.showCustom(
-                                            context: context,
-                                            autoCloseDuration:
-                                                const Duration(seconds: 3),
-                                            alignment: Alignment.bottomRight,
-                                            builder: (BuildContext context,
-                                                ToastificationItem holder) {
-                                              return Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  color: Theme.of(context)
-                                                      .hoverColor,
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.all(16),
-                                                margin: const EdgeInsets.all(8),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    const Text(
-                                                        'You\'ve got a New Match!',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                    const SizedBox(height: 16),
-                                                    Row(
-                                                      children: [
-                                                        ElevatedButton(
-                                                          onPressed: () {
-                                                            final chat = chatManager
-                                                                .findChatByUserId(
-                                                                    listerProfile
-                                                                        .id);
-                                                            chatManager
-                                                                .selectChat(
-                                                                    chat!.id);
-                                                            Navigator.pushNamed(
-                                                              context,
-                                                              '/chat',
-                                                            );
-                                                          },
-                                                          child: const Text(
-                                                              'Message Now!'),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        }
-                                        _handleRemove(searchResults, 0);
-                                        return true;
-                                      },
-                                      allowedSwipeDirection:
-                                          const AllowedSwipeDirection.only(
-                                              left: true, right: true),
-                                      cardBuilder: (context,
-                                          index,
-                                          percentThresholdX,
-                                          percentThresholdY) {
-                                        return displayCards[index];
-                                      },
-                                    )
-                                  : const NoResultCard()),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, top: kIsWeb ? 0 : 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                searchResults.checkCardType() == "Clothes"
-                                    ? searchResults.getListing()[0].item.name
-                                    : searchResults.checkCardType() == "Fact"
-                                        ? "Fun Fact!"
-                                        : "Sorry!",
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium,
-                              ),
-                              IconButton(
-                                  icon: const Icon(Icons.tune),
-                                  key: _preferenceKey,
-                                  iconSize: 35,
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, '/view_clothes_preferences');
-                                  }),
-                            ],
+                                            toastification.showCustom(
+                                              context: context,
+                                              autoCloseDuration:
+                                                  const Duration(seconds: 3),
+                                              alignment: Alignment.bottomRight,
+                                              builder: (BuildContext context,
+                                                  ToastificationItem holder) {
+                                                return Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    color: Theme.of(context)
+                                                        .hoverColor,
+                                                  ),
+                                                  padding:
+                                                      const EdgeInsets.all(16),
+                                                  margin:
+                                                      const EdgeInsets.all(8),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      const Text(
+                                                          'You\'ve got a New Match!',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                      const SizedBox(
+                                                          height: 16),
+                                                      Row(
+                                                        children: [
+                                                          ElevatedButton(
+                                                            onPressed: () {
+                                                              final chat = chatManager
+                                                                  .findChatByUserId(
+                                                                      listerProfile
+                                                                          .id);
+                                                              chatManager
+                                                                  .selectChat(
+                                                                      chat!.id);
+                                                              Navigator
+                                                                  .pushNamed(
+                                                                context,
+                                                                '/chat',
+                                                              );
+                                                            },
+                                                            child: const Text(
+                                                                'Message Now!'),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          }
+                                          _handleRemove(searchResults, 0);
+                                          return true;
+                                        },
+                                        allowedSwipeDirection:
+                                            const AllowedSwipeDirection.only(
+                                                left: true, right: true),
+                                        cardBuilder: (context,
+                                            index,
+                                            percentThresholdX,
+                                            percentThresholdY) {
+                                          return displayCards[index];
+                                        },
+                                      )
+                                    : const NoResultCard()),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20, top: kIsWeb ? 0 : 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
                                   searchResults.checkCardType() == "Clothes"
-                                      ? searchResults
-                                          .getListing()[0]
-                                          .item
-                                          .location
+                                      ? searchResults.getListing()[0].item.name
                                       : searchResults.checkCardType() == "Fact"
-                                          ? ""
-                                          : "No Cards left!",
+                                          ? "Fun Fact!"
+                                          : "Sorry!",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headlineSmall),
-                            ],
+                                      .headlineMedium,
+                                ),
+                                IconButton(
+                                    icon: const Icon(Icons.tune),
+                                    key: _preferenceKey,
+                                    iconSize: 35,
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, '/view_clothes_preferences');
+                                    }),
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: (7.5)),
-                          child: Visibility(
-                            visible: searchResults.checkCardType() == "Clothes",
-                            child: IconButton(
-                                icon: const Icon(kIsWeb
-                                    ? Icons.arrow_downward
-                                    : Icons.swipe_up),
-                                iconSize: 35,
-                                key: _moreDetailKey,
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, '/clothing_detail',
-                                      arguments: "tap");
-                                }),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                    searchResults.checkCardType() == "Clothes"
+                                        ? searchResults
+                                            .getListing()[0]
+                                            .item
+                                            .location
+                                        : searchResults.checkCardType() ==
+                                                "Fact"
+                                            ? ""
+                                            : "No Cards left!",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: (7.5)),
+                            child: Visibility(
+                              visible:
+                                  searchResults.checkCardType() == "Clothes",
+                              child: IconButton(
+                                  icon: const Icon(kIsWeb
+                                      ? Icons.arrow_circle_up
+                                      : Icons.swipe_up_rounded),
+                                  iconSize: 35,
+                                  key: _moreDetailKey,
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context, '/clothing_detail',
+                                        arguments: "tap");
+                                  }),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Visibility(
-                visible: sideBars,
-                child: Expanded(
-                    flex: 1,
-                    child: Container(
-                      color: Theme.of(context).canvasColor,
-                    )),
-              ),
-            ],
-          );
-        },
+                Visibility(
+                  visible: sideBars,
+                  child: Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: Theme.of(context).canvasColor,
+                      )),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

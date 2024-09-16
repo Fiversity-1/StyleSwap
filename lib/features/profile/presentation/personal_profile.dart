@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
@@ -32,7 +33,9 @@ class _PersonalProfileState extends State<PersonalProfile> {
     final userManager = Provider.of<UserManager>(context);
     final personalProfile = userManager.currentUser;
 
-    return Scaffold(
+    return GradientBackground(
+        child: Scaffold(
+      backgroundColor: Colors.transparent,
       bottomNavigationBar: const CustomBottomNavBar(
         currentIndex: 3,
       ),
@@ -217,8 +220,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: crossAxisCount,
-                          mainAxisSpacing: 2,
-                          crossAxisSpacing: 2,
+                          mainAxisSpacing: 0,
+                          crossAxisSpacing: 0,
                         ),
                         itemBuilder: (_, index) => GridTile(
                           child: GestureDetector(
@@ -277,8 +280,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: crossAxisCount,
-                            mainAxisSpacing: 2,
-                            crossAxisSpacing: 2,
+                            mainAxisSpacing: 0,
+                            crossAxisSpacing: 0,
                           ),
                           itemBuilder: (_, index) => GridTile(
                               key: ValueKey(
@@ -353,6 +356,6 @@ class _PersonalProfileState extends State<PersonalProfile> {
           );
         },
       ),
-    );
+    ));
   }
 }

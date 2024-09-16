@@ -1,6 +1,7 @@
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
 import 'package:clothing_swap/features/clothing/domain/clothing_type.dart';
 import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
+import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/image_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
@@ -232,14 +233,9 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       setState(() {});
     }
 
-    return Scaffold(
-      bottomNavigationBar: const CustomBottomNavBar(
-        currentIndex: 1,
-      ),
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: CustomTopAppBar(),
-      ),
+    return GradientBackground(
+        child: Scaffold(
+      backgroundColor: Colors.transparent,
       body: LayoutBuilder(
         builder: (context, constraints) {
           // Define grid column count based on available width
@@ -309,6 +305,17 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                                           ? Theme.of(context).hoverColor
                                           : Colors.transparent,
                                       borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(
+                                              0.25), // Shadow color and opacity
+                                          spreadRadius:
+                                              2, // Shadow spread radius
+                                          blurRadius: 6, // Shadow blur radius
+                                          offset: const Offset(
+                                              0, 4), // Shadow offset
+                                        ),
+                                      ],
                                     ),
                                     child: Column(
                                       mainAxisAlignment:
@@ -418,75 +425,74 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                                     }),
                               ),
                             )),
-                        Row(
-                          mainAxisAlignment: activeStep == 6 ||
-                                  activeStep == 8 ||
-                                  activeStep == 9
-                              ? MainAxisAlignment.spaceBetween
-                              : MainAxisAlignment.center,
-                          children: [
-                            Visibility(
-                              visible: !isFirstStep(),
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: 20,
-                                    left: activeStep == 6 ||
-                                            activeStep == 8 ||
-                                            activeStep == 9
-                                        ? 20
-                                        : 0),
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).hoverColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Row(
+                            mainAxisAlignment: activeStep == 6 ||
+                                    activeStep == 8 ||
+                                    activeStep == 9
+                                ? MainAxisAlignment.spaceBetween
+                                : MainAxisAlignment.center,
+                            children: [
+                              Visibility(
+                                visible: !isFirstStep(),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: 20,
+                                      left: activeStep == 6 ||
+                                              activeStep == 8 ||
+                                              activeStep == 9
+                                          ? 20
+                                          : 0),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
                                     ),
+                                    onPressed: () {
+                                      isFirstStep() ? null : previous();
+                                    },
+                                    child: const Text('Back'),
                                   ),
-                                  onPressed: () {
-                                    isFirstStep() ? null : previous();
-                                  },
-                                  child: const Text('Back'),
                                 ),
                               ),
-                            ),
-                            Visibility(
-                              visible: activeStep == 6 ||
-                                  activeStep == 8 ||
-                                  activeStep == 9,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    bottom: 20, right: 20),
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).hoverColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
+                              Visibility(
+                                visible: activeStep == 6 ||
+                                    activeStep == 8 ||
+                                    activeStep == 9,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 20, right: 20),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
                                     ),
-                                  ),
-                                  onPressed: () {
-                                    //index doesn't matter here
-                                    isMaxStep()
-                                        ? descriptionValidation()
-                                        : activeStep == 6
-                                            ? colourValidation()
-                                            : activeStep == 8
-                                                ? _formKey.currentState!
-                                                    .validate()
-                                                : activeStep == 9;
+                                    onPressed: () {
+                                      //index doesn't matter here
+                                      isMaxStep()
+                                          ? descriptionValidation()
+                                          : activeStep == 6
+                                              ? colourValidation()
+                                              : activeStep == 8
+                                                  ? _formKey.currentState!
+                                                      .validate()
+                                                  : activeStep == 9;
 
-                                    if (imagePresent && activeStep == 8) {
-                                      next(0);
-                                    }
-                                  },
-                                  child: Text(
-                                      activeStep != 9 ? 'Next' : 'Add Item'),
+                                      if (imagePresent && activeStep == 8) {
+                                        next(0);
+                                      }
+                                    },
+                                    child: Text(
+                                        activeStep != 9 ? 'Next' : 'Add Item'),
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
-                        )
+                              )
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -496,6 +502,13 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
           );
         },
       ),
-    );
+      bottomNavigationBar: const CustomBottomNavBar(
+        currentIndex: 1,
+      ),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: CustomTopAppBar(),
+      ),
+    ));
   }
 }

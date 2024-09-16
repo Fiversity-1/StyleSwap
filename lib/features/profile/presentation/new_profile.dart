@@ -1,4 +1,5 @@
 // profile.dart
+import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
@@ -69,173 +70,161 @@ For any questions or concerns about these terms and conditions, please contact o
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     //GPT for fixing overflow pixels
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Center(
-          child: Image.asset(
-            Provider.of<ThemeSwitcher>(context).themeData == lightTheme
-                ? 'lib/images/hanger.png'
-                : 'lib/images/hanger_white.png',
-            height: 65,
-            width: 75,
+    return GradientBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Center(
+            child: Image.asset(
+              Provider.of<ThemeSwitcher>(context).themeData == lightTheme
+                  ? 'lib/images/hanger.png'
+                  : 'lib/images/hanger_white.png',
+              height: 65,
+              width: 75,
+            ),
           ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 10, top: 10),
-        child: Stack(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('lib/images/backdrop5.jpg'),
-                  opacity: 0.05,
-                  fit: BoxFit.cover,
-                ),
+        body: Padding(
+          padding: const EdgeInsets.only(left: 10, top: 10),
+          child: GestureDetector(
+            onTap: () {
+              // Unfocus any active input field
+              FocusScope.of(context).unfocus();
+            },
+            child: SingleChildScrollView(
+              // Adjusts padding to prevent overflow when the keyboard is shown
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
               ),
-            ),
-            GestureDetector(
-              onTap: () {
-                // Unfocus any active input field
-                FocusScope.of(context).unfocus();
-              },
-              child: SingleChildScrollView(
-                // Adjusts padding to prevent overflow when the keyboard is shown
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        FocusScope.of(context).unfocus();
-                      },
-                      onLongPress: () {
-                        FocusScope.of(context).unfocus();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: SizedBox(
-                          width: width * 0.9,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Register",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 1, left: 4),
-                                    child: Text("Profile Bio",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge),
-                                  ),
-                                ],
-                              ),
-                              TextField(
-                                focusNode: myFocusNodeBio,
-                                textInputAction: TextInputAction.done,
-                                onSubmitted: (text) {
-                                  myFocusNodeLocation.requestFocus();
-                                },
-                                textAlignVertical: TextAlignVertical.top,
-                                controller: _controllerBio,
-                                maxLines: 3,
-                                maxLength: 50,
-                                decoration: InputDecoration(
-                                  fillColor: Colors.transparent,
-                                  contentPadding: const EdgeInsets.only(
-                                      top: 10, left: 12, right: 0),
-                                  hintText: 'Aa',
-                                  hintStyle:
-                                      Theme.of(context).textTheme.bodyLarge,
-                                  filled: true,
-                                  // Define the border style for both enabled and focused states
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context).hoverColor,
-                                        width: 1), // Border color and width
-                                    borderRadius: BorderRadius.circular(
-                                        15), // Customize the border radius
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context).hoverColor,
-                                        width:
-                                            1), // Same border for focused state
-                                    borderRadius: BorderRadius.circular(
-                                        8), // Customize the border radius
-                                  ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                    },
+                    onLongPress: () {
+                      FocusScope.of(context).unfocus();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          bottom: 16, left: 16, right: 16, top: 8),
+                      child: SizedBox(
+                        width: width * 0.9,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("Register",
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(bottom: 1, left: 4),
+                                  child: Text("Profile Bio",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge),
+                                ),
+                              ],
+                            ),
+                            TextField(
+                              focusNode: myFocusNodeBio,
+                              textInputAction: TextInputAction.done,
+                              onSubmitted: (text) {
+                                myFocusNodeLocation.requestFocus();
+                              },
+                              textAlignVertical: TextAlignVertical.top,
+                              controller: _controllerBio,
+                              maxLines: 3,
+                              maxLength: 50,
+                              decoration: InputDecoration(
+                                fillColor: Colors.transparent,
+                                contentPadding: const EdgeInsets.only(
+                                    top: 10, left: 12, right: 0),
+                                hintText: 'Aa',
+                                hintStyle:
+                                    Theme.of(context).textTheme.bodyLarge,
+                                filled: true,
+                                // Define the border style for both enabled and focused states
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).hoverColor,
+                                      width: 1), // Border color and width
+                                  borderRadius: BorderRadius.circular(
+                                      15), // Customize the border radius
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).hoverColor,
+                                      width:
+                                          1), // Same border for focused state
+                                  borderRadius: BorderRadius.circular(
+                                      8), // Customize the border radius
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 1, left: 4),
-                                    child: Text("Location",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge),
-                                  ),
-                                ],
-                              ),
-                              _placesAutoCompleteTextField(),
-                              const SizedBox(height: 15),
-                              SizedBox(
-                                height: 150,
-                                child: SingleChildScrollView(
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .listTileTheme
-                                          .tileColor,
-                                      borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(8),
-                                        topLeft: Radius.circular(8),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      termsAndConditions,
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(bottom: 1, left: 4),
+                                  child: Text("Location",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge),
+                                ),
+                              ],
+                            ),
+                            _placesAutoCompleteTextField(),
+                            const SizedBox(height: 15),
+                            SizedBox(
+                              height: 150,
+                              child: SingleChildScrollView(
+                                child: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .listTileTheme
+                                        .tileColor,
+                                    borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(8),
+                                      topLeft: Radius.circular(8),
                                     ),
                                   ),
-                                ),
-                              ),
-                              CheckboxListTile(
-                                focusNode: myFocusNodeAgreement,
-                                title: const Text(
-                                    "I have read and accept all terms and conditions."),
-                                value: checkedValue,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(8),
-                                    bottomRight: Radius.circular(8),
+                                  child: Text(
+                                    termsAndConditions,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ),
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    checkedValue = newValue!;
-                                  });
-                                },
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
                               ),
-                              const SizedBox(height: 20),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Theme.of(context).hoverColor,
+                            ),
+                            CheckboxListTile(
+                              focusNode: myFocusNodeAgreement,
+                              title: const Text(
+                                  "I have read and accept all terms and conditions."),
+                              value: checkedValue,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(8),
+                                  bottomRight: Radius.circular(8),
                                 ),
+                              ),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  checkedValue = newValue!;
+                                });
+                              },
+                              controlAffinity: ListTileControlAffinity.leading,
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(),
                                 onPressed: () {
                                   if ((checkedValue == false) ||
                                       (lat == "" || long == "") ||
@@ -281,18 +270,16 @@ For any questions or concerns about these terms and conditions, please contact o
                                   }
                                 },
                                 child: const Text('Complete',
-                                    style: TextStyle(fontSize: 20)),
-                              ),
-                            ],
-                          ),
+                                    style: TextStyle(fontSize: 20))),
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

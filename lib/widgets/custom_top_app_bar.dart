@@ -26,10 +26,10 @@ class CustomTopAppBar extends StatelessWidget {
       actions: [
         IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/events',
+              Navigator.pushNamed(context, '/message',
                   arguments: communityEvents);
             },
-            icon: const Icon(Icons.event))
+            icon: const Icon(Icons.messenger_rounded))
       ],
     );
   }
