@@ -10,7 +10,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
-import 'package:confirm_dialog/confirm_dialog.dart';
 
 class PersonalProfile extends StatefulWidget {
   const PersonalProfile({super.key});
@@ -20,6 +19,44 @@ class PersonalProfile extends StatefulWidget {
 }
 
 class _PersonalProfileState extends State<PersonalProfile> {
+  void _showAlertDialogRemoveListing(
+      BuildContext context, personalProfile, index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.blue,
+          title: const Text('Remove Listings'),
+          content: const Text('Are you sure you want to remove this listing?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  personalProfile.personalListings.removeAt(index);
+                });
+              },
+              //Gpt for styling button
+              style: TextButton.styleFrom(
+                  foregroundColor: Colors.white // Set the text color here
+                  ),
+              child: const Text('Delete'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              //Gpt for styling button
+              style: TextButton.styleFrom(
+                  foregroundColor: Colors.white // Set the text color here
+                  ),
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   bool edited = false;
 
   final _changeBio = TextEditingController();
@@ -289,25 +326,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                         ),
                                         iconSize: 25,
                                         onPressed: () async {
-                                          if (await confirm(
-                                            context,
-                                            title: const Text('Confirm'),
-                                            content: const Text(
-                                                'Would you like to remove?'),
-                                            textOK: Text('Yes',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge),
-                                            textCancel: Text('No',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge),
-                                          )) {
-                                            setState(() {
-                                              personalProfile.personalListings
-                                                  .removeAt(index);
-                                            });
-                                          }
+                                          _showAlertDialogRemoveListing(
+                                              context, personalProfile, index);
                                         },
                                       ),
                                       IconButton(
