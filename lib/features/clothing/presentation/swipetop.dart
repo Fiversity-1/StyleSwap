@@ -23,6 +23,7 @@ class SwipePageTop extends StatefulWidget {
 
 class _SwipePageTopState extends State<SwipePageTop> {
   static List displayCards = [];
+  int _counter = 0;
   //use this for indexing queries/views
   late TutorialCoachMark explainer;
   List<TargetFocus> listTargets = [];
@@ -54,7 +55,11 @@ class _SwipePageTopState extends State<SwipePageTop> {
       await prefs.setBool('hasRun', true);
     }
   }
+
 //End ChatGPT
+  void _incrementCounter() {
+    _counter++;
+  }
 
   void _handleRemove(Search searchResults, int previousIndex) {
     searchResults.removeListing(previousIndex);
@@ -119,9 +124,13 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                         numberOfCardsDisplayed: 2,
                                         onSwipe: (previousIndex, currentIndex,
                                             direction) {
+                                          if (direction.name == 'left') {
+                                            _incrementCounter();
+                                          }
                                           if (direction.name == 'right' &&
                                               searchResults.getListing()[0]
                                                   is! FunFactCard) {
+                                            _incrementCounter();
                                             //Chat provided provider logic, has been modified
                                             final userManager =
                                                 Provider.of<UserManager>(
@@ -154,7 +163,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                               context: context,
                                               autoCloseDuration:
                                                   const Duration(seconds: 3),
-                                              alignment: Alignment.bottomRight,
+                                              alignment: Alignment.topRight,
                                               builder: (BuildContext context,
                                                   ToastificationItem holder) {
                                                 return Container(
@@ -265,7 +274,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
                       Positioned(
                         bottom: 5,
                         child: Visibility(
-                          visible: searchResults.checkCardType() == "Clothes",
+                          visible: searchResults.checkCardType() == "Clothes" &&
+                              _counter < 3,
                           child: FloatingActionButton(
                             onPressed: () {},
                             elevation: 0,
