@@ -134,7 +134,9 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                         edited = !edited;
                                         setState(() {
                                           personalProfile.updateProfile(
-                                              newBio: _changeBio.text);
+                                              newBio: _changeBio.text.isNotEmpty
+                                                  ? _changeBio.text
+                                                  : personalProfile.bio);
                                         });
                                       },
                                     ),
