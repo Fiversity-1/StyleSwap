@@ -20,7 +20,7 @@ class AddClothesPreferences extends StatefulWidget {
   State<AddClothesPreferences> createState() => _AddClothesPreferencesState();
 }
 
-Map<Enum, Widget> _pickCategory(String option) {
+Map<Enum, FaIcon> _pickCategory(String option) {
   switch (option) {
     case "Type":
       return clothingTypeIcons;
@@ -46,7 +46,7 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
     categories = ModalRoute.of(context)!.settings.arguments as String;
   }
 
-  void _handlePress(int index, Map<Enum, Widget> category, String currentOption,
+  void _handlePress(int index, Map<Enum, FaIcon> category, String currentOption,
       PreferencesNotifier preferencesNotifier, List<String> preferences) {
     setState(() {
       if (preferences.contains(currentOption)) {
@@ -71,7 +71,7 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
     });
   }
 
-  String _getText(Map<Enum, Widget> category, int index) {
+  String _getText(Map<Enum, FaIcon> category, int index) {
     return category == letteredSizeIcons
         ? category.keys.toList()[index].toString().split('.').last.toUpperCase()
         : category.keys.toList()[index].toString().split('.').last.capitalize;
@@ -82,7 +82,7 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
     //Chat GPT for tracking changes via provider
     final userManager = context.watch<UserManager>();
     final preferencesNotifier = userManager.currentUser.preferences;
-    Map<Enum, Widget> category = _pickCategory(categories);
+    Map<Enum, FaIcon> category = _pickCategory(categories);
     List<String> preferences = preferencesNotifier.getPreferences(categories);
 
     return GradientBackground(
@@ -246,7 +246,7 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
 //Generative AI for icon generation
 const double iconSize = kIsWeb ? 65 : 35;
 
-const Map<LetteredSize, Widget> letteredSizeIcons = {
+const Map<LetteredSize, FaIcon> letteredSizeIcons = {
   LetteredSize.xxs: FaIcon(FontAwesomeIcons.ruler, size: iconSize),
   LetteredSize.xs: FaIcon(FontAwesomeIcons.ruler, size: iconSize),
   LetteredSize.s: FaIcon(FontAwesomeIcons.ruler, size: iconSize),
@@ -256,7 +256,7 @@ const Map<LetteredSize, Widget> letteredSizeIcons = {
   LetteredSize.xxl: FaIcon(FontAwesomeIcons.ruler, size: iconSize),
 };
 
-Map<ClothingCategory, Widget> clothingCategoryIcons = {
+Map<ClothingCategory, FaIcon> clothingCategoryIcons = {
   ClothingCategory.top: const FaIcon(FontAwesomeIcons.shirt, size: iconSize),
   ClothingCategory.bottom:
       const FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
@@ -264,7 +264,7 @@ Map<ClothingCategory, Widget> clothingCategoryIcons = {
       const FaIcon(FontAwesomeIcons.blackTie, size: iconSize),
 };
 
-Map<ClothingColour, Widget> clothingColourIcons = {
+Map<ClothingColour, FaIcon> clothingColourIcons = {
   ClothingColour.red: const FaIcon(FontAwesomeIcons.solidCircle,
       size: iconSize, color: Colors.red),
   ClothingColour.green: const FaIcon(FontAwesomeIcons.solidCircle,
@@ -293,7 +293,7 @@ Map<ClothingColour, Widget> clothingColourIcons = {
       size: iconSize, color: Colors.brown),
 };
 
-const Map<ClothingType, Widget> clothingTypeIcons = {
+const Map<ClothingType, FaIcon> clothingTypeIcons = {
   //Accessories 0-5
   ClothingType.hat: FaIcon(FontAwesomeIcons.hatCowboy, size: iconSize),
   ClothingType.tie: FaIcon(FontAwesomeIcons.blackTie, size: iconSize),
@@ -302,7 +302,7 @@ const Map<ClothingType, Widget> clothingTypeIcons = {
   ClothingType.gloves: FaIcon(FontAwesomeIcons.mitten, size: iconSize),
   ClothingType.shoes: FaIcon(FontAwesomeIcons.shoePrints, size: iconSize),
   //Top half 6-12
-  ClothingType.jumper: Container(height: iconSize, child: Image.asset()),
+  ClothingType.jumper: FaIcon(FontAwesomeIcons.wind, size: iconSize),
   ClothingType.shirt: FaIcon(FontAwesomeIcons.shirt, size: iconSize),
   ClothingType.jacket: FaIcon(FontAwesomeIcons.wind, size: iconSize),
   ClothingType.vest: FaIcon(FontAwesomeIcons.vest, size: iconSize),
@@ -317,7 +317,7 @@ const Map<ClothingType, Widget> clothingTypeIcons = {
   ClothingType.shorts: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
 };
 
-const Map<ClothingType, Widget> clothingAccessoriesIcons = {
+const Map<ClothingType, FaIcon> clothingAccessoriesIcons = {
   ClothingType.hat: FaIcon(FontAwesomeIcons.hatCowboy, size: iconSize),
   ClothingType.tie: FaIcon(FontAwesomeIcons.blackTie, size: iconSize),
   ClothingType.belt: FaIcon(FontAwesomeIcons.tape, size: iconSize),
@@ -326,14 +326,14 @@ const Map<ClothingType, Widget> clothingAccessoriesIcons = {
   ClothingType.shoes: FaIcon(FontAwesomeIcons.shoePrints, size: iconSize),
 };
 
-const Map<ClothingType, Widget> clothingBottomIcons = {
+const Map<ClothingType, FaIcon> clothingBottomIcons = {
   ClothingType.skirt: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
   ClothingType.pants: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
   ClothingType.leggings: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
   ClothingType.shorts: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
 };
 
-const Map<ClothingType, Widget> clothingTopIcons = {
+const Map<ClothingType, FaIcon> clothingTopIcons = {
   ClothingType.jumper: FaIcon(FontAwesomeIcons.wind, size: iconSize),
   ClothingType.shirt: FaIcon(FontAwesomeIcons.shirt, size: iconSize),
   ClothingType.jacket: FaIcon(FontAwesomeIcons.wind, size: iconSize),
@@ -344,7 +344,7 @@ const Map<ClothingType, Widget> clothingTopIcons = {
   ClothingType.sweater: FaIcon(FontAwesomeIcons.wind, size: iconSize),
 };
 
-const Map<ClothingCondition, Widget> clothingConditionIcons = {
+const Map<ClothingCondition, FaIcon> clothingConditionIcons = {
   ClothingCondition.newWithTags: FaIcon(FontAwesomeIcons.tag, size: iconSize),
   ClothingCondition.newNoTags:
       FaIcon(FontAwesomeIcons.solidStar, size: iconSize),
@@ -354,7 +354,7 @@ const Map<ClothingCondition, Widget> clothingConditionIcons = {
   ClothingCondition.wellWorn: FaIcon(FontAwesomeIcons.gears, size: iconSize),
 };
 
-const Map<ClothingGender, Widget> clothingGenderIcons = {
+const Map<ClothingGender, FaIcon> clothingGenderIcons = {
   ClothingGender.male: FaIcon(FontAwesomeIcons.mars, size: iconSize),
   ClothingGender.female: FaIcon(FontAwesomeIcons.venus, size: iconSize),
   ClothingGender.unisex: FaIcon(FontAwesomeIcons.venusMars, size: iconSize),
