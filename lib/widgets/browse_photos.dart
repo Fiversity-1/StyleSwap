@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:swipe/swipe.dart';
 
@@ -25,7 +24,7 @@ class BrowsePhoto extends StatefulWidget {
 
 class _BrowsePhotoState extends State<BrowsePhoto> {
 //https://medium.com/@kavyamistry0612/building-interactive-user-interfaces-with-alert-dialogs-in-flutter-81e268fb72f0
-  void _showAlertDialog(BuildContext context, chatManager, chat) {
+  void _showAlertDialogProposeTrade(BuildContext context, chatManager, chat) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -71,6 +70,34 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                   foregroundColor: Colors.white // Set the text color here
                   ),
               child: const Text('No'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showAlertDialogMaxTrade(
+    BuildContext context,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.blue,
+          title: const Text('Oops'),
+          content:
+              const Text('Sorry there is a max of 3 items per proposed trade.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              //Gpt for styling button
+              style: TextButton.styleFrom(
+                  foregroundColor: Colors.white // Set the text color here
+                  ),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -178,7 +205,7 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                   ),
                                   iconSize: 25,
                                   onPressed: () {
-                                    _showAlertDialog(
+                                    _showAlertDialogProposeTrade(
                                         context, chatManager, chat);
                                   },
                                 ),
