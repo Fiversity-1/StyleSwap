@@ -1,10 +1,8 @@
-import 'package:clothing_swap/theme/theme.dart';
+import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:clothing_swap/theme/theme_switcher.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -17,16 +15,6 @@ class Preferences extends StatefulWidget {
 
 class _PreferencesState extends State<Preferences> {
   late String chosenValue;
-
-  @override
-  void initState() {
-    super.initState();
-    chosenValue =
-        Provider.of<ThemeSwitcher>(context, listen: false).themeData ==
-                lightTheme
-            ? "Light"
-            : "Dark";
-  }
 
   Future<void> _logOutFunction() async {
     try {
@@ -46,19 +34,31 @@ class _PreferencesState extends State<Preferences> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: const CustomBottomNavBar(
-        currentIndex: 3,
-      ),
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: CustomTopAppBar(),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: ElevatedButton(
-          onPressed: _logOutFunction,
-          child: const Text('Log Out'),
+    return GradientBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        bottomNavigationBar: const CustomBottomNavBar(
+          currentIndex: 3,
+        ),
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: CustomTopAppBar(),
+        ),
+        body: Center(
+          child: Column(children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Text("Preferences",
+                  style: Theme.of(context).textTheme.headlineMedium),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: ElevatedButton(
+                onPressed: _logOutFunction,
+                child: const Text('Log Out'),
+              ),
+            ),
+          ]),
         ),
       ),
     );

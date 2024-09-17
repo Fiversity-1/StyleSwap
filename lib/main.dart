@@ -91,7 +91,7 @@ class MyApp extends StatelessWidget {
         '/comment': (context) => const Comments(),
         '/add_clothing_item': (context) => const AddClothingItemPage(),
         '/clothing_detail': (context) => const ClothingDetail(),
-        '/preferences': (context) => const Preferences(),
+        '/settings': (context) => const Preferences(),
         '/add_clothes_preferences': (context) => const AddClothesPreferences(),
         '/events': (context) => EventPage(communityEvents: communityEvents),
       },

@@ -50,7 +50,7 @@ ThemeData darkTheme = ThemeData(
     colorScheme: ColorScheme.fromSeed(
         seedColor: Colors.blue,
         primary: Colors.blue,
-        surface: Colors.purple,
+        surface: Colors.blue[900]!.withOpacity(0.5),
         brightness: Brightness.dark),
     iconTheme: const IconThemeData(color: Colors.white),
     appBarTheme: const AppBarTheme(

@@ -21,7 +21,6 @@ class PersonalProfile extends StatefulWidget {
 
 class _PersonalProfileState extends State<PersonalProfile> {
   bool edited = false;
-  bool editedBio = false;
 
   final _changeBio = TextEditingController();
 
@@ -30,6 +29,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     final userManager = Provider.of<UserManager>(context);
     final personalProfile = userManager.currentUser;
 
@@ -62,7 +62,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 15.0, bottom: 5),
+                        padding: const EdgeInsets.only(top: 5.0, bottom: 5),
                         child: SizedBox(
                             height: 150,
                             width: 200,
@@ -95,7 +95,10 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                           edited ? Icons.check : Icons.edit),
                                       onPressed: () {
                                         edited = !edited;
-                                        setState(() {});
+                                        setState(() {
+                                          personalProfile.updateProfile(
+                                              newBio: _changeBio.text);
+                                        });
                                       },
                                     ),
                                   ),
@@ -135,79 +138,51 @@ class _PersonalProfileState extends State<PersonalProfile> {
                   ),
                   Padding(
                       padding: const EdgeInsets.only(top: 5, bottom: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: Stack(
                         children: [
-                          Container(
-                              height: 75,
-                              width: 300,
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  color: editedBio
-                                      ? Colors.transparent
-                                      : Theme.of(context).highlightColor,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Stack(
-                                children: [
-                                  Visibility(
-                                    visible: editedBio,
-                                    child: SizedBox(
-                                      height: 75,
-                                      width: 300,
-                                      child: TextField(
-                                        maxLines: 3,
-                                        textAlignVertical:
-                                            TextAlignVertical.top,
-                                        controller: _changeBio,
-                                        decoration: InputDecoration(
-                                          contentPadding: kIsWeb
-                                              ? const EdgeInsets.all(20.0)
-                                              : const EdgeInsets.only(
-                                                  top: 10, left: 10),
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                          ),
-                                          hintText: 'New Bio...',
-                                          filled: true,
-                                          suffix: IconButton(
-                                            icon: const Icon(Icons.done,
-                                                size: kIsWeb ? 24 : 18),
-                                            onPressed: () {
-                                              personalProfile.updateProfile(
-                                                  newBio: _changeBio.text);
-                                              editedBio = !editedBio;
-                                              setState(() {});
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                          Stack(children: [
+                            Visibility(
+                              visible: !edited,
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 15),
+                                child: SizedBox(
+                                  width: width * 0.85,
+                                  child: Text(
+                                    personalProfile.bio,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                    textAlign: TextAlign.center,
+                                    softWrap: true,
                                   ),
-                                  Visibility(
-                                    visible: !editedBio,
-                                    child: Text(
-                                      personalProfile.bio,
-                                      style:
-                                          Theme.of(context).textTheme.bodyLarge,
-                                      textAlign: TextAlign.center,
-                                      softWrap: true,
-                                    ),
-                                  ),
-                                ],
-                              )),
+                                ),
+                              ),
+                            ),
+                          ]),
                           Visibility(
                             visible: edited,
-                            child: IconButton(
-                                icon: const Icon(
-                                  Icons.edit,
+                            child: SizedBox(
+                              height: 75,
+                              width: 300,
+                              child: TextField(
+                                maxLines: 3,
+                                maxLength: 50,
+                                textAlignVertical: TextAlignVertical.top,
+                                controller: _changeBio,
+                                decoration: InputDecoration(
+                                  contentPadding: kIsWeb
+                                      ? const EdgeInsets.all(20.0)
+                                      : const EdgeInsets.only(
+                                          top: 10, left: 10),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  hintText: 'New Bio...',
+                                  filled: true,
+                                  //GPT for fill color
+                                  fillColor: Theme.of(context).highlightColor,
                                 ),
-                                iconSize: 25,
-                                onPressed: () {
-                                  editedBio = !editedBio;
-                                  setState(() {});
-                                }),
+                              ),
+                            ),
                           ),
                         ],
                       )),
@@ -220,8 +195,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: crossAxisCount,
-                          mainAxisSpacing: 0,
-                          crossAxisSpacing: 0,
+                          mainAxisSpacing: 1.5,
+                          crossAxisSpacing: 1.5,
                         ),
                         itemBuilder: (_, index) => GridTile(
                           child: GestureDetector(

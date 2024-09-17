@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
 
-  const CustomBottomNavBar({super.key, required this.currentIndex});
+  const CustomBottomNavBar({
+    super.key,
+    required this.currentIndex,
+  });
 
   void _onItemTapped(BuildContext context, int index) {
     switch (index) {
@@ -36,8 +39,7 @@ class CustomBottomNavBar extends StatelessWidget {
           selectedFontSize: 0, // Set to 0 to prevent font-related shifts
           unselectedFontSize: 0, // Set to 0 to prevent font-related shifts
           type: BottomNavigationBarType.fixed,
-          backgroundColor:
-              Colors.transparent, // Make the background transparent
+
           elevation: 0,
           //GPT for icon size
           selectedIconTheme:
