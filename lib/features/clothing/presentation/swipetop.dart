@@ -170,17 +170,16 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                               context: context,
                                               autoCloseDuration:
                                                   const Duration(seconds: 3),
-                                              alignment: Alignment.topRight,
+                                              alignment: Alignment.topLeft,
                                               builder: (BuildContext context,
                                                   ToastificationItem holder) {
                                                 return Container(
                                                   decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    color: Theme.of(context)
-                                                        .hoverColor,
-                                                  ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      color: Theme.of(context)
+                                                          .hoverColor),
                                                   padding:
                                                       const EdgeInsets.all(16),
                                                   margin:
@@ -188,7 +187,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                                   child: Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
-                                                            .start,
+                                                            .center,
                                                     children: [
                                                       const Text(
                                                           'You\'ve got a New Match!',
@@ -198,27 +197,22 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                                                       .bold)),
                                                       const SizedBox(
                                                           height: 16),
-                                                      Row(
-                                                        children: [
-                                                          ElevatedButton(
-                                                            onPressed: () {
-                                                              final chat = chatManager
-                                                                  .findChatByUserId(
-                                                                      listerProfile
-                                                                          .id);
-                                                              chatManager
-                                                                  .selectChat(
-                                                                      chat!.id);
-                                                              Navigator
-                                                                  .pushNamed(
-                                                                context,
-                                                                '/chat',
-                                                              );
-                                                            },
-                                                            child: const Text(
-                                                                'Message Now!'),
-                                                          ),
-                                                        ],
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          final chat = chatManager
+                                                              .findChatByUserId(
+                                                                  listerProfile
+                                                                      .id);
+                                                          chatManager
+                                                              .selectChat(
+                                                                  chat!.id);
+                                                          Navigator.pushNamed(
+                                                            context,
+                                                            '/chat',
+                                                          );
+                                                        },
+                                                        child: const Text(
+                                                            'Send a Message!'),
                                                       ),
                                                     ],
                                                   ),
