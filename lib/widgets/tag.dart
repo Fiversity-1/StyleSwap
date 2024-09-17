@@ -7,7 +7,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class Tag extends StatefulWidget {
-  const Tag({super.key, required this.text, required this.category, t});
+  const Tag({
+    super.key,
+    required this.text,
+    required this.category,
+  });
   final String text;
   final String category;
 
@@ -99,11 +103,7 @@ class TagState extends State<Tag> {
       labelStyle: Theme.of(context).textTheme.bodyLarge,
       deleteIcon: const Icon(Icons.close),
       onDeleted: () {
-        setState(
-          () {
-            preferencesNotifier.removePreference(widget.category, widget.text);
-          },
-        );
+        preferencesNotifier.removePreference(widget.category, widget.text);
       },
       deleteButtonTooltipMessage: '',
       //GPT for border modification

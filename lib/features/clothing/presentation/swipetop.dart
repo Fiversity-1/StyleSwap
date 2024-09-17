@@ -8,7 +8,6 @@ import 'package:clothing_swap/widgets/fun_fact.dart';
 import 'package:clothing_swap/widgets/no_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:toastification/toastification.dart';

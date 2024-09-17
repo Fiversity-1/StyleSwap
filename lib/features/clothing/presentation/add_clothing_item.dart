@@ -1,5 +1,4 @@
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
-import 'package:clothing_swap/features/clothing/domain/clothing_type.dart';
 import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/image_selection.dart';
@@ -10,8 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:string_extensions/string_extensions.dart';
 import 'package:toastification/toastification.dart';
-
-import '../../../widgets/selection_tree_grid.dart';
 
 //GPT to change to statefulwidget instead of hook, use setState for dynamic changes, make sure to use () not just reference other setState won't work lol
 class AddClothingItemPage extends StatefulWidget {
