@@ -9,17 +9,13 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 
 class ClothingDetail extends StatelessWidget {
-  final String? location;
-  const ClothingDetail({super.key, this.location});
+  const ClothingDetail({super.key});
   //Need a matching algorithm - based on preferences/ latest search
 
   @override
   Widget build(BuildContext context) {
     final userManager = context.watch<UserManager>();
     final preferencesNotifier = userManager.currentUser.preferences;
-    //GPT for modal route to collect argument
-    final String? location =
-        ModalRoute.of(context)!.settings.arguments as String?;
     final searchResults = Provider.of<Search>(context);
 
     double height = MediaQuery.of(context).size.height;
@@ -37,24 +33,6 @@ class ClothingDetail extends StatelessWidget {
         body: Center(
           child: SingleChildScrollView(
             child: Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: (0.0)),
-                    child: Visibility(
-                      visible: location == "tap",
-                      child: IconButton(
-                          icon: const Icon(
-                              kIsWeb ? Icons.arrow_upward : Icons.swipe_down),
-                          iconSize: kIsWeb ? 35 : 30,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          }),
-                    ),
-                  ),
-                ],
-              ),
               ListView(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,

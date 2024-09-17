@@ -103,125 +103,138 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
                 : constraints.maxWidth > 400
                     ? 3
                     : 2;
-            return SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: Text(
-                        "Select $categories",
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 10, left: 10, right: 10),
-                      child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: crossAxisCount,
-                          mainAxisSpacing: 8,
-                          crossAxisSpacing: 8,
+            return Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Text(
+                            "Select $categories",
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
                         ),
-                        itemBuilder: (_, index) => GridTile(
-                          child: GestureDetector(
-                            onLongPress: () {
-                              _handlePress(
-                                  index,
-                                  category,
-                                  //Chat GPT to transform into correct format
-                                  _getText(category, index),
-                                  preferencesNotifier,
-                                  preferences);
-                            },
-                            onTap: () {
-                              _handlePress(
-                                  index,
-                                  category,
-                                  _getText(category, index),
-                                  preferencesNotifier,
-                                  preferences);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: preferences.contains(
-                                  _getText(category, index),
-                                )
-                                    ? Theme.of(context).hoverColor
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(
-                                        0.25), // Shadow color and opacity
-                                    spreadRadius: 2, // Shadow spread radius
-                                    blurRadius: 6, // Shadow blur radius
-                                    offset: const Offset(0, 4), // Shadow offset
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 10, right: 10),
+                          child: GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: crossAxisCount,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 8,
+                            ),
+                            itemBuilder: (_, index) => GridTile(
+                              child: GestureDetector(
+                                onLongPress: () {
+                                  _handlePress(
+                                      index,
+                                      category,
+                                      //Chat GPT to transform into correct format
+                                      _getText(category, index),
+                                      preferencesNotifier,
+                                      preferences);
+                                },
+                                onTap: () {
+                                  _handlePress(
+                                      index,
+                                      category,
+                                      _getText(category, index),
+                                      preferencesNotifier,
+                                      preferences);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: preferences.contains(
+                                      _getText(category, index),
+                                    )
+                                        ? Theme.of(context).hoverColor
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(
+                                            0.25), // Shadow color and opacity
+                                        spreadRadius: 2, // Shadow spread radius
+                                        blurRadius: 6, // Shadow blur radius
+                                        offset:
+                                            const Offset(0, 4), // Shadow offset
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                      _getText(category, index) == "Newwithtags"
-                                          ? "New with tags"
-                                          : _getText(category, index) ==
-                                                  "Newnotags"
-                                              ? "New no tags"
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                          _getText(category, index) ==
+                                                  "Newwithtags"
+                                              ? "New with tags"
                                               : _getText(category, index) ==
-                                                      "Likenew"
-                                                  ? "Like new"
+                                                      "Newnotags"
+                                                  ? "New no tags"
                                                   : _getText(category, index) ==
-                                                          "Wellworn"
-                                                      ? "Well worn"
-                                                      : _getText(
-                                                          category, index),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge),
-                                  IconButton(
-                                    icon: category.values.toList()[index],
-                                    onPressed: () {
-                                      _handlePress(
-                                          index,
-                                          category,
-                                          _getText(category, index),
-                                          preferencesNotifier,
-                                          preferences);
-                                    },
+                                                          "Likenew"
+                                                      ? "Like new"
+                                                      : _getText(category,
+                                                                  index) ==
+                                                              "Wellworn"
+                                                          ? "Well worn"
+                                                          : _getText(
+                                                              category, index),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge),
+                                      IconButton(
+                                        icon: category.values.toList()[index],
+                                        onPressed: () {
+                                          _handlePress(
+                                              index,
+                                              category,
+                                              _getText(category, index),
+                                              preferencesNotifier,
+                                              preferences);
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
+                            itemCount: category.values.toList().length,
                           ),
                         ),
-                        itemCount: category.values.toList().length,
-                      ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 25),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).hoverColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            Navigator.pushNamed(
-                                context, '/view_clothes_preferences');
-                          });
-                        },
-                        child: const Text('Save'),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 25),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: FloatingActionButton(
+                          onPressed: () {
+                            setState(() {
+                              Navigator.pushNamed(
+                                  context, '/view_clothes_preferences');
+                            });
+                          },
+                          child: Text(
+                            "Save",
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
             );
           },
         ),

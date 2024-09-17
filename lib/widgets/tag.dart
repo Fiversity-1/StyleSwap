@@ -94,7 +94,8 @@ class TagState extends State<Tag> {
               size: 20, color: Theme.of(context).iconTheme.color)
           : icon,
 
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor:
+          Theme.of(context).floatingActionButtonTheme.backgroundColor,
       labelStyle: Theme.of(context).textTheme.bodyLarge,
       deleteIcon: const Icon(Icons.close),
       onDeleted: () {
@@ -108,7 +109,7 @@ class TagState extends State<Tag> {
       //GPT for border modification
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30), // Rounded edges
-          side: BorderSide(color: Theme.of(context).hoverColor, width: 3)),
+          side: BorderSide(color: Theme.of(context).hoverColor, width: 2)),
     );
   }
 }

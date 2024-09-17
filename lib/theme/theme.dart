@@ -63,7 +63,7 @@ ThemeData darkTheme = ThemeData(
         backgroundColor: Colors.blue),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.blue[900],
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -78,6 +78,8 @@ ThemeData darkTheme = ThemeData(
       selectedTileColor: Colors.blue,
       selectedColor: Colors.white,
     ),
+    floatingActionButtonTheme:
+        FloatingActionButtonThemeData(backgroundColor: Colors.blue[900]),
     textTheme: TextTheme(
       headlineLarge: GoogleFonts.poppins(),
       headlineMedium: GoogleFonts.poppins(),

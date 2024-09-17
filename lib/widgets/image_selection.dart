@@ -267,9 +267,12 @@ class AddImageButtonState extends State<AddImageButton> {
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Theme.of(context)
+              .floatingActionButtonTheme
+              .backgroundColor, // Shadow color and opacity
+
           // Use transparent to show AnimatedContainer's color
-          foregroundColor: Theme.of(context).colorScheme.onSurface,
+          foregroundColor: Colors.white,
           // Use surface color
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),

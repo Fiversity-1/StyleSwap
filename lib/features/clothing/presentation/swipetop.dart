@@ -109,7 +109,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                           Padding(
                             padding: const EdgeInsets.only(),
                             child: SizedBox(
-                                height: (kIsWeb) ? height * 0.7 : height * 0.6,
+                                height: (kIsWeb) ? height * 0.7 : height * 0.7,
                                 width: (kIsWeb) ? width * 0.525 : width * 0.925,
                                 child: searchResults.checkCardType() != "Empty"
                                     ? CardSwiper(
@@ -225,74 +225,58 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                       )
                                     : const NoResultCard()),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20, top: kIsWeb ? 0 : 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  searchResults.checkCardType() == "Clothes"
-                                      ? searchResults.getListing()[0].item.name
-                                      : searchResults.checkCardType() == "Fact"
-                                          ? "Fun Fact!"
-                                          : "Sorry!",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium,
-                                ),
-                                IconButton(
-                                    icon: const Icon(Icons.tune),
-                                    key: _preferenceKey,
-                                    iconSize: 35,
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, '/view_clothes_preferences');
-                                    }),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                    searchResults.checkCardType() == "Clothes"
-                                        ? searchResults
-                                            .getListing()[0]
-                                            .item
-                                            .location
-                                        : searchResults.checkCardType() ==
-                                                "Fact"
-                                            ? ""
-                                            : "No Cards left!",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: (7.5)),
-                            child: Visibility(
-                              visible:
-                                  searchResults.checkCardType() == "Clothes",
-                              child: IconButton(
-                                  icon: const Icon(kIsWeb
-                                      ? Icons.arrow_circle_up
-                                      : Icons.swipe_up_rounded),
-                                  iconSize: 35,
-                                  key: _moreDetailKey,
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, '/clothing_detail',
-                                        arguments: "tap");
-                                  }),
-                            ),
-                          ),
                         ],
                       ),
+                      Positioned(
+                        bottom: 60,
+                        left: 17.5,
+                        child: Text(
+                          searchResults.checkCardType() == "Clothes"
+                              ? searchResults.getListing()[0].item.name
+                              : searchResults.checkCardType() == "Fact"
+                                  ? "Fun Fact!"
+                                  : "Sorry!",
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 60,
+                        right: 5,
+                        child: IconButton(
+                            icon: const Icon(Icons.tune),
+                            key: _preferenceKey,
+                            iconSize: 30,
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, '/view_clothes_preferences');
+                            }),
+                      ),
+                      Positioned(
+                        bottom: 20,
+                        left: 17.5,
+                        child: Text(
+                            searchResults.checkCardType() == "Clothes"
+                                ? searchResults.getListing()[0].item.location
+                                : searchResults.checkCardType() == "Fact"
+                                    ? ""
+                                    : "No Cards left!",
+                            style: Theme.of(context).textTheme.headlineSmall),
+                      ),
+                      Positioned(
+                        bottom: 5,
+                        child: Visibility(
+                          visible: searchResults.checkCardType() == "Clothes",
+                          child: FloatingActionButton(
+                            onPressed: () {},
+                            elevation: 0,
+                            hoverColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            backgroundColor: Colors.transparent,
+                            child: const Icon(Icons.swipe_up, size: 35),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
