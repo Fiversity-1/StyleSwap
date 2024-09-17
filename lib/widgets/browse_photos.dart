@@ -24,7 +24,59 @@ class BrowsePhoto extends StatefulWidget {
 }
 
 class _BrowsePhotoState extends State<BrowsePhoto> {
-//List generate line from chatgpt
+//https://medium.com/@kavyamistry0612/building-interactive-user-interfaces-with-alert-dialogs-in-flutter-81e268fb72f0
+  void _showAlertDialog(BuildContext context, chatManager, chat) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.blue,
+          title: const Text('Propose Trade'),
+          content: const Text(
+              'Would you like to add this item to the proposed trade?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                chatManager.addChatMessage(
+                    chat!.id,
+                    ChatMessage(
+                        senderUserId: chat.currentUserId,
+                        receiverUserId: chat.otherUserId,
+                        messageContent: "New trade proposed",
+                        messageType: "sender",
+                        time: "5:45pm",
+                        additionalListings:
+                            widget.photoListings![widget.gridIndex],
+                        type: "listing",
+                        accepted: false,
+                        declined: false));
+                Navigator.pushNamed(
+                  // ignore: use_build_context_synchronously
+                  context,
+                  '/chat',
+                );
+              },
+              //Gpt for styling button
+              style: TextButton.styleFrom(
+                  foregroundColor: Colors.white // Set the text color here
+                  ),
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              //Gpt for styling button
+              style: TextButton.styleFrom(
+                  foregroundColor: Colors.white // Set the text color here
+                  ),
+              child: const Text('No'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,19 +134,20 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                             return const Wrap(
                                               children: [
                                                 ListTile(
-                                                  tileColor: Colors.blue,
+                                                  tileColor: Colors.transparent,
                                                   leading:
                                                       Icon(Icons.date_range),
                                                   title: Text('Date Listed:'),
                                                   subtitle: Text('27/08/2024'),
                                                 ),
                                                 ListTile(
-                                                    tileColor: Colors.blue,
+                                                    tileColor:
+                                                        Colors.transparent,
                                                     leading: Icon(Icons.people),
                                                     title: Text('Views'),
                                                     subtitle: Text("15")),
                                                 ListTile(
-                                                  tileColor: Colors.blue,
+                                                  tileColor: Colors.transparent,
                                                   leading:
                                                       Icon(Icons.swap_horiz),
                                                   title:
@@ -123,42 +176,9 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                     Icons.swap_horiz,
                                   ),
                                   iconSize: 25,
-                                  onPressed: () async {
-                                    if (await confirm(
-                                      context,
-                                      title: const Text('Trade'),
-                                      content: const Text(
-                                          'Would you like to propose a trade on this item as well?'),
-                                      textCancel: Text('No',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge),
-                                      textOK: Text('Yes',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge),
-                                    )) {
-                                      chatManager.addChatMessage(
-                                          chat!.id,
-                                          ChatMessage(
-                                              senderUserId: chat.currentUserId,
-                                              receiverUserId: chat.otherUserId,
-                                              messageContent:
-                                                  "New trade proposed",
-                                              messageType: "sender",
-                                              time: "5:45pm",
-                                              additionalListings:
-                                                  widget.photoListings![
-                                                      widget.gridIndex],
-                                              type: "listing",
-                                              accepted: false,
-                                              declined: false));
-                                      Navigator.pushNamed(
-                                        // ignore: use_build_context_synchronously
-                                        context,
-                                        '/chat',
-                                      );
-                                    }
+                                  onPressed: () {
+                                    _showAlertDialog(
+                                        context, chatManager, chat);
                                   },
                                 ),
                               ),

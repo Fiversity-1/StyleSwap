@@ -2,6 +2,8 @@
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
+import 'package:clothing_swap/theme/theme.dart';
+import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
@@ -29,9 +31,15 @@ class PublicProfileState extends State<PublicProfile> {
         bottomNavigationBar: const CustomBottomNavBar(
           currentIndex: 3,
         ),
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: CustomTopAppBar(),
+        appBar: AppBar(
+          title: Image.asset(
+            Provider.of<ThemeSwitcher>(context).themeData == lightTheme
+                ? 'lib/images/hanger.png'
+                : 'lib/images/hanger_white.png',
+            height: 65,
+            width: 75,
+          ),
+          centerTitle: true,
         ),
         body: LayoutBuilder(
           builder: (context, constraints) {

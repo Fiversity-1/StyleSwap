@@ -384,6 +384,7 @@ class CommentsState extends State<Comments> {
                     controller: _sendComment,
                     onSubmitted: _handleComment,
                     decoration: InputDecoration(
+                      //fill Color from chatGpt
                       fillColor: Theme.of(context).primaryColor,
                       //contentPadding from chatgpt
                       contentPadding: kIsWeb

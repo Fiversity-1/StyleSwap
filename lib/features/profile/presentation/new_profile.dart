@@ -182,6 +182,7 @@ For any questions or concerns about these terms and conditions, please contact o
                             ),
                             _placesAutoCompleteTextField(),
                             const SizedBox(height: 15),
+                            //modified by chatGpt
                             SizedBox(
                               height: 150,
                               child: SingleChildScrollView(
@@ -204,6 +205,7 @@ For any questions or concerns about these terms and conditions, please contact o
                                 ),
                               ),
                             ),
+                            //End modified by chatgpt
                             CheckboxListTile(
                               focusNode: myFocusNodeAgreement,
                               title: const Text(

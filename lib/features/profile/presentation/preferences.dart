@@ -14,6 +14,36 @@ class Preferences extends StatefulWidget {
 }
 
 class _PreferencesState extends State<Preferences> {
+  //AI generated
+
+  final String safetyGuide = '''
+1. **Use the Platform’s Messaging for All Communication**
+   - Always use the platform’s built-in messaging system to communicate. Avoid taking conversations to other apps to ensure your safety and privacy are protected by the platform’s security measures.
+
+2. **Clearly Agree on Trade Terms**
+   - Discuss all the details of the trade through the platform’s messaging system, including the item’s condition, the meeting location, and any other expectations. This helps to avoid misunderstandings.
+
+3. **Keep Personal Information Private**
+   - Never share your personal details (like home or work addresses) in messages. Use the platform’s privacy settings to keep your personal information secure.
+
+4. **Meet in a Safe, Public Place**
+   - Always meet in a busy, well-lit public area, such as a café, mall, or a police station’s “Safe Exchange Zone.” Avoid secluded locations.
+
+5. **Bring a Companion**
+   - If possible, bring someone along when meeting for a trade. Having a friend or family member with you provides extra safety and peace of mind.
+
+6. **Inspect Items Before Completing the Trade**
+   - Examine the item carefully to ensure it matches the description given in messages. Verify that the quality and condition are as agreed.
+
+7. **No Money Involved – Stick to the Item Trade**
+   - Since the platform is for item trading, not sales, no money should exchange hands. Make sure the agreed trade is strictly about the items and no one is requesting payment outside of the deal.
+
+8. **Walk Away if You Feel Uncomfortable**
+   - If at any point during the exchange something feels off, trust your instincts. You can always leave the situation and report suspicious users to the platform.
+
+9. **Notify a Friend or Family Member**
+   - Inform someone you trust about where and when you’re meeting for the trade. Let them know the details of the person you’re trading with, and check in with them once the trade is completed.
+''';
   late String chosenValue;
 
   Future<void> _logOutFunction() async {
@@ -34,6 +64,7 @@ class _PreferencesState extends State<Preferences> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return GradientBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -47,9 +78,46 @@ class _PreferencesState extends State<Preferences> {
         body: Center(
           child: Column(children: [
             Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Text("Preferences",
+              padding: const EdgeInsets.only(
+                top: 20,
+                bottom: 20,
+              ),
+              child: Text("Settings",
                   style: Theme.of(context).textTheme.headlineMedium),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Row(
+                children: [
+                  Text("Safety Guide",
+                      style: Theme.of(context).textTheme.bodyLarge),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child:
+                  //chatGpt for safety guide
+                  SizedBox(
+                height: 250,
+                width: width * 0.85,
+                child: SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).listTileTheme.tileColor,
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(8),
+                        topLeft: Radius.circular(8),
+                      ),
+                    ),
+                    child: Text(
+                      safetyGuide,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                ),
+              ), //End gpt
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),
