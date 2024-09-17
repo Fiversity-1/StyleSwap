@@ -77,33 +77,33 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
     );
   }
 
-  void _showAlertDialogMaxTrade(
-    BuildContext context,
-  ) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.blue,
-          title: const Text('Oops'),
-          content:
-              const Text('Sorry there is a max of 3 items per proposed trade.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              //Gpt for styling button
-              style: TextButton.styleFrom(
-                  foregroundColor: Colors.white // Set the text color here
-                  ),
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showAlertDialogMaxTrade(
+  //   BuildContext context,
+  // ) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         backgroundColor: Colors.blue,
+  //         title: const Text('Oops'),
+  //         content:
+  //             const Text('Sorry there is a max of 3 items per proposed trade.'),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             //Gpt for styling button
+  //             style: TextButton.styleFrom(
+  //                 foregroundColor: Colors.white // Set the text color here
+  //                 ),
+  //             child: const Text('OK'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

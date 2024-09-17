@@ -11,6 +11,7 @@ import 'package:clothing_swap/features/clothing/presentation/add_clothing_item.d
 import 'package:clothing_swap/features/profile/presentation/new_profile.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/comment.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/features/signup/presentation/startpage.dart';
 import 'package:clothing_swap/features/profile/presentation/personal_profile.dart';
@@ -67,13 +68,19 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            print("lalalallalalalalallalaala");
+            if (kDebugMode) {
+              print("lalalallalalalalallalaala");
+            }
             return const CircularProgressIndicator();
           } else if (snapshot.hasData) {
-            print("SUCESSSSSSSSSSSSSSS ROUTE TO PERSONAL");
+            if (kDebugMode) {
+              print("SUCESSSSSSSSSSSSSSS ROUTE TO PERSONAL");
+            }
             return const PersonalProfile();
           } else {
-            print("start paaaaaaaaaaaaaaaaaaaaaaaaaaagggggggggeeee");
+            if (kDebugMode) {
+              print("start paaaaaaaaaaaaaaaaaaaaaaaaaaagggggggggeeee");
+            }
             return const StartPage(title: 'StartPage');
           }
         },
