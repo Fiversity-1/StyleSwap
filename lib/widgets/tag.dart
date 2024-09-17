@@ -104,6 +104,7 @@ class TagState extends State<Tag> {
       deleteIcon: const Icon(Icons.close),
       onDeleted: () {
         preferencesNotifier.removePreference(widget.category, widget.text);
+        setState(() {});
       },
       deleteButtonTooltipMessage: '',
       //GPT for border modification
