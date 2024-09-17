@@ -307,7 +307,7 @@ class _MessageChatState extends State<MessageChat> {
                       }),
                   SpeedDialChild(
                       child: const Icon(Icons.manage_accounts),
-                      label: "Manage your items",
+                      label: "My Proposed Listings",
                       backgroundColor: Colors.green,
                       labelBackgroundColor: Colors.green,
                       onTap: () {
@@ -342,6 +342,37 @@ class _MessageChatState extends State<MessageChat> {
                                                 setBottomState(() {});
                                               },
                                             ),
+                                          );
+                                        }),
+                                  );
+                                },
+                              );
+                            });
+                      }),
+                  SpeedDialChild(
+                      child: const Icon(Icons.manage_accounts),
+                      label: "${chat.name}'s Proposed Listings",
+                      backgroundColor: Colors.deepOrange,
+                      labelBackgroundColor: Colors.deepOrange,
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return StatefulBuilder(
+                                builder: (BuildContext context,
+                                    StateSetter setBottomState) {
+                                  return SizedBox(
+                                    width: kIsWeb ? width * 0.25 : width * 0.5,
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: _imagesRight.length,
+                                        itemBuilder: (context, index) {
+                                          return ListTile(
+                                            tileColor: Colors.transparent,
+                                            minLeadingWidth: 0,
+                                            title: CircleAvatar(
+                                                radius: 50,
+                                                child: _imagesRight[index]),
                                           );
                                         }),
                                   );

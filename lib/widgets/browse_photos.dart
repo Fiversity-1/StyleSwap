@@ -159,7 +159,8 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                           });
                                     } else if (widget.title == "public") {
                                       Navigator.pushNamed(
-                                          context, '/clothing_detail');
+                                          context, '/clothing_detail',
+                                          arguments: "trade");
                                     } else if (widget.title == "details") {
                                       Navigator.pushNamed(
                                           context, '/clothing_detail');
