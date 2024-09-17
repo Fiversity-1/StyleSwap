@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
+import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/widgets/photo_modal.dart';
@@ -245,372 +246,519 @@ class _MessageChatState extends State<MessageChat> {
     chatManager.setChatOpened(chat!.id, true, chat.previewContent, "5:45pm");
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: CustomTopAppBar(),
-      ),
-      body: Stack(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: (10.0), top: 5, bottom: 5),
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios),
-                      iconSize: 25,
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/message');
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/public_profile');
-                      },
-                      child: CircleAvatar(
-                        radius: 18,
-                        backgroundImage: chat.image,
+    return GradientBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: CustomTopAppBar(),
+        ),
+        body: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: (10.0), top: 5, bottom: 5),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back_ios),
+                        iconSize: 25,
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(context, '/message');
+                        },
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: (15), top: 5),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/public_profile');
+                        },
+                        child: CircleAvatar(
+                          radius: 18,
+                          backgroundImage: chat.image,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: (15), top: 5),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/public_profile');
+                        },
+                        child: Text(chat.name,
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            textAlign: TextAlign.center),
+                      ),
+                    ),
+                  ],
+                ),
+
+                //https://www.freecodecamp.org/news/build-a-chat-app-ui-with-flutter/ retrieved from the following URL but modified for our application
+
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: height * 0.074),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, '/public_profile');
+                        FocusScope.of(context).unfocus();
                       },
-                      child: Text(chat.name,
-                          style: Theme.of(context).textTheme.headlineMedium,
-                          textAlign: TextAlign.center),
-                    ),
-                  ),
-                ],
-              ),
+                      onLongPress: () {
+                        FocusScope.of(context).unfocus();
+                      },
+                      child: ListView.builder(
+                          //item count + 1 from chatgpt
+                          itemCount: chat.messages.length + 1,
+                          shrinkWrap: true,
+                          controller: _scroller,
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                          itemBuilder: (context, index) {
+                            //Chat Gpt code - the idea to include the picture in the list view
+                            //and to increase index
 
-              //https://www.freecodecamp.org/news/build-a-chat-app-ui-with-flutter/ retrieved from the following URL but modified for our application
-
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: height * 0.074),
-                  child: GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                    },
-                    onLongPress: () {
-                      FocusScope.of(context).unfocus();
-                    },
-                    child: ListView.builder(
-                        //item count + 1 from chatgpt
-                        itemCount: chat.messages.length + 1,
-                        shrinkWrap: true,
-                        controller: _scroller,
-                        padding: const EdgeInsets.only(top: 10, bottom: 10),
-                        itemBuilder: (context, index) {
-                          //Chat Gpt code - the idea to include the picture in the list view
-                          //and to increase index
-
-                          if (index == 0) {
-                            // Return the image as the first item
-                            return Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                        context: context,
-                                        builder: (context) {
-                                          return StatefulBuilder(
-                                            builder: (BuildContext context,
-                                                StateSetter setBottomState) {
-                                              return SizedBox(
-                                                width: kIsWeb
-                                                    ? width * 0.25
-                                                    : width * 0.5,
-                                                child: ListView.builder(
-                                                    shrinkWrap: true,
-                                                    itemCount:
-                                                        _imagesLeft.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return ListTile(
-                                                        minLeadingWidth: 0,
-                                                        title: CircleAvatar(
-                                                            radius: 50,
-                                                            child: _imagesLeft[
-                                                                index]),
-                                                        trailing: IconButton(
-                                                          icon: const Icon(Icons
-                                                              .remove_circle_outline),
-                                                          onPressed: () {
-                                                            _imagesLeft
-                                                                .removeAt(
-                                                                    index);
-                                                            setState(() {
-                                                              if (_imagesLeft
-                                                                  .isEmpty) {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              }
-                                                            });
-                                                            setBottomState(
-                                                                () {});
-                                                          },
-                                                        ),
-                                                      );
-                                                    }),
-                                              );
-                                            },
-                                          );
-                                        });
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      FlutterImageStack.widgets(
+                            if (index == 0) {
+                              // Return the image as the first item
+                              return Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                          context: context,
+                                          builder: (context) {
+                                            return StatefulBuilder(
+                                              builder: (BuildContext context,
+                                                  StateSetter setBottomState) {
+                                                return SizedBox(
+                                                  width: kIsWeb
+                                                      ? width * 0.25
+                                                      : width * 0.5,
+                                                  child: ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount:
+                                                          _imagesLeft.length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return ListTile(
+                                                          tileColor: Colors
+                                                              .transparent,
+                                                          minLeadingWidth: 0,
+                                                          title: CircleAvatar(
+                                                              radius: 50,
+                                                              child:
+                                                                  _imagesLeft[
+                                                                      index]),
+                                                          trailing: IconButton(
+                                                            icon: const Icon(Icons
+                                                                .remove_circle_outline),
+                                                            onPressed: () {
+                                                              _imagesLeft
+                                                                  .removeAt(
+                                                                      index);
+                                                              setState(() {
+                                                                if (_imagesLeft
+                                                                    .isEmpty) {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                }
+                                                              });
+                                                              setBottomState(
+                                                                  () {});
+                                                            },
+                                                          ),
+                                                        );
+                                                      }),
+                                                );
+                                              },
+                                            );
+                                          });
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        FlutterImageStack.widgets(
+                                            showTotalCount: true,
+                                            totalCount: _imagesLeft.length,
+                                            itemRadius: 70,
+                                            itemCount: _imagesLeft.isNotEmpty
+                                                ? _imagesLeft.length
+                                                : _empty.length,
+                                            itemBorderWidth: 3,
+                                            children: _imagesLeft.isNotEmpty
+                                                ? _imagesLeft
+                                                : _empty),
+                                        const Icon(Icons.swap_horiz, size: 30),
+                                        FlutterImageStack.widgets(
                                           showTotalCount: true,
-                                          totalCount: _imagesLeft.length,
+                                          totalCount: _imagesRight.length,
                                           itemRadius: 70,
-                                          itemCount: _imagesLeft.isNotEmpty
-                                              ? _imagesLeft.length
+                                          itemCount: _imagesRight.isNotEmpty
+                                              ? _imagesRight.length
                                               : _empty.length,
                                           itemBorderWidth: 3,
-                                          children: _imagesLeft.isNotEmpty
-                                              ? _imagesLeft
-                                              : _empty),
-                                      const Icon(Icons.swap_horiz, size: 30),
-                                      FlutterImageStack.widgets(
-                                        showTotalCount: true,
-                                        totalCount: _imagesRight.length,
-                                        itemRadius: 70,
-                                        itemCount: _imagesRight.isNotEmpty
-                                            ? _imagesRight.length
-                                            : _empty.length,
-                                        itemBorderWidth: 3,
-                                        children: _imagesRight.isNotEmpty
-                                            ? _imagesRight
-                                            : _empty,
-                                      ),
-                                    ],
+                                          children: _imagesRight.isNotEmpty
+                                              ? _imagesRight
+                                              : _empty,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            );
-                          } else {
-                            //End chat GPT code
-                            return Container(
-                              padding: const EdgeInsets.only(
-                                  left: 24,
-                                  right: 24,
-                                  top: kIsWeb ? 30 : 20,
-                                  bottom: 10),
-                              child: Align(
-                                  alignment:
-                                      (chat.messages[index - 1].messageType ==
-                                              "receiver"
-                                          ? Alignment.topLeft
-                                          : Alignment.topRight),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        chat.messages[index - 1].messageType ==
+                                ],
+                              );
+                            } else {
+                              //End chat GPT code
+                              return Container(
+                                padding: const EdgeInsets.only(
+                                    left: 24,
+                                    right: 24,
+                                    top: kIsWeb ? 30 : 20,
+                                    bottom: 10),
+                                child: Align(
+                                    alignment:
+                                        (chat.messages[index - 1].messageType ==
                                                 "receiver"
-                                            ? CrossAxisAlignment.start
-                                            : CrossAxisAlignment.end,
-                                    children: [
-                                      chat.messages[index - 1].type == "message"
-                                          ? Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                color: Provider.of<ThemeSwitcher>(
-                                                                context)
-                                                            .themeData ==
-                                                        lightTheme
-                                                    ? (chat.messages[index - 1]
-                                                                .messageType ==
-                                                            "receiver"
-                                                        ? Colors.green
-                                                        : Colors.blue)
-                                                    : (chat.messages[index - 1]
-                                                                .messageType ==
-                                                            "receiver"
-                                                        ? Colors.purple
-                                                        : Colors.blue),
-                                              ),
-                                              padding: const EdgeInsets.all(16),
-                                              child: Text(
-                                                chat.messages[index - 1]
-                                                    .messageContent,
-                                                style: const TextStyle(
-                                                    fontSize: 15),
-                                              ))
-                                          : chat.messages[index - 1].type ==
-                                                  "image"
-                                              ? SizedBox(
-                                                  height: kIsWeb ? 300 : 200,
-                                                  width: kIsWeb ? 300 : 200,
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    child: kIsWeb
-                                                        //Stack overflow - "Show fullscreen image onTap in Flutter"
-                                                        ? GestureDetector(
-                                                            onTap: () {
-                                                              showImageViewer(
-                                                                  context,
-                                                                  Image.network(chat
+                                            ? Alignment.topLeft
+                                            : Alignment.topRight),
+                                    child: Column(
+                                      crossAxisAlignment: chat
+                                                  .messages[index - 1]
+                                                  .messageType ==
+                                              "receiver"
+                                          ? CrossAxisAlignment.start
+                                          : CrossAxisAlignment.end,
+                                      children: [
+                                        chat.messages[index - 1].type ==
+                                                "message"
+                                            ? Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  color: Provider.of<ThemeSwitcher>(
+                                                                  context)
+                                                              .themeData ==
+                                                          lightTheme
+                                                      ? (chat
+                                                                  .messages[
+                                                                      index - 1]
+                                                                  .messageType ==
+                                                              "receiver"
+                                                          ? Colors.green
+                                                          : Colors.blue)
+                                                      : (chat
+                                                                  .messages[
+                                                                      index - 1]
+                                                                  .messageType ==
+                                                              "receiver"
+                                                          ? Colors.purple
+                                                          : Colors.blue),
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.all(16),
+                                                child: Text(
+                                                  chat.messages[index - 1]
+                                                      .messageContent,
+                                                  style: const TextStyle(
+                                                      fontSize: 15),
+                                                ))
+                                            : chat.messages[index - 1].type ==
+                                                    "image"
+                                                ? SizedBox(
+                                                    height: kIsWeb ? 300 : 200,
+                                                    width: kIsWeb ? 300 : 200,
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      child: kIsWeb
+                                                          //Stack overflow - "Show fullscreen image onTap in Flutter"
+                                                          ? GestureDetector(
+                                                              onTap: () {
+                                                                showImageViewer(
+                                                                    context,
+                                                                    Image.network(chat
+                                                                            .messages[index -
+                                                                                1]
+                                                                            .images!
+                                                                            .path)
+                                                                        .image,
+                                                                    swipeDismissible:
+                                                                        true);
+                                                              },
+                                                              child: Image.network(
+                                                                  chat
+                                                                      .messages[
+                                                                          index -
+                                                                              1]
+                                                                      .images!
+                                                                      .path,
+                                                                  fit: BoxFit
+                                                                      .cover),
+                                                            )
+                                                          : GestureDetector(
+                                                              onTap: () {
+                                                                showImageViewer(
+                                                                    context,
+                                                                    //ChatGPT suggested using FileImage instead of Image.File
+                                                                    FileImage(
+                                                                      File(chat
                                                                           .messages[index -
                                                                               1]
                                                                           .images!
-                                                                          .path)
-                                                                      .image,
-                                                                  swipeDismissible:
-                                                                      true);
-                                                            },
-                                                            child: Image.network(
-                                                                chat
-                                                                    .messages[
-                                                                        index -
-                                                                            1]
-                                                                    .images!
-                                                                    .path,
-                                                                fit: BoxFit
-                                                                    .cover),
-                                                          )
-                                                        : GestureDetector(
-                                                            onTap: () {
-                                                              showImageViewer(
-                                                                  context,
-                                                                  //ChatGPT suggested using FileImage instead of Image.File
-                                                                  FileImage(
-                                                                    File(chat
+                                                                          .path),
+                                                                    ),
+                                                                    swipeDismissible:
+                                                                        true);
+                                                              },
+                                                              child: Image.file(
+                                                                  File(chat
+                                                                      .messages[
+                                                                          index -
+                                                                              1]
+                                                                      .images!
+                                                                      .path),
+                                                                  fit: BoxFit
+                                                                      .cover),
+                                                            ),
+                                                    ),
+                                                  )
+                                                : SizedBox(
+                                                    height: kIsWeb ? 300 : 200,
+                                                    width: kIsWeb ? 300 : 200,
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      child: kIsWeb
+                                                          //Stack overflow - "Show fullscreen image onTap in Flutter"
+                                                          ? GestureDetector(
+                                                              onTap: () {
+                                                                showImageViewer(
+                                                                    context,
+                                                                    chat
                                                                         .messages[
                                                                             index -
                                                                                 1]
-                                                                        .images!
-                                                                        .path),
-                                                                  ),
-                                                                  swipeDismissible:
-                                                                      true);
-                                                            },
-                                                            child: Image.file(
-                                                                File(chat
-                                                                    .messages[
-                                                                        index -
-                                                                            1]
-                                                                    .images!
-                                                                    .path),
-                                                                fit: BoxFit
-                                                                    .cover),
-                                                          ),
-                                                  ),
-                                                )
-                                              : SizedBox(
-                                                  height: kIsWeb ? 300 : 200,
-                                                  width: kIsWeb ? 300 : 200,
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    child: kIsWeb
-                                                        //Stack overflow - "Show fullscreen image onTap in Flutter"
-                                                        ? GestureDetector(
-                                                            onTap: () {
-                                                              showImageViewer(
-                                                                  context,
-                                                                  chat
+                                                                        .additionalListings!,
+                                                                    swipeDismissible:
+                                                                        true);
+                                                              },
+                                                              child: Image(
+                                                                  image: chat
                                                                       .messages[
                                                                           index -
                                                                               1]
                                                                       .additionalListings!,
-                                                                  swipeDismissible:
-                                                                      true);
-                                                            },
-                                                            child: Image(
-                                                                image: chat
-                                                                    .messages[
-                                                                        index -
-                                                                            1]
-                                                                    .additionalListings!,
-                                                                fit: BoxFit
-                                                                    .cover),
-                                                          )
-                                                        : GestureDetector(
-                                                            onTap: () {
-                                                              showImageViewer(
-                                                                  context,
-                                                                  chat
+                                                                  fit: BoxFit
+                                                                      .cover),
+                                                            )
+                                                          : GestureDetector(
+                                                              onTap: () {
+                                                                showImageViewer(
+                                                                    context,
+                                                                    chat
+                                                                        .messages[
+                                                                            index -
+                                                                                1]
+                                                                        .additionalListings!,
+                                                                    swipeDismissible:
+                                                                        true);
+                                                              },
+                                                              child: Image(
+                                                                  image: chat
                                                                       .messages[
                                                                           index -
                                                                               1]
                                                                       .additionalListings!,
-                                                                  swipeDismissible:
-                                                                      true);
-                                                            },
-                                                            child: Image(
-                                                                image: chat
-                                                                    .messages[
-                                                                        index -
-                                                                            1]
-                                                                    .additionalListings!,
-                                                                fit: BoxFit
-                                                                    .cover),
+                                                                  fit: BoxFit
+                                                                      .cover),
 
-                                                            // Handle tap event
-                                                          ),
+                                                              // Handle tap event
+                                                            ),
+                                                    ),
                                                   ),
-                                                ),
-                                      const SizedBox(height: 5),
-                                      chat.messages[index - 1].messageType ==
-                                              "receiver"
-                                          ? Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Visibility(
-                                                      visible: chat
+                                        const SizedBox(height: 5),
+                                        chat.messages[index - 1].messageType ==
+                                                "receiver"
+                                            ? Column(
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Visibility(
+                                                        visible: chat
+                                                                .messages[
+                                                                    index - 1]
+                                                                .type !=
+                                                            "listing",
+                                                        child: Text(
+                                                          chat
                                                               .messages[
                                                                   index - 1]
-                                                              .type !=
-                                                          "listing",
-                                                      child: Text(
-                                                        chat.messages[index - 1]
-                                                            .time,
-                                                        style: const TextStyle(
-                                                            fontSize: 10),
+                                                              .time,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 10),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 20),
-                                                      child: Visibility(
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 20),
+                                                        child: Visibility(
+                                                          visible: chat
+                                                                  .messages[
+                                                                      index - 1]
+                                                                  .type ==
+                                                              "listing",
+                                                          child: const Text(
+                                                              "Accept item into trade?"),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 80),
+                                                        child: Visibility(
+                                                          visible: chat
+                                                                  .messages[
+                                                                      index - 1]
+                                                                  .type ==
+                                                              "listing",
+                                                          child: LikeButton(
+                                                            size: 20,
+                                                            isLiked: chat
+                                                                .messages[
+                                                                    index - 1]
+                                                                .accepted,
+                                                            onTap:
+                                                                (isLiked) async {
+                                                              _handleTrade(
+                                                                  "accepted",
+                                                                  index - 1,
+                                                                  chatManager,
+                                                                  chat);
+
+                                                              return chat
+                                                                  .messages[
+                                                                      index - 1]
+                                                                  .accepted;
+                                                            },
+                                                            likeCountPadding:
+                                                                const EdgeInsets
+                                                                    .all(10),
+                                                            likeBuilder:
+                                                                (isLiked) {
+                                                              final colour = isLiked
+                                                                  ? Theme.of(
+                                                                          context)
+                                                                      .hoverColor
+                                                                  : null;
+                                                              return Icon(
+                                                                  Icons
+                                                                      .check_circle_outline,
+                                                                  color:
+                                                                      colour);
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Visibility(
                                                         visible: chat
                                                                 .messages[
                                                                     index - 1]
                                                                 .type ==
                                                             "listing",
-                                                        child: const Text(
-                                                            "Accept item into trade?"),
+                                                        child: LikeButton(
+                                                          size: 20,
+                                                          isLiked: chat
+                                                              .messages[
+                                                                  index - 1]
+                                                              .declined,
+                                                          onTap:
+                                                              (isLiked) async {
+                                                            _handleTrade(
+                                                                "declined",
+                                                                index - 1,
+                                                                chatManager,
+                                                                chat);
+
+                                                            return chat
+                                                                .messages[
+                                                                    index - 1]
+                                                                .declined;
+                                                          },
+                                                          likeCountPadding:
+                                                              const EdgeInsets
+                                                                  .all(10),
+                                                          likeBuilder:
+                                                              (isLiked) {
+                                                            final colour =
+                                                                isLiked
+                                                                    ? Colors.red
+                                                                    : null;
+                                                            return Icon(
+                                                                Icons
+                                                                    .remove_circle_outline,
+                                                                color: colour);
+                                                          },
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 80),
-                                                      child: Visibility(
+                                                    ],
+                                                  )
+                                                ],
+                                              )
+                                            : Column(
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                right: 20),
+                                                        child: Visibility(
+                                                          visible: chat
+                                                                  .messages[
+                                                                      index - 1]
+                                                                  .type ==
+                                                              "listing",
+                                                          child: const Text(
+                                                              "Accept item into trade?"),
+                                                        ),
+                                                      ),
+                                                      Visibility(
+                                                        visible: chat
+                                                                .messages[
+                                                                    index - 1]
+                                                                .type !=
+                                                            "listing",
+                                                        child: Text(
+                                                          chat
+                                                              .messages[
+                                                                  index - 1]
+                                                              .time,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 10),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Visibility(
                                                         visible: chat
                                                                 .messages[
                                                                     index - 1]
@@ -652,255 +800,139 @@ class _MessageChatState extends State<MessageChat> {
                                                           },
                                                         ),
                                                       ),
-                                                    ),
-                                                    Visibility(
-                                                      visible: chat
-                                                              .messages[
-                                                                  index - 1]
-                                                              .type ==
-                                                          "listing",
-                                                      child: LikeButton(
-                                                        size: 20,
-                                                        isLiked: chat
-                                                            .messages[index - 1]
-                                                            .declined,
-                                                        onTap: (isLiked) async {
-                                                          _handleTrade(
-                                                              "declined",
-                                                              index - 1,
-                                                              chatManager,
-                                                              chat);
-
-                                                          return chat
-                                                              .messages[
-                                                                  index - 1]
-                                                              .declined;
-                                                        },
-                                                        likeCountPadding:
+                                                      Padding(
+                                                        padding:
                                                             const EdgeInsets
-                                                                .all(10),
-                                                        likeBuilder: (isLiked) {
-                                                          final colour = isLiked
-                                                              ? Colors.red
-                                                              : null;
-                                                          return Icon(
-                                                              Icons
-                                                                  .remove_circle_outline,
-                                                              color: colour);
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            )
-                                          : Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 20),
-                                                      child: Visibility(
-                                                        visible: chat
+                                                                .only(
+                                                                right: kIsWeb
+                                                                    ? 60
+                                                                    : 50),
+                                                        child: Visibility(
+                                                          visible: chat
+                                                                  .messages[
+                                                                      index - 1]
+                                                                  .type ==
+                                                              "listing",
+                                                          child: LikeButton(
+                                                            size: 20,
+                                                            isLiked: chat
                                                                 .messages[
                                                                     index - 1]
-                                                                .type ==
-                                                            "listing",
-                                                        child: const Text(
-                                                            "Accept item into trade?"),
-                                                      ),
-                                                    ),
-                                                    Visibility(
-                                                      visible: chat
-                                                              .messages[
-                                                                  index - 1]
-                                                              .type !=
-                                                          "listing",
-                                                      child: Text(
-                                                        chat.messages[index - 1]
-                                                            .time,
-                                                        style: const TextStyle(
-                                                            fontSize: 10),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Visibility(
-                                                      visible: chat
-                                                              .messages[
-                                                                  index - 1]
-                                                              .type ==
-                                                          "listing",
-                                                      child: LikeButton(
-                                                        size: 20,
-                                                        isLiked: chat
-                                                            .messages[index - 1]
-                                                            .accepted,
-                                                        onTap: (isLiked) async {
-                                                          _handleTrade(
-                                                              "accepted",
-                                                              index - 1,
-                                                              chatManager,
-                                                              chat);
+                                                                .declined,
+                                                            onTap:
+                                                                (isLiked) async {
+                                                              _handleTrade(
+                                                                  "declined",
+                                                                  index - 1,
+                                                                  chatManager,
+                                                                  chat);
 
-                                                          return chat
-                                                              .messages[
-                                                                  index - 1]
-                                                              .accepted;
-                                                        },
-                                                        likeCountPadding:
-                                                            const EdgeInsets
-                                                                .all(10),
-                                                        likeBuilder: (isLiked) {
-                                                          final colour = isLiked
-                                                              ? Theme.of(
-                                                                      context)
-                                                                  .hoverColor
-                                                              : null;
-                                                          return Icon(
-                                                              Icons
-                                                                  .check_circle_outline,
-                                                              color: colour);
-                                                        },
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: kIsWeb
-                                                                  ? 60
-                                                                  : 50),
-                                                      child: Visibility(
-                                                        visible: chat
-                                                                .messages[
-                                                                    index - 1]
-                                                                .type ==
-                                                            "listing",
-                                                        child: LikeButton(
-                                                          size: 20,
-                                                          isLiked: chat
-                                                              .messages[
-                                                                  index - 1]
-                                                              .declined,
-                                                          onTap:
-                                                              (isLiked) async {
-                                                            _handleTrade(
-                                                                "declined",
-                                                                index - 1,
-                                                                chatManager,
-                                                                chat);
-
-                                                            return chat
-                                                                .messages[
-                                                                    index - 1]
-                                                                .declined;
-                                                          },
-                                                          likeCountPadding:
-                                                              const EdgeInsets
-                                                                  .all(10),
-                                                          likeBuilder:
-                                                              (isLiked) {
-                                                            final colour =
-                                                                isLiked
-                                                                    ? Colors.red
-                                                                    : null;
-                                                            return Icon(
-                                                                Icons
-                                                                    .remove_circle_outline,
-                                                                color: colour);
-                                                          },
+                                                              return chat
+                                                                  .messages[
+                                                                      index - 1]
+                                                                  .declined;
+                                                            },
+                                                            likeCountPadding:
+                                                                const EdgeInsets
+                                                                    .all(10),
+                                                            likeBuilder:
+                                                                (isLiked) {
+                                                              final colour =
+                                                                  isLiked
+                                                                      ? Colors
+                                                                          .red
+                                                                      : null;
+                                                              return Icon(
+                                                                  Icons
+                                                                      .remove_circle_outline,
+                                                                  color:
+                                                                      colour);
+                                                            },
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            )
-                                    ],
-                                  )),
-                            );
-                          }
-                        }),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          //End code retrieved
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10, left: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: IconButton(
-                          icon: const Icon(Icons.image),
-                          iconSize: 25,
-                          onPressed: () async {
-                            XFile? image = await photoOptionModal(
-                                context, _picker, 50, null, null);
-
-                            _image = image;
-                            _handleImage(_image!, chatManager, chat);
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: SizedBox(
-                          height: kIsWeb ? height * 0.075 : height * 0.055,
-                          width: width * 0.8,
-                          child: TextField(
-                            focusNode: myFocusNode,
-                            onSubmitted: (text) {
-                              _handleSend(_sendText.text, chatManager, chat);
-                            },
-                            onTap: () {},
-                            textAlignVertical: TextAlignVertical.top,
-                            controller: _sendText,
-                            decoration: InputDecoration(
-                              //contentPadding from chatgpt
-                              contentPadding: kIsWeb
-                                  ? const EdgeInsets.all(20.0)
-                                  : const EdgeInsets.only(top: 10, left: 10),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              hintText: 'Aa',
-                              filled: true,
-                              suffix: IconButton(
-                                icon: const Icon(Icons.send,
-                                    size: kIsWeb ? 24 : 18),
-                                onPressed: () {
-                                  //Idea from chatgpt to handle both enter and icon
-                                  _handleSend(
-                                      _sendText.text, chatManager, chat);
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                                                    ],
+                                                  )
+                                                ],
+                                              )
+                                      ],
+                                    )),
+                              );
+                            }
+                          }),
+                    ),
                   ),
                 ),
               ],
             ),
-          )
-        ],
+            //End code retrieved
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10, left: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: IconButton(
+                            icon: const Icon(Icons.image),
+                            iconSize: 25,
+                            onPressed: () async {
+                              XFile? image = await photoOptionModal(
+                                  context, _picker, 50, null, null);
+
+                              _image = image;
+                              _handleImage(_image!, chatManager, chat);
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: SizedBox(
+                            height: kIsWeb ? height * 0.075 : height * 0.055,
+                            width: width * 0.8,
+                            child: TextField(
+                              focusNode: myFocusNode,
+                              onSubmitted: (text) {
+                                _handleSend(_sendText.text, chatManager, chat);
+                              },
+                              onTap: () {},
+                              textAlignVertical: TextAlignVertical.top,
+                              controller: _sendText,
+                              decoration: InputDecoration(
+                                //contentPadding from chatgpt
+                                contentPadding: kIsWeb
+                                    ? const EdgeInsets.all(20.0)
+                                    : const EdgeInsets.only(top: 10, left: 10),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                hintText: 'Aa',
+                                filled: true,
+                                suffix: IconButton(
+                                  icon: const Icon(Icons.send,
+                                      size: kIsWeb ? 24 : 18),
+                                  onPressed: () {
+                                    //Idea from chatgpt to handle both enter and icon
+                                    _handleSend(
+                                        _sendText.text, chatManager, chat);
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

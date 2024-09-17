@@ -79,71 +79,28 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                       showModalBottomSheet(
                                           context: context,
                                           builder: (context) {
-                                            return Wrap(
+                                            return const Wrap(
                                               children: [
-                                                const ListTile(
+                                                ListTile(
+                                                  tileColor: Colors.blue,
                                                   leading:
                                                       Icon(Icons.date_range),
                                                   title: Text('Date Listed:'),
                                                   subtitle: Text('27/08/2024'),
                                                 ),
-                                                const ListTile(
+                                                ListTile(
+                                                    tileColor: Colors.blue,
                                                     leading: Icon(Icons.people),
                                                     title: Text('Views'),
                                                     subtitle: Text("15")),
-                                                const ListTile(
+                                                ListTile(
+                                                  tileColor: Colors.blue,
                                                   leading:
                                                       Icon(Icons.swap_horiz),
                                                   title:
                                                       Text('Interested People'),
                                                   subtitle: Text("15"),
                                                 ),
-                                                Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 5),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        ElevatedButton(
-                                                          onPressed: () async {
-                                                            if (await confirm(
-                                                              context,
-                                                              title: const Text(
-                                                                  'Confirm'),
-                                                              content: const Text(
-                                                                  'Would you like to remove?'),
-                                                              textOK: Text(
-                                                                  'Yes',
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .bodyLarge),
-                                                              textCancel: Text(
-                                                                  'No',
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .bodyLarge),
-                                                            )) {
-                                                              setState(() {
-                                                                widget
-                                                                    .photoListings!
-                                                                    .removeAt(widget
-                                                                        .gridIndex);
-                                                                Navigator.pushNamed(
-                                                                    context,
-                                                                    '/personal_profile');
-                                                              });
-                                                            }
-                                                          },
-                                                          child: const Text(
-                                                              "Delete Listing"),
-                                                        )
-                                                      ],
-                                                    ))
                                               ],
                                             );
                                           });
