@@ -39,7 +39,6 @@ class CustomBottomNavBar extends StatelessWidget {
           selectedFontSize: 0, // Set to 0 to prevent font-related shifts
           unselectedFontSize: 0, // Set to 0 to prevent font-related shifts
           type: BottomNavigationBarType.fixed,
-
           elevation: 0,
           //GPT for icon size
           selectedIconTheme:
