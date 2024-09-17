@@ -2,7 +2,7 @@ import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -85,24 +85,34 @@ class StartPage extends StatelessWidget {
   }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
-    print("we have pressed the sign in button");
+    if (kDebugMode) {
+      print("we have pressed the sign in button");
+    }
     try {
       if (kIsWeb) {
         // Web sign-in
         await FirebaseAuth.instance.signInWithPopup(GoogleAuthProvider());
       } else {
         // Mobile sign-in
-        print("are we there yet");
+        if (kDebugMode) {
+          print("are we there yet");
+        }
         final googleUser = await GoogleSignIn().signIn();
-        print("00000000000000000000000000");
+        if (kDebugMode) {
+          print("00000000000000000000000000");
+        }
         if (googleUser != null) {
-          print("1111111111111111111111111111111");
+          if (kDebugMode) {
+            print("1111111111111111111111111111111");
+          }
           final googleAuth = await googleUser.authentication;
           final credential = GoogleAuthProvider.credential(
             accessToken: googleAuth.accessToken,
             idToken: googleAuth.idToken,
           );
-          print("22222222222222222222222222222222");
+          if (kDebugMode) {
+            print("22222222222222222222222222222222");
+          }
           await FirebaseAuth.instance.signInWithCredential(credential);
         }
       }
@@ -110,10 +120,13 @@ class StartPage extends StatelessWidget {
       // Navigate to profile on successful login
       // ignore: use_build_context_synchronously
       Navigator.pushNamedAndRemoveUntil(
-          context, '/new_profile', (route) => false);
+          // ignore: use_build_context_synchronously
+          context,
+          '/new_profile',
+          (route) => false);
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
-    } on Error catch (e) {
+    } on Error {
       debugPrint("Explosion happened somewhere pahic");
     }
   }
