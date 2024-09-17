@@ -14,7 +14,7 @@ class NoResultCard extends StatefulWidget {
 class NoResultCardState extends State<NoResultCard> {
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return SizedBox(
       child: Image(
         image: (!kIsWeb &&
                 Provider.of<ThemeSwitcher>(context).themeData == lightTheme)
@@ -27,7 +27,7 @@ class NoResultCardState extends State<NoResultCard> {
                             lightTheme)
                     ? const AssetImage('lib/images/nothingWebLight.png')
                     : const AssetImage('lib/images/nothingWebDark.png'),
-        fit: BoxFit.contain,
+        fit: BoxFit.cover,
       ),
     );
   }

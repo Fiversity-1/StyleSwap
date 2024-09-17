@@ -112,10 +112,17 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(),
+                            padding: EdgeInsets.only(
+                                top: searchResults.checkCardType() == "Empty"
+                                    ? 10
+                                    : 0),
                             child: SizedBox(
-                                height: (kIsWeb) ? height * 0.7 : height * 0.7,
-                                width: (kIsWeb) ? width * 0.525 : width * 0.925,
+                                height: searchResults.checkCardType() != "Empty"
+                                    ? height * 0.7
+                                    : height * 0.65,
+                                width: searchResults.checkCardType() != "Empty"
+                                    ? width * 0.925
+                                    : width * 0.8,
                                 child: searchResults.checkCardType() != "Empty"
                                     ? CardSwiper(
                                         cardsCount: displayCards.length,
