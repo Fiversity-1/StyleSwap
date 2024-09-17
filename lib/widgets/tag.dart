@@ -17,8 +17,8 @@ class Tag extends StatefulWidget {
 
 class TagState extends State<Tag> {
 //Modified Chat GPT to convert string to enum
-  FaIcon? getIconForValue(String category, String value, {double? newSize}) {
-    FaIcon? originalIcon;
+  Widget? getIconForValue(String category, String value, {double? newSize}) {
+    Widget? originalIcon;
 
     switch (category.toLowerCase()) {
       case 'type':
