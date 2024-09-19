@@ -132,6 +132,7 @@ class ImageSelectionField extends FormField<List<XFile>> {
                               return GridView(
                                 key: state.gridViewKey,
                                 controller: state.scrollController,
+                                shrinkWrap: true,
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
@@ -154,7 +155,7 @@ class ImageSelectionField extends FormField<List<XFile>> {
                               ],
                             ),
                             children: generatedChildren,
-                          )))
+                          ))),
                 ],
               );
             });
@@ -266,9 +267,12 @@ class AddImageButtonState extends State<AddImageButton> {
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Theme.of(context)
+              .floatingActionButtonTheme
+              .backgroundColor, // Shadow color and opacity
+
           // Use transparent to show AnimatedContainer's color
-          foregroundColor: Theme.of(context).colorScheme.onSurface,
+          foregroundColor: Colors.white,
           // Use surface color
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),

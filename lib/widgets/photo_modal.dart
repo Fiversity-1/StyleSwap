@@ -12,6 +12,7 @@ Future<XFile?> photoOptionModal(BuildContext context, ImagePicker picker,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
+              tileColor: Colors.transparent,
               leading: const Icon(Icons.camera_alt),
               title: const Text('Take Photo'),
               onTap: () async {
@@ -27,6 +28,7 @@ Future<XFile?> photoOptionModal(BuildContext context, ImagePicker picker,
               },
             ),
             ListTile(
+              tileColor: Colors.transparent,
               leading: const Icon(Icons.photo_library),
               title: const Text('Select from Camera Roll'),
               onTap: () async {

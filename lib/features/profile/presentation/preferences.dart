@@ -1,14 +1,10 @@
-
-import 'package:clothing_swap/theme/theme.dart';
+import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:clothing_swap/theme/theme_switcher.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 
 class Preferences extends StatefulWidget {
   const Preferences({super.key});
@@ -18,15 +14,37 @@ class Preferences extends StatefulWidget {
 }
 
 class _PreferencesState extends State<Preferences> {
-  late String chosenValue;
+  //AI generated
 
-  @override
-  void initState() {
-    super.initState();
-    chosenValue = Provider.of<ThemeSwitcher>(context, listen: false).themeData == lightTheme
-        ? "Light"
-        : "Dark";
-  }
+  final String safetyGuide = '''
+1. **Use the Platform’s Messaging for All Communication**
+   - Always use the platform’s built-in messaging system to communicate. Avoid taking conversations to other apps to ensure your safety and privacy are protected by the platform’s security measures.
+
+2. **Clearly Agree on Trade Terms**
+   - Discuss all the details of the trade through the platform’s messaging system, including the item’s condition, the meeting location, and any other expectations. This helps to avoid misunderstandings.
+
+3. **Keep Personal Information Private**
+   - Never share your personal details (like home or work addresses) in messages. Use the platform’s privacy settings to keep your personal information secure.
+
+4. **Meet in a Safe, Public Place**
+   - Always meet in a busy, well-lit public area, such as a café, mall, or a police station’s “Safe Exchange Zone.” Avoid secluded locations.
+
+5. **Bring a Companion**
+   - If possible, bring someone along when meeting for a trade. Having a friend or family member with you provides extra safety and peace of mind.
+
+6. **Inspect Items Before Completing the Trade**
+   - Examine the item carefully to ensure it matches the description given in messages. Verify that the quality and condition are as agreed.
+
+7. **No Money Involved – Stick to the Item Trade**
+   - Since the platform is for item trading, not sales, no money should exchange hands. Make sure the agreed trade is strictly about the items and no one is requesting payment outside of the deal.
+
+8. **Walk Away if You Feel Uncomfortable**
+   - If at any point during the exchange something feels off, trust your instincts. You can always leave the situation and report suspicious users to the platform.
+
+9. **Notify a Friend or Family Member**
+   - Inform someone you trust about where and when you’re meeting for the trade. Let them know the details of the person you’re trading with, and check in with them once the trade is completed.
+''';
+  late String chosenValue;
 
   Future<void> _logOutFunction() async {
     try {
@@ -36,78 +54,79 @@ class _PreferencesState extends State<Preferences> {
       }
       // Check if the context is still valid before navigating
       if (mounted) {
-        Navigator.pushNamedAndRemoveUntil(context, '/startpage', (route) => false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/startpage', (route) => false);
       }
     } catch (e) {
       debugPrint('Failed to sign out: $e');
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: const CustomBottomNavBar(
-        currentIndex: 3,
-      ),
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: CustomTopAppBar(),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 15),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                'Preferences',
-                style: Theme.of(context).textTheme.headlineLarge,
-                textAlign: TextAlign.center,
+    double width = MediaQuery.of(context).size.width;
+    return GradientBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        bottomNavigationBar: const CustomBottomNavBar(
+          currentIndex: 3,
+        ),
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: CustomTopAppBar(),
+        ),
+        body: Center(
+          child: Column(children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 20,
+                bottom: 20,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      'Colour Theme:',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
+              child: Text("Settings",
+                  style: Theme.of(context).textTheme.headlineMedium),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Row(
+                children: [
+                  Text("Safety Guide",
+                      style: Theme.of(context).textTheme.bodyLarge),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child:
+                  //chatGpt for safety guide
+                  SizedBox(
+                height: 250,
+                width: width * 0.85,
+                child: SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).listTileTheme.tileColor,
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(8),
+                        topLeft: Radius.circular(8),
+                      ),
                     ),
-                    DropdownButton<String>(
-                      value: chosenValue,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          chosenValue = newValue!;
-                          Provider.of<ThemeSwitcher>(context, listen: false)
-                              .toggleTheme(chosenValue, context);
-                        });
-                      },
-                      items: const [
-                        DropdownMenuItem<String>(
-                            value: 'Light', child: Text('Light')),
-                        DropdownMenuItem<String>(
-                            value: 'Dark', child: Text('Dark')),
-                        DropdownMenuItem<String>(
-                            value: 'High Constrast',
-                            child: Text('High Constrast')),
-                        DropdownMenuItem<String>(
-                            value: 'System', child: Text('System')),
-                      ],
+                    child: Text(
+                      safetyGuide,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
-                  ],
+                  ),
                 ),
+              ), //End gpt
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: ElevatedButton(
+                onPressed: _logOutFunction,
+                child: const Text('Log Out'),
               ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: ElevatedButton(
-                  onPressed: _logOutFunction,
-                  child: const Text('Log Out'),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ]),
         ),
       ),
     );
