@@ -1,6 +1,7 @@
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
 import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart';
@@ -19,7 +20,7 @@ class AddClothesPreferences extends StatefulWidget {
   State<AddClothesPreferences> createState() => _AddClothesPreferencesState();
 }
 
-Map<Enum, FaIcon> _pickCatgory(String option) {
+Map<Enum, FaIcon> _pickCategory(String option) {
   switch (option) {
     case "Type":
       return clothingTypeIcons;
@@ -81,153 +82,162 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
     //Chat GPT for tracking changes via provider
     final userManager = context.watch<UserManager>();
     final preferencesNotifier = userManager.currentUser.preferences;
-    Map<Enum, FaIcon> category = _pickCatgory(categories);
+    Map<Enum, FaIcon> category = _pickCategory(categories);
     List<String> preferences = preferencesNotifier.getPreferences(categories);
 
-    return Scaffold(
-      bottomNavigationBar: const CustomBottomNavBar(
-        currentIndex: 3,
-      ),
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: CustomTopAppBar(),
-      ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          // Define grid column count based on available width
-          int crossAxisCount = constraints.maxWidth > 800
-              ? 7
-              : constraints.maxWidth > 400
-                  ? 3
-                  : 2;
-          return Stack(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('lib/images/backdrop5.jpg'),
-                    opacity: 0.1,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              SingleChildScrollView(
-                child: Center(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15),
-                        child: Text(
-                          "Select $categories",
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10, left: 10, right: 10),
-                        child: GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: crossAxisCount,
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 8,
+    return GradientBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        bottomNavigationBar: const CustomBottomNavBar(
+          currentIndex: 3,
+        ),
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: CustomTopAppBar(),
+        ),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            // Define grid column count based on available width
+            int crossAxisCount = constraints.maxWidth > 800
+                ? 7
+                : constraints.maxWidth > 400
+                    ? 3
+                    : 2;
+            return Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Text(
+                            "Select $categories",
+                            style: Theme.of(context).textTheme.headlineMedium,
                           ),
-                          itemBuilder: (_, index) => GridTile(
-                            child: GestureDetector(
-                              onLongPress: () {
-                                _handlePress(
-                                    index,
-                                    category,
-                                    //Chat GPT to transform into correct format
-                                    _getText(category, index),
-                                    preferencesNotifier,
-                                    preferences);
-                              },
-                              onTap: () {
-                                _handlePress(
-                                    index,
-                                    category,
-                                    _getText(category, index),
-                                    preferencesNotifier,
-                                    preferences);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: preferences.contains(
-                                    _getText(category, index),
-                                  )
-                                      ? Theme.of(context).hoverColor
-                                      : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                        _getText(category, index) ==
-                                                "Newwithtags"
-                                            ? "New with tags"
-                                            : _getText(category, index) ==
-                                                    "Newnotags"
-                                                ? "New no tags"
-                                                : _getText(category, index) ==
-                                                        "Likenew"
-                                                    ? "Like new"
-                                                    : _getText(category,
-                                                                index) ==
-                                                            "Wellworn"
-                                                        ? "Well worn"
-                                                        : _getText(
-                                                            category, index),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge),
-                                    IconButton(
-                                      icon: category.values.toList()[index],
-                                      onPressed: () {
-                                        _handlePress(
-                                            index,
-                                            category,
-                                            _getText(category, index),
-                                            preferencesNotifier,
-                                            preferences);
-                                      },
-                                    ),
-                                  ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 10, right: 10),
+                          child: GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: crossAxisCount,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 8,
+                            ),
+                            itemBuilder: (_, index) => GridTile(
+                              child: GestureDetector(
+                                onLongPress: () {
+                                  _handlePress(
+                                      index,
+                                      category,
+                                      //Chat GPT to transform into correct format
+                                      _getText(category, index),
+                                      preferencesNotifier,
+                                      preferences);
+                                },
+                                onTap: () {
+                                  _handlePress(
+                                      index,
+                                      category,
+                                      _getText(category, index),
+                                      preferencesNotifier,
+                                      preferences);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: preferences.contains(
+                                      _getText(category, index),
+                                    )
+                                        ? Theme.of(context).hoverColor
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(
+                                            0.25), // Shadow color and opacity
+                                        spreadRadius: 2, // Shadow spread radius
+                                        blurRadius: 6, // Shadow blur radius
+                                        offset:
+                                            const Offset(0, 4), // Shadow offset
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                          _getText(category, index) ==
+                                                  "Newwithtags"
+                                              ? "New with tags"
+                                              : _getText(category, index) ==
+                                                      "Newnotags"
+                                                  ? "New no tags"
+                                                  : _getText(category, index) ==
+                                                          "Likenew"
+                                                      ? "Like new"
+                                                      : _getText(category,
+                                                                  index) ==
+                                                              "Wellworn"
+                                                          ? "Well worn"
+                                                          : _getText(
+                                                              category, index),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge),
+                                      IconButton(
+                                        icon: category.values.toList()[index],
+                                        onPressed: () {
+                                          _handlePress(
+                                              index,
+                                              category,
+                                              _getText(category, index),
+                                              preferencesNotifier,
+                                              preferences);
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
+                            itemCount: category.values.toList().length,
                           ),
-                          itemCount: category.values.toList().length,
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).hoverColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 25),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: FloatingActionButton(
                           onPressed: () {
                             setState(() {
                               Navigator.pushNamed(
                                   context, '/view_clothes_preferences');
                             });
                           },
-                          child: const Text('Save'),
+                          child: Text(
+                            "Save",
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -244,6 +254,14 @@ const Map<LetteredSize, FaIcon> letteredSizeIcons = {
   LetteredSize.l: FaIcon(FontAwesomeIcons.ruler, size: iconSize),
   LetteredSize.xl: FaIcon(FontAwesomeIcons.ruler, size: iconSize),
   LetteredSize.xxl: FaIcon(FontAwesomeIcons.ruler, size: iconSize),
+};
+
+Map<ClothingCategory, FaIcon> clothingCategoryIcons = {
+  ClothingCategory.top: const FaIcon(FontAwesomeIcons.shirt, size: iconSize),
+  ClothingCategory.bottom:
+      const FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
+  ClothingCategory.accessories:
+      const FaIcon(FontAwesomeIcons.blackTie, size: iconSize),
 };
 
 Map<ClothingColour, FaIcon> clothingColourIcons = {
@@ -276,24 +294,54 @@ Map<ClothingColour, FaIcon> clothingColourIcons = {
 };
 
 const Map<ClothingType, FaIcon> clothingTypeIcons = {
+  //Accessories 0-5
   ClothingType.hat: FaIcon(FontAwesomeIcons.hatCowboy, size: iconSize),
   ClothingType.tie: FaIcon(FontAwesomeIcons.blackTie, size: iconSize),
+  ClothingType.belt: FaIcon(FontAwesomeIcons.tape, size: iconSize),
+  ClothingType.scarf: FaIcon(FontAwesomeIcons.ribbon, size: iconSize),
+  ClothingType.gloves: FaIcon(FontAwesomeIcons.mitten, size: iconSize),
+  ClothingType.shoes: FaIcon(FontAwesomeIcons.shoePrints, size: iconSize),
+  //Top half 6-12
   ClothingType.jumper: FaIcon(FontAwesomeIcons.wind, size: iconSize),
   ClothingType.shirt: FaIcon(FontAwesomeIcons.shirt, size: iconSize),
-  ClothingType.skirt: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
-  ClothingType.shoes: FaIcon(FontAwesomeIcons.shoePrints, size: iconSize),
-  ClothingType.gloves: FaIcon(FontAwesomeIcons.mitten, size: iconSize),
   ClothingType.jacket: FaIcon(FontAwesomeIcons.wind, size: iconSize),
   ClothingType.vest: FaIcon(FontAwesomeIcons.vest, size: iconSize),
-  ClothingType.dress: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
-  ClothingType.midriff: FaIcon(FontAwesomeIcons.shirt, size: iconSize),
-  ClothingType.pants: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
-  ClothingType.sweater: FaIcon(FontAwesomeIcons.wind, size: iconSize),
-  ClothingType.scarf: FaIcon(FontAwesomeIcons.ribbon, size: iconSize),
-  ClothingType.leggings: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
-  ClothingType.belt: FaIcon(FontAwesomeIcons.tape, size: iconSize),
-  ClothingType.shorts: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
   ClothingType.coat: FaIcon(FontAwesomeIcons.wind, size: iconSize),
+  ClothingType.midriff: FaIcon(FontAwesomeIcons.shirt, size: iconSize),
+  ClothingType.dress: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
+
+  //Bottom half 13-17
+  ClothingType.skirt: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
+  ClothingType.pants: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
+  ClothingType.leggings: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
+  ClothingType.shorts: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
+};
+
+const Map<ClothingType, FaIcon> clothingAccessoriesIcons = {
+  ClothingType.hat: FaIcon(FontAwesomeIcons.hatCowboy, size: iconSize),
+  ClothingType.tie: FaIcon(FontAwesomeIcons.blackTie, size: iconSize),
+  ClothingType.belt: FaIcon(FontAwesomeIcons.tape, size: iconSize),
+  ClothingType.scarf: FaIcon(FontAwesomeIcons.ribbon, size: iconSize),
+  ClothingType.gloves: FaIcon(FontAwesomeIcons.mitten, size: iconSize),
+  ClothingType.shoes: FaIcon(FontAwesomeIcons.shoePrints, size: iconSize),
+};
+
+const Map<ClothingType, FaIcon> clothingBottomIcons = {
+  ClothingType.skirt: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
+  ClothingType.pants: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
+  ClothingType.leggings: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
+  ClothingType.shorts: FaIcon(FontAwesomeIcons.personRunning, size: iconSize),
+};
+
+const Map<ClothingType, FaIcon> clothingTopIcons = {
+  ClothingType.jumper: FaIcon(FontAwesomeIcons.wind, size: iconSize),
+  ClothingType.shirt: FaIcon(FontAwesomeIcons.shirt, size: iconSize),
+  ClothingType.jacket: FaIcon(FontAwesomeIcons.wind, size: iconSize),
+  ClothingType.vest: FaIcon(FontAwesomeIcons.vest, size: iconSize),
+  ClothingType.coat: FaIcon(FontAwesomeIcons.wind, size: iconSize),
+  ClothingType.midriff: FaIcon(FontAwesomeIcons.shirt, size: iconSize),
+  ClothingType.dress: FaIcon(FontAwesomeIcons.personDress, size: iconSize),
+  ClothingType.sweater: FaIcon(FontAwesomeIcons.wind, size: iconSize),
 };
 
 const Map<ClothingCondition, FaIcon> clothingConditionIcons = {

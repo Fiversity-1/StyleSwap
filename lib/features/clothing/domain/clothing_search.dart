@@ -11,10 +11,8 @@ class ClothingSearch {
   final List<ClothingCondition>? conditions;
   final List<ClothingGender>? genders;
   final int distance;
-  final double latitude;
-  final double longitude;
 
-  ClothingSearch(this.distance, this.latitude, this.longitude, {this.types, this.sizes, this.colours,
+  ClothingSearch(this.distance, {this.types, this.sizes, this.colours,
     this.conditions, this.genders});
 
   Map<String, dynamic> getData() {
@@ -27,8 +25,6 @@ class ClothingSearch {
     addData(data, "gender", genders);
 
     data["distance"] = distance.toString();
-    data["lat"] = latitude.toString();
-    data["long"] = longitude.toString();
 
     return data;
   }

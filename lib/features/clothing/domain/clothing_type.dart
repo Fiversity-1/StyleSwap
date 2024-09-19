@@ -1,5 +1,6 @@
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../widgets/selection_tree_grid.dart';
 
@@ -55,95 +56,44 @@ enum ClothingType with IconMapper, DatabaseRepresentationMapper {
   static List<SelectionTreeItem<ClothingType>> getTree() {
     return [
       const SelectionNode(
-          label: "Female", icon: Icons.question_mark,
+          label: "Top",
+          icon: FontAwesomeIcons.shirt,
           children: [
-            SelectionNode(
-                label: "Top",
-                icon: Icons.question_mark,
-                children: [
-                  SelectionItem(shirt),
-                  SelectionItem(midriff),
-                  SelectionItem(dress),
-                  SelectionItem(tie),
-                  SelectionItem(jumper),
-                  SelectionItem(jacket),
-                  SelectionItem(sweater),
-                  SelectionItem(coat),
-                  SelectionItem(vest),
-                  SelectionItem(scarf)
-                ]
-            ),
-            SelectionNode(
-                label: "Bottom",
-                icon: Icons.question_mark,
-                children: [
-                  SelectionItem(shorts),
-                  SelectionItem(pants),
-                  SelectionItem(leggings),
-                  SelectionItem(tights),
-                  SelectionItem(skirt),
-                  SelectionItem(dress),
-                  SelectionItem(belt),
-                  SelectionItem(shoes),
-                ]
-            ),
-            SelectionNode(
-                label: "Accessories",
-                icon: Icons.question_mark,
-                children: [
-                  SelectionItem(hat),
-                  SelectionItem(scarf),
-                  SelectionItem(tie),
-                  SelectionItem(belt),
-                  SelectionItem(shoes),
-                  SelectionItem(glasses),
-                ]
-            )
-          ]
-      ),
+            SelectionItem(shirt),
+            SelectionItem(midriff),
+            SelectionItem(dress),
+            SelectionItem(tie),
+            SelectionItem(jumper),
+            SelectionItem(jacket),
+            SelectionItem(sweater),
+            SelectionItem(coat),
+            SelectionItem(vest),
+            SelectionItem(scarf)
+          ]),
       const SelectionNode(
-          label: "Male", icon: Icons.question_mark,
+          label: "Bottom",
+          icon: FontAwesomeIcons.personRunning,
           children: [
-            SelectionNode(
-                label: "Top",
-                icon: Icons.question_mark,
-                children: [
-                  SelectionItem(shirt),
-                  SelectionItem(tie),
-                  SelectionItem(jumper),
-                  SelectionItem(jacket),
-                  SelectionItem(sweater),
-                  SelectionItem(coat),
-                  SelectionItem(vest),
-                  SelectionItem(scarf)
-                ]
-            ),
-            SelectionNode(
-                label: "Bottom",
-                icon: Icons.question_mark,
-                children: [
-                  SelectionItem(shorts),
-                  SelectionItem(pants),
-                  SelectionItem(leggings),
-                  SelectionItem(tights),
-                  SelectionItem(belt),
-                  SelectionItem(shoes),
-                ]
-            ),
-            SelectionNode(
-                label: "Accessories",
-                icon: Icons.question_mark,
-                children: [
-                  SelectionItem(hat),
-                  SelectionItem(scarf),
-                  SelectionItem(tie),
-                  SelectionItem(belt),
-                  SelectionItem(shoes),
-                  SelectionItem(glasses),
-                ]
-            )
-          ]
-      ),
+            SelectionItem(shorts),
+            SelectionItem(pants),
+            SelectionItem(leggings),
+            SelectionItem(tights),
+            SelectionItem(skirt),
+            SelectionItem(dress),
+            SelectionItem(belt),
+            SelectionItem(shoes),
+          ]),
+      const SelectionNode(
+          label: "Accessories",
+          icon: FontAwesomeIcons.blackTie,
+          children: [
+            SelectionItem(hat),
+            SelectionItem(scarf),
+            SelectionItem(tie),
+            SelectionItem(belt),
+            SelectionItem(shoes),
+            SelectionItem(glasses),
+          ]),
     ];
   }
 }

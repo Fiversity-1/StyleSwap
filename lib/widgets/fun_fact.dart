@@ -29,7 +29,7 @@ class FunFactCardState extends State<FunFactCard> {
                             lightTheme)
                     ? funFactLightWeb[widget.index]
                     : funFactDarkWeb[widget.index],
-        fit: kIsWeb ? BoxFit.fill : BoxFit.contain,
+        fit: kIsWeb ? BoxFit.fill : BoxFit.cover,
       ),
     );
   }

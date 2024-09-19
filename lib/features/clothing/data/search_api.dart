@@ -16,7 +16,7 @@ Future<List<dynamic>> searchClothes(ClothingSearch search) async {
       String userId = user.uid;
 
       // API URL
-      String url = 'https://yourapi.com/api/clothes/search/$userId';
+      String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/clothes/search/$userId';
 
       // Make the POST request
       http.Response response = await http.post(

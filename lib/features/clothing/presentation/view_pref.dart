@@ -1,4 +1,5 @@
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/preference_row.dart';
 import 'package:clothing_swap/widgets/tag.dart';
 import 'package:flutter/material.dart';
@@ -87,122 +88,110 @@ class _ViewPrefencesState extends State<ViewPrefences> {
       ));
     }
 
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      bottomNavigationBar: const CustomBottomNavBar(
-        currentIndex: 0,
-      ),
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: CustomTopAppBar(),
-      ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          // Define grid column count based on available width
+    return GradientBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: true,
+        bottomNavigationBar: const CustomBottomNavBar(
+          currentIndex: 0,
+        ),
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: CustomTopAppBar(),
+        ),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            // Define grid column count based on available width
 
-          return Stack(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('lib/images/backdrop4.jpg'),
-                    opacity: 0.1,
-                    fit: BoxFit.cover,
+            return SingleChildScrollView(
+              child: Row(
+                children: [
+                  Visibility(
+                    visible: kIsWeb,
+                    child: Expanded(
+                        flex: 1,
+                        child: Container(
+                          color: Theme.of(context).canvasColor,
+                        )),
                   ),
-                ),
-              ),
-              SingleChildScrollView(
-                child: Row(
-                  children: [
-                    Visibility(
-                      visible: kIsWeb,
-                      child: Expanded(
-                          flex: 1,
-                          child: Container(
-                            color: Theme.of(context).canvasColor,
-                          )),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: height * 0.025,
-                            width: width,
-                          ),
-                          Text('Search Preferences',
-                              style: kIsWeb
-                                  ? Theme.of(context).textTheme.headlineLarge
-                                  : Theme.of(context).textTheme.headlineMedium),
-                          PreferenceRow(category: "Type", tags: tags[0]),
-                          PreferenceRow(category: "Size", tags: tags[1]),
-                          PreferenceRow(category: "Colour", tags: tags[2]),
-                          PreferenceRow(category: "Condition", tags: tags[3]),
-                          PreferenceRow(category: "Gender", tags: tags[4]),
-                          Padding(
-                              padding: const EdgeInsets.only(left: (25.0)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 15, left: (5.0), bottom: 15),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                            preferencesNotifier.getDistance() ==
-                                                    0
-                                                ? "Distance within 5 km"
-                                                : preferencesNotifier
-                                                            .getDistance() ==
-                                                        100
-                                                    ? "Distance 100 km +"
-                                                    : "Distance ${preferencesNotifier.getDistance().round().toString()} km",
-                                            style: kIsWeb
-                                                ? Theme.of(context)
-                                                    .textTheme
-                                                    .headlineSmall
-                                                : Theme.of(context)
-                                                    .textTheme
-                                                    .headlineSmall),
-                                        //FlutterMap Slider Tutorial
-                                      ],
-                                    ),
+                  Expanded(
+                    flex: 4,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: height * 0.025,
+                          width: width,
+                        ),
+                        Text('Search Preferences',
+                            style: kIsWeb
+                                ? Theme.of(context).textTheme.headlineLarge
+                                : Theme.of(context).textTheme.headlineMedium),
+                        PreferenceRow(category: "Type", tags: tags[0]),
+                        PreferenceRow(category: "Size", tags: tags[1]),
+                        PreferenceRow(category: "Colour", tags: tags[2]),
+                        PreferenceRow(category: "Condition", tags: tags[3]),
+                        PreferenceRow(category: "Gender", tags: tags[4]),
+                        Padding(
+                            padding: const EdgeInsets.only(left: (25.0)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 15, left: (5.0), bottom: 15),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                          preferencesNotifier.getDistance() == 0
+                                              ? "Distance within 5 km"
+                                              : preferencesNotifier
+                                                          .getDistance() ==
+                                                      100
+                                                  ? "Distance 100 km +"
+                                                  : "Distance ${preferencesNotifier.getDistance().round().toString()} km",
+                                          style: kIsWeb
+                                              ? Theme.of(context)
+                                                  .textTheme
+                                                  .headlineSmall
+                                              : Theme.of(context)
+                                                  .textTheme
+                                                  .headlineSmall),
+                                      //FlutterMap Slider Tutorial
+                                    ],
                                   ),
-                                  Slider(
-                                      value: preferencesNotifier.getDistance(),
-                                      max: 100,
-                                      min: 0,
-                                      divisions: 20,
-                                      label: preferencesNotifier
-                                          .getDistance()
-                                          .round()
-                                          .toString(),
-                                      onChanged: (double value) {
-                                        setState(() {
-                                          preferencesNotifier
-                                              .setDistance(value);
-                                        });
-                                      })
-                                ],
-                              ))
-                        ],
-                      ),
+                                ),
+                                Slider(
+                                    value: preferencesNotifier.getDistance(),
+                                    max: 100,
+                                    min: 0,
+                                    divisions: 20,
+                                    label: preferencesNotifier
+                                        .getDistance()
+                                        .round()
+                                        .toString(),
+                                    onChanged: (double value) {
+                                      setState(() {
+                                        preferencesNotifier.setDistance(value);
+                                      });
+                                    })
+                              ],
+                            ))
+                      ],
                     ),
-                    Visibility(
-                      visible: kIsWeb,
-                      child: Expanded(
-                          flex: 1,
-                          child: Container(
-                            color: Theme.of(context).canvasColor,
-                          )),
-                    ),
-                  ],
-                ),
+                  ),
+                  Visibility(
+                    visible: kIsWeb,
+                    child: Expanded(
+                        flex: 1,
+                        child: Container(
+                          color: Theme.of(context).canvasColor,
+                        )),
+                  ),
+                ],
               ),
-            ],
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:swipe/swipe.dart';
 
@@ -24,7 +23,87 @@ class BrowsePhoto extends StatefulWidget {
 }
 
 class _BrowsePhotoState extends State<BrowsePhoto> {
-//List generate line from chatgpt
+//https://medium.com/@kavyamistry0612/building-interactive-user-interfaces-with-alert-dialogs-in-flutter-81e268fb72f0
+  void _showAlertDialogProposeTrade(BuildContext context, chatManager, chat) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.blue,
+          title: const Text('Propose Trade'),
+          content: const Text(
+              'Would you like to add this item to the proposed trade?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                chatManager.addChatMessage(
+                    chat!.id,
+                    ChatMessage(
+                        senderUserId: chat.currentUserId,
+                        receiverUserId: chat.otherUserId,
+                        messageContent: "New trade proposed",
+                        messageType: "sender",
+                        time: "5:45pm",
+                        additionalListings:
+                            widget.photoListings![widget.gridIndex],
+                        type: "listing",
+                        accepted: false,
+                        declined: false));
+                Navigator.pushNamed(
+                  // ignore: use_build_context_synchronously
+                  context,
+                  '/chat',
+                );
+              },
+              //Gpt for styling button
+              style: TextButton.styleFrom(
+                  foregroundColor: Colors.white // Set the text color here
+                  ),
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              //Gpt for styling button
+              style: TextButton.styleFrom(
+                  foregroundColor: Colors.white // Set the text color here
+                  ),
+              child: const Text('No'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // void _showAlertDialogMaxTrade(
+  //   BuildContext context,
+  // ) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         backgroundColor: Colors.blue,
+  //         title: const Text('Oops'),
+  //         content:
+  //             const Text('Sorry there is a max of 3 items per proposed trade.'),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             //Gpt for styling button
+  //             style: TextButton.styleFrom(
+  //                 foregroundColor: Colors.white // Set the text color here
+  //                 ),
+  //             child: const Text('OK'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -79,74 +158,36 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                       showModalBottomSheet(
                                           context: context,
                                           builder: (context) {
-                                            return Wrap(
+                                            return const Wrap(
                                               children: [
-                                                const ListTile(
+                                                ListTile(
+                                                  tileColor: Colors.transparent,
                                                   leading:
                                                       Icon(Icons.date_range),
                                                   title: Text('Date Listed:'),
                                                   subtitle: Text('27/08/2024'),
                                                 ),
-                                                const ListTile(
+                                                ListTile(
+                                                    tileColor:
+                                                        Colors.transparent,
                                                     leading: Icon(Icons.people),
                                                     title: Text('Views'),
                                                     subtitle: Text("15")),
-                                                const ListTile(
+                                                ListTile(
+                                                  tileColor: Colors.transparent,
                                                   leading:
                                                       Icon(Icons.swap_horiz),
                                                   title:
                                                       Text('Interested People'),
                                                   subtitle: Text("15"),
                                                 ),
-                                                Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 5),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        ElevatedButton(
-                                                          onPressed: () async {
-                                                            if (await confirm(
-                                                              context,
-                                                              title: const Text(
-                                                                  'Confirm'),
-                                                              content: const Text(
-                                                                  'Would you like to remove?'),
-                                                              textOK: Text(
-                                                                  'Yes',
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .bodyLarge),
-                                                              textCancel: Text(
-                                                                  'No',
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .bodyLarge),
-                                                            )) {
-                                                              setState(() {
-                                                                widget
-                                                                    .photoListings!
-                                                                    .removeAt(widget
-                                                                        .gridIndex);
-                                                              });
-                                                            }
-                                                          },
-                                                          child: const Text(
-                                                              "Delete Listing"),
-                                                        )
-                                                      ],
-                                                    ))
                                               ],
                                             );
                                           });
                                     } else if (widget.title == "public") {
                                       Navigator.pushNamed(
-                                          context, '/clothing_detail');
+                                          context, '/clothing_detail',
+                                          arguments: "trade");
                                     } else if (widget.title == "details") {
                                       Navigator.pushNamed(
                                           context, '/clothing_detail');
@@ -163,42 +204,9 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                     Icons.swap_horiz,
                                   ),
                                   iconSize: 25,
-                                  onPressed: () async {
-                                    if (await confirm(
-                                      context,
-                                      title: const Text('Trade'),
-                                      content: const Text(
-                                          'Would you like to propose a trade on this item as well?'),
-                                      textCancel: Text('No',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge),
-                                      textOK: Text('Yes',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge),
-                                    )) {
-                                      chatManager.addChatMessage(
-                                          chat!.id,
-                                          ChatMessage(
-                                              senderUserId: chat.currentUserId,
-                                              receiverUserId: chat.otherUserId,
-                                              messageContent:
-                                                  "New trade proposed",
-                                              messageType: "sender",
-                                              time: "5:45pm",
-                                              additionalListings:
-                                                  widget.photoListings![
-                                                      widget.gridIndex],
-                                              type: "listing",
-                                              accepted: false,
-                                              declined: false));
-                                      Navigator.pushNamed(
-                                        // ignore: use_build_context_synchronously
-                                        context,
-                                        '/chat',
-                                      );
-                                    }
+                                  onPressed: () {
+                                    _showAlertDialogProposeTrade(
+                                        context, chatManager, chat);
                                   },
                                 ),
                               ),

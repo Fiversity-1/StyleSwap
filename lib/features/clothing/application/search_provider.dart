@@ -15,35 +15,35 @@ import '../presentation/clothing_item_class.dart';
 class Search with ChangeNotifier {
   List _listings = [];
   final int _funFactInterval = 3;
-  List searchResults = publicListings;
-  ClothingSearch searchParams = ClothingSearch(50, 0, 0);
+  ClothingSearch searchParams = ClothingSearch(50);
   bool searching = false;
+  bool searchExhausted = false;
 
   void setSearchParams(ClothingSearch searchParams) {
     this.searchParams = searchParams;
   }
 
   void setListings() {
-    final List displayCards = [];
-    int funFactCount = 0;
-    int totalItems = searchResults.length;
-
-    for (int i = 0; i < totalItems; i++) {
-      displayCards.add(ClothingCard(item: searchResults[i]));
-
-      if ((i + 1) % _funFactInterval == 0 &&
-          funFactCount < funFactDarkPhone.length) {
-        displayCards.add(FunFactCard(index: funFactCount));
-        funFactCount++;
-      }
-    }
-    _listings = displayCards;
+    // final List displayCards = [];
+    // int funFactCount = 0;
+    // int totalItems = searchResults.length;
+    //
+    // for (int i = 0; i < totalItems; i++) {
+    //   displayCards.add(ClothingCard(item: searchResults[i]));
+    //
+    //   if ((i + 1) % _funFactInterval == 0 &&
+    //       funFactCount < funFactDarkPhone.length) {
+    //     displayCards.add(FunFactCard(index: funFactCount));
+    //     funFactCount++;
+    //   }
+    // }
+    _listings = [];
     notifyListeners();
   }
   //End gpt
 
   List getListing() {
-    if (_listings.length < 5 && !searching) {
+    if (_listings.length < 5 && !searching && !searchExhausted) {
       updateListing();
     }
 
@@ -52,10 +52,17 @@ class Search with ChangeNotifier {
 
   void updateListing() async {
     searching = true;
+    notifyListeners();
+
     var items = await searchClothes(searchParams);
+
+    if (items.length < 5) {
+      searchExhausted = true;
+    }
 
     _listings.addAll(items);
     searching = false;
+    notifyListeners();
   }
 
   void removeListing(int index) {

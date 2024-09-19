@@ -8,8 +8,10 @@ import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/messaging/messagechat.dart';
 import 'package:clothing_swap/features/messaging/messageinbox.dart';
 import 'package:clothing_swap/features/clothing/presentation/add_clothing_item.dart';
+import 'package:clothing_swap/features/profile/presentation/new_profile.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/comment.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/features/signup/presentation/startpage.dart';
 import 'package:clothing_swap/features/profile/presentation/personal_profile.dart';
@@ -66,13 +68,19 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            print("lalalallalalalalallalaala");
+            if (kDebugMode) {
+              print("lalalallalalalalallalaala");
+            }
             return const CircularProgressIndicator();
           } else if (snapshot.hasData) {
-            print("SUCESSSSSSSSSSSSSSS ROUTE TO PERSONAL");
+            if (kDebugMode) {
+              print("SUCESSSSSSSSSSSSSSS ROUTE TO PERSONAL");
+            }
             return const PersonalProfile();
           } else {
-            print("start paaaaaaaaaaaaaaaaaaaaaaaaaaagggggggggeeee");
+            if (kDebugMode) {
+              print("start paaaaaaaaaaaaaaaaaaaaaaaaaaagggggggggeeee");
+            }
             return const StartPage(title: 'StartPage');
           }
         },
@@ -81,15 +89,16 @@ class MyApp extends StatelessWidget {
       routes: {
         '/startpage': (context) => const StartPage(title: 'StartPage'),
         '/personal_profile': (context) => const PersonalProfile(),
+        '/new_profile': (context) => const NewProfile(),
         '/public_profile': (context) => const PublicProfile(),
         '/view_clothes_preferences': (context) => const ViewPrefences(),
         '/message': (context) => const Message(title: 'Message'),
         '/swipe': (context) => const SwipePage(),
         '/chat': (context) => const MessageChat(),
         '/comment': (context) => const Comments(),
-        '/add_clothing_item': (context) => AddClothingItemPage(),
+        '/add_clothing_item': (context) => const AddClothingItemPage(),
         '/clothing_detail': (context) => const ClothingDetail(),
-        '/preferences': (context) => const Preferences(),
+        '/settings': (context) => const Preferences(),
         '/add_clothes_preferences': (context) => const AddClothesPreferences(),
         '/events': (context) => EventPage(communityEvents: communityEvents),
       },

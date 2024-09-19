@@ -21,6 +21,7 @@ class _EventListState extends State<EventList> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return LayoutBuilder(
       builder: (context, constraints) {
         // Define grid column count based on available width
@@ -36,176 +37,178 @@ class _EventListState extends State<EventList> {
                 padding: const EdgeInsets.only(bottom: 25.0),
                 child: Column(
                   children: [
-                    ListTile(
-                      shape: const RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.black26, width: 3),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(8),
+                    GestureDetector(
+                      onTap: () {
+                        seeMoreMap[index] = !seeMore;
+                        setState(() {});
+                      },
+                      child: ListTile(
+                        shape: const RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.black26, width: 3),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(8),
+                          ),
                         ),
-                      ),
-                      title: Padding(
-                        padding: const EdgeInsets.only(bottom: 0.0),
-                        child: Column(
+                        title: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(widget.listings[index].image,
-                                fit: BoxFit.fitWidth),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '${widget.listings[index].title} - ${widget.listings[index].city}',
-                                  style: kIsWeb && sideBars
-                                      ? Theme.of(context)
-                                          .textTheme
-                                          .headlineLarge
-                                      : kIsWeb && !sideBars
-                                          ? Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge
-                                          : Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge,
-                                  textAlign: TextAlign.center,
+                                fit: BoxFit.cover),
+                            SizedBox(
+                              width: width * 0.725,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: 10.0,
+                                    bottom: seeMoreMap[index] == true ? 10 : 0),
+                                child: Center(
+                                  child: Text(
+                                    '${widget.listings[index].title} - ${widget.listings[index].city}',
+                                    style: kIsWeb && sideBars
+                                        ? Theme.of(context)
+                                            .textTheme
+                                            .headlineLarge
+                                        : kIsWeb && !sideBars
+                                            ? Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge
+                                            : Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge,
+                                  ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: ElevatedButton(
+                              ),
+                            ),
+                          ],
+                        ),
+                        minTileHeight: 125,
+                        titleAlignment: ListTileTitleAlignment.threeLine,
+                        subtitle: Column(
+                          children: [
+                            ListView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.all(0),
+                              children: [
+                                Visibility(
+                                  visible: seeMore,
+                                  child: ListTile(
+                                    shape: const RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: Colors.black26, width: 0.5),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(0),
+                                      ),
+                                    ),
+                                    title: Text(
+                                      'Hosted by: ${widget.listings[index].company}',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    leading: const Icon(Icons.home),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: seeMore,
+                                  child: ListTile(
+                                    shape: const RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: Colors.black26, width: 0.5),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(0),
+                                      ),
+                                    ),
+                                    title: Text(
+                                      "Where: ${widget.listings[index].location}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    leading: const Icon(Icons.location_on),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: seeMore,
+                                  child: ListTile(
+                                    shape: const RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: Colors.black26, width: 0.5),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(0),
+                                      ),
+                                    ),
+                                    title: Text(
+                                      "When: ${widget.listings[index].date}, ${widget.listings[index].time} ",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    leading: const Icon(
+                                        Icons.calendar_month_rounded),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: seeMore,
+                                  child: ListTile(
+                                    shape: const RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: Colors.black26, width: 0.5),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(0),
+                                      ),
+                                    ),
+                                    title: Text(
+                                      "Details: ${widget.listings[index].details}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    leading: const Icon(Icons.info),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("Attending: ",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium),
+                                    LikeButton(
+                                      size: 25,
+                                      isLiked: attendance,
+                                      likeCount:
+                                          communityEvents[index].attendance,
+                                      likeBuilder: (attendance) {
+                                        final colour =
+                                            attendance ? Colors.green : null;
+                                        return Icon(Icons.check_circle_outline,
+                                            color: colour);
+                                      },
+                                    )
+                                  ],
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.comment),
+                                  iconSize: 25,
+                                  hoverColor: Theme.of(context).hoverColor,
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, '/comment');
+                                  },
+                                ),
+                                IconButton(
                                     onPressed: () {
                                       seeMoreMap[index] = !seeMore;
                                       setState(() {});
                                     },
-                                    style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.all(5),
-                                      minimumSize: const Size(0, 0),
-                                    ),
-                                    child: Text(
-                                      !seeMore ? 'See More' : 'See Less',
-                                      style: const TextStyle(fontSize: 10),
-                                    ),
-                                  ),
-                                ),
+                                    icon: const Icon(Icons.more_horiz)),
                               ],
-                            )
+                            ),
                           ],
                         ),
-                      ),
-                      minTileHeight: 125,
-                      titleAlignment: ListTileTitleAlignment.threeLine,
-                      subtitle: Column(
-                        children: [
-                          ListView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.all(0),
-                            children: [
-                              Visibility(
-                                visible: seeMore,
-                                child: ListTile(
-                                  shape: const RoundedRectangleBorder(
-                                    side: BorderSide(
-                                        color: Colors.black26, width: 0.5),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(0),
-                                    ),
-                                  ),
-                                  title: Text(
-                                    'Hosted by: ${widget.listings[index].company}',
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                  leading: const Icon(Icons.home),
-                                ),
-                              ),
-                              Visibility(
-                                visible: seeMore,
-                                child: ListTile(
-                                  shape: const RoundedRectangleBorder(
-                                    side: BorderSide(
-                                        color: Colors.black26, width: 0.5),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(0),
-                                    ),
-                                  ),
-                                  title: Text(
-                                    "Where: ${widget.listings[index].location}",
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                  leading: const Icon(Icons.location_on),
-                                ),
-                              ),
-                              Visibility(
-                                visible: seeMore,
-                                child: ListTile(
-                                  shape: const RoundedRectangleBorder(
-                                    side: BorderSide(
-                                        color: Colors.black26, width: 0.5),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(0),
-                                    ),
-                                  ),
-                                  title: Text(
-                                    "When: ${widget.listings[index].date}, ${widget.listings[index].time} ",
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                  leading:
-                                      const Icon(Icons.calendar_month_rounded),
-                                ),
-                              ),
-                              Visibility(
-                                visible: seeMore,
-                                child: ListTile(
-                                  shape: const RoundedRectangleBorder(
-                                    side: BorderSide(
-                                        color: Colors.black26, width: 0.5),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(0),
-                                    ),
-                                  ),
-                                  title: Text(
-                                    "Details: ${widget.listings[index].details}",
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                  leading: const Icon(Icons.info),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                children: [
-                                  const Text("Attending: "),
-                                  LikeButton(
-                                    size: 25,
-                                    isLiked: attendance,
-                                    likeCount:
-                                        communityEvents[index].attendance,
-                                    likeBuilder: (attendance) {
-                                      final colour = attendance
-                                          ? Theme.of(context).hoverColor
-                                          : null;
-                                      return Icon(Icons.check_circle_outline,
-                                          color: colour);
-                                    },
-                                  )
-                                ],
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.comment),
-                                iconSize: 25,
-                                hoverColor: Theme.of(context).hoverColor,
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/comment');
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
                       ),
                     ),
                   ],

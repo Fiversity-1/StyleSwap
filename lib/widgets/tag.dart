@@ -1,6 +1,7 @@
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
 import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/features/clothing/domain/clothing_type.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +9,11 @@ import 'package:provider/provider.dart';
 import '../features/clothing/domain/clothing_type.dart';
 
 class Tag extends StatefulWidget {
-  const Tag({super.key, required this.text, required this.category, t});
+  const Tag({
+    super.key,
+    required this.text,
+    required this.category,
+  });
   final String text;
   final String category;
 
@@ -95,17 +100,19 @@ class TagState extends State<Tag> {
               size: 20, color: Theme.of(context).iconTheme.color)
           : icon,
 
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor:
+          Theme.of(context).floatingActionButtonTheme.backgroundColor,
       labelStyle: Theme.of(context).textTheme.bodyLarge,
       deleteIcon: const Icon(Icons.close),
       onDeleted: () {
         preferencesNotifier.removePreference(widget.category, widget.text);
+        setState(() {});
       },
       deleteButtonTooltipMessage: '',
       //GPT for border modification
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30), // Rounded edges
-          side: BorderSide(color: Theme.of(context).hoverColor, width: 3)),
+          side: BorderSide(color: Theme.of(context).hoverColor, width: 2)),
     );
   }
 }

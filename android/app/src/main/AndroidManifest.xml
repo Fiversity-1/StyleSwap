@@ -3,6 +3,8 @@
         android:label="clothing_swap"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyB1h8eTsCt1ykA4awlzGB0nQ9eYewHXB88"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -112,9 +112,7 @@ class UserManager with ChangeNotifier {
   }
 }
 
-
 const uuid = Uuid(); // Create a UUID generator
-
 
 // Generate UUIDs for Profiles
 String personalProfileUUID = uuid.v4();
@@ -198,7 +196,7 @@ List<ClothingItem> publicListings = [
     userId: publicProfileUUID, // Assign Profile UUID
     name: 'Clothing A',
     location: 'Location A',
-    images: [const AssetImage('lib/images/backdrop.jpg')],
+    images: [const AssetImage('lib/images/1.jpg')],
     details: ClothingItemDetail(
       bio: 'Description for Clothing A',
       type: 'Shirt',
@@ -207,7 +205,7 @@ List<ClothingItem> publicListings = [
       condition: 'Good',
       colours: ['ColorA'],
       images: [
-        const AssetImage('lib/images/backdrop.jpg'),
+        const AssetImage('lib/images/1.jpg'),
       ],
     ),
   ),
