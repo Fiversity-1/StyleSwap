@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 
+//List of events on Event Page
 class EventList extends StatefulWidget {
   const EventList({
     super.key,
@@ -15,7 +16,8 @@ class EventList extends StatefulWidget {
 }
 
 class _EventListState extends State<EventList> {
-  //Map from chatgpt for mapping booleans
+  //GPT used for mapping boolean - see comment below
+  //Used so each announcement wouldn't open when see more pressed
   Map<int, bool> seeMoreMap = {};
   bool attendance = false;
 
@@ -31,7 +33,7 @@ class _EventListState extends State<EventList> {
           child: ListView.builder(
             itemCount: widget.listings.length,
             itemBuilder: (context, index) {
-              //Map from chatgpt for mapping booleans
+              //GPT for mapping booleans
               bool seeMore = seeMoreMap[index] ?? false;
               return Padding(
                 padding: const EdgeInsets.only(bottom: 25.0),

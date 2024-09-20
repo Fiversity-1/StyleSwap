@@ -5,7 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 
-//https://pub.dev/packages/comment_box code modified from example
+//https://pub.dev/packages/comment_box general template of comments and
+//comment bar inspired by this example. Package was not used.
 class Comments extends StatefulWidget {
   const Comments({super.key});
 
@@ -32,7 +33,8 @@ class CommentsState extends State<Comments> {
 
       switch (value) {
         case "like":
-          //2 lines chatgpt (same logic for each reaction)
+          //GPT used for tracking state of like count and liked state
+          //Same code applied for each reation.
           comments[index].liked = !comments[index].liked;
           comments[index].like += comments[index].liked ? 1 : -1;
           break;
@@ -72,6 +74,7 @@ class CommentsState extends State<Comments> {
     });
   }
 
+  //Add a fixed comment for testing purposes, animate to top of listview
   void _handleComment(String value) {
     setState(() => _sendComment.text.isNotEmpty
         ? comments.add(
@@ -109,6 +112,7 @@ class CommentsState extends State<Comments> {
           preferredSize: Size.fromHeight(50),
           child: CustomTopAppBar(),
         ),
+        //Unfocus keyboard when screen pressed
         body: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
@@ -138,7 +142,8 @@ class CommentsState extends State<Comments> {
                     ],
                   ),
 
-                  //https://www.freecodecamp.org/news/build-a-chat-app-ui-with-flutter/ retrieved from the following URL but modified for our application
+                  //https://www.freecodecamp.org/news/build-a-chat-app-ui-with-flutter/
+                  //General template of comments and comment bar inspired by this example.
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.only(bottom: height * 0.1),
@@ -153,7 +158,8 @@ class CommentsState extends State<Comments> {
                                 reverse: true,
                                 shrinkWrap: true,
 
-                                //physics line  from chatGPT
+                                //GPT used for NeverScrollableSCrollPhysics
+                                //Used to prevent scrolling of whole page
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: comments.length,
                                 itemBuilder: (context, index) {
@@ -164,6 +170,7 @@ class CommentsState extends State<Comments> {
                                           color: Colors.white, width: 0.5),
                                       borderRadius: BorderRadius.circular(15.0),
                                     ),
+                                    //Unfocus keyboard when comment is tapped
                                     child: GestureDetector(
                                       onTap: () {
                                         FocusScope.of(context).unfocus();
@@ -175,7 +182,6 @@ class CommentsState extends State<Comments> {
                                         key: ValueKey(comments[index]),
                                         tileColor: Colors.transparent,
                                         hoverColor: Colors.transparent,
-
                                         onTap: () {},
                                         title: Row(
                                           children: [
@@ -206,8 +212,6 @@ class CommentsState extends State<Comments> {
                                             ),
                                           ],
                                         ),
-
-                                        // trailing: Text(comments[index].time),
                                         subtitle: Padding(
                                             padding:
                                                 const EdgeInsets.only(top: 15),
@@ -221,6 +225,7 @@ class CommentsState extends State<Comments> {
                                                     padding:
                                                         const EdgeInsets.only(
                                                             top: 5),
+                                                    //Row of reactions
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -384,9 +389,9 @@ class CommentsState extends State<Comments> {
                     controller: _sendComment,
                     onSubmitted: _handleComment,
                     decoration: InputDecoration(
-                      //fill Color from chatGpt
+                      //GPT used for fill colour of input comment box
                       fillColor: Theme.of(context).primaryColor,
-                      //contentPadding from chatgpt
+                      //GPT used for inner content padding
                       contentPadding: kIsWeb
                           ? const EdgeInsets.all(20.0)
                           : const EdgeInsets.only(top: 20.0),
