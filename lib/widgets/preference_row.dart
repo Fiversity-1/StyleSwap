@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+//PreferenceRow is a list of "tag" widgets with a text widget used for each
+//search preference (i.e. condition)
 class PreferenceRow extends StatefulWidget {
   const PreferenceRow({super.key, required this.category, required this.tags});
   final String category;
