@@ -1,4 +1,3 @@
-// profile.dart
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
@@ -9,6 +8,8 @@ import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//Public Profile
+//Differences to personal: non-editable, can propose trades
 class PublicProfile extends StatefulWidget {
   const PublicProfile({super.key});
 
@@ -30,6 +31,7 @@ class PublicProfileState extends State<PublicProfile> {
         bottomNavigationBar: const CustomBottomNavBar(
           currentIndex: 3,
         ),
+        //Icon based on colour scheme
         appBar: AppBar(
           title: Image.asset(
             Provider.of<ThemeSwitcher>(context).themeData == lightTheme
@@ -40,6 +42,7 @@ class PublicProfileState extends State<PublicProfile> {
           ),
           centerTitle: true,
         ),
+        //GPT used for LayoutBuilder to scale grid element amount
         body: LayoutBuilder(
           builder: (context, constraints) {
             // Define grid column count based on available width
@@ -104,7 +107,9 @@ class PublicProfileState extends State<PublicProfile> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                //PhotoViewGallery Code from pubdev photo_view modified with ChatGPT to stack icon on top
+                                //PhotoViewGallery Code from https://pub.dev/packages/photo_view
+                                //see it used in browse_photos widget
+                                //GPT used to stack icons on top of images
                                 MaterialPageRoute(
                                     builder: (context) => BrowsePhoto(
                                           title: "public",

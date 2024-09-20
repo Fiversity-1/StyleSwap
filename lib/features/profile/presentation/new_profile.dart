@@ -1,4 +1,3 @@
-// profile.dart
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
@@ -8,6 +7,7 @@ import 'package:google_places_flutter/model/prediction.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
+//Complete new profile registration (after google sign-up)
 class NewProfile extends StatefulWidget {
   const NewProfile({super.key});
 
@@ -24,7 +24,8 @@ class NewProfileState extends State<NewProfile> {
   String lat = "";
   String long = "";
 
-//AI generated
+//GPT used for terms and condition generation
+//GPT used for checkValue logic for terms and condition validation
   bool checkedValue = false;
   final String termsAndConditions = '''
 Terms and Conditions for Trading Practices
@@ -69,10 +70,10 @@ For any questions or concerns about these terms and conditions, please contact o
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    //GPT for fixing overflow pixels
     return GradientBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        //GPT used for fixing overflow pixels (resizeToAvoidBottomInset)
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -150,21 +151,17 @@ For any questions or concerns about these terms and conditions, please contact o
                                 hintStyle:
                                     Theme.of(context).textTheme.bodyLarge,
                                 filled: true,
-                                // Define the border style for both enabled and focused states
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Theme.of(context).hoverColor,
-                                      width: 1), // Border color and width
-                                  borderRadius: BorderRadius.circular(
-                                      15), // Customize the border radius
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(15),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Theme.of(context).hoverColor,
-                                      width:
-                                          1), // Same border for focused state
-                                  borderRadius: BorderRadius.circular(
-                                      8), // Customize the border radius
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
                             ),
@@ -182,7 +179,7 @@ For any questions or concerns about these terms and conditions, please contact o
                             ),
                             _placesAutoCompleteTextField(),
                             const SizedBox(height: 15),
-                            //modified by chatGpt
+                            //GPT used for styling scrollable box for terms and conditions
                             SizedBox(
                               height: 150,
                               child: SingleChildScrollView(
@@ -228,6 +225,8 @@ For any questions or concerns about these terms and conditions, please contact o
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(),
                                 onPressed: () {
+                                  //Validation; only accept when bio, location is not null
+                                  //Make sure terms and condition box ticked
                                   if ((checkedValue == false) ||
                                       (lat == "" || long == "") ||
                                       (_controllerBio.text == "")) {
@@ -287,7 +286,8 @@ For any questions or concerns about these terms and conditions, please contact o
     );
   }
 
-//https://pub.dev/packages/google_places_flutter, modified Chat GPT
+//https://pub.dev/packages/google_places_flutter package used for determining location
+//This template was modified by GPT to handle decoration changes.
   Widget _placesAutoCompleteTextField() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 0),
@@ -301,14 +301,13 @@ For any questions or concerns about these terms and conditions, please contact o
           ),
           borderRadius: BorderRadius.circular(15),
         ),
-        googleAPIKey:
-            "AIzaSyB1h8eTsCt1ykA4awlzGB0nQ9eYewHXB88", // Replace with your API key
+        googleAPIKey: "AIzaSyB1h8eTsCt1ykA4awlzGB0nQ9eYewHXB88",
         inputDecoration: InputDecoration(
           hintText: "Enter your location",
           hintStyle: Theme.of(context).textTheme.bodyLarge,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          border: InputBorder.none, // Remove default border
+          border: InputBorder.none,
           suffixIcon: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {

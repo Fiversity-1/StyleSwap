@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+//Page for user settings and preferences (not search preferences)
 class Preferences extends StatefulWidget {
   const Preferences({super.key});
 
@@ -14,8 +15,7 @@ class Preferences extends StatefulWidget {
 }
 
 class _PreferencesState extends State<Preferences> {
-  //AI generated
-
+  //GPT used to generate safetyGuide
   final String safetyGuide = '''
 1. **Use the Platform’s Messaging for All Communication**
    - Always use the platform’s built-in messaging system to communicate. Avoid taking conversations to other apps to ensure your safety and privacy are protected by the platform’s security measures.
@@ -45,7 +45,8 @@ class _PreferencesState extends State<Preferences> {
    - Inform someone you trust about where and when you’re meeting for the trade. Let them know the details of the person you’re trading with, and check in with them once the trade is completed.
 ''';
   late String chosenValue;
-
+  //Firebase Implemented based on tutorial: https://firebase.google.com/codelabs/firebase-auth-in-flutter-apps#0
+  //Log out via Firebase
   Future<void> _logOutFunction() async {
     try {
       await FirebaseAuth.instance.signOut();
@@ -97,7 +98,7 @@ class _PreferencesState extends State<Preferences> {
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child:
-                  //chatGpt for safety guide
+                  //GPT used for safety guide box styling
                   SizedBox(
                 height: 250,
                 width: width * 0.85,
