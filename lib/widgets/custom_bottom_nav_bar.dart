@@ -1,6 +1,7 @@
 import 'package:clothing_swap/features/community/event_class.dart';
 import 'package:flutter/material.dart';
 
+//Custom Bottom Navigation bar
 class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
 
@@ -8,7 +9,7 @@ class CustomBottomNavBar extends StatelessWidget {
     super.key,
     required this.currentIndex,
   });
-
+  //handles routes based on which icon pressed
   void _onItemTapped(BuildContext context, int index) {
     switch (index) {
       case 0:
@@ -27,6 +28,9 @@ class CustomBottomNavBar extends StatelessWidget {
   }
 
   @override
+  //GPT for Icon size; particularly "selectedIconTheme","unselectedIconTheme"
+  //GPT use for setting selected/unseletected FontSize to 0 to prevent shifting
+  //GPT used for setting background and inactive colour of the navigation bar
   Widget build(BuildContext context) {
     return Theme(
         data: Theme.of(context).copyWith(
@@ -40,7 +44,7 @@ class CustomBottomNavBar extends StatelessWidget {
           unselectedFontSize: 0, // Set to 0 to prevent font-related shifts
           type: BottomNavigationBarType.fixed,
           elevation: 0,
-          //GPT for icon size
+
           selectedIconTheme:
               const IconThemeData(size: 26), // Set size for selected icons
           unselectedIconTheme:
