@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
+//Tag represents a single search preference tag
 class Tag extends StatefulWidget {
   const Tag({
     super.key,
@@ -20,7 +21,7 @@ class Tag extends StatefulWidget {
 }
 
 class TagState extends State<Tag> {
-//Modified Chat GPT to convert string to enum
+//getIconForValue has been modified by GPT to convert string to enum
   FaIcon? getIconForValue(String category, String value, {double? newSize}) {
     FaIcon? originalIcon;
 
@@ -92,7 +93,7 @@ class TagState extends State<Tag> {
                   : widget.text == "Wellworn"
                       ? "Well worn"
                       : widget.text),
-      //avatar icon lookup chatgpt
+      // GPT recommended using this approach for finding the correct icon to use
       avatar: widget.category != "Colour"
           ? FaIcon(icon!.icon,
               size: 20, color: Theme.of(context).iconTheme.color)
@@ -107,9 +108,9 @@ class TagState extends State<Tag> {
         setState(() {});
       },
       deleteButtonTooltipMessage: '',
-      //GPT for border modification
+      //GPT was used for border modification of colour and rounded edges
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30), // Rounded edges
+          borderRadius: BorderRadius.circular(30),
           side: BorderSide(color: Theme.of(context).hoverColor, width: 2)),
     );
   }
