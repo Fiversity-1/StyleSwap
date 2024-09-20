@@ -6,6 +6,8 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:provider/provider.dart';
 import 'package:swipe/swipe.dart';
 
+//Widget handles user swiping through photos on profile and clothing_detail pgs
+//For example personal profile shows different icons than public, etc
 class BrowsePhoto extends StatefulWidget {
   const BrowsePhoto(
       {super.key,
@@ -13,10 +15,10 @@ class BrowsePhoto extends StatefulWidget {
       required this.gridIndex,
       this.photoListings});
   final List<ImageProvider>? photoListings;
-  final String title;
   //personal
   //public
   //clothing detail
+  final String title;
   final int gridIndex;
   @override
   State<BrowsePhoto> createState() => _BrowsePhotoState();
@@ -24,6 +26,8 @@ class BrowsePhoto extends StatefulWidget {
 
 class _BrowsePhotoState extends State<BrowsePhoto> {
 //https://medium.com/@kavyamistry0612/building-interactive-user-interfaces-with-alert-dialogs-in-flutter-81e268fb72f0
+//Template used throughout app for creating dialog boxes in flutter
+//Dialog used to confirm decision to include trade proposal in chat
   void _showAlertDialogProposeTrade(BuildContext context, chatManager, chat) {
     showDialog(
       context: context,
@@ -55,7 +59,7 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                   '/chat',
                 );
               },
-              //Gpt for styling button
+              //GPT used for styling button
               style: TextButton.styleFrom(
                   foregroundColor: Colors.white // Set the text color here
                   ),
@@ -65,7 +69,7 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              //Gpt for styling button
+              //GPT used for styling button
               style: TextButton.styleFrom(
                   foregroundColor: Colors.white // Set the text color here
                   ),
@@ -113,6 +117,7 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
     double height = MediaQuery.of(context).size.height;
     PageController pageController;
     return Scaffold(
+      //Close image on swipe up/down
       body: Swipe(
           onSwipeDown: () {
             Navigator.pop(context);
@@ -143,6 +148,9 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Visibility(
+                        //On profile page show info icon and close icon
+                        //Info for personal show listing stats
+                        //Info for public show listing category information
                         visible: widget.title != "details",
                         child: Row(
                           children: [
@@ -195,6 +203,8 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                     }
                                   }),
                             ),
+                            //Public page provides trading option -> based on
+                            //last chat opened.
                             Visibility(
                               visible: widget.title == "public",
                               child: Padding(
@@ -231,6 +241,8 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                   ),
                 ),
                 SizedBox(height: height * 0.4),
+                //For the web have arrow buttons. Buttons animate to start/end
+                //when max/min page reached
                 Visibility(
                     visible: kIsWeb,
                     child: Row(
