@@ -1,7 +1,6 @@
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
 import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
-import 'package:clothing_swap/features/clothing/domain/clothing_type.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';

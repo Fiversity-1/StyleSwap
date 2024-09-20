@@ -10,8 +10,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:string_extensions/string_extensions.dart';
 
-import '../domain/clothing_type.dart';
-
 class AddClothesPreferences extends StatefulWidget {
   const AddClothesPreferences({super.key, this.category});
   final String? category;

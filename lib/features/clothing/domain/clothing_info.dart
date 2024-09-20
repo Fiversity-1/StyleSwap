@@ -1,5 +1,4 @@
 import 'package:image_picker/image_picker.dart';
-import 'clothing_type.dart';
 
 //ClothingInfo Class and Enums for each category
 class ClothingInfo {
@@ -42,6 +41,29 @@ class ClothingInfo {
         type: type ?? this.type,
         colours: colours ?? this.colours);
   }
+}
+
+enum ClothingType {
+  hat,
+  scarf,
+  tie,
+  shirt,
+  midriff,
+  belt,
+  shorts,
+  pants,
+  skirt,
+  dress,
+  shoes,
+  jumper,
+  jacket,
+  sweater,
+  coat,
+  gloves,
+  vest,
+  leggings,
+  glasses,
+  tights;
 }
 
 enum Style {
