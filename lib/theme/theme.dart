@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+//Page used for specifying theme data for light, dark and accessibility theme
+//*Note that the final product only displays dark theme
 ThemeData lightTheme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
@@ -19,7 +21,7 @@ ThemeData lightTheme = ThemeData(
       ),
     ),
   ),
-  //GPT for generating all Text themedata
+  //GPT used for generating text theme data.
   textTheme: TextTheme(
     headlineLarge: GoogleFonts.poppins(),
     headlineMedium: GoogleFonts.poppins(),
@@ -39,8 +41,9 @@ ThemeData lightTheme = ThemeData(
       selectedColor: Colors.white),
   sliderTheme: const SliderThemeData(
     thumbColor: Colors.black,
+    //GPT used for generating valudIndicator Text style.
     valueIndicatorTextStyle: TextStyle(
-      color: Colors.black, // Change the label color here
+      color: Colors.black,
     ),
   ),
 );
@@ -80,6 +83,7 @@ ThemeData darkTheme = ThemeData(
     ),
     floatingActionButtonTheme:
         FloatingActionButtonThemeData(backgroundColor: Colors.blue[900]),
+    //GPT used for generating text theme data.
     textTheme: TextTheme(
       headlineLarge: GoogleFonts.poppins(),
       headlineMedium: GoogleFonts.poppins(),
@@ -92,8 +96,9 @@ ThemeData darkTheme = ThemeData(
     sliderTheme: const SliderThemeData(
       thumbColor: Colors.white,
       trackHeight: 10,
+      //GPT used for generating valudIndicator Text style.
       valueIndicatorTextStyle: TextStyle(
-        color: Colors.white, // Change the label color here
+        color: Colors.white,
       ),
     ),
     inputDecorationTheme: const InputDecorationTheme(

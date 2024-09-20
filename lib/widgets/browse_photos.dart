@@ -76,7 +76,8 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
       },
     );
   }
-
+  //Rowan implement this please
+  //Dialog box when max of 3 items in trades exceeded
   // void _showAlertDialogMaxTrade(
   //   BuildContext context,
   // ) {
