@@ -8,6 +8,7 @@ import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 
+//View list of preferences
 class ViewPrefences extends StatefulWidget {
   const ViewPrefences({super.key});
 
@@ -18,7 +19,7 @@ class ViewPrefences extends StatefulWidget {
 class _ViewPrefencesState extends State<ViewPrefences> {
   @override
   Widget build(BuildContext context) {
-    //Chat GPT for tracking preference changes
+    //GPT used for tracking preference changes via provider
     final userManager = context.watch<UserManager>();
     final preferencesNotifier = userManager.currentUser.preferences;
     List<String> typePreferences = preferencesNotifier.getPreferences("Type");
@@ -39,7 +40,7 @@ class _ViewPrefencesState extends State<ViewPrefences> {
 
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
+    //Generate tags for each category
     List<List<Widget>> tags = [[], [], [], [], []];
     for (int i = 0; i < 5; i++) {
       for (int index = 0; index < allPreferences[i].length; index++) {
@@ -56,6 +57,7 @@ class _ViewPrefencesState extends State<ViewPrefences> {
                           : 'Gender',
         ));
       }
+      //"Add" tag at the end of each list tag list
       tags[i].add(Chip(
         labelPadding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         label: SizedBox(
@@ -99,10 +101,9 @@ class _ViewPrefencesState extends State<ViewPrefences> {
           preferredSize: Size.fromHeight(50),
           child: CustomTopAppBar(),
         ),
+        //GPT used for LayoutBuilder
         body: LayoutBuilder(
           builder: (context, constraints) {
-            // Define grid column count based on available width
-
             return SingleChildScrollView(
               child: Row(
                 children: [
@@ -126,6 +127,7 @@ class _ViewPrefencesState extends State<ViewPrefences> {
                             style: kIsWeb
                                 ? Theme.of(context).textTheme.headlineLarge
                                 : Theme.of(context).textTheme.headlineMedium),
+                        //PreferenceRow widget for list of tags
                         PreferenceRow(category: "Type", tags: tags[0]),
                         PreferenceRow(category: "Size", tags: tags[1]),
                         PreferenceRow(category: "Colour", tags: tags[2]),
@@ -156,10 +158,11 @@ class _ViewPrefencesState extends State<ViewPrefences> {
                                               : Theme.of(context)
                                                   .textTheme
                                                   .headlineSmall),
-                                      //FlutterMap Slider Tutorial
                                     ],
                                   ),
                                 ),
+                                //Based on FlutterMap Slider Tutorial
+                                //https://www.youtube.com/watch?v=AW2YVbvbbmQ
                                 Slider(
                                     value: preferencesNotifier.getDistance(),
                                     max: 100,
