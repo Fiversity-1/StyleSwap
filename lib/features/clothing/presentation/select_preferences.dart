@@ -10,6 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:string_extensions/string_extensions.dart';
 
+//Page for selecting clothing search preferences
 class AddClothesPreferences extends StatefulWidget {
   const AddClothesPreferences({super.key, this.category});
   final String? category;

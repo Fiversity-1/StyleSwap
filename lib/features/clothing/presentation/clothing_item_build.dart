@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
 
+//Individual Clothing Card for swipe_top page
 class ClothingCard extends StatefulWidget {
   final ClothingItem item;
 
@@ -19,14 +20,14 @@ class ClothingCardState extends State<ClothingCard> {
     return GestureDetector(
       onLongPress: () {
         setState(() {
-          //Generative Code
+          //GPT code for cycling through listings with multiple images and resetting index
           widget.item.currentIndex =
               (widget.item.currentIndex + 1) % widget.item.images.length;
         });
       },
       onTap: () {
         setState(() {
-          //Generative Code
+          //GPT code for cycling through listings with multiple images and resetting index
           widget.item.currentIndex =
               (widget.item.currentIndex + 1) % widget.item.images.length;
         });
