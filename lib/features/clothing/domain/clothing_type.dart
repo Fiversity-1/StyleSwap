@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import '../../../widgets/selection_tree_grid.dart';
 
+//List of clothing types
 enum ClothingType with IconMapper {
   hat,
   scarf,
@@ -47,6 +47,7 @@ enum ClothingType with IconMapper {
     }
   }
 
+  //List of options to appear based on user top, bottom, accessory choice
   static List<SelectionTreeItem<ClothingType>> getTree() {
     return [
       const SelectionNode(
@@ -95,7 +96,7 @@ enum ClothingType with IconMapper {
 mixin IconMapper {
   IconData getIcon();
 }
-
+//Capitizing Enums
 String capitalizeWords(String text) {
   if (text.isEmpty) return text;
   return text.split(' ').map((word) {
