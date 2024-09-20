@@ -4,6 +4,7 @@ import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//Custom Top App Bar
 class CustomTopAppBar extends StatelessWidget {
   const CustomTopAppBar({super.key});
 
@@ -11,6 +12,7 @@ class CustomTopAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Image.asset(
+        //Use white hanger on light themes, black hanger on dark themes
         Provider.of<ThemeSwitcher>(context).themeData == lightTheme
             ? 'lib/images/hanger.png'
             : 'lib/images/hanger_white.png',

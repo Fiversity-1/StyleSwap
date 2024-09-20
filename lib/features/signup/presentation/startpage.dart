@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+//Log in page
 class StartPage extends StatelessWidget {
   const StartPage({super.key, required this.title});
   final String title;
@@ -52,6 +53,7 @@ class StartPage extends StatelessWidget {
                           SizedBox(
                             width: kIsWeb ? width * 0.175 : width * 0.3,
                             height: height * 0.07,
+                            //Google Authentication via firebase
                             child: ElevatedButton(
                               onPressed: () {
                                 _signInWithGoogle(context);
@@ -69,6 +71,7 @@ class StartPage extends StatelessWidget {
             ),
           ),
         ),
+        //Select logo based on colour scheme
         appBar: AppBar(
           title: Center(
             child: Image.asset(
@@ -99,11 +102,11 @@ class StartPage extends StatelessWidget {
         }
         final googleUser = await GoogleSignIn().signIn();
         if (kDebugMode) {
-          print("00000000000000000000000000");
+          print("0");
         }
         if (googleUser != null) {
           if (kDebugMode) {
-            print("1111111111111111111111111111111");
+            print("1");
           }
           final googleAuth = await googleUser.authentication;
           final credential = GoogleAuthProvider.credential(
@@ -127,7 +130,7 @@ class StartPage extends StatelessWidget {
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
     } on Error {
-      debugPrint("Explosion happened somewhere pahic");
+      debugPrint("Error happened somewhere");
     }
   }
 }

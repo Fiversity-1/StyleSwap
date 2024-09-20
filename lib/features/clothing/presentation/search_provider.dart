@@ -3,14 +3,16 @@ import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/fun_fact.dart';
 import 'package:flutter/material.dart';
 
-//Original code modified by chat to include _generatedisplayCards
+//Original code modified by GPT to include setListings()
 //Need to replace publicListings to whatever search returns
-
+//Page used to track search results and different card types
 class Search with ChangeNotifier {
   List _listings = [];
   final int _funFactInterval = 3;
   List searchResults = publicListings;
 
+  //Embed funFact within the list of clothing items based on
+  //interval and amount of fun facts stored
   void setListings() {
     final List displayCards = [];
     int funFactCount = 0;

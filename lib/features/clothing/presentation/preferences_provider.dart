@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-//Chat GPT generated, modified
+//Track user preferences for each search category
+//GPT used to implement this page based on speicifications given.
 class PreferencesNotifier extends ChangeNotifier {
   final List<String> _typePreferences = [];
   final List<String> _sizePreferences = [];

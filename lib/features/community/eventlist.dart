@@ -5,6 +5,7 @@ import 'package:clothing_swap/widgets/event_listing.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 
+//Displays list of event_listing widgets
 class EventPage extends StatefulWidget {
   const EventPage({super.key, required this.communityEvents});
   final List<Event> communityEvents;

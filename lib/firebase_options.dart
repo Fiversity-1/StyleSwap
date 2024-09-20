@@ -14,6 +14,9 @@ import 'package:flutter/foundation.dart'
 ///   options: DefaultFirebaseOptions.currentPlatform,
 /// );
 /// ```
+
+//Firebase Implemented based on tutorial: https://firebase.google.com/codelabs/firebase-auth-in-flutter-apps#0
+//For user login and authentication.
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {

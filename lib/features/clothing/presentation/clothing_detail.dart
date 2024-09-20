@@ -8,10 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 
+//Page for displaying clothing detail for a listing
+//Page accessible from either swipe_top or public_profile when
+//browsing a person's listings
 class ClothingDetail extends StatelessWidget {
   final String? location;
   const ClothingDetail({super.key, this.location});
-  //Need a matching algorithm - based on preferences/ latest search
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class ClothingDetail extends StatelessWidget {
     return GradientBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        //Include appbar if the user is coming from public_page
         appBar: location == "trade"
             ? AppBar(
                 title: Image.asset(
@@ -49,10 +52,14 @@ class ClothingDetail extends StatelessWidget {
           currentIndex: 1,
         ),
         body: Padding(
+          //Include padding when user comes from public_profile as there
+          //will be an app bar
           padding: EdgeInsets.only(top: location == "trade" ? 0 : 15),
           child: Center(
             child: SingleChildScrollView(
               child: Column(children: [
+                //Each list tile checks user preferences, if matched
+                //highlight the tile and add a star
                 ListView(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -222,6 +229,7 @@ class ClothingDetail extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: height * 0.025, width: width),
+                //Display extra images for listing
                 GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -235,7 +243,9 @@ class ClothingDetail extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          //PhotoViewGallery Code from pubdev photo_view modified with ChatGPT to stack icon on top
+                          //PhotoViewGallery Code from pubdev photo_view https://pub.dev/packages/photo_view
+                          //modified with GPT to stack icon on top
+                          //see browse_photos widget
                           MaterialPageRoute(
                               builder: (context) => BrowsePhoto(
                                     title: "details",

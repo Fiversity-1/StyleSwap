@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Clothing Item Class - Each Item has a clothing itemdetail instance
 class ClothingItem {
   final String id;
   final String userId;
