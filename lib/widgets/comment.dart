@@ -231,6 +231,8 @@ class CommentsState extends State<Comments> {
                                                           MainAxisAlignment
                                                               .spaceEvenly,
                                                       children: [
+                                                        //https://pub.dev/packages/like_button
+                                                        //Inspired by like button example, used throughout
                                                         LikeButton(
                                                           size: 20,
                                                           isLiked:

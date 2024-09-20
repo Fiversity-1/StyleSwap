@@ -179,6 +179,8 @@ class _EventListState extends State<EventList> {
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyMedium),
+                                    //https://pub.dev/packages/like_button
+                                    //Inspired by like button example, used throughout
                                     LikeButton(
                                       size: 25,
                                       isLiked: attendance,

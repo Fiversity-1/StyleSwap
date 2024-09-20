@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 
+//Individual Chat UI
 class MessageChat extends StatefulWidget {
   const MessageChat({super.key});
 
@@ -25,6 +26,7 @@ class _MessageChatState extends State<MessageChat> {
   final _scroller = ScrollController();
 
   @override
+  // GPT for scrolling if new listing added to chat
   void didChangeDependencies() {
     super.didChangeDependencies();
 
@@ -38,7 +40,7 @@ class _MessageChatState extends State<MessageChat> {
     });
   }
 
-//Void function idea to handle  both onSubmitted: and onPressed (icon) from chatGPT
+//Void function idea to handle  both onSubmitted: and onPressed (icon) from GPT
 //code modified for personal implementation
   void _handleSend(String value, ChatManager chatManager, ChatListing chat) {
     _sendText.text.isNotEmpty
@@ -52,6 +54,7 @@ class _MessageChatState extends State<MessageChat> {
                 time: "5:45pm",
                 type: "message")))
         : null;
+    //scroll to latest message, due to message container size need to add to maxScrollExtend
     _sendText.clear();
     _scroller.animateTo(
       _scroller.position.maxScrollExtent + 100,
@@ -59,9 +62,11 @@ class _MessageChatState extends State<MessageChat> {
       duration: const Duration(milliseconds: 300),
     );
     setState(() {});
+    //make sure keyboard stays open
     myFocusNode.requestFocus();
   }
 
+  //same as sending text, with slightly larger scrolling to handle image size
   void _handleImage(XFile image, ChatManager chatManager, ChatListing chat) {
     chatManager.addChatMessage(
         chat.id,
@@ -82,7 +87,8 @@ class _MessageChatState extends State<MessageChat> {
     setState(() {});
   }
 
-//Chat GPT modified of original code
+//GPT modified original code to correct implementation
+//Use for handling the state of trades
   void _handleTrade(
       String type, int index, ChatManager chatManager, ChatListing chat) async {
     setState(() {
@@ -151,7 +157,7 @@ class _MessageChatState extends State<MessageChat> {
     });
   }
 
-// Helper function to check if a ClipOval containing a specific ImageProvider exists in the list
+// GPT Helper function to check if a ClipOval containing a specific ImageProvider exists in the list
   bool _clipOvalExistsInList(List<Widget> list, ImageProvider imageProvider) {
     return list.any((widget) {
       if (widget is ClipOval) {
@@ -162,7 +168,7 @@ class _MessageChatState extends State<MessageChat> {
     });
   }
 
-// Helper function to remove a ClipOval containing a specific ImageProvider from the list
+// GPT Helper function to remove a ClipOval containing a specific ImageProvider from the list
   void _removeClipOvalFromList(List<Widget> list, ImageProvider imageProvider) {
     list.removeWhere((widget) {
       if (widget is ClipOval) {
@@ -172,9 +178,9 @@ class _MessageChatState extends State<MessageChat> {
       return false;
     });
   }
-//End chatgpt modified
 
 //https://medium.com/@kavyamistry0612/building-interactive-user-interfaces-with-alert-dialogs-in-flutter-81e268fb72f0
+//Used for demonstrating how to implement flutter alert dialog
   void _showAlertDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -202,6 +208,7 @@ class _MessageChatState extends State<MessageChat> {
   }
 
   //https://pub.dev/packages/flutter_image_stack
+  //Example code used to implement image stack
   final List<Widget> _imagesLeft = [
     ClipOval(
       child: Image.asset(
@@ -250,7 +257,7 @@ class _MessageChatState extends State<MessageChat> {
 
   final List<Widget> _empty = [
     ClipOval(
-      //Chatgpt for transform scale - changes image scale
+      //GPT used for transform scale - changes image scale
       child: Transform.scale(
         scale: 0.6, // Adjust the scale factor as needed
         child: Image.asset(
@@ -286,9 +293,9 @@ class _MessageChatState extends State<MessageChat> {
           ),
           centerTitle: true,
           actions: [
-            //based on https://www.youtube.com/watch?v=YHNCYfqGrBY for speed dial
+            //Based on https://www.youtube.com/watch?v=YHNCYfqGrBY for speed dial
             SpeedDial(
-                //Chat GPT for direction
+                //GPT for speed dial direction
                 direction: SpeedDialDirection.down,
                 elevation: 0,
                 backgroundColor: Colors.transparent,
@@ -309,6 +316,7 @@ class _MessageChatState extends State<MessageChat> {
                       backgroundColor: Colors.green,
                       labelBackgroundColor: Colors.green,
                       onTap: () {
+                        //give user option to view and remove their proposed listings
                         showModalBottomSheet(
                             context: context,
                             builder: (context) {
@@ -353,6 +361,7 @@ class _MessageChatState extends State<MessageChat> {
                       backgroundColor: Colors.deepOrange,
                       labelBackgroundColor: Colors.deepOrange,
                       onTap: () {
+                        //give user option to view other user's listings
                         showModalBottomSheet(
                             context: context,
                             builder: (context) {
@@ -404,6 +413,7 @@ class _MessageChatState extends State<MessageChat> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      //Show listings users swiped right on separated by swap icon
                       FlutterImageStack.widgets(
                           showTotalCount: true,
                           totalCount: _imagesLeft.length,
@@ -430,7 +440,8 @@ class _MessageChatState extends State<MessageChat> {
                   ),
                 ),
 
-                //https://www.freecodecamp.org/news/build-a-chat-app-ui-with-flutter/ retrieved from the following URL but modified for our application
+                //Used https://www.freecodecamp.org/news/build-a-chat-app-ui-with-flutter/
+                //for chat UI template, modified for our application
 
                 Expanded(
                   child: Padding(
@@ -454,6 +465,8 @@ class _MessageChatState extends State<MessageChat> {
                                   right: 24,
                                   top: kIsWeb ? 30 : 20,
                                   bottom: 10),
+                              //Alternate left and right for messages based
+                              //on who sent it
                               child: Align(
                                   alignment:
                                       (chat.messages[index].messageType ==
@@ -504,6 +517,7 @@ class _MessageChatState extends State<MessageChat> {
                                                             10),
                                                     child: kIsWeb
                                                         //Stack overflow - "Show fullscreen image onTap in Flutter"
+                                                        //https://stackoverflow.com/questions/54055187/show-fullscreen-image-ontap-in-flutter
                                                         ? GestureDetector(
                                                             onTap: () {
                                                               showImageViewer(
@@ -530,7 +544,7 @@ class _MessageChatState extends State<MessageChat> {
                                                             onTap: () {
                                                               showImageViewer(
                                                                   context,
-                                                                  //ChatGPT suggested using FileImage instead of Image.File
+                                                                  //GPT suggested using FileImage instead of Image.File
                                                                   FileImage(
                                                                     File(chat
                                                                         .messages[
@@ -561,6 +575,7 @@ class _MessageChatState extends State<MessageChat> {
                                                             10),
                                                     child: kIsWeb
                                                         //Stack overflow - "Show fullscreen image onTap in Flutter"
+                                                        //https://stackoverflow.com/questions/54055187/show-fullscreen-image-ontap-in-flutter
                                                         ? GestureDetector(
                                                             onTap: () {
                                                               showImageViewer(
@@ -598,12 +613,11 @@ class _MessageChatState extends State<MessageChat> {
                                                                     .additionalListings!,
                                                                 fit: BoxFit
                                                                     .cover),
-
-                                                            // Handle tap event
                                                           ),
                                                   ),
                                                 ),
                                       const SizedBox(height: 5),
+                                      //display trades - handle accept/decline
                                       chat.messages[index].messageType ==
                                               "receiver"
                                           ? Column(
@@ -650,6 +664,8 @@ class _MessageChatState extends State<MessageChat> {
                                                                 .messages[index]
                                                                 .type ==
                                                             "listing",
+                                                        //https://pub.dev/packages/like_button
+                                                        //Inspired by like button example, used throughout
                                                         child: LikeButton(
                                                           size: 20,
                                                           isLiked: chat
@@ -856,7 +872,8 @@ class _MessageChatState extends State<MessageChat> {
                 ),
               ],
             ),
-            //End code retrieved
+            //End code retrieved from
+            //https://www.freecodecamp.org/news/build-a-chat-app-ui-with-flutter/
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -896,9 +913,9 @@ class _MessageChatState extends State<MessageChat> {
                               textAlignVertical: TextAlignVertical.top,
                               controller: _sendText,
                               decoration: InputDecoration(
-                                //fill color from chatgpt
+                                //fill color from GPT
                                 fillColor: Theme.of(context).primaryColor,
-                                //contentPadding from chatgpt
+                                //contentPadding from GPT
                                 contentPadding: kIsWeb
                                     ? const EdgeInsets.all(20.0)
                                     : const EdgeInsets.only(top: 10, left: 10),
@@ -911,7 +928,8 @@ class _MessageChatState extends State<MessageChat> {
                                   icon: const Icon(Icons.send,
                                       size: kIsWeb ? 24 : 18),
                                   onPressed: () {
-                                    //Idea from chatgpt to handle both enter and icon
+                                    //Idea from GPT to user _handleSend (onPressed/submitted)
+                                    //to handle both keyboard enter and send icon press
                                     _handleSend(
                                         _sendText.text, chatManager, chat);
                                   },
