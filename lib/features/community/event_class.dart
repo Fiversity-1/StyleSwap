@@ -1,3 +1,4 @@
+//Event Class with 4 example events
 class Event {
   final String company;
   final String image;

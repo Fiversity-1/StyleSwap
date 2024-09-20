@@ -1,5 +1,3 @@
-// signup.dart
-
 import 'dart:io';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';

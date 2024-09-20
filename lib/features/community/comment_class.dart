@@ -1,3 +1,4 @@
+//Comment class with 3 example comments
 class Comment {
   final String commentContent;
   final String time;
@@ -10,9 +11,8 @@ class Comment {
   bool hearted;
   bool hahaed;
   bool angryed;
-
   int angry;
-  //Image
+
   Comment({
     required this.commentContent,
     required this.time,

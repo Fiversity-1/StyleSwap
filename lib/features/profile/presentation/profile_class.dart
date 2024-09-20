@@ -4,7 +4,7 @@ import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-//Learnt how to use provider code from Chat GPT, found in main and will be used throughout project
+//GPT used to learn and implement provider code for user state management.
 //Mostly follows the same format as Theme Provider.
 class Profile with ChangeNotifier {
   final String id;
@@ -13,7 +13,7 @@ class Profile with ChangeNotifier {
   AssetImage profilePicture;
   List<ClothingItem> personalListings;
   List<ChatListing> interestedListings;
-  PreferencesNotifier preferences; // Added PreferencesNotifier
+  PreferencesNotifier preferences;
 
   Profile({
     required this.id,
@@ -22,37 +22,33 @@ class Profile with ChangeNotifier {
     required this.profilePicture,
     List<ClothingItem>? personalListings,
     List<ChatListing>? interestedListings,
-    PreferencesNotifier? preferences, // Added PreferencesNotifier
+    PreferencesNotifier? preferences,
+    //user does not have to have personal or interested listings
   })  : personalListings = personalListings ?? [],
         interestedListings = interestedListings ?? [],
-        preferences = preferences ??
-            PreferencesNotifier(); // Initialize PreferencesNotifier
+        preferences = preferences ?? PreferencesNotifier();
 
-  // Method to add a personal listing
   void addPersonalListing(ClothingItem listing) {
     personalListings.add(listing);
     notifyListeners();
   }
 
-  // Method to remove a personal listing
   void removePersonalListing(ClothingItem listing) {
     personalListings.remove(listing);
     notifyListeners();
   }
 
-  // Method to add an interested listing
   void addInterestedListing(ChatListing listing) {
     interestedListings.add(listing);
     notifyListeners();
   }
 
-  // Method to remove an interested listing
   void removeInterestedListing(ChatListing listing) {
     interestedListings.remove(listing);
     notifyListeners();
   }
 
-  // A method to update bio or profile picture
+  // Update bio or profile picture
   void updateProfile({
     String? newBio,
     AssetImage? newProfilePicture,
@@ -67,12 +63,12 @@ class Profile with ChangeNotifier {
   }
 }
 
-// Define the UserManager class with ChangeNotifier
+//User manager handles user profiles
 class UserManager with ChangeNotifier {
   final List<Profile> _users = [
     personal,
     public
-  ]; // Ensure profiles are added here
+  ]; // Ensure profiles are added here, currently using hardcoded profiles
   Profile _currentUser;
 
   UserManager() : _currentUser = personal;
@@ -80,6 +76,7 @@ class UserManager with ChangeNotifier {
   List<Profile> get users => _users;
   Profile get currentUser => _currentUser;
 
+  //switch to current User
   void switchUser(Profile user) {
     _currentUser = user;
     notifyListeners();
@@ -90,6 +87,7 @@ class UserManager with ChangeNotifier {
     notifyListeners();
   }
 
+  //search for user based on ID
   Profile getUserById(String userId) {
     return _users.firstWhere(
       (user) => user.id == userId,
@@ -112,7 +110,7 @@ class UserManager with ChangeNotifier {
   }
 }
 
-const uuid = Uuid(); // Create a UUID generator
+const uuid = Uuid(); //UUID generator
 
 // Generate UUIDs for Profiles
 String personalProfileUUID = uuid.v4();
@@ -122,11 +120,11 @@ String publicProfileUUID = uuid.v4();
 List<String> personalItemUUIDs = List.generate(5, (_) => uuid.v4());
 List<String> publicItemUUIDs = List.generate(5, (_) => uuid.v4());
 
-// Update Profiles and ClothingItems with UUIDs
+//Peronsal and public profiles instances used for testing purposes
 List<ClothingItem> personalListings = [
   ClothingItem(
-    id: personalItemUUIDs[0], // Use generated UUID
-    userId: personalProfileUUID, // Assign Profile UUID
+    id: personalItemUUIDs[0],
+    userId: personalProfileUUID,
     name: 'Clothing 1',
     location: 'Location 1',
     images: [const AssetImage('lib/images/4.jpg')],
@@ -141,8 +139,8 @@ List<ClothingItem> personalListings = [
     ),
   ),
   ClothingItem(
-    id: personalItemUUIDs[1], // Use generated UUID
-    userId: personalProfileUUID, // Assign Profile UUID
+    id: personalItemUUIDs[1],
+    userId: personalProfileUUID,
     name: 'Clothing 2',
     location: 'Location 2',
     images: [const AssetImage('lib/images/1.jpg')],
@@ -157,8 +155,8 @@ List<ClothingItem> personalListings = [
     ),
   ),
   ClothingItem(
-    id: personalItemUUIDs[2], // Use generated UUID
-    userId: personalProfileUUID, // Assign Profile UUID
+    id: personalItemUUIDs[2],
+    userId: personalProfileUUID,
     name: 'Clothing 3',
     location: 'Location 3',
     images: [const AssetImage('lib/images/3.jpg')],
@@ -173,8 +171,8 @@ List<ClothingItem> personalListings = [
     ),
   ),
   ClothingItem(
-    id: personalItemUUIDs[3], // Use generated UUID
-    userId: personalProfileUUID, // Assign Profile UUID
+    id: personalItemUUIDs[3],
+    userId: personalProfileUUID,
     name: 'Clothing 4',
     location: 'Location 4',
     images: [const AssetImage('lib/images/5.jpg')],
@@ -192,8 +190,8 @@ List<ClothingItem> personalListings = [
 
 List<ClothingItem> publicListings = [
   ClothingItem(
-    id: publicItemUUIDs[0], // Use generated UUID
-    userId: publicProfileUUID, // Assign Profile UUID
+    id: publicItemUUIDs[0],
+    userId: publicProfileUUID,
     name: 'Clothing A',
     location: 'Location A',
     images: [const AssetImage('lib/images/1.jpg')],
@@ -210,8 +208,8 @@ List<ClothingItem> publicListings = [
     ),
   ),
   ClothingItem(
-    id: publicItemUUIDs[1], // Use generated UUID
-    userId: publicProfileUUID, // Assign Profile UUID
+    id: publicItemUUIDs[1],
+    userId: publicProfileUUID,
     name: 'Clothing B',
     location: 'Location B',
     images: [const AssetImage('lib/images/2.jpg')],
@@ -226,8 +224,8 @@ List<ClothingItem> publicListings = [
     ),
   ),
   ClothingItem(
-    id: publicItemUUIDs[2], // Use generated UUID
-    userId: publicProfileUUID, // Assign Profile UUID
+    id: publicItemUUIDs[2],
+    userId: publicProfileUUID,
     name: 'Clothing C',
     location: 'Location C',
     images: [const AssetImage('lib/images/3.jpg')],
@@ -242,8 +240,8 @@ List<ClothingItem> publicListings = [
     ),
   ),
   ClothingItem(
-    id: publicItemUUIDs[3], // Use generated UUID
-    userId: publicProfileUUID, // Assign Profile UUID
+    id: publicItemUUIDs[3],
+    userId: publicProfileUUID,
     name: 'Clothing D',
     location: 'Location D',
     images: [const AssetImage('lib/images/5.jpg')],
@@ -258,8 +256,8 @@ List<ClothingItem> publicListings = [
     ),
   ),
   ClothingItem(
-    id: publicItemUUIDs[4], // Use generated UUID
-    userId: publicProfileUUID, // Assign Profile UUID
+    id: publicItemUUIDs[4],
+    userId: publicProfileUUID,
     name: 'Clothing E',
     location: 'Location E',
     images: [
@@ -281,9 +279,8 @@ List<ClothingItem> publicListings = [
   ),
 ];
 
-// Update Profiles with UUIDs
 Profile personal = Profile(
-  id: personalProfileUUID, // Use generated UUID
+  id: personalProfileUUID,
   bio: "Keen for some trades!",
   name: "Jacob",
   personalListings: personalListings,
@@ -291,7 +288,7 @@ Profile personal = Profile(
 );
 
 Profile public = Profile(
-  id: publicProfileUUID, // Use generated UUID
+  id: publicProfileUUID,
   bio: "Keen for vintage clothes!",
   name: "Steve",
   personalListings: publicListings,
