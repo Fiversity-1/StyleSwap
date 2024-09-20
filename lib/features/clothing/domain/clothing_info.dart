@@ -1,7 +1,7 @@
 import 'package:image_picker/image_picker.dart';
-
 import 'clothing_type.dart';
 
+//ClothingInfo Class and Enums for each category
 class ClothingInfo {
   final List<XFile> images;
   final ClothingSize? size;
