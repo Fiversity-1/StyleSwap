@@ -23,8 +23,6 @@ class ClothingDetail extends StatelessWidget {
     //GPT for modal route to collect argument
     final String? location =
         ModalRoute.of(context)!.settings.arguments as String?;
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     return GradientBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
