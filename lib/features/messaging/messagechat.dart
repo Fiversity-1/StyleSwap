@@ -189,7 +189,7 @@ class _MessageChatState extends State<MessageChat> {
           backgroundColor: Colors.blue,
           title: const Text('Chat Guide'),
           content: const Text(
-              'Press the menu button for 3 options:\n\n1. View other person\'s profile and select an image to add to the trade\n\n 2. Remove personal listing/s from the propsed trade\n\n 3. Check out our safety tips for messaging and trading'),
+              'Press the menu button for 4 options:\n\n1. View other person\'s profile and select an image to add to the trade\n\n 2. View your personal proposed listings\n\n 3.Remove personal listing/s from the propsed trade\n\n 4. Check out our safety tips for messaging and trading'),
           actions: [
             TextButton(
               onPressed: () {
@@ -689,9 +689,8 @@ class _MessageChatState extends State<MessageChat> {
                                                           likeBuilder:
                                                               (isLiked) {
                                                             final colour = isLiked
-                                                                ? Theme.of(
-                                                                        context)
-                                                                    .hoverColor
+                                                                ? Colors
+                                                                    .greenAccent
                                                                 : null;
                                                             return Icon(
                                                                 Icons
