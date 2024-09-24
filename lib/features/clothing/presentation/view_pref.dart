@@ -1,7 +1,7 @@
+import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/preference_row.dart';
-import 'package:clothing_swap/widgets/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
@@ -19,82 +19,11 @@ class ViewPrefences extends StatefulWidget {
 class _ViewPrefencesState extends State<ViewPrefences> {
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     //GPT used for tracking preference changes via provider
     final userManager = context.watch<UserManager>();
     final preferencesNotifier = userManager.currentUser.preferences;
-    List<String> typePreferences = preferencesNotifier.getPreferences("Type");
-    List<String> sizePreferences = preferencesNotifier.getPreferences("Size");
-    List<String> colourPreferences =
-        preferencesNotifier.getPreferences("Colour");
-    List<String> conditionPreferences =
-        preferencesNotifier.getPreferences("Condition");
-    List<String> genderPreferences =
-        preferencesNotifier.getPreferences("Gender");
-    List<List<String>> allPreferences = [
-      typePreferences,
-      sizePreferences,
-      colourPreferences,
-      conditionPreferences,
-      genderPreferences
-    ];
-
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    //Generate tags for each category
-    List<List<Widget>> tags = [[], [], [], [], []];
-    for (int i = 0; i < 5; i++) {
-      for (int index = 0; index < allPreferences[i].length; index++) {
-        tags[i].add(Tag(
-          text: allPreferences[i][index],
-          category: i == 0
-              ? 'Type'
-              : i == 1
-                  ? 'Size'
-                  : i == 2
-                      ? 'Colour'
-                      : i == 3
-                          ? 'Condition'
-                          : 'Gender',
-        ));
-      }
-      //"Add" tag at the end of each list tag list
-      tags[i].add(
-        Chip(
-          labelPadding: const EdgeInsets.all(0),
-          label: GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, '/add_clothes_preferences',
-                  arguments: i == 0
-                      ? 'Type'
-                      : i == 1
-                          ? 'Size'
-                          : i == 2
-                              ? 'Colour'
-                              : i == 3
-                                  ? 'Condition'
-                                  : 'Gender');
-            },
-            //GPT used to increase touchable area whilst keeping icon size small.
-            child: const SizedBox(
-              width: 24, // Increase touchable area
-              height: 24,
-              child: Icon(
-                Icons.add,
-                size: 24,
-              ),
-            ),
-          ),
-          backgroundColor: Theme.of(context).hoverColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100),
-            side: BorderSide(
-              color: Theme.of(context).hoverColor,
-              width: 3,
-            ),
-          ),
-        ),
-      );
-    }
 
     return GradientBackground(
       child: Scaffold(
@@ -134,11 +63,19 @@ class _ViewPrefencesState extends State<ViewPrefences> {
                                 ? Theme.of(context).textTheme.headlineLarge
                                 : Theme.of(context).textTheme.headlineMedium),
                         //PreferenceRow widget for list of tags
-                        PreferenceRow(category: "Type", tags: tags[0]),
-                        PreferenceRow(category: "Size", tags: tags[1]),
-                        PreferenceRow(category: "Colour", tags: tags[2]),
-                        PreferenceRow(category: "Condition", tags: tags[3]),
-                        PreferenceRow(category: "Gender", tags: tags[4]),
+                        Consumer<PreferencesNotifier>(
+                          builder: (context, preferencesNotifier, child) {
+                            return const Column(
+                              children: [
+                                PreferenceRow(category: "Type"),
+                                PreferenceRow(category: "Size"),
+                                PreferenceRow(category: "Colour"),
+                                PreferenceRow(category: "Condition"),
+                                PreferenceRow(category: "Gender"),
+                              ],
+                            );
+                          },
+                        ),
                         Padding(
                             padding: const EdgeInsets.only(left: (25.0)),
                             child: Column(
