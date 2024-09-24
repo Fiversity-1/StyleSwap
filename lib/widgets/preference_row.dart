@@ -47,6 +47,12 @@ class PreferenceRowState extends State<PreferenceRow> {
       tags.add(Tag(
         text: preferences[i],
         category: widget.category,
+        //GPT suggested using callback for updating after tag removed
+        onDeleted: () {
+          preferencesNotifier.removePreference(widget.category, preferences[i]);
+          // Notify the parent to rebuild
+          setState(() {});
+        },
       ));
     }
     //"Add" tag at the end of each list tag list
