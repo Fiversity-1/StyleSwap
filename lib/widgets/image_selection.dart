@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_reorderable_grid_view/widgets/reorderable_builder.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -32,8 +33,6 @@ class ImageSelectionField extends FormField<List<XFile>> {
                 List<XFile> updatedList = List<XFile>.from(state.value ?? []);
                 updatedList.add(image);
                 state.didChange(updatedList);
-
-                state.didChange(updatedList);
               }
 
               // uses the ImagePicker to take an image from the host camera
@@ -47,8 +46,6 @@ class ImageSelectionField extends FormField<List<XFile>> {
 
                 List<XFile> updatedList = List<XFile>.from(state.value ?? []);
                 updatedList.add(image);
-                state.didChange(updatedList);
-
                 state.didChange(updatedList);
               }
 
@@ -180,7 +177,7 @@ class _ImageSelectionFieldState extends FormFieldState<List<XFile>>
     super.initState();
 
     controller = AnimationController(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 0),
       vsync: this,
     );
     animation = Tween<double>(begin: 1.0, end: 0.8).animate(controller);
@@ -242,7 +239,7 @@ class AddImageButtonState extends State<AddImageButton> {
       setState(() {
         _showError = true;
       });
-      Future.delayed(const Duration(milliseconds: 200), () {
+      Future.delayed(const Duration(milliseconds: 0), () {
         setState(() {
           _showError = false;
         });
@@ -253,7 +250,7 @@ class AddImageButtonState extends State<AddImageButton> {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 0),
       curve: Curves.easeInOut,
       decoration: BoxDecoration(
         color: _showError
