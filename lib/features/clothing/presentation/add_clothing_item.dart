@@ -255,15 +255,6 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                   : 2;
           return Stack(
             children: [
-              Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('lib/images/backdrop3.jpg'),
-                    opacity: 0.1,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
               GestureDetector(
                 onTap: () {
                   myFocusNodeDescription.unfocus();
@@ -273,7 +264,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 15),
+                          padding: const EdgeInsets.only(top: 15, bottom: 5),
                           child: Text(
                             instructions[activeStep],
                             style: Theme.of(context).textTheme.headlineMedium,
@@ -437,42 +428,50 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
               ),
               //GPT for floating action button (previous), modified for our usage
               //Show except when on 1st step
-              Visibility(
-                visible: !isFirstStep(),
-                child: Positioned(
-                  left: 15,
-                  bottom: 25,
-                  child: FloatingActionButton(
-                      onPressed: () {
-                        isFirstStep() ? null : previous();
-                      },
-                      child: const Icon(Icons.arrow_back_ios)),
-                ),
-              ),
-              //GPT for floating action button (next), modified for our usage
-              //Only show on pages that require validation (colours, image, description)
-              Visibility(
-                visible: activeStep == 6 || activeStep == 8 || activeStep == 9,
-                child: Positioned(
-                  right: 15,
-                  bottom: 25,
-                  child: FloatingActionButton(
-                      onPressed: () {
-                        //index doesn't matter here
-                        isMaxStep()
-                            ? descriptionValidation()
-                            : activeStep == 6
-                                ? colourValidation()
-                                : activeStep == 8
-                                    ? _formKey.currentState!.validate()
-                                    : activeStep == 9;
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 25, bottom: 25, right: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Visibility(
+                          visible: !isFirstStep(),
+                          child: FloatingActionButton(
+                              onPressed: () {
+                                isFirstStep() ? null : previous();
+                              },
+                              child: const Icon(Icons.arrow_back_ios)),
+                        ),
+                        //GPT for floating action button (next), modified for our usage
+                        //Only show on pages that require validation (colours, image, description)
+                        Visibility(
+                          visible: activeStep == 6 ||
+                              activeStep == 8 ||
+                              activeStep == 9,
+                          child: FloatingActionButton(
+                              onPressed: () {
+                                //index doesn't matter here
+                                isMaxStep()
+                                    ? descriptionValidation()
+                                    : activeStep == 6
+                                        ? colourValidation()
+                                        : activeStep == 8
+                                            ? _formKey.currentState!.validate()
+                                            : activeStep == 9;
 
-                        if (imagePresent && activeStep == 8) {
-                          next(0);
-                        }
-                      },
-                      child: const Icon(Icons.arrow_forward_ios)),
-                ),
+                                if (imagePresent && activeStep == 8) {
+                                  next(0);
+                                }
+                              },
+                              child: const Icon(Icons.arrow_forward_ios)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           );

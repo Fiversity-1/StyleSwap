@@ -111,12 +111,38 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
                   child: Center(
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15),
-                          child: Text(
-                            "Select $categories",
-                            style: Theme.of(context).textTheme.headlineMedium,
-                          ),
+                        Stack(
+                          children: [
+                            Positioned(
+                              left: 10,
+                              top: 10,
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.arrow_back_ios),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 15, bottom: 5),
+                                  child: Text(
+                                    "Select $categories",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                         Padding(
                           padding: const EdgeInsets.only(

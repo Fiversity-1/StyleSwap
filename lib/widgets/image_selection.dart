@@ -239,9 +239,7 @@ class AddImageButtonState extends State<AddImageButton> {
   void didUpdateWidget(covariant AddImageButton oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.errorText != null) {
-      setState(() {
-        _showError = true;
-      });
+      _showError = true;
       Future.delayed(const Duration(milliseconds: 200), () {
         setState(() {
           _showError = false;

@@ -58,18 +58,11 @@ class _ViewPrefencesState extends State<ViewPrefences> {
         ));
       }
       //"Add" tag at the end of each list tag list
-      tags[i].add(Chip(
-        labelPadding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-        label: SizedBox(
-          width: 15,
-          height: 15,
-          child: IconButton(
-            icon: const Icon(
-              Icons.add,
-              size: 15,
-            ),
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-            onPressed: () {
+      tags[i].add(
+        Chip(
+          labelPadding: const EdgeInsets.all(0),
+          label: GestureDetector(
+            onTap: () {
               Navigator.pushNamed(context, '/add_clothes_preferences',
                   arguments: i == 0
                       ? 'Type'
@@ -81,13 +74,26 @@ class _ViewPrefencesState extends State<ViewPrefences> {
                                   ? 'Condition'
                                   : 'Gender');
             },
+            //GPT used to increase touchable area whilst keeping icon size small.
+            child: const SizedBox(
+              width: 24, // Increase touchable area
+              height: 24,
+              child: Icon(
+                Icons.add,
+                size: 24,
+              ),
+            ),
+          ),
+          backgroundColor: Theme.of(context).hoverColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100),
+            side: BorderSide(
+              color: Theme.of(context).hoverColor,
+              width: 3,
+            ),
           ),
         ),
-        backgroundColor: Theme.of(context).hoverColor,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100), // Rounded edges
-            side: BorderSide(color: Theme.of(context).hoverColor, width: 3)),
-      ));
+      );
     }
 
     return GradientBackground(
