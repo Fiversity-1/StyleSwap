@@ -247,7 +247,7 @@ class _MessageChatState extends State<MessageChat> {
     ),
     ClipOval(
       child: Image.asset(
-        'lib/images/backdrop.jpg',
+        'lib/images/0.jpg',
         width: 100,
         height: 100,
         fit: BoxFit.cover,

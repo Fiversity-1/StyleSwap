@@ -192,9 +192,9 @@ List<ClothingItem> publicListings = [
   ClothingItem(
     id: publicItemUUIDs[0],
     userId: publicProfileUUID,
-    name: 'Clothing A',
-    location: 'Location A',
-    images: [const AssetImage('lib/images/1.jpg')],
+    name: 'Striped Shirt',
+    location: 'Gold Coast',
+    images: [const AssetImage('lib/images/0.jpg')],
     details: ClothingItemDetail(
       bio: 'Description for Clothing A',
       type: 'Shirt',
@@ -203,15 +203,15 @@ List<ClothingItem> publicListings = [
       condition: 'Good',
       colours: ['ColorA'],
       images: [
-        const AssetImage('lib/images/1.jpg'),
+        const AssetImage('lib/images/0.jpg'),
       ],
     ),
   ),
   ClothingItem(
     id: publicItemUUIDs[1],
     userId: publicProfileUUID,
-    name: 'Clothing B',
-    location: 'Location B',
+    name: 'White Shirt',
+    location: 'Mount Cotton',
     images: [const AssetImage('lib/images/2.jpg')],
     details: ClothingItemDetail(
       bio: 'Description for Clothing B',
@@ -226,24 +226,24 @@ List<ClothingItem> publicListings = [
   ClothingItem(
     id: publicItemUUIDs[2],
     userId: publicProfileUUID,
-    name: 'Clothing C',
-    location: 'Location C',
+    name: 'Red Shirt',
+    location: 'Brisbane City',
     images: [const AssetImage('lib/images/3.jpg')],
     details: ClothingItemDetail(
-      bio: 'Description for Clothing C',
-      type: 'Type C',
+      bio: 'Red Shirt bought from cotton-on',
+      type: 'Shirt',
       size: "S",
       gender: 'Male',
       condition: 'Good',
-      colours: ['ColorC'],
+      colours: ['Red'],
       images: [const AssetImage('lib/images/3.jpg')],
     ),
   ),
   ClothingItem(
     id: publicItemUUIDs[3],
     userId: publicProfileUUID,
-    name: 'Clothing D',
-    location: 'Location D',
+    name: 'Bucket Hat',
+    location: 'Capalaba',
     images: [const AssetImage('lib/images/5.jpg')],
     details: ClothingItemDetail(
       bio: 'Description for Clothing D',
@@ -258,8 +258,8 @@ List<ClothingItem> publicListings = [
   ClothingItem(
     id: publicItemUUIDs[4],
     userId: publicProfileUUID,
-    name: 'Clothing E',
-    location: 'Location E',
+    name: 'Black Shirt',
+    location: 'Windaroo',
     images: [
       const AssetImage('lib/images/1.jpg'),
       const AssetImage('lib/images/1-extra.jpg')
