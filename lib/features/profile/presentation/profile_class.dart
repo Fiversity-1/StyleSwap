@@ -234,7 +234,7 @@ List<ClothingItem> publicListings = [
       type: 'Shirt',
       size: "S",
       gender: 'Male',
-      condition: 'Good',
+      condition: 'Like new',
       colours: ['Red'],
       images: [const AssetImage('lib/images/3.jpg')],
     ),

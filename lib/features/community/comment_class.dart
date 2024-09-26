@@ -34,7 +34,7 @@ List<Comment> comments = [
     commentContent: "This looks really good!",
     time: "5:45 pm",
     user: "Steve",
-    picture: 'lib/images/profilepicture.jpg',
+    picture: 'lib/images/profilepicture2.jpg',
     like: 5,
     heart: 6,
     haha: 1,

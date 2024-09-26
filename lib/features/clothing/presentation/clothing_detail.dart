@@ -180,40 +180,45 @@ class ClothingDetail extends StatelessWidget {
                               color: Colors.yellow,
                             )
                           : null),
+                  //Colour has been modified by GPT to highlight tiles containing
+                  //any colour from list of preferred colours.
                   ListTile(
-                      selected: preferencesNotifier
-                          .getPreferences("Colour")
-                          .contains(searchResults
-                              .getListing()[0]
-                              .item
-                              .details
-                              .colours),
-                      title: Text(
-                        "Colour",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      subtitle: Text(
-                        searchResults
+                    selected: searchResults
+                        .getListing()[0]
+                        .item
+                        .details
+                        .colours
+                        .any((color) => preferencesNotifier
+                            .getPreferences("Colour")
+                            .contains(color)),
+                    title: Text(
+                      "Colour",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      searchResults
+                          .getListing()[0]
+                          .item
+                          .details
+                          .colours
+                          .join(", "),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    leading: const Icon(Icons.palette),
+                    trailing: searchResults
                             .getListing()[0]
                             .item
                             .details
                             .colours
-                            .join(", "),
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      leading: const Icon(Icons.palette),
-                      trailing: preferencesNotifier
-                              .getPreferences("Colour")
-                              .contains(searchResults
-                                  .getListing()[0]
-                                  .item
-                                  .details
-                                  .colours)
-                          ? const Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                            )
-                          : null),
+                            .any((color) => preferencesNotifier
+                                .getPreferences("Colour")
+                                .contains(color))
+                        ? const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          )
+                        : null,
+                  ),
                 ],
               ),
               //Display extra images for listing
