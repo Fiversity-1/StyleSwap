@@ -47,10 +47,10 @@ List<Comment> comments = [
   Comment(
     commentContent: "Yeah I'm keen as to go",
     time: "5:51 pm",
-    user: "Steve",
+    user: "Jacob",
     picture: 'lib/images/jacob.jpg',
     like: 1,
-    heart: 28,
+    heart: 2,
     haha: 0,
     angry: 0,
     angryed: false,

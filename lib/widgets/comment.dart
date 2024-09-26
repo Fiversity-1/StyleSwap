@@ -185,10 +185,10 @@ class CommentsState extends State<Comments> {
                                         onTap: () {},
                                         title: Row(
                                           children: [
-                                            const CircleAvatar(
+                                            CircleAvatar(
                                               radius: 15,
                                               backgroundImage: AssetImage(
-                                                  'lib/images/profilepicture.jpg'),
+                                                  comments[index].picture),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
