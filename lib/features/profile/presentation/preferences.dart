@@ -17,6 +17,7 @@ class Preferences extends StatefulWidget {
 
 class _PreferencesState extends State<Preferences> {
   //GPT used to generate safetyGuide
+
   final String safetyGuide = '''
 1. **Use the Platform’s Messaging for All Communication**
    - Always use the platform’s built-in messaging system to communicate. Avoid taking conversations to other apps to ensure your safety and privacy are protected by the platform’s security measures.
@@ -39,12 +40,16 @@ class _PreferencesState extends State<Preferences> {
 7. **No Money Involved – Stick to the Item Trade**
    - Since the platform is for item trading, not sales, no money should exchange hands. Make sure the agreed trade is strictly about the items and no one is requesting payment outside of the deal.
 
-8. **Walk Away if You Feel Uncomfortable**
+8. **Follow Proper Hygiene Practices**
+   - Ensure the items you are trading, especially clothes, are clean and hygienic. Wash items beforehand and package them appropriately to maintain cleanliness. It's courteous and reassures both parties about the quality of the exchange.
+
+9. **Walk Away if You Feel Uncomfortable**
    - If at any point during the exchange something feels off, trust your instincts. You can always leave the situation and report suspicious users to the platform.
 
-9. **Notify a Friend or Family Member**
-   - Inform someone you trust about where and when you’re meeting for the trade. Let them know the details of the person you’re trading with, and check in with them once the trade is completed.
+10. **Notify a Friend or Family Member**
+    - Inform someone you trust about where and when you’re meeting for the trade. Let them know the details of the person you’re trading with, and check in with them once the trade is completed.
 ''';
+
   late String chosenValue;
   //Firebase Implemented based on tutorial: https://firebase.google.com/codelabs/firebase-auth-in-flutter-apps#0
   //Log out via Firebase
