@@ -1,6 +1,7 @@
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +17,7 @@ class Preferences extends StatefulWidget {
 
 class _PreferencesState extends State<Preferences> {
   //GPT used to generate safetyGuide
+
   final String safetyGuide = '''
 1. **Use the Platform’s Messaging for All Communication**
    - Always use the platform’s built-in messaging system to communicate. Avoid taking conversations to other apps to ensure your safety and privacy are protected by the platform’s security measures.
@@ -38,12 +40,16 @@ class _PreferencesState extends State<Preferences> {
 7. **No Money Involved – Stick to the Item Trade**
    - Since the platform is for item trading, not sales, no money should exchange hands. Make sure the agreed trade is strictly about the items and no one is requesting payment outside of the deal.
 
-8. **Walk Away if You Feel Uncomfortable**
+8. **Follow Proper Hygiene Practices**
+   - Ensure the items you are trading, especially clothes, are clean and hygienic. Wash items beforehand and package them appropriately to maintain cleanliness. It's courteous and reassures both parties about the quality of the exchange.
+
+9. **Walk Away if You Feel Uncomfortable**
    - If at any point during the exchange something feels off, trust your instincts. You can always leave the situation and report suspicious users to the platform.
 
-9. **Notify a Friend or Family Member**
-   - Inform someone you trust about where and when you’re meeting for the trade. Let them know the details of the person you’re trading with, and check in with them once the trade is completed.
+10. **Notify a Friend or Family Member**
+    - Inform someone you trust about where and when you’re meeting for the trade. Let them know the details of the person you’re trading with, and check in with them once the trade is completed.
 ''';
+
   late String chosenValue;
   //Firebase Implemented based on tutorial: https://firebase.google.com/codelabs/firebase-auth-in-flutter-apps#0
   //Log out via Firebase
@@ -63,6 +69,12 @@ class _PreferencesState extends State<Preferences> {
     }
   }
 
+//Options for profile visibility
+  final List<String> options = [
+    'Public',
+    'Private',
+  ];
+  String? selectedValue;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -121,12 +133,84 @@ class _PreferencesState extends State<Preferences> {
               ), //End gpt
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ElevatedButton(
-                onPressed: _logOutFunction,
-                child: const Text('Log Out'),
+              padding: const EdgeInsets.only(left: 15, top: 25),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 75),
+                    child: Text("Profile Visibility",
+                        style: Theme.of(context).textTheme.bodyLarge),
+                  ),
+                  //Code example from following link used and modified:
+                  //https://pub.dev/packages/dropdown_button2
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton2<String>(
+                      isExpanded: true,
+                      hint: Text(
+                        'Public',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).hintColor,
+                        ),
+                      ),
+                      items: options
+                          .map((String item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                      value: selectedValue,
+                      onChanged: (String? value) {
+                        setState(() {
+                          selectedValue = value;
+                        });
+                      },
+                      buttonStyleData: const ButtonStyleData(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        height: 40,
+                        width: 140,
+                      ),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 25),
+              child: Row(
+                children: [
+                  Text("Account", style: Theme.of(context).textTheme.bodyLarge),
+                ],
+              ),
+            ),
+            Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: _logOutFunction,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.purple,
+                      ),
+                      child: const Text('Log Out'),
+                    ),
+                    ElevatedButton(
+                        onPressed: _logOutFunction,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Text('Delete Account')),
+                  ],
+                )),
           ]),
         ),
       ),

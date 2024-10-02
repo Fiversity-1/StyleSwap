@@ -53,7 +53,7 @@ class CustomBottomNavBar extends StatelessWidget {
             BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
             BottomNavigationBarItem(icon: Icon(Icons.add), label: ''),
             BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_today), label: ''),
+                icon: Icon(Icons.calendar_month), label: ''),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
           ],
           currentIndex: currentIndex,

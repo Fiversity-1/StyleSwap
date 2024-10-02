@@ -38,6 +38,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                 setState(() {
                   personalProfile.personalListings.removeAt(index);
                 });
+                Navigator.of(context).pop();
               },
               //GPT used for styling button
               style: TextButton.styleFrom(foregroundColor: Colors.white),

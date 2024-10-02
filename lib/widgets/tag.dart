@@ -1,9 +1,7 @@
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
 import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
-import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 
 //Tag represents a single search preference tag
 class Tag extends StatefulWidget {
@@ -11,9 +9,13 @@ class Tag extends StatefulWidget {
     super.key,
     required this.text,
     required this.category,
+    //GPT suggested using callback for updating after tag removed
+    required this.onDeleted,
   });
   final String text;
   final String category;
+  //GPT suggested using callback for updating after tag removed
+  final VoidCallback onDeleted;
 
   @override
   TagState createState() => TagState();
@@ -78,9 +80,6 @@ class TagState extends State<Tag> {
 
   @override
   Widget build(BuildContext context) {
-    final userManager = context.watch<UserManager>();
-    final preferencesNotifier = userManager.currentUser.preferences;
-
     var icon = getIconForValue(widget.category, widget.text.toLowerCase());
     return Chip(
       label: Text(widget.text == "Newwithtags"
@@ -102,9 +101,9 @@ class TagState extends State<Tag> {
           Theme.of(context).floatingActionButtonTheme.backgroundColor,
       labelStyle: Theme.of(context).textTheme.bodyLarge,
       deleteIcon: const Icon(Icons.close),
+      //GPT suggested using callback for updating after tag removed
       onDeleted: () {
-        preferencesNotifier.removePreference(widget.category, widget.text);
-        setState(() {});
+        widget.onDeleted();
       },
       deleteButtonTooltipMessage: '',
       //GPT was used for border modification of colour and rounded edges
