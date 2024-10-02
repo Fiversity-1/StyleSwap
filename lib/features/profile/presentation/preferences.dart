@@ -1,6 +1,7 @@
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -63,6 +64,12 @@ class _PreferencesState extends State<Preferences> {
     }
   }
 
+//Options for profile visibility
+  final List<String> options = [
+    'Public',
+    'Private',
+  ];
+  String? selectedValue;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -124,8 +131,50 @@ class _PreferencesState extends State<Preferences> {
               padding: const EdgeInsets.only(left: 15, top: 25),
               child: Row(
                 children: [
-                  Text("Profile Visibility",
-                      style: Theme.of(context).textTheme.bodyLarge),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 75),
+                    child: Text("Profile Visibility",
+                        style: Theme.of(context).textTheme.bodyLarge),
+                  ),
+                  //Code example from following link used and modified:
+                  //https://pub.dev/packages/dropdown_button2
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton2<String>(
+                      isExpanded: true,
+                      hint: Text(
+                        'Public',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).hintColor,
+                        ),
+                      ),
+                      items: options
+                          .map((String item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                      value: selectedValue,
+                      onChanged: (String? value) {
+                        setState(() {
+                          selectedValue = value;
+                        });
+                      },
+                      buttonStyleData: const ButtonStyleData(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        height: 40,
+                        width: 140,
+                      ),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -133,29 +182,28 @@ class _PreferencesState extends State<Preferences> {
               padding: const EdgeInsets.only(left: 15, top: 25),
               child: Row(
                 children: [
-                  Text("Account Management",
-                      style: Theme.of(context).textTheme.bodyLarge),
+                  Text("Account", style: Theme.of(context).textTheme.bodyLarge),
                 ],
               ),
             ),
             Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.only(top: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    ElevatedButton(
+                      onPressed: _logOutFunction,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.purple,
+                      ),
+                      child: const Text('Log Out'),
+                    ),
                     ElevatedButton(
                         onPressed: _logOutFunction,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                         ),
                         child: const Text('Delete Account')),
-                    ElevatedButton(
-                      onPressed: _logOutFunction,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                      ),
-                      child: const Text('Log Out'),
-                    ),
                   ],
                 )),
           ]),

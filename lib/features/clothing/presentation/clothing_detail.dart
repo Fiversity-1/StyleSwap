@@ -262,6 +262,15 @@ class ClothingDetail extends StatelessWidget {
                 itemCount:
                     searchResults.getListing()[0].item.details.images.length,
               ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text('Report Listing')),
+              ),
             ]),
           ),
         ),
