@@ -121,12 +121,43 @@ class _PreferencesState extends State<Preferences> {
               ), //End gpt
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ElevatedButton(
-                onPressed: _logOutFunction,
-                child: const Text('Log Out'),
+              padding: const EdgeInsets.only(left: 15, top: 25),
+              child: Row(
+                children: [
+                  Text("Profile Visibility",
+                      style: Theme.of(context).textTheme.bodyLarge),
+                ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 25),
+              child: Row(
+                children: [
+                  Text("Account Management",
+                      style: Theme.of(context).textTheme.bodyLarge),
+                ],
+              ),
+            ),
+            Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                        onPressed: _logOutFunction,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Text('Delete Account')),
+                    ElevatedButton(
+                      onPressed: _logOutFunction,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                      ),
+                      child: const Text('Log Out'),
+                    ),
+                  ],
+                )),
           ]),
         ),
       ),

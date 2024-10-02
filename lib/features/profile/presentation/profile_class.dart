@@ -265,12 +265,12 @@ List<ClothingItem> publicListings = [
       const AssetImage('lib/images/1-extra.jpg')
     ],
     details: ClothingItemDetail(
-      bio: 'Description for Clothing E',
-      type: 'Type E',
+      bio: 'Fresh black t-shirt',
+      type: 'Shirt',
       size: "S",
       gender: 'Male',
-      condition: 'Good',
-      colours: ['ColorE'],
+      condition: 'Like new',
+      colours: ['Black'],
       images: [
         const AssetImage('lib/images/1.jpg'),
         const AssetImage('lib/images/1-extra.jpg')
