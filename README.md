@@ -15,18 +15,10 @@ The following guide will walk you through installing the application and debuggi
 
 ### 1. Clone the Flutter Project from GitHub
 
-1. Open GitHub and navigate to the repository.
-2. Click the **Code** button and copy the repository URL.
-3. Open a terminal and run the following command to clone the repository:
+1. Open a terminal and run the following command to clone the repository:
 
     ```bash
-    git clone <repository-url>
-    ```
-
-4. Navigate to the cloned directory:
-
-    ```bash
-    cd <repository-directory>
+    git clone https://github.com/Fiversity-1/StyleSwap.git
     ```
 
 ### 2. Install Flutter SDK
