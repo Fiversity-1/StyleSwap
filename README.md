@@ -15,7 +15,7 @@ The following guide will walk you through installing the application and debuggi
 
 ### 1. Clone the Flutter Project from GitHub
 
-1. Open GitHub and navigate to the repository you want to clone.
+1. Open GitHub and navigate to the repository.
 2. Click the **Code** button and copy the repository URL.
 3. Open a terminal and run the following command to clone the repository:
 
