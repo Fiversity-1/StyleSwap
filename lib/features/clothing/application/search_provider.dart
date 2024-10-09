@@ -23,7 +23,7 @@ class Search with ChangeNotifier {
     this.searchParams = searchParams;
   }
 
-  void setListings() {
+  void resetSearch() {
     // final List displayCards = [];
     // int funFactCount = 0;
     // int totalItems = searchResults.length;
@@ -37,8 +37,7 @@ class Search with ChangeNotifier {
     //     funFactCount++;
     //   }
     // }
-    _listings = [];
-    notifyListeners();
+    searchExhausted = false;
   }
   //End gpt
 

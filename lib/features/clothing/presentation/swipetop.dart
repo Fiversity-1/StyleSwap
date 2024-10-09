@@ -14,6 +14,8 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:toastification/toastification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'clothing_item_build.dart';
+
 //Page for swiping through public listings
 class SwipePageTop extends StatefulWidget {
   const SwipePageTop({super.key});
@@ -23,10 +25,9 @@ class SwipePageTop extends StatefulWidget {
 }
 
 class _SwipePageTopState extends State<SwipePageTop> {
-  static List displayCards = [];
-  int _counter = 0;
   //use this for indexing queries/views
   late TutorialCoachMark explainer;
+  int _cardsSwiped = 0;
   List<TargetFocus> listTargets = [];
   bool _hasRun = false;
 //Start GPT, tutorial runs once per device, delay searchResult init
@@ -38,12 +39,16 @@ class _SwipePageTopState extends State<SwipePageTop> {
         createTutorial();
         showTutorial();
       }
-    });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final searchResults = Provider.of<Search>(context, listen: false);
-      searchResults.setListings();
-      setState(() {
-        displayCards = List.from(searchResults.getListing());
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final searchResults = Provider.of<Search>(context, listen: false);
+
+        if (searchResults.getListing().isEmpty) {
+          searchResults.resetSearch();
+        }
+
+        setState(() {
+          _cardsSwiped = 0;
+        });
       });
     });
   }
@@ -57,10 +62,6 @@ class _SwipePageTopState extends State<SwipePageTop> {
     }
   }
 //End ChatGPT
-
-  void _incrementCounter() {
-    _counter++;
-  }
 
   void _handleRemove(Search searchResults, int previousIndex) {
     searchResults.removeListing(previousIndex);
@@ -131,7 +132,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                     : width * 0.8,
                                 child: searchResults.checkCardType() != "Empty"
                                     ? CardSwiper(
-                                        cardsCount: displayCards.length,
+                                        cardsCount: searchResults.getListing().length + 1 + _cardsSwiped,
                                         scale: 0.6,
                                         isLoop: false,
                                         numberOfCardsDisplayed: 2,
@@ -143,7 +144,15 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                             index,
                                             percentThresholdX,
                                             percentThresholdY) {
-                                          return displayCards[index];
+                                          index = index - _cardsSwiped;
+
+                                          if (index < searchResults.getListing().length) {
+                                            var clothingItem = searchResults.getListing()[index];
+
+                                            return ClothingCard(item: clothingItem);
+                                          }
+
+                                          return const NoResultCard();
                                         },
                                       )
                                     //Show no result image once user has run
@@ -158,7 +167,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         left: 17.5,
                         child: Text(
                           searchResults.checkCardType() == "Clothes"
-                              ? searchResults.getListing()[0].item.name
+                              ? searchResults.getListing()[0].user ?? "Anonymous"
                               : searchResults.checkCardType() == "Fact"
                                   ? "Fun Fact!"
                                   : "Sorry!",
@@ -182,7 +191,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         left: 17.5,
                         child: Text(
                             searchResults.checkCardType() == "Clothes"
-                                ? searchResults.getListing()[0].item.location
+                                ? searchResults.getListing()[0].distance ?? "Unknown"
                                 : searchResults.checkCardType() == "Fact"
                                     ? ""
                                     : "No Cards left!",
@@ -193,8 +202,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         //ony display swipe up icon for intial swipes otherwise
                         //the ui is too cluttered
                         child: Visibility(
-                          visible: searchResults.checkCardType() == "Clothes" &&
-                              _counter < 3,
+                          visible: searchResults.checkCardType() == "Clothes",
                           child: FloatingActionButton(
                             onPressed: () {},
                             elevation: 0,
@@ -227,99 +235,105 @@ class _SwipePageTopState extends State<SwipePageTop> {
 
   bool handleSwipe(previousIndex, currentIndex,
       direction) {
-    if (direction.name == 'left') {
-      _incrementCounter();
-    }
     //Keep track of interest listings on
     //non fun fact cards
-    if (direction.name == 'right' &&
-        searchResults.getListing()[0]
-        is! FunFactCard) {
-      _incrementCounter();
-      //GPT provided provider logic
-      final userManager =
-      Provider.of<UserManager>(
-          context,
-          listen: false);
+    try {
+      if (direction == CardSwiperDirection.right &&
+          searchResults.getListing()[0]
+          is! FunFactCard) {
+        //GPT provided provider logic
+        final userManager =
+        Provider.of<UserManager>(
+            context,
+            listen: false);
 
-      final currentUser =
-          userManager.currentUser;
-      final listerProfile = userManager
-          .getUserById(searchResults
-          .getListing()[0]
-          .item
-          .userId);
+        final currentUser =
+            userManager.currentUser;
 
-      currentUser.addInterestedListing(
-          ChatListing(
-            currentUserId: currentUser.id,
-            otherUserId: listerProfile.id,
-            name: listerProfile.name,
-            previewContent: "New Match",
-            time: "Now",
-            opened: false,
-            image: searchResults
-                .getListing()[0]
-                .item
-                .images[0],
-          ));
-      //Show toaster when match occurs
-      //Rowan needs to move based on integration
-      //Match doesn't occur on instant swipe right
-      toastification.showCustom(
-        context: context,
-        autoCloseDuration:
-        const Duration(seconds: 3),
-        alignment: Alignment.topLeft,
-        builder: (BuildContext context,
-            ToastificationItem holder) {
-          return Container(
-            decoration: BoxDecoration(
-                borderRadius:
-                BorderRadius.circular(
-                    8),
-                color: Theme.of(context)
-                    .hoverColor),
-            padding:
-            const EdgeInsets.all(16),
-            margin:
-            const EdgeInsets.all(8),
-            child: Column(
-              crossAxisAlignment:
-              CrossAxisAlignment
-                  .center,
-              children: [
-                const Text(
-                    'You\'ve got a New Match!',
-                    style: TextStyle(
-                        fontWeight:
-                        FontWeight
-                            .bold)),
-                const SizedBox(
-                    height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    final chat = chatManager
-                        .findChatByUserId(
-                        listerProfile
-                            .id);
-                    chatManager
-                        .selectChat(
-                        chat!.id);
-                    Navigator.pushNamed(
-                      context,
-                      '/chat',
-                    );
-                  },
-                  child: const Text(
-                      'Send a Message!'),
-                ),
-              ],
-            ),
-          );
-        },
-      );
+        final clothingItem = searchResults
+            .getListing()[0];
+
+        currentUser.addInterestedListing(
+            ChatListing(
+              currentUserId: currentUser.id,
+              otherUserId: clothingItem.userId,
+              name: clothingItem.user ?? "Anonymous",
+              previewContent: "New Match",
+              time: "Now",
+              opened: false,
+              image: searchResults
+                  .getListing()[0]
+                  .images.length > 1 ? searchResults
+                  .getListing()[0]
+                  .images[0] : const AssetImage('lib/images/noImage.png'),
+            ));
+        //Show toaster when match occurs
+        //Rowan needs to move based on integration
+        //Match doesn't occur on instant swipe right
+        toastification.showCustom(
+          context: context,
+          autoCloseDuration:
+          const Duration(seconds: 3),
+          alignment: Alignment.topLeft,
+          builder: (BuildContext context,
+              ToastificationItem holder) {
+            return Container(
+              decoration: BoxDecoration(
+                  borderRadius:
+                  BorderRadius.circular(
+                      8),
+                  color: Theme
+                      .of(context)
+                      .hoverColor),
+              padding:
+              const EdgeInsets.all(16),
+              margin:
+              const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment:
+                CrossAxisAlignment
+                    .center,
+                children: [
+                  const Text(
+                      'You\'ve got a New Match!',
+                      style: TextStyle(
+                          fontWeight:
+                          FontWeight
+                              .bold)),
+                  const SizedBox(
+                      height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      final chat = chatManager
+                          .findChatByUserId(
+                          clothingItem
+                              .userId);
+                      chatManager
+                          .selectChat(
+                          chat!.id);
+                      Navigator.pushNamed(
+                        context,
+                        '/chat',
+                      );
+                    },
+                    child: const Text(
+                        'Send a Message!'),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      }
+    } catch (e) {
+      print(e);
+      return false;
     }
+
+    setState(() {
+      _cardsSwiped++;
+    });
+
     _handleRemove(searchResults, 0);
     return true;
   }

@@ -6,6 +6,8 @@ import 'package:clothing_swap/features/clothing/presentation/clothing_item_class
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
+import '../domain/clothing_info.dart';
+
 Future<List<dynamic>> searchClothes(ClothingSearch search) async {
   try {
     // Get the current user
@@ -30,6 +32,7 @@ Future<List<dynamic>> searchClothes(ClothingSearch search) async {
       // Check the response status
       if (response.statusCode == 200) {
         print('Request successful: ${response.body}');
+        return convertApiResponseToClothingInfo(jsonDecode(response.body));
       } else {
         print('Request failed with status: ${response.statusCode}');
       }
