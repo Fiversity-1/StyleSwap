@@ -1,3 +1,4 @@
+//Comment class with 3 example comments
 class Comment {
   final String commentContent;
   final String time;
@@ -10,9 +11,8 @@ class Comment {
   bool hearted;
   bool hahaed;
   bool angryed;
-
   int angry;
-  //Image
+
   Comment({
     required this.commentContent,
     required this.time,
@@ -31,43 +31,28 @@ class Comment {
 
 List<Comment> comments = [
   Comment(
-    commentContent:
-        "What if there was a massive message that took over two lines two liens two liens two lines two liens",
-    time: "Now",
+    commentContent: "This looks really good!",
+    time: "5:45 pm",
     user: "Steve",
-    picture: 'lib/images/profilepicture.jpg',
+    picture: 'lib/images/profilepicture2.jpg',
     like: 5,
     heart: 6,
-    haha: 7,
-    angry: 3,
+    haha: 1,
+    angry: 0,
     angryed: false,
     hahaed: false,
     liked: false,
     hearted: false,
   ),
   Comment(
-    commentContent: "So Keen!",
-    time: "Now",
-    user: "Steve",
-    picture: 'lib/images/profilepicture.jpg',
-    like: 5,
-    heart: 6,
-    haha: 7,
-    angry: 3,
-    angryed: false,
-    hahaed: false,
-    liked: false,
-    hearted: false,
-  ),
-  Comment(
-    commentContent: "So Keen!",
-    time: "Now",
-    user: "Steve",
-    picture: 'lib/images/profilepicture.jpg',
-    like: 5,
-    heart: 6,
-    haha: 7,
-    angry: 3,
+    commentContent: "Yeah I'm keen as to go",
+    time: "5:51 pm",
+    user: "Jacob",
+    picture: 'lib/images/jacob.jpg',
+    like: 1,
+    heart: 2,
+    haha: 0,
+    angry: 0,
     angryed: false,
     hahaed: false,
     liked: false,

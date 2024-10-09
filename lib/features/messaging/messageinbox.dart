@@ -1,4 +1,3 @@
-// signup.dart
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
+//Display Message Inbox of User
 class Message extends StatefulWidget {
   const Message({super.key, required this.title});
   final String title;
@@ -37,10 +37,12 @@ class _MessageState extends State<Message> {
               child: ListView(
                 children: List.generate(chatManager.chats.length,
                     //Slideable example modified from https://pub.dev/packages/flutter_slidable
+                    //Slider for mark as read, block and delete
                     (index) {
                   final chat = chatManager.chats[index];
                   return Slidable(
-                    // Key, chat from chatgpt
+                    // Key implemented based on GPT recommendation for
+                    // keeping track of each unique slidable
                     key: ValueKey(chat),
 
                     endActionPane: ActionPane(
@@ -54,7 +56,8 @@ class _MessageState extends State<Message> {
                           visible: !chat.opened,
                           child: SlidableAction(
                             onPressed: (context) {
-                              //CHatp GPT for future delay - allow slideable to go back before setState
+                              //GPT used for future delay - allow slideable to go back before setState is called
+                              //Prevent half of the slider not having time to update to correct colour
                               Future.delayed(
                                 const Duration(milliseconds: 200),
                                 () {

@@ -31,7 +31,8 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  //Provider code modified by GPT to include multiple instaces
+  //Code for Provider has been modifiedd by GPT. It was to include multiple instances of provider (i.e. "MultiProvider()")
+  //Provider being used for state management.
   runApp(
     MultiProvider(
       providers: [
@@ -67,25 +68,27 @@ class MyApp extends StatelessWidget {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
+          //Checking route of Firebase Authentication
           if (snapshot.connectionState == ConnectionState.waiting) {
             if (kDebugMode) {
-              print("lalalallalalalalallalaala");
+              print("loading");
             }
             return const CircularProgressIndicator();
           } else if (snapshot.hasData) {
             if (kDebugMode) {
-              print("SUCESSSSSSSSSSSSSSS ROUTE TO PERSONAL");
+              print("SUCESS ROUTE TO PERSONAL");
             }
             return const PersonalProfile();
           } else {
             if (kDebugMode) {
-              print("start paaaaaaaaaaaaaaaaaaaaaaaaaaagggggggggeeee");
+              print("start page");
             }
             return const StartPage(title: 'StartPage');
           }
         },
       ),
       theme: themeSwitcher.themeData,
+      //Routes for navigation between pages
       routes: {
         '/startpage': (context) => const StartPage(title: 'StartPage'),
         '/personal_profile': (context) => const PersonalProfile(),

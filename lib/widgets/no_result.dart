@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//No result card that is displayed when there are no listings left in search
 class NoResultCard extends StatefulWidget {
   const NoResultCard({super.key});
 
@@ -15,6 +16,7 @@ class NoResultCardState extends State<NoResultCard> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      //Different Colour Schemes and Device Type require different image
       child: Image(
         image: (!kIsWeb &&
                 Provider.of<ThemeSwitcher>(context).themeData == lightTheme)

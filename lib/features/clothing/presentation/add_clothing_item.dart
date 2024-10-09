@@ -10,7 +10,9 @@ import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:string_extensions/string_extensions.dart';
 import 'package:toastification/toastification.dart';
 
-//GPT to change to statefulwidget instead of hook, use setState for dynamic changes, make sure to use () not just reference other setState won't work lol
+//GPT to change to statefulwidget instead of hook
+//GPT to then implement setState for dynamic changes (as no longer hook),
+//GPT then used to make sure to use "setState()" instead of "setState"
 class AddClothingItemPage extends StatefulWidget {
   const AddClothingItemPage({super.key});
 
@@ -18,6 +20,7 @@ class AddClothingItemPage extends StatefulWidget {
   State<AddClothingItemPage> createState() => _AddClothingItemPageState();
 }
 
+//Determine which mapping of enums, FaIcon to use
 Map<Enum, FaIcon> _pickCategory(int order) {
   switch (order) {
     case 0:
@@ -41,7 +44,6 @@ Map<Enum, FaIcon> _pickCategory(int order) {
 }
 
 class _AddClothingItemPageState extends State<AddClothingItemPage> {
-  //final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ClothingInfo clothingInfo = ClothingInfo();
   int activeStep = 0;
   int typeIndex = 0;
@@ -56,6 +58,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     Map<Enum, FaIcon> category = _pickCategory(activeStep);
+    //Title for each stage in adding new item
     List<String> instructions = [
       "Select Clothing Category",
       "Select Type",
@@ -75,6 +78,8 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       return activeStep == numSteps;
     }
 
+    //active 1,2,3 are specific to which clothing type category is picked
+    //therefore need to skip over these pages.
     void previous() {
       setState(() {
         if (activeStep == 4) {
@@ -96,6 +101,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
     }
 
     void next(int index) {
+      //active 1,2,3 are specific to which clothing type category is picked
       //Skip other sub type categories after picked
       if (activeStep == 0) {
         if (index == 0) {
@@ -116,7 +122,8 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       setState(() {});
     }
 
-//GPT suggest custom validation when not using form key
+    //GPT suggest custom validation when not using form key
+    //Function shows toast when no colours are given and user clicks next
     void colourValidation() {
       if (selectedColours.isEmpty)
       //End
@@ -149,6 +156,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       }
     }
 
+    //Function shows toast when no description given
     void descriptionValidation() {
       if (_controllerDescription.text == "") {
         toastification.showCustom(
@@ -179,6 +187,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       }
     }
 
+    //Function shows toaster when no images are given
     void imageMissing(List<XFile>? images) {
       if (images!.isEmpty) {
         toastification.showCustom(
@@ -210,6 +219,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       }
     }
 
+    //GPT generated function for extracting and formatting names of enums from a map
     String getText(Map<Enum, FaIcon> category, int index) {
       return category == letteredSizeIcons
           ? category.keys
@@ -221,6 +231,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
           : category.keys.toList()[index].toString().split('.').last.capitalize;
     }
 
+    //Handle adding/removing colours for displaying purposes
     void handleColour(int index) {
       if (selectedColours.contains(getText(category, index))) {
         selectedColours.remove(getText(category, index));
@@ -233,6 +244,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
     return GradientBackground(
         child: Scaffold(
       backgroundColor: Colors.transparent,
+      //GPT used for LayoutBuilder
       body: LayoutBuilder(
         builder: (context, constraints) {
           // Define grid column count based on available width
@@ -243,15 +255,6 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                   : 2;
           return Stack(
             children: [
-              Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('lib/images/backdrop3.jpg'),
-                    opacity: 0.1,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
               GestureDetector(
                 onTap: () {
                   myFocusNodeDescription.unfocus();
@@ -261,14 +264,14 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 15),
+                          padding: const EdgeInsets.only(top: 15, bottom: 5),
                           child: Text(
                             instructions[activeStep],
                             style: Theme.of(context).textTheme.headlineMedium,
                           ),
                         ),
                         Visibility(
-                          //Not visible for images and description
+                          //Grid of icons not visible for images and description steps
                           visible: activeStep != 8 && activeStep != 9,
                           child: Padding(
                             padding: const EdgeInsets.only(
@@ -303,14 +306,12 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                                           : Colors.transparent,
                                       borderRadius: BorderRadius.circular(10),
                                       boxShadow: [
+                                        //GPT used for BoxShadow styling
                                         BoxShadow(
-                                          color: Colors.black.withOpacity(
-                                              0.25), // Shadow color and opacity
-                                          spreadRadius:
-                                              2, // Shadow spread radius
-                                          blurRadius: 6, // Shadow blur radius
-                                          offset: const Offset(
-                                              0, 4), // Shadow offset
+                                          color: Colors.black.withOpacity(0.25),
+                                          spreadRadius: 2,
+                                          blurRadius: 6,
+                                          offset: const Offset(0, 4),
                                         ),
                                       ],
                                     ),
@@ -318,6 +319,8 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
+                                        //Text handling for condition strings
+                                        //These enums contain multiple strings
                                         Text(
                                             getText(category, index) ==
                                                     "Newwithtags"
@@ -357,6 +360,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                             ),
                           ),
                         ),
+                        //Only display when up to description step
                         Visibility(
                           visible: activeStep == 9,
                           child: SizedBox(
@@ -364,6 +368,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                             child: Padding(
                               padding:
                                   const EdgeInsets.only(top: 20, bottom: 20),
+                              //GPT used for aid in styling textfield
                               child: TextField(
                                 focusNode: myFocusNodeDescription,
                                 textInputAction: TextInputAction.done,
@@ -380,27 +385,24 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                                   hintStyle:
                                       Theme.of(context).textTheme.bodyLarge,
                                   filled: true,
-                                  // Define the border style for both enabled and focused states
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Theme.of(context).hoverColor,
-                                        width: 1), // Border color and width
-                                    borderRadius: BorderRadius.circular(
-                                        15), // Customize the border radius
+                                        width: 1),
+                                    borderRadius: BorderRadius.circular(15),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Theme.of(context).hoverColor,
-                                        width:
-                                            1), // Same border for focused state
-                                    borderRadius: BorderRadius.circular(
-                                        8), // Customize the border radius
+                                        width: 1),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
+                        //Show image selection field only when up to step 8
                         Visibility(
                             visible: activeStep == 8,
                             child: SizedBox(
@@ -424,43 +426,52 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                   ),
                 ),
               ),
-              //Chat GPT for floating action button, modified
-              Visibility(
-                visible: !isFirstStep(),
-                child: Positioned(
-                  left: 15,
-                  bottom:
-                      25, // Adjust this value to place it higher from the bottom
-                  child: FloatingActionButton(
-                      onPressed: () {
-                        isFirstStep() ? null : previous();
-                      },
-                      child: const Icon(Icons.arrow_back_ios)),
-                ),
-              ),
-              Visibility(
-                visible: activeStep == 6 || activeStep == 8 || activeStep == 9,
-                child: Positioned(
-                  right: 15,
-                  bottom:
-                      25, // Adjust this value to place it higher from the bottom
-                  child: FloatingActionButton(
-                      onPressed: () {
-                        //index doesn't matter here
-                        isMaxStep()
-                            ? descriptionValidation()
-                            : activeStep == 6
-                                ? colourValidation()
-                                : activeStep == 8
-                                    ? _formKey.currentState!.validate()
-                                    : activeStep == 9;
+              //GPT for floating action button (previous), modified for our usage
+              //Show except when on 1st step
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 25, bottom: 25, right: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Visibility(
+                          visible: !isFirstStep(),
+                          child: FloatingActionButton(
+                              onPressed: () {
+                                isFirstStep() ? null : previous();
+                              },
+                              child: const Icon(Icons.arrow_back_ios)),
+                        ),
+                        //GPT for floating action button (next), modified for our usage
+                        //Only show on pages that require validation (colours, image, description)
+                        Visibility(
+                          visible: activeStep == 6 ||
+                              activeStep == 8 ||
+                              activeStep == 9,
+                          child: FloatingActionButton(
+                              onPressed: () {
+                                //index doesn't matter here
+                                isMaxStep()
+                                    ? descriptionValidation()
+                                    : activeStep == 6
+                                        ? colourValidation()
+                                        : activeStep == 8
+                                            ? _formKey.currentState!.validate()
+                                            : activeStep == 9;
 
-                        if (imagePresent && activeStep == 8) {
-                          next(0);
-                        }
-                      },
-                      child: const Icon(Icons.arrow_forward_ios)),
-                ),
+                                if (imagePresent && activeStep == 8) {
+                                  next(0);
+                                }
+                              },
+                              child: const Icon(Icons.arrow_forward_ios)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           );

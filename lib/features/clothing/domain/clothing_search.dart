@@ -2,7 +2,6 @@
 import 'dart:ffi';
 
 import 'clothing_info.dart';
-import 'clothing_type.dart';
 
 class ClothingSearch {
   final List<ClothingType>? types;

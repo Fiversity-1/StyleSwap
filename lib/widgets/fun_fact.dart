@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//FunFact Card Widget for displaying in search results periodically
 class FunFactCard extends StatefulWidget {
   final int index;
 
@@ -18,6 +19,7 @@ class FunFactCardState extends State<FunFactCard> {
   Widget build(BuildContext context) {
     return Card(
       child: Image(
+        //Logic for selecting images for different colour scheme and devices
         image: (!kIsWeb &&
                 Provider.of<ThemeSwitcher>(context).themeData == lightTheme)
             ? funFactLightPhone[widget.index]
@@ -35,6 +37,7 @@ class FunFactCardState extends State<FunFactCard> {
   }
 }
 
+//List of different images for different colour scheme and devices
 List<AssetImage> funFactDarkPhone = [
   const AssetImage('lib/images/funFact1PhoneDark.png'),
   const AssetImage('lib/images/funFact2PhoneDark.png'),

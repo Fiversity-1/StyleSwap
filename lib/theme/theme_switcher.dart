@@ -2,6 +2,7 @@ import 'package:clothing_swap/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 //https://www.youtube.com/watch?v=-jdtfJe_sII Mitch Koko code modified
+//used for light and dark theme implementation
 class ThemeSwitcher with ChangeNotifier {
   ThemeData _themeData = darkTheme;
 

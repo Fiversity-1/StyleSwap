@@ -1,28 +1,28 @@
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
 import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
-import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
-import 'package:clothing_swap/features/clothing/domain/clothing_type.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 
-import '../features/clothing/domain/clothing_type.dart';
-
+//Tag represents a single search preference tag
 class Tag extends StatefulWidget {
   const Tag({
     super.key,
     required this.text,
     required this.category,
+    //GPT suggested using callback for updating after tag removed
+    required this.onDeleted,
   });
   final String text;
   final String category;
+  //GPT suggested using callback for updating after tag removed
+  final VoidCallback onDeleted;
 
   @override
   TagState createState() => TagState();
 }
 
 class TagState extends State<Tag> {
-//Modified Chat GPT to convert string to enum
+//getIconForValue has been modified by GPT to convert string to enum
   FaIcon? getIconForValue(String category, String value, {double? newSize}) {
     FaIcon? originalIcon;
 
@@ -80,9 +80,6 @@ class TagState extends State<Tag> {
 
   @override
   Widget build(BuildContext context) {
-    final userManager = context.watch<UserManager>();
-    final preferencesNotifier = userManager.currentUser.preferences;
-
     var icon = getIconForValue(widget.category, widget.text.toLowerCase());
     return Chip(
       label: Text(widget.text == "Newwithtags"
@@ -94,7 +91,7 @@ class TagState extends State<Tag> {
                   : widget.text == "Wellworn"
                       ? "Well worn"
                       : widget.text),
-      //avatar icon lookup chatgpt
+      // GPT recommended using this approach for finding the correct icon to use
       avatar: widget.category != "Colour"
           ? FaIcon(icon!.icon,
               size: 20, color: Theme.of(context).iconTheme.color)
@@ -104,14 +101,14 @@ class TagState extends State<Tag> {
           Theme.of(context).floatingActionButtonTheme.backgroundColor,
       labelStyle: Theme.of(context).textTheme.bodyLarge,
       deleteIcon: const Icon(Icons.close),
+      //GPT suggested using callback for updating after tag removed
       onDeleted: () {
-        preferencesNotifier.removePreference(widget.category, widget.text);
-        setState(() {});
+        widget.onDeleted();
       },
       deleteButtonTooltipMessage: '',
-      //GPT for border modification
+      //GPT was used for border modification of colour and rounded edges
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30), // Rounded edges
+          borderRadius: BorderRadius.circular(30),
           side: BorderSide(color: Theme.of(context).hoverColor, width: 2)),
     );
   }

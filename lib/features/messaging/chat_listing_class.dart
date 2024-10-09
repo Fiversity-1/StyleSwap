@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
-//Original code modified by chatGPT to incorporate better state management
+//GPT used to this implement this page for state management of ChatListings
+//ChatListings have a list of ChatMessages
 
 class ChatListing {
   final String id;
@@ -29,6 +30,7 @@ class ChatListing {
   })  : id = id ?? const Uuid().v4(),
         messages = messages ?? [];
 
+  //Update whenever chat opened
   void updatePreview(String content, String timestamp) {
     previewContent = content;
     time = timestamp;
@@ -49,7 +51,7 @@ class ChatManager with ChangeNotifier {
   ChatManager(this.userManager) {
     _initializeChats();
   }
-
+  //Determine id of current chat opened
   List<ChatListing> get chats => _chats;
   ChatListing? get selectedChat {
     if (_selectedChatId == null) return null;
@@ -90,6 +92,7 @@ class ChatManager with ChangeNotifier {
     notifyListeners();
   }
 
+  //Determine whether in-chat proposed trade is accepted
   void updateTradeAcceptance(String chatId, String messageId) {
     final chat = _chats.firstWhere((chat) => chat.id == chatId);
     final message = chat.messages.firstWhere((msg) => msg.id == messageId);
@@ -97,6 +100,7 @@ class ChatManager with ChangeNotifier {
     notifyListeners();
   }
 
+  //Determine whether in-chat proposed trade is declined
   void updateTradeDecline(String chatId, String messageId) {
     final chat = _chats.firstWhere((chat) => chat.id == chatId);
     final message = chat.messages.firstWhere((msg) => msg.id == messageId);
@@ -104,6 +108,7 @@ class ChatManager with ChangeNotifier {
     notifyListeners();
   }
 
+  //update time and string preview when chat opened
   void setChatOpened(
       String chatId, bool opened, String preview, String timestamp) {
     final chat = _chats.firstWhere((chat) => chat.id == chatId);
@@ -118,6 +123,7 @@ class ChatManager with ChangeNotifier {
   }
 }
 
+//Chat message class
 class ChatMessage {
   final String id; // Unique identifier for each message
   final String messageContent;
@@ -137,8 +143,8 @@ class ChatMessage {
     required this.messageType,
     required this.time,
     required this.type,
-    required this.senderUserId, // Required parameter
-    required this.receiverUserId, // Required parameter
+    required this.senderUserId,
+    required this.receiverUserId,
     this.images,
     this.additionalListings,
     this.accepted,

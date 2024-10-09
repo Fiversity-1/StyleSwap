@@ -1,14 +1,16 @@
-// profile.dart
 import 'package:clothing_swap/features/profile/data/profile_api.dart';
+import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
+//Complete new profile registration (after google sign-up)
 class NewProfile extends StatefulWidget {
   const NewProfile({super.key});
 
@@ -25,7 +27,8 @@ class NewProfileState extends State<NewProfile> {
   String lat = "";
   String long = "";
 
-//AI generated
+//GPT used for terms and condition generation
+//GPT used for checkValue logic for terms and condition validation
   bool checkedValue = false;
   bool isLoading = false;
   final String termsAndConditions = '''
@@ -70,11 +73,13 @@ For any questions or concerns about these terms and conditions, please contact o
 
   @override
   Widget build(BuildContext context) {
+    final userManager = Provider.of<UserManager>(context, listen: false);
+
     double width = MediaQuery.of(context).size.width;
-    //GPT for fixing overflow pixels
     return GradientBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        //GPT used for fixing overflow pixels (resizeToAvoidBottomInset)
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -152,21 +157,17 @@ For any questions or concerns about these terms and conditions, please contact o
                                 hintStyle:
                                     Theme.of(context).textTheme.bodyLarge,
                                 filled: true,
-                                // Define the border style for both enabled and focused states
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Theme.of(context).hoverColor,
-                                      width: 1), // Border color and width
-                                  borderRadius: BorderRadius.circular(
-                                      15), // Customize the border radius
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(15),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Theme.of(context).hoverColor,
-                                      width:
-                                          1), // Same border for focused state
-                                  borderRadius: BorderRadius.circular(
-                                      8), // Customize the border radius
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
                             ),
@@ -184,7 +185,7 @@ For any questions or concerns about these terms and conditions, please contact o
                             ),
                             _placesAutoCompleteTextField(),
                             const SizedBox(height: 15),
-                            //modified by chatGpt
+                            //GPT used for styling scrollable box for terms and conditions
                             SizedBox(
                               height: 150,
                               child: SingleChildScrollView(
@@ -227,42 +228,50 @@ For any questions or concerns about these terms and conditions, please contact o
                               controlAffinity: ListTileControlAffinity.leading,
                             ),
                             const SizedBox(height: 20),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(),
-                          onPressed: () async {
-                            if ((checkedValue == false) ||
-                                (lat == "" || long == "") ||
-                                (_controllerBio.text == "")) {
-                              toastification.showCustom(
-                                context: context,
-                                autoCloseDuration: const Duration(seconds: 3),
-                                alignment: Alignment.topCenter,
-                                builder: (BuildContext context, ToastificationItem holder) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: Theme.of(context).hoverColor,
-                                    ),
-                                    padding: const EdgeInsets.all(16),
-                                    margin: const EdgeInsets.all(8),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          (_controllerBio.text == "")
-                                              ? "Please enter a bio"
-                                              : (lat == "" || long == "")
-                                              ? "Please enter a valid location"
-                                              : "Please read and accept the terms and conditions",
-                                          style: const TextStyle(fontWeight: FontWeight.bold),
-                                        ),
-                                        const SizedBox(height: 16),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
-                            } else {
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(),
+                                onPressed: () async {
+                                  //Validation; only accept when bio, location is not null
+                                  //Make sure terms and condition box ticked
+                                  if ((checkedValue == false) ||
+                                      (lat == "" || long == "") ||
+                                      (_controllerBio.text == "")) {
+                                    toastification.showCustom(
+                                      context: context,
+                                      autoCloseDuration:
+                                          const Duration(seconds: 3),
+                                      alignment: Alignment.topCenter,
+                                      builder: (BuildContext context,
+                                          ToastificationItem holder) {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            color: Theme.of(context).hoverColor,
+                                          ),
+                                          padding: const EdgeInsets.all(16),
+                                          margin: const EdgeInsets.all(8),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                  (_controllerBio.text == "")
+                                                      ? "Please enter a bio"
+                                                      : (lat == "" ||
+                                                              long == "")
+                                                          ? "Please enter a valid location"
+                                                          : "Please read and accept the terms and conditions",
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                              const SizedBox(height: 16),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  } else {
                               setState(() {
                                 isLoading = true;
                               });
@@ -278,6 +287,9 @@ For any questions or concerns about these terms and conditions, please contact o
                                   }
                                 }
 
+                                // switch the user to reflect new user.
+                                userManager.switchUser(Profile.fromUser(FirebaseAuth.instance.currentUser!));
+
                                 Navigator.pushNamedAndRemoveUntil(context, '/personal_profile', (route) => false);
                               } finally {
                                 setState(() {
@@ -287,7 +299,7 @@ For any questions or concerns about these terms and conditions, please contact o
                             }
                           },
                           child: isLoading
-                              ? CircularProgressIndicator(
+                              ? const CircularProgressIndicator(
                             color: Colors.white,
                           )
                               : const Text('Complete', style: TextStyle(fontSize: 20)),
@@ -306,7 +318,8 @@ For any questions or concerns about these terms and conditions, please contact o
     );
   }
 
-//https://pub.dev/packages/google_places_flutter, modified Chat GPT
+//https://pub.dev/packages/google_places_flutter package used for determining location
+//This template was modified by GPT to handle decoration changes.
   Widget _placesAutoCompleteTextField() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 0),
@@ -320,14 +333,13 @@ For any questions or concerns about these terms and conditions, please contact o
           ),
           borderRadius: BorderRadius.circular(15),
         ),
-        googleAPIKey:
-            "AIzaSyB1h8eTsCt1ykA4awlzGB0nQ9eYewHXB88", // Replace with your API key
+        googleAPIKey: "AIzaSyB1h8eTsCt1ykA4awlzGB0nQ9eYewHXB88",
         inputDecoration: InputDecoration(
           hintText: "Enter your location",
           hintStyle: Theme.of(context).textTheme.bodyLarge,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          border: InputBorder.none, // Remove default border
+          border: InputBorder.none,
           suffixIcon: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {

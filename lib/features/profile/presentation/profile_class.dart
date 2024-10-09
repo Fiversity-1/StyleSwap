@@ -1,19 +1,21 @@
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
 import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 
-//Learnt how to use provider code from Chat GPT, found in main and will be used throughout project
+//GPT used to learn and implement provider code for user state management.
 //Mostly follows the same format as Theme Provider.
 class Profile with ChangeNotifier {
-  final String id;
-  final String name;
-  String bio;
-  AssetImage profilePicture;
+  late final String id;
+  late final String name;
+  late String bio;
+  late AssetImage profilePicture;
   List<ClothingItem> personalListings;
   List<ChatListing> interestedListings;
-  PreferencesNotifier preferences; // Added PreferencesNotifier
+  PreferencesNotifier preferences;
 
   Profile({
     required this.id,
@@ -22,37 +24,53 @@ class Profile with ChangeNotifier {
     required this.profilePicture,
     List<ClothingItem>? personalListings,
     List<ChatListing>? interestedListings,
-    PreferencesNotifier? preferences, // Added PreferencesNotifier
+    PreferencesNotifier? preferences,
+    //user does not have to have personal or interested listings
   })  : personalListings = personalListings ?? [],
         interestedListings = interestedListings ?? [],
-        preferences = preferences ??
-            PreferencesNotifier(); // Initialize PreferencesNotifier
+        preferences = preferences ?? PreferencesNotifier();
 
-  // Method to add a personal listing
+
+  Profile.fromUser(
+      User user,{
+        List<ClothingItem>? personalListings,
+        List<ChatListing>? interestedListings,
+        PreferencesNotifier? preferences,
+        //user does not have to have personal or interested listings
+      })  : personalListings = personalListings ?? [],
+        interestedListings = interestedListings ?? [],
+        preferences = preferences ?? PreferencesNotifier() {
+    profilePicture = const AssetImage('lib/images/profilepicture.jpg');
+    id = user.uid;
+    name = user.displayName ?? "Anonymous";
+    bio = "Nothing to see here";
+  }
+
+  void fetchUserDetails() async {
+
+  }
+
   void addPersonalListing(ClothingItem listing) {
     personalListings.add(listing);
     notifyListeners();
   }
 
-  // Method to remove a personal listing
   void removePersonalListing(ClothingItem listing) {
     personalListings.remove(listing);
     notifyListeners();
   }
 
-  // Method to add an interested listing
   void addInterestedListing(ChatListing listing) {
     interestedListings.add(listing);
     notifyListeners();
   }
 
-  // Method to remove an interested listing
   void removeInterestedListing(ChatListing listing) {
     interestedListings.remove(listing);
     notifyListeners();
   }
 
-  // A method to update bio or profile picture
+  // Update bio or profile picture
   void updateProfile({
     String? newBio,
     AssetImage? newProfilePicture,
@@ -67,19 +85,28 @@ class Profile with ChangeNotifier {
   }
 }
 
-// Define the UserManager class with ChangeNotifier
+//User manager handles user profiles
 class UserManager with ChangeNotifier {
   final List<Profile> _users = [
     personal,
     public
-  ]; // Ensure profiles are added here
-  Profile _currentUser;
+  ]; // Ensure profiles are added here, currently using hardcoded profiles
+  Profile _currentUser = personal;
 
-  UserManager() : _currentUser = personal;
+  UserManager() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser == null) {
+      return;
+    }
+
+    _currentUser = Profile.fromUser(currentUser);
+  }
 
   List<Profile> get users => _users;
   Profile get currentUser => _currentUser;
 
+  //switch to current User
   void switchUser(Profile user) {
     _currentUser = user;
     notifyListeners();
@@ -90,6 +117,7 @@ class UserManager with ChangeNotifier {
     notifyListeners();
   }
 
+  //search for user based on ID
   Profile getUserById(String userId) {
     return _users.firstWhere(
       (user) => user.id == userId,
@@ -112,7 +140,7 @@ class UserManager with ChangeNotifier {
   }
 }
 
-const uuid = Uuid(); // Create a UUID generator
+const uuid = Uuid(); //UUID generator
 
 // Generate UUIDs for Profiles
 String personalProfileUUID = uuid.v4();
@@ -122,11 +150,11 @@ String publicProfileUUID = uuid.v4();
 List<String> personalItemUUIDs = List.generate(5, (_) => uuid.v4());
 List<String> publicItemUUIDs = List.generate(5, (_) => uuid.v4());
 
-// Update Profiles and ClothingItems with UUIDs
+//Peronsal and public profiles instances used for testing purposes
 List<ClothingItem> personalListings = [
   ClothingItem(
-    id: personalItemUUIDs[0], // Use generated UUID
-    userId: personalProfileUUID, // Assign Profile UUID
+    id: personalItemUUIDs[0],
+    userId: personalProfileUUID,
     name: 'Clothing 1',
     location: 'Location 1',
     images: [const AssetImage('lib/images/4.jpg')],
@@ -141,8 +169,8 @@ List<ClothingItem> personalListings = [
     ),
   ),
   ClothingItem(
-    id: personalItemUUIDs[1], // Use generated UUID
-    userId: personalProfileUUID, // Assign Profile UUID
+    id: personalItemUUIDs[1],
+    userId: personalProfileUUID,
     name: 'Clothing 2',
     location: 'Location 2',
     images: [const AssetImage('lib/images/1.jpg')],
@@ -157,8 +185,8 @@ List<ClothingItem> personalListings = [
     ),
   ),
   ClothingItem(
-    id: personalItemUUIDs[2], // Use generated UUID
-    userId: personalProfileUUID, // Assign Profile UUID
+    id: personalItemUUIDs[2],
+    userId: personalProfileUUID,
     name: 'Clothing 3',
     location: 'Location 3',
     images: [const AssetImage('lib/images/3.jpg')],
@@ -173,8 +201,8 @@ List<ClothingItem> personalListings = [
     ),
   ),
   ClothingItem(
-    id: personalItemUUIDs[3], // Use generated UUID
-    userId: personalProfileUUID, // Assign Profile UUID
+    id: personalItemUUIDs[3],
+    userId: personalProfileUUID,
     name: 'Clothing 4',
     location: 'Location 4',
     images: [const AssetImage('lib/images/5.jpg')],
@@ -192,11 +220,11 @@ List<ClothingItem> personalListings = [
 
 List<ClothingItem> publicListings = [
   ClothingItem(
-    id: publicItemUUIDs[0], // Use generated UUID
-    userId: publicProfileUUID, // Assign Profile UUID
-    name: 'Clothing A',
-    location: 'Location A',
-    images: [const AssetImage('lib/images/1.jpg')],
+    id: publicItemUUIDs[0],
+    userId: publicProfileUUID,
+    name: 'Striped Shirt',
+    location: 'Gold Coast',
+    images: [const AssetImage('lib/images/0.jpg')],
     details: ClothingItemDetail(
       bio: 'Description for Clothing A',
       type: 'Shirt',
@@ -205,15 +233,15 @@ List<ClothingItem> publicListings = [
       condition: 'Good',
       colours: ['ColorA'],
       images: [
-        const AssetImage('lib/images/1.jpg'),
+        const AssetImage('lib/images/0.jpg'),
       ],
     ),
   ),
   ClothingItem(
-    id: publicItemUUIDs[1], // Use generated UUID
-    userId: publicProfileUUID, // Assign Profile UUID
-    name: 'Clothing B',
-    location: 'Location B',
+    id: publicItemUUIDs[1],
+    userId: publicProfileUUID,
+    name: 'White Shirt',
+    location: 'Mount Cotton',
     images: [const AssetImage('lib/images/2.jpg')],
     details: ClothingItemDetail(
       bio: 'Description for Clothing B',
@@ -226,26 +254,26 @@ List<ClothingItem> publicListings = [
     ),
   ),
   ClothingItem(
-    id: publicItemUUIDs[2], // Use generated UUID
-    userId: publicProfileUUID, // Assign Profile UUID
-    name: 'Clothing C',
-    location: 'Location C',
+    id: publicItemUUIDs[2],
+    userId: publicProfileUUID,
+    name: 'Red Shirt',
+    location: 'Brisbane City',
     images: [const AssetImage('lib/images/3.jpg')],
     details: ClothingItemDetail(
-      bio: 'Description for Clothing C',
-      type: 'Type C',
+      bio: 'Red Shirt bought from cotton-on',
+      type: 'Shirt',
       size: "S",
       gender: 'Male',
-      condition: 'Good',
-      colours: ['ColorC'],
+      condition: 'Like new',
+      colours: ['Red'],
       images: [const AssetImage('lib/images/3.jpg')],
     ),
   ),
   ClothingItem(
-    id: publicItemUUIDs[3], // Use generated UUID
-    userId: publicProfileUUID, // Assign Profile UUID
-    name: 'Clothing D',
-    location: 'Location D',
+    id: publicItemUUIDs[3],
+    userId: publicProfileUUID,
+    name: 'Bucket Hat',
+    location: 'Capalaba',
     images: [const AssetImage('lib/images/5.jpg')],
     details: ClothingItemDetail(
       bio: 'Description for Clothing D',
@@ -258,21 +286,21 @@ List<ClothingItem> publicListings = [
     ),
   ),
   ClothingItem(
-    id: publicItemUUIDs[4], // Use generated UUID
-    userId: publicProfileUUID, // Assign Profile UUID
-    name: 'Clothing E',
-    location: 'Location E',
+    id: publicItemUUIDs[4],
+    userId: publicProfileUUID,
+    name: 'Black Shirt',
+    location: 'Windaroo',
     images: [
       const AssetImage('lib/images/1.jpg'),
       const AssetImage('lib/images/1-extra.jpg')
     ],
     details: ClothingItemDetail(
-      bio: 'Description for Clothing E',
-      type: 'Type E',
+      bio: 'Fresh black t-shirt',
+      type: 'Shirt',
       size: "S",
       gender: 'Male',
-      condition: 'Good',
-      colours: ['ColorE'],
+      condition: 'Like new',
+      colours: ['Black'],
       images: [
         const AssetImage('lib/images/1.jpg'),
         const AssetImage('lib/images/1-extra.jpg')
@@ -281,9 +309,8 @@ List<ClothingItem> publicListings = [
   ),
 ];
 
-// Update Profiles with UUIDs
 Profile personal = Profile(
-  id: personalProfileUUID, // Use generated UUID
+  id: personalProfileUUID,
   bio: "Keen for some trades!",
   name: "Jacob",
   personalListings: personalListings,
@@ -291,7 +318,7 @@ Profile personal = Profile(
 );
 
 Profile public = Profile(
-  id: publicProfileUUID, // Use generated UUID
+  id: publicProfileUUID,
   bio: "Keen for vintage clothes!",
   name: "Steve",
   personalListings: publicListings,

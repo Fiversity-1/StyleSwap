@@ -14,6 +14,7 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:toastification/toastification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+//Page for swiping through public listings
 class SwipePageTop extends StatefulWidget {
   const SwipePageTop({super.key});
 
@@ -28,7 +29,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
   late TutorialCoachMark explainer;
   List<TargetFocus> listTargets = [];
   bool _hasRun = false;
-//Start Chat GPT, tutorial runs once per device, delay searchResult init
+//Start GPT, tutorial runs once per device, delay searchResult init
   @override
   void initState() {
     super.initState();
@@ -55,8 +56,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
       await prefs.setBool('hasRun', true);
     }
   }
-
 //End ChatGPT
+
   void _incrementCounter() {
     _counter++;
   }
@@ -90,10 +91,12 @@ class _SwipePageTopState extends State<SwipePageTop> {
           preferredSize: Size.fromHeight(50),
           child: CustomTopAppBar(),
         ),
+        //GPT used for LayoutBuilder
         body: LayoutBuilder(
           builder: (context, constraints) {
             // Define grid column count based on available width
             bool sideBars = constraints.maxWidth > 960;
+            //Sidebars used for web version so image isn't strecthed out
             return Row(
               children: [
                 Visibility(
@@ -112,6 +115,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          //Handle Different Padding for when no listing left
+
                           Padding(
                             padding: EdgeInsets.only(
                                 top: searchResults.checkCardType() == "Empty"
@@ -141,7 +146,10 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                           return displayCards[index];
                                         },
                                       )
+                                    //Show no result image once user has run
+                                    //out of search results
                                     : (searchResults.searching ? const LoadingCard() : const NoResultCard())),
+
                           ),
                         ],
                       ),
@@ -182,6 +190,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
                       ),
                       Positioned(
                         bottom: 5,
+                        //ony display swipe up icon for intial swipes otherwise
+                        //the ui is too cluttered
                         child: Visibility(
                           visible: searchResults.checkCardType() == "Clothes" &&
                               _counter < 3,
@@ -215,108 +225,112 @@ class _SwipePageTopState extends State<SwipePageTop> {
     );
   }
 
-  bool handleSwipe(int previousIndex, int? currentIndex,
-      CardSwiperDirection direction) {
-      if (direction.name == 'left') {
-        _incrementCounter();
-      }
-      if (direction.name == 'right' &&
-          searchResults.getListing()[0]
-          is! FunFactCard) {
-        _incrementCounter();
-        //Chat provided provider logic, has been modified
-        final userManager =
-        Provider.of<UserManager>(
-            context,
-            listen: false);
+  bool handleSwipe(previousIndex, currentIndex,
+      direction) {
+    if (direction.name == 'left') {
+      _incrementCounter();
+    }
+    //Keep track of interest listings on
+    //non fun fact cards
+    if (direction.name == 'right' &&
+        searchResults.getListing()[0]
+        is! FunFactCard) {
+      _incrementCounter();
+      //GPT provided provider logic
+      final userManager =
+      Provider.of<UserManager>(
+          context,
+          listen: false);
 
-        final currentUser =
-            userManager.currentUser;
-        final listerProfile = userManager
-            .getUserById(searchResults
-            .getListing()[0]
-            .item
-            .userId);
+      final currentUser =
+          userManager.currentUser;
+      final listerProfile = userManager
+          .getUserById(searchResults
+          .getListing()[0]
+          .item
+          .userId);
 
-        currentUser.addInterestedListing(
-            ChatListing(
-              currentUserId: currentUser.id,
-              otherUserId: listerProfile.id,
-              name: listerProfile.name,
-              previewContent: "New Match",
-              time: "Now",
-              opened: false,
-              image: searchResults
-                  .getListing()[0]
-                  .item
-                  .images[0],
-            ));
-
-        toastification.showCustom(
-          context: context,
-          autoCloseDuration:
-          const Duration(seconds: 3),
-          alignment: Alignment.topLeft,
-          builder: (BuildContext context,
-              ToastificationItem holder) {
-            return Container(
-              decoration: BoxDecoration(
-                  borderRadius:
-                  BorderRadius.circular(
-                      8),
-                  color: Theme.of(context)
-                      .hoverColor),
-              padding:
-              const EdgeInsets.all(16),
-              margin:
-              const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment:
-                CrossAxisAlignment
-                    .center,
-                children: [
-                  const Text(
-                      'You\'ve got a New Match!',
-                      style: TextStyle(
-                          fontWeight:
-                          FontWeight
-                              .bold)),
-                  const SizedBox(
-                      height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      final chat = chatManager
-                          .findChatByUserId(
-                          listerProfile
-                              .id);
-                      chatManager
-                          .selectChat(
-                          chat!.id);
-                      Navigator.pushNamed(
-                        context,
-                        '/chat',
-                      );
-                    },
-                    child: const Text(
-                        'Send a Message!'),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      }
-      _handleRemove(searchResults, 0);
-      return true;
+      currentUser.addInterestedListing(
+          ChatListing(
+            currentUserId: currentUser.id,
+            otherUserId: listerProfile.id,
+            name: listerProfile.name,
+            previewContent: "New Match",
+            time: "Now",
+            opened: false,
+            image: searchResults
+                .getListing()[0]
+                .item
+                .images[0],
+          ));
+      //Show toaster when match occurs
+      //Rowan needs to move based on integration
+      //Match doesn't occur on instant swipe right
+      toastification.showCustom(
+        context: context,
+        autoCloseDuration:
+        const Duration(seconds: 3),
+        alignment: Alignment.topLeft,
+        builder: (BuildContext context,
+            ToastificationItem holder) {
+          return Container(
+            decoration: BoxDecoration(
+                borderRadius:
+                BorderRadius.circular(
+                    8),
+                color: Theme.of(context)
+                    .hoverColor),
+            padding:
+            const EdgeInsets.all(16),
+            margin:
+            const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment:
+              CrossAxisAlignment
+                  .center,
+              children: [
+                const Text(
+                    'You\'ve got a New Match!',
+                    style: TextStyle(
+                        fontWeight:
+                        FontWeight
+                            .bold)),
+                const SizedBox(
+                    height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    final chat = chatManager
+                        .findChatByUserId(
+                        listerProfile
+                            .id);
+                    chatManager
+                        .selectChat(
+                        chat!.id);
+                    Navigator.pushNamed(
+                      context,
+                      '/chat',
+                    );
+                  },
+                  child: const Text(
+                      'Send a Message!'),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+    _handleRemove(searchResults, 0);
+    return true;
   }
 
 //https://github.com/djshah17/Flutter-Tutorial-Coach-Mark-Sample/blob/master/lib/my_tutorial_coach_mark_screen.dart
-//Tutorial Code modified for our application
+//Tutorial Code modified for our application, display brief tutorial
   void createTutorial() {
     listTargets.add(
       TargetFocus(
-        color: const Color.fromARGB(255, 69, 65, 65),
-        identify: "Target 2",
+        color: Colors.blue,
+        identify: "Target 1",
         keyTarget: _tapingKey,
         contents: [
           TargetContent(
@@ -337,8 +351,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
     );
 
     listTargets.add(TargetFocus(
-      color: const Color.fromARGB(255, 69, 65, 65),
-      identify: "Target 3",
+      color: Colors.blue,
+      identify: "Target 2",
       keyTarget: _moreDetailKey,
       contents: [
         TargetContent(
@@ -346,7 +360,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Swipe or Tap up for more info",
+              "Swipe up for more info",
               style: TextStyle(fontSize: 22, color: Colors.white),
               textAlign: TextAlign.end,
             ),
@@ -357,8 +371,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
     ));
 
     listTargets.add(TargetFocus(
-      color: const Color.fromARGB(255, 69, 65, 65),
-      identify: "Target 4",
+      color: Colors.blue,
+      identify: "Target 3",
       keyTarget: _preferenceKey,
       contents: [
         TargetContent(

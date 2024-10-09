@@ -1,7 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 
-import 'clothing_type.dart';
-
+//ClothingInfo Class and Enums for each category
 class ClothingInfo {
   final List<XFile> images;
   final ClothingSize? size;
@@ -41,6 +40,34 @@ class ClothingInfo {
         gender: gender ?? this.gender,
         type: type ?? this.type,
         colours: colours ?? this.colours);
+  }
+}
+
+enum ClothingType implements DatabaseRepresentationMapper  {
+  hat,
+  scarf,
+  tie,
+  shirt,
+  midriff,
+  belt,
+  shorts,
+  pants,
+  skirt,
+  dress,
+  shoes,
+  jumper,
+  jacket,
+  sweater,
+  coat,
+  gloves,
+  vest,
+  leggings,
+  glasses,
+  tights;
+
+  @override
+  String getDatabaseRepresentation() {
+    return toString().split('.').last;
   }
 }
 
