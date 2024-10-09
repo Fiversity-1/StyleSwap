@@ -1,16 +1,18 @@
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
 import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 
 //GPT used to learn and implement provider code for user state management.
 //Mostly follows the same format as Theme Provider.
 class Profile with ChangeNotifier {
-  final String id;
-  final String name;
-  String bio;
-  AssetImage profilePicture;
+  late final String id;
+  late final String name;
+  late String bio;
+  late AssetImage profilePicture;
   List<ClothingItem> personalListings;
   List<ChatListing> interestedListings;
   PreferencesNotifier preferences;
@@ -27,6 +29,26 @@ class Profile with ChangeNotifier {
   })  : personalListings = personalListings ?? [],
         interestedListings = interestedListings ?? [],
         preferences = preferences ?? PreferencesNotifier();
+
+
+  Profile.fromUser(
+      User user,{
+        List<ClothingItem>? personalListings,
+        List<ChatListing>? interestedListings,
+        PreferencesNotifier? preferences,
+        //user does not have to have personal or interested listings
+      })  : personalListings = personalListings ?? [],
+        interestedListings = interestedListings ?? [],
+        preferences = preferences ?? PreferencesNotifier() {
+    profilePicture = const AssetImage('lib/images/profilepicture.jpg');
+    id = user.uid;
+    name = user.displayName ?? "Anonymous";
+    bio = "Nothing to see here";
+  }
+
+  void fetchUserDetails() async {
+
+  }
 
   void addPersonalListing(ClothingItem listing) {
     personalListings.add(listing);
@@ -69,9 +91,17 @@ class UserManager with ChangeNotifier {
     personal,
     public
   ]; // Ensure profiles are added here, currently using hardcoded profiles
-  Profile _currentUser;
+  Profile _currentUser = personal;
 
-  UserManager() : _currentUser = personal;
+  UserManager() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser == null) {
+      return;
+    }
+
+    _currentUser = Profile.fromUser(currentUser);
+  }
 
   List<Profile> get users => _users;
   Profile get currentUser => _currentUser;

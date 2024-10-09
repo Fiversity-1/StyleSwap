@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../../profile/data/profile_api.dart';
+import '../../profile/presentation/profile_class.dart';
 
 //Log in page
 class StartPage extends StatelessWidget {
@@ -88,6 +90,8 @@ class StartPage extends StatelessWidget {
   }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
+    final userManager = Provider.of<UserManager>(context, listen: false);
+
     if (kDebugMode) {
       print("we have pressed the sign in button");
     }
@@ -96,7 +100,6 @@ class StartPage extends StatelessWidget {
         // Web sign-in
         await FirebaseAuth.instance.signInWithPopup(GoogleAuthProvider());
       } else {
-        // Mobile sign-in
         if (kDebugMode) {
           print("are we there yet");
         }
@@ -120,13 +123,21 @@ class StartPage extends StatelessWidget {
         }
       }
 
-      // Navigate to profile on successful login
-      // ignore: use_build_context_synchronously
-      Navigator.pushNamedAndRemoveUntil(
-          // ignore: use_build_context_synchronously
-          context,
-          '/swipe',
-          (route) => false);
+      if (!context.mounted) return;
+
+      // if the user is registered, take them to the swipe page
+      // otherwise take them to the new_profile page.
+      if (await isUserRegistered()) {
+        userManager.switchUser(Profile.fromUser(FirebaseAuth.instance.currentUser!));
+
+        Navigator.pushNamedAndRemoveUntil(context,
+            '/swipe', (route) => false);
+      } else {
+        Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/new_profile',
+                (route) => false);
+      }
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
     } on Error {

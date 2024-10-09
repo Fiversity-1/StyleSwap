@@ -1,6 +1,9 @@
+import 'package:clothing_swap/features/profile/data/profile_api.dart';
+import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
@@ -27,6 +30,7 @@ class NewProfileState extends State<NewProfile> {
 //GPT used for terms and condition generation
 //GPT used for checkValue logic for terms and condition validation
   bool checkedValue = false;
+  bool isLoading = false;
   final String termsAndConditions = '''
 Terms and Conditions for Trading Practices
 
@@ -69,6 +73,8 @@ For any questions or concerns about these terms and conditions, please contact o
 
   @override
   Widget build(BuildContext context) {
+    final userManager = Provider.of<UserManager>(context, listen: false);
+
     double width = MediaQuery.of(context).size.width;
     return GradientBackground(
       child: Scaffold(
@@ -224,7 +230,7 @@ For any questions or concerns about these terms and conditions, please contact o
                             const SizedBox(height: 20),
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(),
-                                onPressed: () {
+                                onPressed: () async {
                                   //Validation; only accept when bio, location is not null
                                   //Make sure terms and condition box ticked
                                   if ((checkedValue == false) ||
@@ -266,12 +272,38 @@ For any questions or concerns about these terms and conditions, please contact o
                                       },
                                     );
                                   } else {
-                                    Navigator.pushNamed(
-                                        context, '/personal_profile');
+                              setState(() {
+                                isLoading = true;
+                              });
+
+                              try {
+                                var isRegistered = await isUserRegistered();
+
+                                if (!isRegistered) {
+                                  var success = await addUser(lat, long, _controllerBio.text);
+
+                                  if (!success) {
+                                    throw "User not registered";
                                   }
-                                },
-                                child: const Text('Complete',
-                                    style: TextStyle(fontSize: 20))),
+                                }
+
+                                // switch the user to reflect new user.
+                                userManager.switchUser(Profile.fromUser(FirebaseAuth.instance.currentUser!));
+
+                                Navigator.pushNamedAndRemoveUntil(context, '/personal_profile', (route) => false);
+                              } finally {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              }
+                            }
+                          },
+                          child: isLoading
+                              ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                              : const Text('Complete', style: TextStyle(fontSize: 20)),
+                        )
                           ],
                         ),
                       ),

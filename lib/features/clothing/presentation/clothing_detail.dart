@@ -1,4 +1,4 @@
-import 'package:clothing_swap/features/clothing/presentation/search_provider.dart';
+import 'package:clothing_swap/features/clothing/application/search_provider.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/theme/theme.dart';
@@ -61,7 +61,7 @@ class ClothingDetail extends StatelessWidget {
                 children: [
                   ListTile(
                     title: Text(
-                      searchResults.getListing()[0].item.details.bio,
+                      searchResults.getListing()[0].description,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(Icons.info),
@@ -70,13 +70,13 @@ class ClothingDetail extends StatelessWidget {
                       selected: preferencesNotifier
                           .getPreferences("Type")
                           .contains(
-                              searchResults.getListing()[0].item.details.type),
+                              searchResults.getListing()[0].type),
                       title: Text(
                         "Type",
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       subtitle: Text(
-                        searchResults.getListing()[0].item.details.type,
+                        searchResults.getListing()[0].type.toString(),
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       leading: const Icon(Icons.category),
@@ -84,8 +84,6 @@ class ClothingDetail extends StatelessWidget {
                               .getPreferences("Type")
                               .contains(searchResults
                                   .getListing()[0]
-                                  .item
-                                  .details
                                   .type)
                           ? const Icon(
                               Icons.star,
@@ -96,13 +94,13 @@ class ClothingDetail extends StatelessWidget {
                       selected: preferencesNotifier
                           .getPreferences("Size")
                           .contains(
-                              searchResults.getListing()[0].item.details.size),
+                              searchResults.getListing()[0].size),
                       title: Text(
                         "Size",
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       subtitle: Text(
-                        searchResults.getListing()[0].item.details.size,
+                        searchResults.getListing()[0].size.toString(),
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       leading: const Icon(Icons.numbers),
@@ -110,8 +108,6 @@ class ClothingDetail extends StatelessWidget {
                               .getPreferences("Size")
                               .contains(searchResults
                                   .getListing()[0]
-                                  .item
-                                  .details
                                   .size)
                           ? const Icon(
                               Icons.star,
@@ -123,15 +119,13 @@ class ClothingDetail extends StatelessWidget {
                           .getPreferences("Gender")
                           .contains(searchResults
                               .getListing()[0]
-                              .item
-                              .details
                               .gender),
                       title: Text(
                         "Gender",
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       subtitle: Text(
-                        searchResults.getListing()[0].item.details.gender,
+                        searchResults.getListing()[0].gender.toString(),
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       leading: const Icon(
@@ -141,8 +135,6 @@ class ClothingDetail extends StatelessWidget {
                               .getPreferences("Gender")
                               .contains(searchResults
                                   .getListing()[0]
-                                  .item
-                                  .details
                                   .gender)
                           ? const Icon(
                               Icons.star,
@@ -154,15 +146,13 @@ class ClothingDetail extends StatelessWidget {
                           .getPreferences("Condition")
                           .contains(searchResults
                               .getListing()[0]
-                              .item
-                              .details
                               .condition),
                       title: Text(
                         "Condition",
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       subtitle: Text(
-                        searchResults.getListing()[0].item.details.condition,
+                        searchResults.getListing()[0].condition.toString(),
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       leading: const Icon(
@@ -172,8 +162,6 @@ class ClothingDetail extends StatelessWidget {
                               .getPreferences("Condition")
                               .contains(searchResults
                                   .getListing()[0]
-                                  .item
-                                  .details
                                   .condition)
                           ? const Icon(
                               Icons.star,
@@ -185,8 +173,6 @@ class ClothingDetail extends StatelessWidget {
                   ListTile(
                     selected: searchResults
                         .getListing()[0]
-                        .item
-                        .details
                         .colours
                         .any((color) => preferencesNotifier
                             .getPreferences("Colour")
@@ -198,8 +184,6 @@ class ClothingDetail extends StatelessWidget {
                     subtitle: Text(
                       searchResults
                           .getListing()[0]
-                          .item
-                          .details
                           .colours
                           .join(", "),
                       style: Theme.of(context).textTheme.bodyMedium,
@@ -207,8 +191,6 @@ class ClothingDetail extends StatelessWidget {
                     leading: const Icon(Icons.palette),
                     trailing: searchResults
                             .getListing()[0]
-                            .item
-                            .details
                             .colours
                             .any((color) => preferencesNotifier
                                 .getPreferences("Colour")
@@ -244,8 +226,6 @@ class ClothingDetail extends StatelessWidget {
                                   gridIndex: index,
                                   photoListings: searchResults
                                       .getListing()[0]
-                                      .item
-                                      .details
                                       .images,
                                 )),
                       );
@@ -254,13 +234,11 @@ class ClothingDetail extends StatelessWidget {
                         fit: BoxFit.cover,
                         image: searchResults
                             .getListing()[0]
-                            .item
-                            .details
                             .images[index]),
                   ),
                 ),
                 itemCount:
-                    searchResults.getListing()[0].item.details.images.length,
+                    searchResults.getListing()[0].images.length,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20.0),

@@ -5,8 +5,10 @@ import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/photo_modal.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show Uint8List, kDebugMode, kIsWeb;
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
@@ -61,7 +63,41 @@ class _PersonalProfileState extends State<PersonalProfile> {
   bool edited = false;
   final _changeBio = TextEditingController();
   final ImagePicker _picker = ImagePicker();
-  XFile? _image;
+  Uint8List? _image;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchImage();
+  }
+
+  Future<void> _fetchImage() async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+
+      if (currentUser == null) {
+        return;
+      }
+
+      final String? imageUrl = currentUser.photoURL;
+
+      if (imageUrl == null) {
+        return;
+      }
+
+      // Download the image
+      final http.Response response = await http.get(Uri.parse(imageUrl));
+
+      // Store the image data in memory
+      setState(() {
+        _image = response.bodyBytes;
+      });
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error fetching image: $e');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,15 +146,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                     radius: 75,
                                     backgroundImage: (_image == null)
                                         ? personalProfile.profilePicture
-                                        : kIsWeb
-                                            ? Image.network(_image!.path,
-                                                    fit: BoxFit.cover)
-                                                .image
-                                            : FileImage(
-                                                (File(
-                                                  _image!.path,
-                                                )),
-                                              ),
+                                        : Image.memory(_image!,
+                                        fit: BoxFit.cover).image
                                   ),
                                 ),
                                 //If in edit mode, confirm changes, if not select edit mode
@@ -156,8 +185,14 @@ class _PersonalProfileState extends State<PersonalProfile> {
                             onPressed: () async {
                               XFile? image = await photoOptionModal(
                                   context, _picker, 50, null, null);
+                              if (image == null) {
+                                return;
+                              }
+
+                              final bytes = await image.readAsBytes();
+
                               setState(() {
-                                _image = image;
+                                _image = bytes;
                               });
                             }),
                       ),
