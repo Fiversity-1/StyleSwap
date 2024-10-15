@@ -37,8 +37,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
           actions: [
             TextButton(
               onPressed: () async {
-                var success = await personalProfile
-                    .removePersonalListing(
+                var success = await personalProfile.removePersonalListing(
                     personalProfile.personalListings![index]);
 
                 if (!success) {
@@ -84,12 +83,10 @@ class _PersonalProfileState extends State<PersonalProfile> {
     final personalProfile = userManager.currentUser;
 
     return ChangeNotifierProvider.value(
-      value: personalProfile,
-      child: Consumer<Profile>(
-      builder: (context, profile, child)
-    {
-      return GradientBackground(
-          child: Scaffold(
+        value: personalProfile,
+        child: Consumer<Profile>(builder: (context, profile, child) {
+          return GradientBackground(
+              child: Scaffold(
             backgroundColor: Colors.transparent,
             bottomNavigationBar: const CustomBottomNavBar(
               currentIndex: 3,
@@ -105,8 +102,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                 int crossAxisCount = constraints.maxWidth > 600
                     ? 4
                     : constraints.maxWidth > 400
-                    ? 2
-                    : 2;
+                        ? 2
+                        : 2;
 
                 return Center(
                   child: SingleChildScrollView(
@@ -117,8 +114,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 5.0, bottom: 5),
+                              padding:
+                                  const EdgeInsets.only(top: 5.0, bottom: 5),
                               child: SizedBox(
                                   height: 150,
                                   width: 200,
@@ -129,31 +126,35 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                         child: CircleAvatar(
                                             radius: 75,
                                             backgroundImage: (_image == null)
-                                                ? (personalProfile.profilePicture != null ? MemoryImage(
-                                                personalProfile.profilePicture!) :  const AssetImage('lib/images/noProfilePicture.png'))
-                                                : Image
-                                                .memory(_image!,
-                                                fit: BoxFit.cover)
-                                                .image
-                                        ),
+                                                ? (personalProfile
+                                                            .profilePicture !=
+                                                        null
+                                                    ? MemoryImage(
+                                                        personalProfile
+                                                            .profilePicture!)
+                                                    : const AssetImage(
+                                                        'lib/images/noProfilePicture.png'))
+                                                : Image.memory(_image!,
+                                                        fit: BoxFit.cover)
+                                                    .image),
                                       ),
                                       //If in edit mode, confirm changes, if not select edit mode
                                       Positioned(
                                         right: 0,
                                         bottom: 0,
                                         child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10),
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
                                           child: IconButton(
-                                            icon: Icon(
-                                                edited ? Icons.check : Icons
-                                                    .edit),
+                                            icon: Icon(edited
+                                                ? Icons.check
+                                                : Icons.edit),
                                             onPressed: () {
                                               edited = !edited;
                                               setState(() {
                                                 personalProfile.updateProfile(
-                                                    newBio: _changeBio.text
-                                                        .isNotEmpty
+                                                    newBio: _changeBio
+                                                            .text.isNotEmpty
                                                         ? _changeBio.text
                                                         : personalProfile.bio);
                                               });
@@ -195,10 +196,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                               width: 375,
                               child: Text(
                                 personalProfile.name,
-                                style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .headlineLarge,
+                                style:
+                                    Theme.of(context).textTheme.headlineLarge,
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -212,15 +211,13 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                   Visibility(
                                     visible: !edited,
                                     child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 15),
+                                      padding:
+                                          const EdgeInsets.only(bottom: 15),
                                       child: SizedBox(
                                         width: width * 0.85,
                                         child: Text(
                                           personalProfile.bio,
-                                          style:
-                                          Theme
-                                              .of(context)
+                                          style: Theme.of(context)
                                               .textTheme
                                               .bodyLarge,
                                           textAlign: TextAlign.center,
@@ -245,17 +242,16 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                         contentPadding: kIsWeb
                                             ? const EdgeInsets.all(20.0)
                                             : const EdgeInsets.only(
-                                            top: 10, left: 10),
+                                                top: 10, left: 10),
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              15),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
                                         ),
                                         hintText: 'New Bio...',
                                         filled: true,
                                         //GPT for fill color
-                                        fillColor: Theme
-                                            .of(context)
-                                            .highlightColor,
+                                        fillColor:
+                                            Theme.of(context).highlightColor,
                                       ),
                                     ),
                                   ),
@@ -267,145 +263,154 @@ class _PersonalProfileState extends State<PersonalProfile> {
                           padding: const EdgeInsets.only(top: kIsWeb ? 15 : 5),
                           child: personalProfile.personalListings == null
                               ? const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,),
-                          )
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                )
                               : Visibility(
-                            visible: !edited,
-                            child: GridView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: crossAxisCount,
-                                mainAxisSpacing: 1.5,
-                                crossAxisSpacing: 1.5,
-                              ),
-                              itemBuilder: (_, index) =>
-                                  GridTile(
-                                    child: GestureDetector(
-                                      onLongPress: () {
-                                        edited = !edited;
-                                        setState(() {});
-                                      },
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  BrowsePhoto(
-                                                    title: "personal",
-                                                    gridIndex: index,
-                                                    photoListings: personalProfile
-                                                        .personalListings!
-                                                        .map((item) =>
-                                                    item.images.isNotEmpty
-                                                        ? MemoryImage(item
-                                                        .images[0]) as ImageProvider
-                                                        : const AssetImage(
-                                                        'lib/images/noImage.png'))
-                                                        .toList(),
-                                                  )),
-                                        );
-                                      },
-                                      child: Image(
-                                        image: personalProfile
-                                            .personalListings![index].images
-                                            .isNotEmpty
-                                            ? MemoryImage(personalProfile
-                                            .personalListings![index].images[0])
-                                            : const AssetImage(
-                                            'lib/images/noImage.png'),
-                                        fit: BoxFit.cover,
+                                  visible: !edited,
+                                  child: GridView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: crossAxisCount,
+                                      mainAxisSpacing: 1.5,
+                                      crossAxisSpacing: 1.5,
+                                    ),
+                                    itemBuilder: (_, index) => GridTile(
+                                      child: GestureDetector(
+                                        onLongPress: () {
+                                          edited = !edited;
+                                          setState(() {});
+                                        },
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BrowsePhoto(
+                                                      title: "personal",
+                                                      gridIndex: index,
+                                                      photoListings: personalProfile
+                                                          .personalListings!
+                                                          .map((item) => item
+                                                                  .images.isNotEmpty
+                                                              ? MemoryImage(item
+                                                                      .images[0])
+                                                                  as ImageProvider
+                                                              : const AssetImage(
+                                                                  'lib/images/noImage.png'))
+                                                          .toList(),
+                                                    )),
+                                          );
+                                        },
+                                        child: Image(
+                                          image: personalProfile
+                                                  .personalListings![index]
+                                                  .images
+                                                  .isNotEmpty
+                                              ? MemoryImage(personalProfile
+                                                  .personalListings![index]
+                                                  .images[0])
+                                              : const AssetImage(
+                                                  'lib/images/noImage.png'),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
+                                    itemCount: personalProfile
+                                        .personalListings!.length,
                                   ),
-                              itemCount: personalProfile.personalListings!
-                                  .length,
-                            ),
-                          ),
+                                ),
                         ),
                         //Grid of images when in edit mode, images can be deleted or dragged
                         Padding(
-                            padding: const EdgeInsets.only(
-                                top: kIsWeb ? 15 : 5),
+                            padding:
+                                const EdgeInsets.only(top: kIsWeb ? 15 : 5),
                             child: personalProfile.personalListings == null
                                 ? null
                                 : Visibility(
-                              visible: edited,
-                              child: ReorderableGridView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                dragStartDelay: Duration.zero,
-                                onReorder: (oldIndex, newIndex) {
-                                  setState(() {
-                                    var val = personalProfile.personalListings!
-                                        .removeAt(oldIndex);
-                                    personalProfile.personalListings!
-                                        .insert(newIndex, val);
-                                  });
-                                },
-                                gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: crossAxisCount,
-                                  mainAxisSpacing: 0,
-                                  crossAxisSpacing: 0,
-                                ),
-                                itemBuilder: (_, index) =>
-                                    GridTile(
-                                        key: ValueKey(
-                                            personalProfile
-                                                .personalListings![index]),
-                                        child: Stack(
-                                          children: [
-                                            SizedBox(
-                                              width: double.infinity,
-                                              height: double.infinity,
-                                              child: Image(
-                                                image: personalProfile
-                                                    .personalListings![index]
-                                                    .images
-                                                    .isNotEmpty
-                                                    ? MemoryImage(
-                                                    personalProfile
-                                                        .personalListings![index]
-                                                        .images[0])
-                                                    : const AssetImage(
-                                                    'lib/images/noImage.png'),
-                                                fit: BoxFit.cover,
+                                    visible: edited,
+                                    child: ReorderableGridView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      dragStartDelay: Duration.zero,
+                                      onReorder: (oldIndex, newIndex) {
+                                        setState(() {
+                                          var val = personalProfile
+                                              .personalListings!
+                                              .removeAt(oldIndex);
+                                          personalProfile.personalListings!
+                                              .insert(newIndex, val);
+                                        });
+                                      },
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: crossAxisCount,
+                                        mainAxisSpacing: 0,
+                                        crossAxisSpacing: 0,
+                                      ),
+                                      itemBuilder: (_, index) => GridTile(
+                                          key: ValueKey(personalProfile
+                                              .personalListings![index]),
+                                          child: Stack(
+                                            children: [
+                                              SizedBox(
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                                child: Image(
+                                                  image: personalProfile
+                                                          .personalListings![
+                                                              index]
+                                                          .images
+                                                          .isNotEmpty
+                                                      ? MemoryImage(
+                                                          personalProfile
+                                                              .personalListings![
+                                                                  index]
+                                                              .images[0])
+                                                      : const AssetImage(
+                                                          'lib/images/noImage.png'),
+                                                  fit: BoxFit.cover,
+                                                ),
                                               ),
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                IconButton(
-                                                  icon: const Icon(
-                                                    Icons.remove_circle,
-                                                    color: Colors.black,
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  IconButton(
+                                                    icon: const Icon(
+                                                      Icons.remove_circle,
+                                                      color: Colors.black,
+                                                    ),
+                                                    iconSize: 25,
+                                                    onPressed: () async {
+                                                      _showAlertDialogRemoveListing(
+                                                          context,
+                                                          personalProfile,
+                                                          index);
+                                                    },
                                                   ),
-                                                  iconSize: 25,
-                                                  onPressed: () async {
-                                                    _showAlertDialogRemoveListing(
-                                                        context,
-                                                        personalProfile, index);
-                                                  },
-                                                ),
-                                                IconButton(
-                                                  icon: const Icon(
-                                                    Icons.open_with,
-                                                    color: Colors.black,
+                                                  IconButton(
+                                                    icon: const Icon(
+                                                      Icons.open_with,
+                                                      color: Colors.black,
+                                                    ),
+                                                    iconSize: 25,
+                                                    onPressed: () {},
                                                   ),
-                                                  iconSize: 25,
-                                                  onPressed: () {},
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        )),
-                                itemCount: personalProfile.personalListings!
-                                    .length,
-                              ),
-                            )),
+                                                ],
+                                              ),
+                                            ],
+                                          )),
+                                      itemCount: personalProfile
+                                          .personalListings!.length,
+                                    ),
+                                  )),
                       ],
                     ),
                   ),
@@ -413,8 +418,6 @@ class _PersonalProfileState extends State<PersonalProfile> {
               },
             ),
           ));
-        }
-      )
-    );
+        }));
   }
 }
