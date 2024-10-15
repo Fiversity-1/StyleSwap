@@ -15,6 +15,41 @@ class ClothingDetail extends StatelessWidget {
   final String? location;
   const ClothingDetail({super.key, this.location});
 
+  //https://medium.com/@kavyamistry0612/building-interactive-user-interfaces-with-alert-dialogs-in-flutter-81e268fb72f0
+//Template used throughout app for creating dialog boxes in flutter
+//Dialog used to report listing and potentially block a user
+  void _showAlertDialogReportListing(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.blue,
+          title: const Text('Report Listing'),
+          content: const Text(
+              'Thank you for your report. A member of our moderation team will conduct an investigation shortly.\n\nWould you like to block the user?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              //GPT used for styling button
+              style: TextButton.styleFrom(foregroundColor: Colors.white),
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              //GPT used for styling button
+              style: TextButton.styleFrom(foregroundColor: Colors.white),
+              child: const Text('No'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final searchResults = Provider.of<Search>(context);
@@ -65,70 +100,65 @@ class ClothingDetail extends StatelessWidget {
                     leading: const Icon(Icons.info),
                   ),
                   ListTile(
-                      title: Text(
-                        "Type",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      subtitle: Text(
-                        searchResults.getListing()[0].type.toString(),
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      leading: const Icon(Icons.category),
-                     ),
+                    title: Text(
+                      "Type",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      searchResults.getListing()[0].type.toString(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    leading: const Icon(Icons.category),
+                  ),
                   ListTile(
-                      title: Text(
-                        "Size",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      subtitle: Text(
-                        searchResults.getListing()[0].size.toString(),
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      leading: const Icon(Icons.numbers),
-                      ),
+                    title: Text(
+                      "Size",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      searchResults.getListing()[0].size.toString(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    leading: const Icon(Icons.numbers),
+                  ),
                   ListTile(
-                      title: Text(
-                        "Gender",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      subtitle: Text(
-                        searchResults.getListing()[0].gender.toString(),
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      leading: const Icon(
-                        Icons.person,
-                      ),),
+                    title: Text(
+                      "Gender",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      searchResults.getListing()[0].gender.toString(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    leading: const Icon(
+                      Icons.person,
+                    ),
+                  ),
                   ListTile(
-
-                      title: Text(
-                        "Condition",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      subtitle: Text(
-                        searchResults.getListing()[0].condition.toString(),
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      leading: const Icon(
-                        Icons.gpp_good_outlined,
-                      ),
-                      ),
+                    title: Text(
+                      "Condition",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    subtitle: Text(
+                      searchResults.getListing()[0].condition.toString(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    leading: const Icon(
+                      Icons.gpp_good_outlined,
+                    ),
+                  ),
                   //Colour has been modified by GPT to highlight tiles containing
                   //any colour from list of preferred colours.
                   ListTile(
-
                     title: Text(
                       "Colour",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
-                      searchResults
-                          .getListing()[0]
-                          .colours
-                          .join(", "),
+                      searchResults.getListing()[0].colours.join(", "),
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(Icons.palette),
-
                   ),
                 ],
               ),
@@ -153,26 +183,25 @@ class ClothingDetail extends StatelessWidget {
                             builder: (context) => BrowsePhoto(
                                   title: "details",
                                   gridIndex: index,
-                                  photoListings: searchResults
-                                      .getListing()[0]
-                                      .images,
+                                  photoListings:
+                                      searchResults.getListing()[0].images,
                                 )),
                       );
                     },
                     child: Image(
                         fit: BoxFit.cover,
-                        image: MemoryImage(searchResults
-                            .getListing()[0]
-                            .images[index])),
+                        image: MemoryImage(
+                            searchResults.getListing()[0].images[index])),
                   ),
                 ),
-                itemCount:
-                    searchResults.getListing()[0].images.length,
+                itemCount: searchResults.getListing()[0].images.length,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _showAlertDialogReportListing(context);
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                     ),
