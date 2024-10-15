@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:clothing_swap/features/clothing/data/clothing_api.dart';
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
 import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
 import 'package:clothing_swap/theme/gradient.dart';
@@ -7,8 +10,11 @@ import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:string_extensions/string_extensions.dart';
 import 'package:toastification/toastification.dart';
+
+import '../../profile/presentation/profile_class.dart';
 
 //GPT to change to statefulwidget instead of hook
 //GPT to then implement setState for dynamic changes (as no longer hook),
@@ -48,13 +54,14 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
   int activeStep = 0;
   int typeIndex = 0;
   bool imagePresent = false;
-  List<String> selectedColours = [];
+  List<ClothingColour> selectedColours = [];
   final FocusNode myFocusNodeDescription = FocusNode();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _controllerDescription = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final userManager = Provider.of<UserManager>(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     Map<Enum, FaIcon> category = _pickCategory(activeStep);
@@ -96,11 +103,69 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       return activeStep == 0;
     }
 
-    void save() {
-      Navigator.pushNamed(context, '/personal_profile');
+    void save() async {
+      if (await userManager.currentUser.addPersonalListing(clothingInfo)) {
+        Navigator.pushNamed(context, '/personal_profile');
+        return;
+      }
+
+      toastification.showCustom(
+        context: context,
+        autoCloseDuration: const Duration(seconds: 3),
+        alignment: Alignment.topCenter,
+        builder: (BuildContext context, ToastificationItem holder) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Theme.of(context).hoverColor,
+            ),
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.all(8),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("An internal error occurred. Please try again shortly.",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(height: 16),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+    // updates the clothing info with the selection made by the user
+    void saveSelection(int index) {
+      switch (activeStep) {
+        case 1:
+        case 2:
+        case 3: // clothing type
+          clothingInfo = clothingInfo.copyWith(type: (category.keys.toList()[index] as ClothingType));
+          break;
+        case 4: // size
+          clothingInfo = clothingInfo.copyWith(size: LetteredSizing(category.keys.toList()[index] as LetteredSize));
+          break;
+        case 5: // condition
+          clothingInfo = clothingInfo.copyWith(condition: (category.keys.toList()[index] as ClothingCondition));
+          break;
+        case 6: // colours
+          clothingInfo = clothingInfo.copyWith(colours: selectedColours);
+          break;
+        case 7: // gender
+          clothingInfo = clothingInfo.copyWith(gender: (category.keys.toList()[index] as ClothingGender));
+          break;
+        case 8: // images
+          _formKey.currentState!.save();
+          break;
+        case 9: // description
+          clothingInfo =  clothingInfo.copyWith(description: _controllerDescription.text);
+          break;
+      }
     }
 
     void next(int index) {
+      saveSelection(index);
+
       //active 1,2,3 are specific to which clothing type category is picked
       //Skip other sub type categories after picked
       if (activeStep == 0) {
@@ -116,6 +181,8 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
         }
       } else if (activeStep == 1 || activeStep == 2 || activeStep == 3) {
         activeStep = 4;
+      } else if (activeStep == 9) {
+        save();
       } else {
         activeStep++;
       }
@@ -182,13 +249,11 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
             );
           },
         );
-      } else {
-        save();
       }
     }
 
     //Function shows toaster when no images are given
-    void imageMissing(List<XFile>? images) {
+    void imageMissing(List<Uint8List>? images) {
       if (images!.isEmpty) {
         toastification.showCustom(
           context: context,
@@ -233,10 +298,12 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
 
     //Handle adding/removing colours for displaying purposes
     void handleColour(int index) {
-      if (selectedColours.contains(getText(category, index))) {
-        selectedColours.remove(getText(category, index));
+      var colour = category.keys.toList()[index] as ClothingColour;
+
+      if (selectedColours.contains(colour)) {
+        selectedColours.remove(colour);
       } else {
-        selectedColours.add(getText(category, index));
+        selectedColours.add(colour);
       }
       setState(() {});
     }
@@ -299,8 +366,8 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: selectedColours.contains(
-                                        getText(category, index),
+                                      color: activeStep == 6 && selectedColours.contains(
+                                        category.keys.toList()[index] as ClothingColour,
                                       )
                                           ? Theme.of(context).hoverColor
                                           : Colors.transparent,
@@ -412,10 +479,11 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                                 key: _formKey,
                                 child: ImageSelectionField(
                                     initialValue: clothingInfo.images,
-                                    onSaved: (List<XFile>? images) =>
+                                    onSaved: (List<Uint8List>? images) {
                                         clothingInfo = clothingInfo.copyWith(
-                                            images: images),
-                                    validator: (List<XFile>? images) {
+                                            images: images);
+                                    },
+                                    validator: (List<Uint8List>? images) {
                                       imageMissing((images ?? []));
                                       return null;
                                     }),
@@ -462,7 +530,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                                             ? _formKey.currentState!.validate()
                                             : activeStep == 9;
 
-                                if (imagePresent && activeStep == 8) {
+                                if (imagePresent) {
                                   next(0);
                                 }
                               },

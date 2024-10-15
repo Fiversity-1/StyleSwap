@@ -1,14 +1,11 @@
-
 import 'dart:convert';
 
-import 'package:clothing_swap/features/clothing/domain/clothing_search.dart';
-import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
-import '../domain/clothing_info.dart';
-
-Future<List<dynamic>> searchClothes(ClothingSearch search) async {
+/// Likes/dislikes the given clothing item.
+/// Returns true if it is a match, otherwise false.
+Future<bool> likeDislikeItem(String clothingId, bool liked) async {
   try {
     // Get the current user
     User? user = FirebaseAuth.instance.currentUser;
@@ -18,23 +15,20 @@ Future<List<dynamic>> searchClothes(ClothingSearch search) async {
       String userId = user.uid;
 
       // API URL
-      String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/clothes/search/$userId';
+      String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/clothes/like/$userId/$clothingId?Like=$liked';
 
-      var encodedData = jsonEncode(search.getData());
-
-      // Make the POST request
-      http.Response response = await http.post(
+      // Make the GET request
+      http.Response response = await http.get(
         Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
         },
-        body: encodedData,
       );
 
       // Check the response status
       if (response.statusCode == 200) {
         print('Request successful: ${response.body}');
-        return convertApiResponseToClothingInfo(jsonDecode(response.body));
+        return liked;
       } else {
         print('Request failed with status: ${response.statusCode}');
       }
@@ -45,5 +39,5 @@ Future<List<dynamic>> searchClothes(ClothingSearch search) async {
     print('Error: $e');
   }
 
-  return [];
+  return false;
 }

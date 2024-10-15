@@ -7,45 +7,45 @@ import 'package:flutter_reorderable_grid_view/widgets/reorderable_builder.dart';
 import 'package:image_picker/image_picker.dart';
 
 //Image selection field used on add clothing item page for handling images
-class ImageSelectionField extends FormField<List<XFile>> {
+class ImageSelectionField extends FormField<List<Uint8List>> {
   ImageSelectionField(
       {super.key,
       super.onSaved,
       super.validator,
       initialValue,
       AutovalidateMode super.autovalidateMode =
-          AutovalidateMode.onUserInteraction})
+          AutovalidateMode.disabled})
       : super(
             initialValue: initialValue ?? [],
-            builder: (FormFieldState<List<XFile>> field) {
+            builder: (FormFieldState<List<Uint8List>> field) {
               var state = field as _ImageSelectionFieldState;
               final ImagePicker picker = ImagePicker();
 
               // uses the ImagePicker to select an image from the gallery
               Future<void> selectImage() async {
-                final XFile? image =
+                final XFile? file =
                     await picker.pickImage(source: ImageSource.gallery);
 
-                if (image == null) {
+                if (file == null) {
                   return;
                 }
 
-                List<XFile> updatedList = List<XFile>.from(state.value ?? []);
-                updatedList.add(image);
+                List<Uint8List> updatedList = List<Uint8List>.from(state.value ?? []);
+                updatedList.add(await file.readAsBytes());
                 state.didChange(updatedList);
               }
 
               // uses the ImagePicker to take an image from the host camera
               Future<void> takeImage() async {
-                final XFile? image =
+                final XFile? file =
                     await picker.pickImage(source: ImageSource.camera);
 
-                if (image == null) {
+                if (file == null) {
                   return;
                 }
 
-                List<XFile> updatedList = List<XFile>.from(state.value ?? []);
-                updatedList.add(image);
+                List<Uint8List> updatedList = List<Uint8List>.from(state.value ?? []);
+                updatedList.add(await file.readAsBytes());
                 state.didChange(updatedList);
               }
 
@@ -82,14 +82,14 @@ class ImageSelectionField extends FormField<List<XFile>> {
 
               // removes the current image
               void onClearImage(int index) {
-                List<XFile> updatedList = List<XFile>.from(state.value ?? []);
+                List<Uint8List> updatedList = List<Uint8List>.from(state.value ?? []);
                 updatedList.removeAt(index);
                 state.didChange(updatedList);
               }
 
               void onReorder(ReorderedListFunction reorderedListFunction) {
                 state.didChange(
-                    reorderedListFunction(state.value!) as List<XFile>);
+                    reorderedListFunction(state.value!) as List<Uint8List>);
               }
 
               //Container for each image, final container include add-image icon
@@ -97,11 +97,11 @@ class ImageSelectionField extends FormField<List<XFile>> {
                   List.generate((state.value ?? []).length + 1, (index) {
                 if (index < state.value!.length) {
                   return Container(
-                    key: Key(state.value![index].path),
+                    key: Key(state.value![index].hashCode.toString()),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16.0),
                       child: ImageWithCloseIcon(
-                        imageFile: state.value![index],
+                        image: state.value![index],
                         onClose: () => onClearImage(index),
                       ),
                     ),
@@ -162,10 +162,10 @@ class ImageSelectionField extends FormField<List<XFile>> {
             });
 
   @override
-  FormFieldState<List<XFile>> createState() => _ImageSelectionFieldState();
+  FormFieldState<List<Uint8List>> createState() => _ImageSelectionFieldState();
 }
 
-class _ImageSelectionFieldState extends FormFieldState<List<XFile>>
+class _ImageSelectionFieldState extends FormFieldState<List<Uint8List>>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation;
@@ -185,20 +185,17 @@ class _ImageSelectionFieldState extends FormFieldState<List<XFile>>
 }
 
 class ImageWithCloseIcon extends StatelessWidget {
-  final XFile imageFile;
+  final Uint8List image;
   final VoidCallback onClose;
 
   const ImageWithCloseIcon(
-      {super.key, required this.imageFile, required this.onClose});
+      {super.key, required this.image, required this.onClose});
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Positioned.fill(
-            child: kIsWeb
-                ? Image.network(imageFile.path, fit: BoxFit.cover)
-                : Image.file(File(imageFile.path), fit: BoxFit.cover)),
+        Positioned.fill(child: Image.memory(image, fit: BoxFit.cover)),
         Positioned(
           top: 8.0,
           right: 8.0,

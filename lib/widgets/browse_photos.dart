@@ -174,7 +174,7 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                                   leading:
                                                       Icon(Icons.date_range),
                                                   title: Text('Date Listed:'),
-                                                  subtitle: Text('27/08/2024'),
+                                                  subtitle: Text('25/10/2024'),
                                                 ),
                                                 ListTile(
                                                     tileColor:
@@ -188,7 +188,7 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                                       Icon(Icons.swap_horiz),
                                                   title:
                                                       Text('Interested People'),
-                                                  subtitle: Text("15"),
+                                                  subtitle: Text("8"),
                                                 ),
                                               ],
                                             );

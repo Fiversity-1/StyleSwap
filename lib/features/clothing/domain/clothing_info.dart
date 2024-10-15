@@ -1,10 +1,15 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../data/clothing_api.dart';
+
 //ClothingInfo Class and Enums for each category
-class ClothingInfo {
+class ClothingInfo  {
   final String? id;
-  final List<XFile> images;
+  final List<Uint8List> images;
   final ClothingSize? size;
   final String? description;
   final String? brand;
@@ -31,7 +36,7 @@ class ClothingInfo {
       this.id});
 
   ClothingInfo copyWith({
-    List<XFile>? images,
+    List<Uint8List>? images,
     ClothingSize? size,
     String? description,
     String? brand,
@@ -61,24 +66,28 @@ class ClothingInfo {
 }
 
 Future<List<ClothingInfo>> convertApiResponseToClothingInfo(dynamic apiResponse) async {
-  return (apiResponse as List).map((item) {
-    try {
-      return ClothingInfo(
-        size: item['size'] != null ? ClothingSize.fromDatabaseRepresentation(item['size']) : null,
-        description: item['bio'],
-        condition: item['condition'] != null ? ClothingCondition.fromDatabaseRepresentation(item['condition']) : null,
-        gender: item['gender'] != null ? ClothingGender.fromDatabaseRepresentation(item['gender']) : null,
-        type: item['type'] != null ? ClothingType.fromDatabaseRepresentation(item['type']) : null,
-        colours: item['colour'] != null ? (item['colour'] as List).map((colour) =>
-            ClothingColour.fromDatabaseRepresentation(colour)).toList() : [],
-        userId: item['userId'],
-      );
-    } catch (e) {
-      // Skip this entry if there's an error
-      print('Error processing item: $e');
-      return null;
-    }
-  }).where((item) => item != null).cast<ClothingInfo>().toList();
+  return await Future.wait(
+    (apiResponse as List).map((item) async {
+      try {
+        return ClothingInfo(
+          id: item['clothingId'].toString(),
+          size: item['size'] != null ? ClothingSize.fromDatabaseRepresentation(item['size']) : null,
+          description: item['bio'],
+          condition: item['condition'] != null ? ClothingCondition.fromDatabaseRepresentation(item['condition']) : null,
+          gender: item['gender'] != null ? ClothingGender.fromDatabaseRepresentation(item['gender']) : null,
+          type: item['type'] != null ? ClothingType.fromDatabaseRepresentation(item['type']) : null,
+          colours: item['colour'] != null ? (item['colour'] as List).map((colour) => ClothingColour.fromDatabaseRepresentation(colour)).toList() : [],
+          userId: item['userId'],
+          images: await decodeImageBase64((item['images'] as List).cast<String>()),
+        );
+      } catch (e) {
+        // Log the error and return null
+        print('Error processing item: $e');
+        return null;
+      }
+    }).toList(),
+  ).then((results) => results.where((item) => item != null).cast<ClothingInfo>().toList());
+
 }
 
 enum ClothingType implements DatabaseRepresentationMapper<ClothingType>  {

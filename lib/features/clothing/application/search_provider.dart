@@ -41,8 +41,8 @@ class Search with ChangeNotifier {
   }
   //End gpt
 
-  List getListing() {
-    if (_listings.length < 5 && !searching && !searchExhausted) {
+  List getListing({bool update = true}) {
+    if (_listings.length < 5 && !searching && !searchExhausted && update) {
       updateListing();
     }
 
@@ -51,7 +51,6 @@ class Search with ChangeNotifier {
 
   void updateListing() async {
     searching = true;
-    notifyListeners();
 
     var items = await searchClothes(searchParams);
 

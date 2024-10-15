@@ -1,19 +1,32 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
 import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart';
 import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
+
+import '../../clothing/data/clothing_api.dart';
+import '../../clothing/domain/clothing_info.dart';
+import '../data/profile_api.dart';
 
 //GPT used to learn and implement provider code for user state management.
 //Mostly follows the same format as Theme Provider.
 class Profile with ChangeNotifier {
   late final String id;
-  late final String name;
+  late String name;
   late String bio;
-  late AssetImage profilePicture;
-  List<ClothingItem> personalListings;
+  Uint8List? profilePicture;
+  List<ClothingInfo>? personalListings;
   List<ChatListing> interestedListings;
   PreferencesNotifier preferences;
 
@@ -21,43 +34,98 @@ class Profile with ChangeNotifier {
     required this.id,
     required this.name,
     required this.bio,
-    required this.profilePicture,
-    List<ClothingItem>? personalListings,
+    this.profilePicture,
+    this.personalListings,
     List<ChatListing>? interestedListings,
     PreferencesNotifier? preferences,
     //user does not have to have personal or interested listings
-  })  : personalListings = personalListings ?? [],
-        interestedListings = interestedListings ?? [],
-        preferences = preferences ?? PreferencesNotifier();
-
-
-  Profile.fromUser(
-      User user,{
-        List<ClothingItem>? personalListings,
-        List<ChatListing>? interestedListings,
-        PreferencesNotifier? preferences,
-        //user does not have to have personal or interested listings
-      })  : personalListings = personalListings ?? [],
-        interestedListings = interestedListings ?? [],
+  })  : interestedListings = interestedListings ?? [],
         preferences = preferences ?? PreferencesNotifier() {
-    profilePicture = const AssetImage('lib/images/profilepicture.jpg');
-    id = user.uid;
-    name = user.displayName ?? "Anonymous";
-    bio = "Nothing to see here";
+    fetchUserDetails();
   }
 
   void fetchUserDetails() async {
+    var futureClothes = getUsersClothes();
 
-  }
+    var userInfoFuture = getUser();
 
-  void addPersonalListing(ClothingItem listing) {
-    personalListings.add(listing);
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+
+      if (currentUser == null) {
+        return;
+      }
+
+      final String? imageUrl = currentUser.photoURL;
+
+      if (imageUrl == null) {
+        return;
+      }
+
+      // Download the image
+      final http.Response response = await http.get(Uri.parse(imageUrl));
+
+
+      profilePicture = response.bodyBytes;
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error fetching image: $e');
+      }
+    }
+
+    var userInfo = await userInfoFuture;
+
+    if (userInfo != null) {
+      bio = userInfo.bio;
+      name = userInfo.name;
+      interestedListings = [];
+    } else {
+      bio = "";
+      name = "Failed to retrieve name...";
+    }
+
+    personalListings = await futureClothes;
     notifyListeners();
   }
 
-  void removePersonalListing(ClothingItem listing) {
-    personalListings.remove(listing);
+  Profile.fromUser(
+      User user,{
+        this.personalListings,
+        List<ChatListing>? interestedListings,
+        PreferencesNotifier? preferences,
+        //user does not have to have personal or interested listings
+      })  : interestedListings = interestedListings ?? [],
+        preferences = preferences ?? PreferencesNotifier() {
+    id = user.uid;
+    name = user.displayName ?? "Retrieving data...";
+    bio = "";
+
+    fetchUserDetails();
+  }
+
+  Future<bool> addPersonalListing(ClothingInfo listing) async {
+    if (await addClothingItem(listing)) {
+      personalListings ??= [];
+      personalListings!.add(listing);
+      notifyListeners();
+      return true;
+    }
+
+    return false;
+  }
+
+  Future<bool> removePersonalListing(ClothingInfo listing) async {
+    if (listing.id == null) {
+      return false;
+    }
+
+    if (!(await deleteClothingItem(listing.id!))) {
+      return false;
+    }
+
+    personalListings?.remove(listing);
     notifyListeners();
+    return true;
   }
 
   void addInterestedListing(ChatListing listing) {
@@ -73,7 +141,7 @@ class Profile with ChangeNotifier {
   // Update bio or profile picture
   void updateProfile({
     String? newBio,
-    AssetImage? newProfilePicture,
+    Uint8List? newProfilePicture,
   }) {
     if (newBio != null) {
       bio = newBio;
@@ -88,8 +156,7 @@ class Profile with ChangeNotifier {
 //User manager handles user profiles
 class UserManager with ChangeNotifier {
   final List<Profile> _users = [
-    personal,
-    public
+    personal
   ]; // Ensure profiles are added here, currently using hardcoded profiles
   Profile _currentUser = personal;
 
@@ -313,14 +380,5 @@ Profile personal = Profile(
   id: personalProfileUUID,
   bio: "Keen for some trades!",
   name: "Jacob",
-  personalListings: personalListings,
-  profilePicture: const AssetImage('lib/images/jacob.jpg'),
-);
-
-Profile public = Profile(
-  id: publicProfileUUID,
-  bio: "Keen for vintage clothes!",
-  name: "Steve",
-  personalListings: publicListings,
-  profilePicture: const AssetImage('lib/images/profilepicture.jpg'),
+  personalListings: [],
 );

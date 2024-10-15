@@ -232,9 +232,9 @@ class ClothingDetail extends StatelessWidget {
                     },
                     child: Image(
                         fit: BoxFit.cover,
-                        image: searchResults
+                        image: MemoryImage(searchResults
                             .getListing()[0]
-                            .images[index]),
+                            .images[index])),
                   ),
                 ),
                 itemCount:

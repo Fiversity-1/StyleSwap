@@ -82,7 +82,7 @@ class CommentsState extends State<Comments> {
               commentContent: value,
               time: "Now",
               user: "Steve",
-              picture: 'lib/images/profilepicture.jpg',
+              picture: 'lib/images/noProfilePicture.png',
               like: 5,
               heart: 6,
               haha: 7,
@@ -405,7 +405,7 @@ class CommentsState extends State<Comments> {
                         child: CircleAvatar(
                           radius: 12,
                           backgroundImage:
-                              AssetImage('lib/images/profilepicture.jpg'),
+                              AssetImage('lib/images/noProfilePicture.png'),
                         ),
                       ),
                       hintText: 'Comment Here...',

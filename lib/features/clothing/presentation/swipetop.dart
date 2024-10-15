@@ -1,4 +1,5 @@
 import 'package:clothing_swap/features/clothing/application/search_provider.dart';
+import 'package:clothing_swap/features/clothing/data/matching_api.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
@@ -34,21 +35,15 @@ class _SwipePageTopState extends State<SwipePageTop> {
   @override
   void initState() {
     super.initState();
-    _checkIfRun().then((_) {
-      if (!_hasRun) {
-        createTutorial();
-        showTutorial();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final searchResults = Provider.of<Search>(context, listen: false);
+
+      if (searchResults.getListing(update: false).isEmpty) {
+        searchResults.resetSearch();
       }
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final searchResults = Provider.of<Search>(context, listen: false);
 
-        if (searchResults.getListing().isEmpty) {
-          searchResults.resetSearch();
-        }
-
-        setState(() {
-          _cardsSwiped = 0;
-        });
+      setState(() {
+        _cardsSwiped = 0;
       });
     });
   }
@@ -56,12 +51,16 @@ class _SwipePageTopState extends State<SwipePageTop> {
   Future<void> _checkIfRun() async {
     final prefs = await SharedPreferences.getInstance();
     _hasRun = prefs.getBool('hasRun') ?? false;
-
-    if (!_hasRun) {
-      await prefs.setBool('hasRun', true);
-    }
   }
 //End ChatGPT
+
+  Future<void> _tutorialRan() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _hasRun = true;
+    });
+    await prefs.setBool('hasRun', true);
+  }
 
   void _handleRemove(Search searchResults, int previousIndex) {
     searchResults.removeListing(previousIndex);
@@ -81,6 +80,13 @@ class _SwipePageTopState extends State<SwipePageTop> {
     chatManager = Provider.of<ChatManager>(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+
+    _checkIfRun().then((_) {
+      if (!_hasRun && searchResults.getListing().isNotEmpty) {
+        createTutorial();
+        showTutorial();
+      }
+    });
 
     return GradientBackground(
       child: Scaffold(
@@ -132,6 +138,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                     : width * 0.8,
                                 child: searchResults.checkCardType() != "Empty"
                                     ? CardSwiper(
+                                        key: _tapingKey,
                                         cardsCount: searchResults.getListing().length + 1 + _cardsSwiped,
                                         scale: 0.6,
                                         isLoop: false,
@@ -204,6 +211,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         child: Visibility(
                           visible: searchResults.checkCardType() == "Clothes",
                           child: FloatingActionButton(
+                            key: _moreDetailKey,
                             onPressed: () {},
                             elevation: 0,
                             hoverColor: Colors.transparent,
@@ -233,26 +241,28 @@ class _SwipePageTopState extends State<SwipePageTop> {
     );
   }
 
-  bool handleSwipe(previousIndex, currentIndex,
-      direction) {
+  Future<bool> handleSwipe(previousIndex, currentIndex,
+      direction) async {
     //Keep track of interest listings on
     //non fun fact cards
     try {
-      if (direction == CardSwiperDirection.right &&
-          searchResults.getListing()[0]
-          is! FunFactCard) {
-        //GPT provided provider logic
-        final userManager =
-        Provider.of<UserManager>(
-            context,
-            listen: false);
+      if (searchResults.getListing()[0]
+        is FunFactCard) {
+        return true;
+      }
 
-        final currentUser =
-            userManager.currentUser;
+      final userManager =
+      Provider.of<UserManager>(
+          context,
+          listen: false);
 
-        final clothingItem = searchResults
-            .getListing()[0];
+      final currentUser =
+          userManager.currentUser;
 
+      final clothingItem = searchResults
+          .getListing()[0];
+
+      if (await likeDislikeItem(clothingItem.id, direction == CardSwiperDirection.right)) {
         currentUser.addInterestedListing(
             ChatListing(
               currentUserId: currentUser.id,
@@ -263,9 +273,9 @@ class _SwipePageTopState extends State<SwipePageTop> {
               opened: false,
               image: searchResults
                   .getListing()[0]
-                  .images.length > 1 ? searchResults
+                  .images.length >= 1 ? MemoryImage(searchResults
                   .getListing()[0]
-                  .images[0] : const AssetImage('lib/images/noImage.png'),
+                  .images[0]) : const AssetImage('lib/images/noImage.png'),
             ));
         //Show toaster when match occurs
         //Rowan needs to move based on integration
@@ -414,6 +424,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
       opacityShadow: 0.95,
       onClickTarget: (target) {},
       onClickOverlay: (target) {},
+      onFinish: _tutorialRan,
     )..show(context: context);
   }
 }

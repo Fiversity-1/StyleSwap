@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
@@ -66,7 +69,8 @@ class PublicProfileState extends State<PublicProfile> {
                             width: 150,
                             child: CircleAvatar(
                                 radius: 75,
-                                backgroundImage: publicUser.profilePicture),
+                                backgroundImage: MemoryImage(publicUser.profilePicture
+                                    ?? File('lib/images/noProfilePicture.png').readAsBytesSync())),
                           ),
                         ),
                       ],
@@ -115,10 +119,10 @@ class PublicProfileState extends State<PublicProfile> {
                                           title: "public",
                                           gridIndex: index,
                                           photoListings: publicUser
-                                              .personalListings
+                                              .personalListings!
                                               .map((item) => item
                                                       .images.isNotEmpty
-                                                  ? item.images[0]
+                                                  ? MemoryImage(item.images[0]) as ImageProvider
                                                   : const AssetImage(
                                                       'lib/images/noImage.png'))
                                               .toList(),
@@ -127,14 +131,14 @@ class PublicProfileState extends State<PublicProfile> {
                             },
                             child: Image(
                               image: publicUser
-                                      .personalListings[index].images.isNotEmpty
-                                  ? publicUser.personalListings[index].images[0]
+                                      .personalListings![index].images.isNotEmpty
+                                  ? MemoryImage(publicUser.personalListings![index].images[0])
                                   : const AssetImage('lib/images/noImage.png'),
                               fit: BoxFit.cover,
                             ),
                           ),
                         ),
-                        itemCount: publicUser.personalListings.length,
+                        itemCount: publicUser.personalListings!.length,
                       ),
                     ),
                   ],

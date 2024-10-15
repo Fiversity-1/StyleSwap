@@ -123,6 +123,10 @@ class StartPage extends StatelessWidget {
         }
       }
 
+      if (FirebaseAuth.instance.currentUser == null) {
+        return;
+      }
+
       if (!context.mounted) return;
 
       // if the user is registered, take them to the swipe page
