@@ -43,7 +43,7 @@ Future<void> main() async {
           create: (context) => UserManager(),
         ),
         ChangeNotifierProvider(create: (context) => Search()),
-        ChangeNotifierProvider(create: (context) => ClothingSearch()),
+        ChangeNotifierProvider(create: (context) => ClothingSearch(distance: 10)),
         ChangeNotifierProxyProvider<UserManager, ChatManager>(
           create: (context) => ChatManager(context.read<UserManager>()),
           update: (context, userManager, previousChatManager) {

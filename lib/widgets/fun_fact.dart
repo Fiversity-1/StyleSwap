@@ -20,42 +20,15 @@ class FunFactCardState extends State<FunFactCard> {
     return Card(
       child: Image(
         //Logic for selecting images for different colour scheme and devices
-        image: (!kIsWeb &&
-                Provider.of<ThemeSwitcher>(context).themeData == lightTheme)
-            ? funFactLightPhone[widget.index]
-            : (!kIsWeb &&
-                    Provider.of<ThemeSwitcher>(context).themeData == darkTheme)
-                ? funFactDarkPhone[widget.index]
-                : (kIsWeb &&
-                        Provider.of<ThemeSwitcher>(context).themeData ==
-                            lightTheme)
-                    ? funFactLightWeb[widget.index]
-                    : funFactDarkWeb[widget.index],
+        image: funFactDarkPhone[widget.index],
         fit: kIsWeb ? BoxFit.fill : BoxFit.cover,
       ),
     );
   }
 }
 
+int numFunFacts = 10;
 //List of different images for different colour scheme and devices
-List<AssetImage> funFactDarkPhone = [
-  const AssetImage('lib/images/funFact1PhoneDark.png'),
-  const AssetImage('lib/images/funFact2PhoneDark.png'),
-  const AssetImage('lib/images/funFact3PhoneDark.png'),
-];
-
-List<AssetImage> funFactLightPhone = [
-  const AssetImage('lib/images/funFact1PhoneLight.png'),
-  const AssetImage('lib/images/funFact2PhoneLight.png'),
-  const AssetImage('lib/images/funFact3PhoneLight.png'),
-];
-List<AssetImage> funFactDarkWeb = [
-  const AssetImage('lib/images/funFact1WebDark.png'),
-  const AssetImage('lib/images/funFact2WebDark.png'),
-  const AssetImage('lib/images/funFact3WebDark.png'),
-];
-List<AssetImage> funFactLightWeb = [
-  const AssetImage('lib/images/funFact1WebLight.png'),
-  const AssetImage('lib/images/funFact2WebLight.png'),
-  const AssetImage('lib/images/funFact3WebLight.png'),
-];
+List<AssetImage> funFactDarkPhone = List.generate(numFunFacts, (index) {
+  return AssetImage('lib/images/fun_facts/fun_fact_$index.png');
+});

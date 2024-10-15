@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:math';
 
 import 'package:clothing_swap/features/clothing/domain/clothing_search.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_build.dart';
@@ -11,6 +12,12 @@ import '../presentation/clothing_item_class.dart';
 
 //Original code modified by chat to include _generatedisplayCards
 //Need to replace publicListings to whatever search returns
+
+class FunFact {
+  final int funFactId;
+
+  FunFact(this.funFactId);
+}
 
 class Search with ChangeNotifier {
   final List _listings = [];
@@ -50,10 +57,12 @@ class Search with ChangeNotifier {
       searchExhausted = true;
     }
 
+    List<int> funFactIndexes = List.generate(numFunFacts, (index) => index);
+    Random random = Random();
 
     for (var index = 0; index < items.length; index++) {
-      if (index % _funFactInterval == 0 && index != 0) {
-        _listings.add(FunFactCard);
+      if (index % _funFactInterval == 0 && index != 0 && funFactIndexes.isNotEmpty) {
+        _listings.add(FunFact(funFactIndexes.removeAt(random.nextInt(funFactIndexes.length))));
       }
 
       _listings.add(items[index]);
@@ -70,9 +79,9 @@ class Search with ChangeNotifier {
 
   String checkCardType() {
     if (getListing().isNotEmpty) {
-      if (getListing()[0] is FunFactCard) {
+      if (getListing()[0] is FunFact) {
         return "Fact";
-      } else if (getListing()[0] is! FunFactCard) {
+      } else {
         return "Clothes";
       }
     }

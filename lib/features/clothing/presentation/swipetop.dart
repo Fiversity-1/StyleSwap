@@ -1,5 +1,7 @@
 import 'package:clothing_swap/features/clothing/application/search_provider.dart';
 import 'package:clothing_swap/features/clothing/data/matching_api.dart';
+import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
+import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
@@ -154,9 +156,12 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                           index = index - _cardsSwiped;
 
                                           if (index < searchResults.getListing().length) {
-                                            var clothingItem = searchResults.getListing()[index];
+                                            var item = searchResults.getListing()[index];
 
-                                            return ClothingCard(item: clothingItem);
+                                            if (item is ClothingInfo)
+                                              return ClothingCard(item: (item as ClothingInfo));
+                                            else if (item is FunFact)
+                                              return FunFactCard(index: (item as FunFact).funFactId);
                                           }
 
                                           return const NoResultCard();
@@ -247,7 +252,13 @@ class _SwipePageTopState extends State<SwipePageTop> {
     //non fun fact cards
     try {
       if (searchResults.getListing()[0]
-        is FunFactCard) {
+        is FunFact) {
+        setState(() {
+          _cardsSwiped++;
+        });
+
+        _handleRemove(searchResults, 0);
+
         return true;
       }
 
