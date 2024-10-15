@@ -119,9 +119,32 @@ class _ViewPrefencesState extends State<ViewPrefences> {
                                       setState(() {
                                         preferencesNotifier.setDistance(value);
                                       });
-                                    })
+                                    }),
                               ],
-                            ))
+                            )),
+                        Center(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(top: (15.0), bottom: 20),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/swipe',
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context)
+                                    .floatingActionButtonTheme
+                                    .backgroundColor,
+                              ),
+                              child: Text(
+                                "Save Changes",
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
