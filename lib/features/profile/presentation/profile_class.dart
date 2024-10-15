@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
-import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
 import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -28,7 +27,6 @@ class Profile with ChangeNotifier {
   Uint8List? profilePicture;
   List<ClothingInfo>? personalListings;
   List<ChatListing> interestedListings;
-  PreferencesNotifier preferences;
 
   Profile({
     required this.id,
@@ -37,10 +35,8 @@ class Profile with ChangeNotifier {
     this.profilePicture,
     this.personalListings,
     List<ChatListing>? interestedListings,
-    PreferencesNotifier? preferences,
     //user does not have to have personal or interested listings
-  })  : interestedListings = interestedListings ?? [],
-        preferences = preferences ?? PreferencesNotifier() {
+  })  : interestedListings = interestedListings ?? [] {
     fetchUserDetails();
   }
 
@@ -92,10 +88,8 @@ class Profile with ChangeNotifier {
       User user,{
         this.personalListings,
         List<ChatListing>? interestedListings,
-        PreferencesNotifier? preferences,
         //user does not have to have personal or interested listings
-      })  : interestedListings = interestedListings ?? [],
-        preferences = preferences ?? PreferencesNotifier() {
+      })  : interestedListings = interestedListings ?? []{
     id = user.uid;
     name = user.displayName ?? "Retrieving data...";
     bio = "";
@@ -190,20 +184,6 @@ class UserManager with ChangeNotifier {
       (user) => user.id == userId,
       orElse: () => throw StateError('No user found with id $userId'),
     );
-  }
-
-  List<String> getPreferences(String category) {
-    return _currentUser.preferences.getPreferences(category);
-  }
-
-  void addPreference(String category, String preference) {
-    _currentUser.preferences.addPreference(category, preference);
-    notifyListeners();
-  }
-
-  void removePreference(String category, String preference) {
-    _currentUser.preferences.removePreference(category, preference);
-    notifyListeners();
   }
 }
 

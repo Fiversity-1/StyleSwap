@@ -1,18 +1,20 @@
 
 import 'dart:ffi';
 
+import 'package:flutter/material.dart';
+
 import 'clothing_info.dart';
 
-class ClothingSearch {
-  final List<ClothingType>? types;
-  final List<ClothingSize>? sizes;
-  final List<ClothingColour>? colours;
-  final List<ClothingCondition>? conditions;
-  final List<ClothingGender>? genders;
-  final int distance;
+class ClothingSearch extends ChangeNotifier {
+  List<ClothingType>? types;
+  List<ClothingSize>? sizes;
+  List<ClothingColour>? colours;
+  List<ClothingCondition>? conditions;
+  List<ClothingGender>? genders;
+  int? distance;
 
-  ClothingSearch(this.distance, {this.types, this.sizes, this.colours,
-    this.conditions, this.genders});
+  ClothingSearch({this.types, this.sizes, this.colours,
+    this.conditions, this.genders, this.distance});
 
   Map<String, dynamic> getData() {
     Map<String, dynamic> data = {};
@@ -31,7 +33,43 @@ class ClothingSearch {
   void addData(Map<String, dynamic> data, String key,
       List<DatabaseRepresentationMapper>? props) {
     if (props != null) {
-      data[key] = props.map((type) => type.getDatabaseRepresentation());
+      data[key] = props.map((type) => type.getDatabaseRepresentation()).toList();
     }
+  }
+
+  void updateTypes(List<ClothingType>? types) {
+    this.types = types;
+
+    notifyListeners();
+  }
+
+  void updateSizes(List<ClothingSize>? sizes) {
+    this.sizes = sizes;
+
+    notifyListeners();
+  }
+
+  void updateColours(List<ClothingColour>? colours) {
+    this.colours = colours;
+
+    notifyListeners();
+  }
+
+  void updateConditions(List<ClothingCondition>? conditions) {
+    this.conditions = conditions;
+
+    notifyListeners();
+  }
+
+  void updateGenders(List<ClothingGender>? genders) {
+    this.genders = genders;
+
+    notifyListeners();
+  }
+
+  void updateDistance(int? distance) {
+    this.distance = distance;
+
+    notifyListeners();
   }
 }

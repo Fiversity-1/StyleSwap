@@ -113,8 +113,18 @@ enum ClothingType implements DatabaseRepresentationMapper<ClothingType>  {
   tights;
 
   @override
+  String toString() {
+    final String original = super.toString().split('.').last;
+    final RegExp regex = RegExp(r'([a-z])([A-Z])');
+    final String withSpaces = original.replaceAllMapped(regex, (match) {
+      return '${match.group(1)} ${match.group(2)}';
+    });
+    return withSpaces[0].toUpperCase() + withSpaces.substring(1);
+  }
+
+  @override
   String getDatabaseRepresentation() {
-    return toString().split('.').last;
+    return super.toString().split('.').last;
   }
 
   static ClothingType fromDatabaseRepresentation(String value) {
@@ -143,8 +153,18 @@ enum ClothingCondition with DatabaseRepresentationMapper<ClothingCondition> {
   wellWorn;
 
   @override
+  String toString() {
+    final String original = super.toString().split('.').last;
+    final RegExp regex = RegExp(r'([a-z])([A-Z])');
+    final String withSpaces = original.replaceAllMapped(regex, (match) {
+      return '${match.group(1)} ${match.group(2)}';
+    });
+    return withSpaces[0].toUpperCase() + withSpaces.substring(1);
+  }
+
+  @override
   String getDatabaseRepresentation() {
-    return toString().split('.').last;
+    return super.toString().split('.').last;
   }
 
   static ClothingCondition fromDatabaseRepresentation(String value) {
@@ -161,14 +181,26 @@ enum ClothingGender with DatabaseRepresentationMapper<ClothingGender>  {
   unisex;
 
   @override
+  String toString() {
+    final String original = super.toString().split('.').last;
+    final RegExp regex = RegExp(r'([a-z])([A-Z])');
+    final String withSpaces = original.replaceAllMapped(regex, (match) {
+      return '${match.group(1)} ${match.group(2)}';
+    });
+    return withSpaces[0].toUpperCase() + withSpaces.substring(1);
+  }
+
+  @override
   String getDatabaseRepresentation() {
-    return toString().split('.').last;
+    var str = super.toString().split('.');
+
+    return str.last;
   }
 
   static ClothingGender fromDatabaseRepresentation(String value) {
     return ClothingGender.values.firstWhere(
             (e) => e.getDatabaseRepresentation() == value,
-        orElse: () => throw ArgumentError('Invalid colour value: $value'));
+        orElse: () => throw ArgumentError('Invalid gender value: $value'));
   }
 }
 
@@ -228,7 +260,7 @@ enum LetteredSize with DatabaseRepresentationMapper<LetteredSize> {
   static LetteredSize fromDatabaseRepresentation(String value) {
     return LetteredSize.values.firstWhere(
             (e) => e.getDatabaseRepresentation() == value,
-        orElse: () => throw ArgumentError('Invalid colour value: $value'));
+        orElse: () => throw ArgumentError('Invalid sizing value: $value'));
   }
 
   String getSizeUpper() {
@@ -296,8 +328,18 @@ enum ClothingColour with DatabaseRepresentationMapper<ClothingColour> {
   brown;
 
   @override
+  String toString() {
+    final String original = super.toString().split('.').last;
+    final RegExp regex = RegExp(r'([a-z])([A-Z])');
+    final String withSpaces = original.replaceAllMapped(regex, (match) {
+      return '${match.group(1)} ${match.group(2)}';
+    });
+    return withSpaces[0].toUpperCase() + withSpaces.substring(1);
+  }
+
+  @override
   String getDatabaseRepresentation() {
-    return toString().split('.').last;
+    return super.toString().split('.').last;
   }
 
   static ClothingColour fromDatabaseRepresentation(String value) {

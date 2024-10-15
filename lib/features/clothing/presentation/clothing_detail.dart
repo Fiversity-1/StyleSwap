@@ -17,8 +17,6 @@ class ClothingDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userManager = context.watch<UserManager>();
-    final preferencesNotifier = userManager.currentUser.preferences;
     final searchResults = Provider.of<Search>(context);
     //GPT for modal route to collect argument
     final String? location =
@@ -67,10 +65,6 @@ class ClothingDetail extends StatelessWidget {
                     leading: const Icon(Icons.info),
                   ),
                   ListTile(
-                      selected: preferencesNotifier
-                          .getPreferences("Type")
-                          .contains(
-                              searchResults.getListing()[0].type),
                       title: Text(
                         "Type",
                         style: Theme.of(context).textTheme.bodyMedium,
@@ -80,21 +74,8 @@ class ClothingDetail extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       leading: const Icon(Icons.category),
-                      trailing: preferencesNotifier
-                              .getPreferences("Type")
-                              .contains(searchResults
-                                  .getListing()[0]
-                                  .type)
-                          ? const Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                            )
-                          : null),
+                     ),
                   ListTile(
-                      selected: preferencesNotifier
-                          .getPreferences("Size")
-                          .contains(
-                              searchResults.getListing()[0].size),
                       title: Text(
                         "Size",
                         style: Theme.of(context).textTheme.bodyMedium,
@@ -104,22 +85,8 @@ class ClothingDetail extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       leading: const Icon(Icons.numbers),
-                      trailing: preferencesNotifier
-                              .getPreferences("Size")
-                              .contains(searchResults
-                                  .getListing()[0]
-                                  .size)
-                          ? const Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                            )
-                          : null),
+                      ),
                   ListTile(
-                      selected: preferencesNotifier
-                          .getPreferences("Gender")
-                          .contains(searchResults
-                              .getListing()[0]
-                              .gender),
                       title: Text(
                         "Gender",
                         style: Theme.of(context).textTheme.bodyMedium,
@@ -130,23 +97,9 @@ class ClothingDetail extends StatelessWidget {
                       ),
                       leading: const Icon(
                         Icons.person,
-                      ),
-                      trailing: preferencesNotifier
-                              .getPreferences("Gender")
-                              .contains(searchResults
-                                  .getListing()[0]
-                                  .gender)
-                          ? const Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                            )
-                          : null),
+                      ),),
                   ListTile(
-                      selected: preferencesNotifier
-                          .getPreferences("Condition")
-                          .contains(searchResults
-                              .getListing()[0]
-                              .condition),
+
                       title: Text(
                         "Condition",
                         style: Theme.of(context).textTheme.bodyMedium,
@@ -158,25 +111,11 @@ class ClothingDetail extends StatelessWidget {
                       leading: const Icon(
                         Icons.gpp_good_outlined,
                       ),
-                      trailing: preferencesNotifier
-                              .getPreferences("Condition")
-                              .contains(searchResults
-                                  .getListing()[0]
-                                  .condition)
-                          ? const Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                            )
-                          : null),
+                      ),
                   //Colour has been modified by GPT to highlight tiles containing
                   //any colour from list of preferred colours.
                   ListTile(
-                    selected: searchResults
-                        .getListing()[0]
-                        .colours
-                        .any((color) => preferencesNotifier
-                            .getPreferences("Colour")
-                            .contains(color)),
+
                     title: Text(
                       "Colour",
                       style: Theme.of(context).textTheme.bodyMedium,
@@ -189,17 +128,7 @@ class ClothingDetail extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(Icons.palette),
-                    trailing: searchResults
-                            .getListing()[0]
-                            .colours
-                            .any((color) => preferencesNotifier
-                                .getPreferences("Colour")
-                                .contains(color))
-                        ? const Icon(
-                            Icons.star,
-                            color: Colors.yellow,
-                          )
-                        : null,
+
                   ),
                 ],
               ),

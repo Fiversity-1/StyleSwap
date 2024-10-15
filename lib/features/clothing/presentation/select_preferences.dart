@@ -1,5 +1,5 @@
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
-import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
+import 'package:clothing_swap/features/clothing/domain/clothing_search.dart';
 import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
@@ -12,8 +12,7 @@ import 'package:string_extensions/string_extensions.dart';
 
 //Page for selecting clothing search preferences
 class AddClothesPreferences extends StatefulWidget {
-  const AddClothesPreferences({super.key, this.category});
-  final String? category;
+  const AddClothesPreferences({super.key});
 
   @override
   State<AddClothesPreferences> createState() => _AddClothesPreferencesState();
@@ -45,45 +44,84 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
     categories = ModalRoute.of(context)!.settings.arguments as String;
   }
 
-  void _handlePress(int index, Map<Enum, FaIcon> category, String currentOption,
-      PreferencesNotifier preferencesNotifier, List<String> preferences) {
+  void _handlePress(int index, Map<Enum, FaIcon> category, ClothingSearch clothingSearch) {
     setState(() {
-      if (preferences.contains(currentOption)) {
-        preferencesNotifier.removePreference(categories, currentOption);
-      } else {
-        preferencesNotifier.addPreference(
-            categories,
-            category == letteredSizeIcons
-                ? category.keys
-                    .toList()[index]
-                    .toString()
-                    .split('.')
-                    .last
-                    .toUpperCase()
-                : category.keys
-                    .toList()[index]
-                    .toString()
-                    .split('.')
-                    .last
-                    .capitalize);
+      switch (categories) {
+        case "Type":
+          List<ClothingType> updatedTypes = List.from(clothingSearch.types ?? []);
+          var updatedItem = category.keys.toList()[index] as ClothingType;
+
+          if (updatedTypes.contains(updatedItem)) {
+            updatedTypes.remove(updatedItem);
+          } else {
+            updatedTypes.add(updatedItem);
+          }
+
+          clothingSearch.updateTypes(updatedTypes);
+        case "Size":
+          List<ClothingSize> updatedSizes = List.from(clothingSearch.sizes ?? []);
+          var updatedItem = LetteredSizing(category.keys.toList()[index] as LetteredSize);
+
+          var existingIndex = updatedSizes.indexWhere((sizes) { return sizes is LetteredSizing
+              && updatedItem.size == sizes.size; } );
+          if (existingIndex >= 0) {
+            updatedSizes.removeAt(existingIndex);
+          } else {
+            updatedSizes.add(updatedItem);
+          }
+
+          clothingSearch.updateSizes(updatedSizes);
+        case "Condition":
+          List<ClothingCondition> updatedConditions = List.from(clothingSearch.conditions ?? []);
+          var updatedItem = category.keys.toList()[index] as ClothingCondition;
+
+          if (updatedConditions.contains(updatedItem)) {
+            updatedConditions.remove(updatedItem);
+          } else {
+            updatedConditions.add(updatedItem);
+          }
+
+          clothingSearch.updateConditions(updatedConditions);
+        case "Colour":
+          List<ClothingColour> updateColours = List.from(clothingSearch.colours ?? []);
+          var updatedItem = category.keys.toList()[index] as ClothingColour;
+
+          if (updateColours.contains(updatedItem)) {
+            updateColours.remove(updatedItem);
+          } else {
+            updateColours.add(updatedItem);
+          }
+
+          clothingSearch.updateColours(updateColours);
+        case "Gender":
+          List<ClothingGender> updatedGenders = List.from(clothingSearch.genders ?? []);
+          var updatedItem = category.keys.toList()[index] as ClothingGender;
+
+          if (updatedGenders.contains(updatedItem)) {
+            updatedGenders.remove(updatedItem);
+          } else {
+            updatedGenders.add(updatedItem);
+          }
+
+          clothingSearch.updateGenders(updatedGenders);
       }
     });
   }
 
   //GPT generated function for extracting and formatting names of enums from a map
   String _getText(Map<Enum, FaIcon> category, int index) {
-    return category == letteredSizeIcons
-        ? category.keys.toList()[index].toString().split('.').last.toUpperCase()
-        : category.keys.toList()[index].toString().split('.').last.capitalize;
+    return _getEnumText(category.keys.toList()[index]);
   }
 
+  String _getEnumText(Enum value) {
+    return value is LetteredSize ? value.toString().split('.').last.toUpperCase()
+      : value.toString().split('.').last.capitalize;
+  }
+  
   @override
   Widget build(BuildContext context) {
     //GPT used for tracking changes via provider
-    final userManager = context.watch<UserManager>();
-    final preferencesNotifier = userManager.currentUser.preferences;
     Map<Enum, FaIcon> category = _pickCategory(categories);
-    List<String> preferences = preferencesNotifier.getPreferences(categories);
 
     return GradientBackground(
       child: Scaffold(
@@ -144,7 +182,24 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
                             ),
                           ],
                         ),
-                        Padding(
+                          Consumer<ClothingSearch>(
+                          builder: (context, clothingSearch, child) {
+                            List<String> preferences = [];
+
+                            switch (categories) {
+                              case "Type":
+                                preferences = clothingSearch.types?.map((value) => _getEnumText(value)).toList()?? [];
+                              case "Size":
+                                preferences = clothingSearch.sizes?.map((value) => _getEnumText(value is LetteredSizing ? value.size : LetteredSize.m)).toList()?? [];
+                              case "Condition":
+                                preferences = clothingSearch.conditions?.map((value) => _getEnumText(value)).toList()?? [];
+                              case "Colour":
+                                preferences = clothingSearch.colours?.map((value) => _getEnumText(value)).toList()?? [];
+                              case "Gender":
+                                preferences = clothingSearch.genders?.map((value) => _getEnumText(value)).toList()?? [];
+                            }
+
+                            return Padding(
                           padding: const EdgeInsets.only(
                               top: 10, left: 10, right: 10),
                           child: GridView.builder(
@@ -162,18 +217,13 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
                                   _handlePress(
                                       index,
                                       category,
-                                      //GPT used to create _getText method
-                                      _getText(category, index),
-                                      preferencesNotifier,
-                                      preferences);
+                                      clothingSearch);
                                 },
                                 onTap: () {
                                   _handlePress(
                                       index,
                                       category,
-                                      _getText(category, index),
-                                      preferencesNotifier,
-                                      preferences);
+                                      clothingSearch);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -222,9 +272,7 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
                                           _handlePress(
                                               index,
                                               category,
-                                              _getText(category, index),
-                                              preferencesNotifier,
-                                              preferences);
+                                              clothingSearch);
                                         },
                                       ),
                                     ],
@@ -234,6 +282,8 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
                             ),
                             itemCount: category.values.toList().length,
                           ),
+                        );
+                            },
                         ),
                       ],
                     ),

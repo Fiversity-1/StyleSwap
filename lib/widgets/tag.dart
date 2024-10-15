@@ -93,7 +93,7 @@ class TagState extends State<Tag> {
                       : widget.text),
       // GPT recommended using this approach for finding the correct icon to use
       avatar: widget.category != "Colour"
-          ? FaIcon(icon!.icon,
+          ? FaIcon(icon != null ? icon.icon : Icons.error,
               size: 20, color: Theme.of(context).iconTheme.color)
           : icon,
 

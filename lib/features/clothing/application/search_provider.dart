@@ -13,30 +13,22 @@ import '../presentation/clothing_item_class.dart';
 //Need to replace publicListings to whatever search returns
 
 class Search with ChangeNotifier {
-  List _listings = [];
+  final List _listings = [];
   final int _funFactInterval = 3;
-  ClothingSearch searchParams = ClothingSearch(50);
+  ClothingSearch searchParams = ClothingSearch(distance: 10);
   bool searching = false;
   bool searchExhausted = false;
 
   void setSearchParams(ClothingSearch searchParams) {
     this.searchParams = searchParams;
+
+    _listings.clear();
+    searchExhausted = false;
+
+    notifyListeners();
   }
 
   void resetSearch() {
-    // final List displayCards = [];
-    // int funFactCount = 0;
-    // int totalItems = searchResults.length;
-    //
-    // for (int i = 0; i < totalItems; i++) {
-    //   displayCards.add(ClothingCard(item: searchResults[i]));
-    //
-    //   if ((i + 1) % _funFactInterval == 0 &&
-    //       funFactCount < funFactDarkPhone.length) {
-    //     displayCards.add(FunFactCard(index: funFactCount));
-    //     funFactCount++;
-    //   }
-    // }
     searchExhausted = false;
   }
   //End gpt
@@ -58,7 +50,15 @@ class Search with ChangeNotifier {
       searchExhausted = true;
     }
 
-    _listings.addAll(items);
+
+    for (var index = 0; index < items.length; index++) {
+      if (index % _funFactInterval == 0 && index != 0) {
+        _listings.add(FunFactCard);
+      }
+
+      _listings.add(items[index]);
+    }
+
     searching = false;
     notifyListeners();
   }

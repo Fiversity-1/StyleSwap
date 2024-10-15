@@ -38,9 +38,8 @@ class ClothingCardState extends State<ClothingCard> {
       },
       child: Card(
         child: Image(
-          // todo widget.item.images[currentIndex]
           image: widget.item.images.isNotEmpty
-              ? MemoryImage(widget.item.images[0])
+              ? MemoryImage(widget.item.images[currentIndex])
               : const AssetImage('lib/images/noImage.png'),
           fit: BoxFit.cover,
         ),

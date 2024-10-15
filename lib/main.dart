@@ -1,5 +1,5 @@
+import 'package:clothing_swap/features/clothing/domain/clothing_search.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_detail.dart';
-import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
 import 'package:clothing_swap/features/clothing/application/search_provider.dart';
 import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
 import 'package:clothing_swap/features/community/event_class.dart';
@@ -43,7 +43,7 @@ Future<void> main() async {
           create: (context) => UserManager(),
         ),
         ChangeNotifierProvider(create: (context) => Search()),
-        ChangeNotifierProvider(create: (context) => PreferencesNotifier()),
+        ChangeNotifierProvider(create: (context) => ClothingSearch()),
         ChangeNotifierProxyProvider<UserManager, ChatManager>(
           create: (context) => ChatManager(context.read<UserManager>()),
           update: (context, userManager, previousChatManager) {

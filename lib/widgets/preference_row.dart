@@ -1,57 +1,35 @@
-import 'package:clothing_swap/features/clothing/presentation/preferences_provider.dart';
-import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
 import 'package:clothing_swap/widgets/tag.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 //PreferenceRow is a list of "tag" widgets with a text widget used for each
 //search preference (i.e. condition)
-class PreferenceRow extends StatefulWidget {
-  const PreferenceRow({super.key, required this.category});
+class PreferenceRow<T> extends StatefulWidget {
+  const PreferenceRow({super.key, required this.category, required this.preferences,
+    required this.onDelete});
   final String category;
+  final List<T> preferences;
+  final void Function(int) onDelete;
 
   @override
-  PreferenceRowState createState() => PreferenceRowState();
+  PreferenceRowState createState() => PreferenceRowState<T>();
 }
 
-class PreferenceRowState extends State<PreferenceRow> {
-  List<String>? _selectPreferences(PreferencesNotifier preferencesNotifier) {
-    switch (widget.category) {
-      case "Type":
-        return preferencesNotifier.getPreferences("Type");
-      case "Size":
-        return preferencesNotifier.getPreferences("Size");
-      case "Colour":
-        return preferencesNotifier.getPreferences("Colour");
-      case "Condition":
-        return preferencesNotifier.getPreferences("Condition");
-      case "Gender":
-        return preferencesNotifier.getPreferences("Gender");
-    }
-    return null;
-  }
-
+class PreferenceRowState<T> extends State<PreferenceRow> {
   @override
   Widget build(BuildContext context) {
-    //GPT used for tracking preference changes via provider
-    final userManager = context.watch<UserManager>();
-    final preferencesNotifier = userManager.currentUser.preferences;
-
-    List<String>? preferences = _selectPreferences(preferencesNotifier);
-
     //Generate tags for each specific category
     List<Widget> tags = [];
 
-    for (int i = 0; i < preferences!.length; i++) {
+    for (int i = 0; i < widget.preferences.length; i++) {
       tags.add(Tag(
-        text: preferences[i],
+        text: widget.preferences[i].toString(),
         category: widget.category,
         //GPT suggested using callback for updating after tag removed
         onDeleted: () {
-          preferencesNotifier.removePreference(widget.category, preferences[i]);
+          widget.onDelete(i);
           // Notify the parent to rebuild
-          setState(() {});
+          // TODO check if necessary setState(() {});
         },
       ));
     }
