@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:string_extensions/string_extensions.dart';
 
 import '../data/clothing_api.dart';
 
@@ -19,7 +20,7 @@ class ClothingInfo  {
   final List<ClothingColour>? colours;
   final String? user;
   final String? userId;
-  final int? distance;
+  final double? distance;
 
   ClothingInfo(
       {this.images = const [],
@@ -46,7 +47,7 @@ class ClothingInfo  {
     List<ClothingColour>? colours,
     String? user,
     String? userId,
-    int? distance,
+    double? distance,
     String? id
   }) {
     return ClothingInfo(
@@ -78,6 +79,8 @@ Future<List<ClothingInfo>> convertApiResponseToClothingInfo(dynamic apiResponse)
           type: item['type'] != null ? ClothingType.fromDatabaseRepresentation(item['type']) : null,
           colours: item['colour'] != null ? (item['colour'] as List).map((colour) => ClothingColour.fromDatabaseRepresentation(colour)).toList() : [],
           userId: item['userId'],
+          user: item['user']?['name'],
+          distance: item['distance'].toString().toDouble(),
           images: await decodeImageBase64((item['images'] as List).cast<String>()),
         );
       } catch (e) {
@@ -87,7 +90,6 @@ Future<List<ClothingInfo>> convertApiResponseToClothingInfo(dynamic apiResponse)
       }
     }).toList(),
   ).then((results) => results.where((item) => item != null).cast<ClothingInfo>().toList());
-
 }
 
 enum ClothingType implements DatabaseRepresentationMapper<ClothingType>  {

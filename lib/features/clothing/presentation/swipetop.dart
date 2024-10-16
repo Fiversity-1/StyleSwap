@@ -203,7 +203,9 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         left: 17.5,
                         child: Text(
                             searchResults.checkCardType() == "Clothes"
-                                ? searchResults.getListing()[0].distance ?? "Unknown"
+                                ? searchResults.getListing()[0].distance != null
+                                  ? '${searchResults.getListing()[0].distance!.toStringAsFixed(2)}km'
+                                  : "Unknown"
                                 : searchResults.checkCardType() == "Fact"
                                     ? ""
                                     : "No Cards left!",

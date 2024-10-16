@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
+
+import '../clothing/data/matching_api.dart';
+import '../clothing/domain/clothing_info.dart';
 //GPT used to this implement this page for state management of ChatListings
 //ChatListings have a list of ChatMessages
 
-class ChatListing {
+class ChatListing extends ChangeNotifier {
   final String id;
   String name;
   String previewContent;
@@ -16,8 +19,22 @@ class ChatListing {
   List<ChatMessage> messages;
   final String otherUserId;
   final String currentUserId;
+  bool _fetching = false;
+  MatchedClothing? _trades;
 
-  ChatListing({
+  MatchedClothing? get trades {
+    if (!_fetching && _trades == null) {
+      fetchTradeItems();
+    }
+
+    return _trades;
+  }
+  set trades(MatchedClothing? value) {
+    _trades = value;
+    notifyListeners();
+  }
+
+    ChatListing({
     String? id,
     required this.name,
     required this.previewContent,
@@ -29,6 +46,12 @@ class ChatListing {
     List<ChatMessage>? messages,
   })  : id = id ?? const Uuid().v4(),
         messages = messages ?? [];
+
+  Future<void> fetchTradeItems() async {
+    _fetching = true;
+    _trades = await getMatchedClothing(otherUserId);
+    notifyListeners();
+  }
 
   //Update whenever chat opened
   void updatePreview(String content, String timestamp) {

@@ -53,10 +53,11 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                         type: "listing",
                         accepted: false,
                         declined: false));
-                Navigator.pushNamed(
+                Navigator.pushNamedAndRemoveUntil(
                   // ignore: use_build_context_synchronously
                   context,
                   '/chat',
+                  ModalRoute.withName('/message'),
                 );
               },
               //GPT used for styling button
@@ -149,11 +150,9 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                     children: [
                       Visibility(
                         //On profile page show info icon and close icon
-                        //Info for personal show listing stats
-                        //Info for public show listing category information
+                        //Info for personal show listing stats=
                         visible: widget.title != "details",
-                        child: Row(
-                          children: [
+                        child: widget.title == "personal" ?
                             Padding(
                               padding: const EdgeInsets.only(
                                   top: kIsWeb ? 7.5 : 25, left: 5),
@@ -163,7 +162,6 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                   ),
                                   iconSize: 25,
                                   onPressed: () {
-                                    if (widget.title == "personal") {
                                       showModalBottomSheet(
                                           context: context,
                                           builder: (context) {
@@ -193,21 +191,11 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                               ],
                                             );
                                           });
-                                    } else if (widget.title == "public") {
-                                      Navigator.pushNamed(
-                                          context, '/clothing_detail',
-                                          arguments: "trade");
-                                    } else if (widget.title == "details") {
-                                      Navigator.pushNamed(
-                                          context, '/clothing_detail');
-                                    }
                                   }),
-                            ),
+                            ) :
                             //Public page provides trading option -> based on
                             //last chat opened.
-                            Visibility(
-                              visible: widget.title == "public",
-                              child: Padding(
+                            Padding(
                                 padding: const EdgeInsets.only(
                                     top: kIsWeb ? 7.5 : 25),
                                 child: IconButton(
@@ -222,9 +210,6 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
                       Padding(
                         padding: const EdgeInsets.only(
                             top: kIsWeb ? 7.5 : 25, left: 5),
@@ -237,7 +222,7 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                               Navigator.pop(context);
                             }),
                       ),
-                    ],
+                    ]
                   ),
                 ),
                 SizedBox(height: height * 0.4),

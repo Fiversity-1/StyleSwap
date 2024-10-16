@@ -36,6 +36,7 @@ class Search with ChangeNotifier {
   }
 
   void resetSearch() {
+    _listings.clear();
     searchExhausted = false;
   }
   //End gpt

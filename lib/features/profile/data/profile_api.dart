@@ -96,14 +96,14 @@ class UserInfo {
   UserInfo(this.name, this.bio, this.matchedItems);
 }
 
-Future<UserInfo?> getUser() async {
+Future<UserInfo?> getUser({String? userId}) async {
   try {
     // Get the current user
     User? user = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
+    if (user != null || userId != null) {
       // User ID
-      String userId = user.uid;
+      userId ??= user!.uid;
 
       // API URL
       String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/user/$userId';
@@ -132,4 +132,39 @@ Future<UserInfo?> getUser() async {
   }
 
   return null;
+}
+
+
+Future<void> blockUser(String userIdToBlock) async {
+  try {
+    // Get the current user
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      // User ID
+      String userId = user.uid;
+
+      // API URL
+      String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/user/block/$userId/$userIdToBlock';
+
+      // Make the POST request
+      http.Response response = await http.get(
+          Uri.parse(url),
+          headers: {
+            'Content-Type': 'application/json',
+          }
+      );
+
+      // Check the response status
+      if (response.statusCode == 200) {
+        print('Request successful: ${response.body}');
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } else {
+      print('No user is signed in.');
+    }
+  } catch (e) {
+    print('Error: $e');
+  }
 }

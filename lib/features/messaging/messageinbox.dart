@@ -16,6 +16,14 @@ class Message extends StatefulWidget {
 }
 
 class _MessageState extends State<Message> {
+  String truncateWithEllipsis(String text, int length) {
+    if (text.length <= length) {
+      return text;
+    } else {
+      return '${text.substring(0, length-1)}...';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final chatManager = Provider.of<ChatManager>(context);
@@ -120,10 +128,11 @@ class _MessageState extends State<Message> {
                       ),
                       title: Row(
                         children: [
-                          Text('${chat.name} ',
+                          Text(truncateWithEllipsis(chat.name, !chat.opened ? 13 : 16),
                               style: const TextStyle(
                                 fontSize: 24,
                               )),
+                          SizedBox(width: !chat.opened ? 10 : 0),
                           Icon(!chat.opened ? Icons.mark_chat_unread : null),
                         ],
                       ),
@@ -133,7 +142,7 @@ class _MessageState extends State<Message> {
                         backgroundImage: chat.image,
                       ),
                       trailing: Wrap(
-                        spacing: 18, // space between two icons
+                        spacing: 6, // space between two icons
                         children: [
                           Text(chat.time,
                               style: Theme.of(context).textTheme.bodyMedium),

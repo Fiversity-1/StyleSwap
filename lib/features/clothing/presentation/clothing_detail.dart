@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 
+import '../../profile/data/profile_api.dart';
+
 //Page for displaying clothing detail for a listing
 //Page accessible from either swipe_top or public_profile when
 //browsing a person's listings
@@ -29,8 +31,16 @@ class ClothingDetail extends StatelessWidget {
               'Thank you for your report. A member of our moderation team will conduct an investigation shortly.\n\nWould you like to block the user?'),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
+              onPressed: () async {
+                final searchResults = Provider.of<Search>(context, listen: false);
+                await blockUser(searchResults.getListing(update: false)[0].userId); // block the user
+
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                  searchResults.resetSearch();
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/swipe', (route) => false);
+                }
               },
               //GPT used for styling button
               style: TextButton.styleFrom(foregroundColor: Colors.white),
@@ -183,8 +193,11 @@ class ClothingDetail extends StatelessWidget {
                             builder: (context) => BrowsePhoto(
                                   title: "details",
                                   gridIndex: index,
-                                  photoListings:
-                                      searchResults.getListing()[0].images,
+                                  photoListings: searchResults
+                                      .getListing()[0]
+                                      .images
+                                      .map<ImageProvider<Object>>((image) => MemoryImage(image))
+                                      .toList(),
                                 )),
                       );
                     },

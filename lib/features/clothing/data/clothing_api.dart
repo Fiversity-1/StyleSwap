@@ -73,14 +73,14 @@ Future<bool> addClothingItem(ClothingInfo clothingInfo) async {
 }
 
 
-Future<List<ClothingInfo>> getUsersClothes() async {
+Future<List<ClothingInfo>> getUsersClothes({String? userId }) async {
   try {
     // Get the current user
     User? user = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
+    if (user != null || userId != null) {
       // User ID
-      String userId = user.uid;
+      userId ??= user!.uid;
 
       // API URL
       String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/clothes/$userId';
