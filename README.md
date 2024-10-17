@@ -3,7 +3,11 @@ StyleSwap is a prototype android application which provides a convenient and see
 
 The application is built on flutter which allows for the application to be easily expanded to be cross platform in future iterations.
 
-The following guide will walk you through installing the application and debugging it.
+The following guide will walk you through installing the application and debugging it in addition to [introducing the project architecture](#app-architecture).
+
+
+
+# Running and Debugging Prototype 
 
 ## Prerequisites
 
@@ -80,3 +84,19 @@ The following guide will walk you through installing the application and debuggi
 ### Attribution
 The readme for flutter was originally generated using AI and then modified to match our application.
 
+# Contributing to Code
+
+## App Architecture
+The application uses the [Domain Model](https://codewithandrea.com/articles/flutter-app-architecture-domain-model/) as the architecture. This model ensures that there is a sepreration of responsibilities between different 'layers' of the application.
+
+### Presentation Layer
+The presentation layer is where all the UI sits. User inputs and modifications are passed to the application layer.
+
+### Application Layer
+This layer contains the business logic of the application. It manipulates the domains based on user input in the presentation layer.
+
+### Domain Layer
+The layer is where all the classes and structures are stored for the models. For example the clothing item model stores all the attributes and information that relates to a clothing item including colours, type, description, etc.
+
+### Data Layer
+The data layer is responsible for retrieving and storing the domains in the database. This layer contains all the API code.
