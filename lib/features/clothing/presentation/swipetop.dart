@@ -10,6 +10,7 @@ import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipe_cards/fun_fact.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipe_cards/loading_card.dart';
 import 'package:clothing_swap/features/clothing/presentation/swipe_cards/no_result.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:provider/provider.dart';
@@ -249,125 +250,118 @@ class _SwipePageTopState extends State<SwipePageTop> {
     );
   }
 
+  Future<void> sendApi(clothingItem, direction) async {
+    final userManager =
+    Provider.of<UserManager>(
+        context,
+        listen: false);
+
+    final currentUser =
+        userManager.currentUser;
+
+    if (await likeDislikeItem(
+        clothingItem.id, direction == CardSwiperDirection.right)) {
+      if (currentUser.interestedListings.any((listing) =>
+      listing.otherUserId == clothingItem.userId)) {
+        var listing = currentUser.interestedListings.firstWhere((
+            listing) => listing.otherUserId == clothingItem.userId);
+
+        if (listing.trades != null) {
+          listing.trades!.othersTrades.add(clothingItem);
+        }
+      } else {
+        var otherUser = await getUser(userId: clothingItem.userId);
+
+        if (otherUser != null) {
+          currentUser.addInterestedListing(
+              ChatListing(
+                currentUserId: currentUser.id,
+                otherUserId: clothingItem.userId,
+                name: clothingItem.user ?? "Anonymous",
+                previewContent: "New Match",
+                time: "Now",
+                opened: false,
+                image: MemoryImage(otherUser.profilePicture),
+              ));
+        }
+      }
+
+      //Show toaster when match occurs
+      //Rowan needs to move based on integration
+      //Match doesn't occur on instant swipe right
+      toastification.showCustom(
+        context: context,
+        autoCloseDuration:
+        const Duration(seconds: 3),
+        alignment: Alignment.topLeft,
+        builder: (BuildContext context,
+            ToastificationItem holder) {
+          return Container(
+            decoration: BoxDecoration(
+                borderRadius:
+                BorderRadius.circular(
+                    8),
+                color: Theme
+                    .of(context)
+                    .hoverColor),
+            padding:
+            const EdgeInsets.all(16),
+            margin:
+            const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment:
+              CrossAxisAlignment
+                  .center,
+              children: [
+                const Text(
+                    'You\'ve got a New Match!',
+                    style: TextStyle(
+                        fontWeight:
+                        FontWeight
+                            .bold)),
+                const SizedBox(
+                    height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    final chat = chatManager
+                        .findChatByUserId(
+                        clothingItem
+                            .userId);
+                    chatManager
+                        .selectChat(
+                        chat!.id);
+                    Navigator.pushNamed(
+                      context,
+                      '/chat',
+                    );
+                  },
+                  child: const Text(
+                      'Send a Message!'),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+  }
+
   Future<bool> handleSwipe(previousIndex, currentIndex,
       direction) async {
     //Keep track of interest listings on
     //non fun fact cards
-    try {
-      if (searchResults.getListing()[0]
-        is FunFact) {
-        setState(() {
-          _cardsSwiped++;
-        });
 
-        _handleRemove(searchResults, 0);
-
-        return true;
-      }
-
-      final userManager =
-      Provider.of<UserManager>(
-          context,
-          listen: false);
-
-      final currentUser =
-          userManager.currentUser;
-
-      final clothingItem = searchResults
-          .getListing()[0];
-
-      if (await likeDislikeItem(clothingItem.id, direction == CardSwiperDirection.right)) {
-        if (currentUser.interestedListings.any((listing) => listing.otherUserId == clothingItem.userId)) {
-          var listing = currentUser.interestedListings.firstWhere((listing) => listing.otherUserId == clothingItem.userId);
-
-          if (listing.trades != null) {
-            listing.trades!.othersTrades.add(clothingItem);
-          }
-        } else {
-          var otherUser = await getUser(userId: clothingItem.userId);
-
-          if (otherUser != null) {
-            currentUser.addInterestedListing(
-                ChatListing(
-                  currentUserId: currentUser.id,
-                  otherUserId: clothingItem.userId,
-                  name: clothingItem.user ?? "Anonymous",
-                  previewContent: "New Match",
-                  time: "Now",
-                  opened: false,
-                  image: MemoryImage(otherUser.profilePicture),
-                ));
-          }
-        }
-
-        //Show toaster when match occurs
-        //Rowan needs to move based on integration
-        //Match doesn't occur on instant swipe right
-        toastification.showCustom(
-          context: context,
-          autoCloseDuration:
-          const Duration(seconds: 3),
-          alignment: Alignment.topLeft,
-          builder: (BuildContext context,
-              ToastificationItem holder) {
-            return Container(
-              decoration: BoxDecoration(
-                  borderRadius:
-                  BorderRadius.circular(
-                      8),
-                  color: Theme
-                      .of(context)
-                      .hoverColor),
-              padding:
-              const EdgeInsets.all(16),
-              margin:
-              const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment:
-                CrossAxisAlignment
-                    .center,
-                children: [
-                  const Text(
-                      'You\'ve got a New Match!',
-                      style: TextStyle(
-                          fontWeight:
-                          FontWeight
-                              .bold)),
-                  const SizedBox(
-                      height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      final chat = chatManager
-                          .findChatByUserId(
-                          clothingItem
-                              .userId);
-                      chatManager
-                          .selectChat(
-                          chat!.id);
-                      Navigator.pushNamed(
-                        context,
-                        '/chat',
-                      );
-                    },
-                    child: const Text(
-                        'Send a Message!'),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      }
-    } catch (e) {
-      print(e);
-      return false;
-    }
+    final swipedItem = searchResults.getListing()[0];
 
     setState(() {
+      _handleRemove(searchResults, 0);
       _cardsSwiped++;
     });
 
-    _handleRemove(searchResults, 0);
+    if (swipedItem is ClothingInfo) {
+      sendApi(swipedItem, direction);
+    }
+
     return true;
   }
 

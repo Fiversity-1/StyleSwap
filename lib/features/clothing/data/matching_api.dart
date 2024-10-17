@@ -31,7 +31,7 @@ Future<bool> likeDislikeItem(String clothingId, bool liked) async {
       // Check the response status
       if (response.statusCode == 200) { // Success and matched
         print('Request successful: ${response.body}');
-        return true;
+        return liked;
       } else if (response.statusCode == 201) { // Success but no match
         print('Request successful: ${response.body}');
         return false;
