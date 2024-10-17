@@ -1,8 +1,5 @@
-import 'package:clothing_swap/theme/theme.dart';
-import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 //FunFact Card Widget for displaying in search results periodically
 class FunFactCard extends StatefulWidget {

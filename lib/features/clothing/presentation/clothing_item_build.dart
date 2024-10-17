@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
 
 import '../domain/clothing_info.dart';
 
@@ -25,15 +24,13 @@ class ClothingCardState extends State<ClothingCard> {
       onLongPress: () {
         setState(() {
           //GPT code for cycling through listings with multiple images and resetting index
-          currentIndex =
-              (currentIndex + 1) % widget.item.images.length;
+          currentIndex = (currentIndex + 1) % widget.item.images.length;
         });
       },
       onTap: () {
         setState(() {
           //GPT code for cycling through listings with multiple images and resetting index
-          currentIndex =
-              (currentIndex + 1) % widget.item.images.length;
+          currentIndex = (currentIndex + 1) % widget.item.images.length;
         });
       },
       child: Card(

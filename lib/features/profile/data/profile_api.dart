@@ -7,6 +7,7 @@ import 'package:clothing_swap/features/preferences/domain/clothing_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
+import '../../clothing/domain/clothing_info.dart';
 import '../../clothing/presentation/clothing_item_class.dart';
 
 Future<bool> addUser(String lat, String long, String bio, Uint8List profile) async {
@@ -94,7 +95,7 @@ Future<bool> isUserRegistered() async {
 class UserInfo {
   final String name;
   final String bio;
-  final List<ClothingItem> matchedItems;
+  final List<ClothingInfo> matchedItems;
   final Uint8List profilePicture;
 
   UserInfo(this.name, this.bio, this.matchedItems, this.profilePicture);

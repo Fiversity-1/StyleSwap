@@ -1,6 +1,5 @@
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
 import 'package:clothing_swap/features/preferences/domain/clothing_search.dart';
-import 'package:clothing_swap/features/profile/domain/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
@@ -44,11 +43,13 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
     categories = ModalRoute.of(context)!.settings.arguments as String;
   }
 
-  void _handlePress(int index, Map<Enum, FaIcon> category, ClothingSearch clothingSearch) {
+  void _handlePress(
+      int index, Map<Enum, FaIcon> category, ClothingSearch clothingSearch) {
     setState(() {
       switch (categories) {
         case "Type":
-          List<ClothingType> updatedTypes = List.from(clothingSearch.types ?? []);
+          List<ClothingType> updatedTypes =
+              List.from(clothingSearch.types ?? []);
           var updatedItem = category.keys.toList()[index] as ClothingType;
 
           if (updatedTypes.contains(updatedItem)) {
@@ -59,11 +60,14 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
 
           clothingSearch.updateTypes(updatedTypes);
         case "Size":
-          List<ClothingSize> updatedSizes = List.from(clothingSearch.sizes ?? []);
-          var updatedItem = LetteredSizing(category.keys.toList()[index] as LetteredSize);
+          List<ClothingSize> updatedSizes =
+              List.from(clothingSearch.sizes ?? []);
+          var updatedItem =
+              LetteredSizing(category.keys.toList()[index] as LetteredSize);
 
-          var existingIndex = updatedSizes.indexWhere((sizes) { return sizes is LetteredSizing
-              && updatedItem.size == sizes.size; } );
+          var existingIndex = updatedSizes.indexWhere((sizes) {
+            return sizes is LetteredSizing && updatedItem.size == sizes.size;
+          });
           if (existingIndex >= 0) {
             updatedSizes.removeAt(existingIndex);
           } else {
@@ -72,7 +76,8 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
 
           clothingSearch.updateSizes(updatedSizes);
         case "Condition":
-          List<ClothingCondition> updatedConditions = List.from(clothingSearch.conditions ?? []);
+          List<ClothingCondition> updatedConditions =
+              List.from(clothingSearch.conditions ?? []);
           var updatedItem = category.keys.toList()[index] as ClothingCondition;
 
           if (updatedConditions.contains(updatedItem)) {
@@ -83,7 +88,8 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
 
           clothingSearch.updateConditions(updatedConditions);
         case "Colour":
-          List<ClothingColour> updateColours = List.from(clothingSearch.colours ?? []);
+          List<ClothingColour> updateColours =
+              List.from(clothingSearch.colours ?? []);
           var updatedItem = category.keys.toList()[index] as ClothingColour;
 
           if (updateColours.contains(updatedItem)) {
@@ -94,7 +100,8 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
 
           clothingSearch.updateColours(updateColours);
         case "Gender":
-          List<ClothingGender> updatedGenders = List.from(clothingSearch.genders ?? []);
+          List<ClothingGender> updatedGenders =
+              List.from(clothingSearch.genders ?? []);
           var updatedItem = category.keys.toList()[index] as ClothingGender;
 
           if (updatedGenders.contains(updatedItem)) {
@@ -114,10 +121,11 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
   }
 
   String _getEnumText(Enum value) {
-    return value is LetteredSize ? value.toString().split('.').last.toUpperCase()
-      : value.toString().split('.').last.capitalize;
+    return value is LetteredSize
+        ? value.toString().split('.').last.toUpperCase()
+        : value.toString().split('.').last.capitalize;
   }
-  
+
   @override
   Widget build(BuildContext context) {
     //GPT used for tracking changes via provider
@@ -182,108 +190,125 @@ class _AddClothesPreferencesState extends State<AddClothesPreferences> {
                             ),
                           ],
                         ),
-                          Consumer<ClothingSearch>(
+                        Consumer<ClothingSearch>(
                           builder: (context, clothingSearch, child) {
                             List<String> preferences = [];
 
                             switch (categories) {
                               case "Type":
-                                preferences = clothingSearch.types?.map((value) => _getEnumText(value)).toList()?? [];
+                                preferences = clothingSearch.types
+                                        ?.map((value) => _getEnumText(value))
+                                        .toList() ??
+                                    [];
                               case "Size":
-                                preferences = clothingSearch.sizes?.map((value) => _getEnumText(value is LetteredSizing ? value.size : LetteredSize.m)).toList()?? [];
+                                preferences = clothingSearch.sizes
+                                        ?.map((value) => _getEnumText(
+                                            value is LetteredSizing
+                                                ? value.size
+                                                : LetteredSize.m))
+                                        .toList() ??
+                                    [];
                               case "Condition":
-                                preferences = clothingSearch.conditions?.map((value) => _getEnumText(value)).toList()?? [];
+                                preferences = clothingSearch.conditions
+                                        ?.map((value) => _getEnumText(value))
+                                        .toList() ??
+                                    [];
                               case "Colour":
-                                preferences = clothingSearch.colours?.map((value) => _getEnumText(value)).toList()?? [];
+                                preferences = clothingSearch.colours
+                                        ?.map((value) => _getEnumText(value))
+                                        .toList() ??
+                                    [];
                               case "Gender":
-                                preferences = clothingSearch.genders?.map((value) => _getEnumText(value)).toList()?? [];
+                                preferences = clothingSearch.genders
+                                        ?.map((value) => _getEnumText(value))
+                                        .toList() ??
+                                    [];
                             }
 
                             return Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10, left: 10, right: 10),
-                          child: GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: crossAxisCount,
-                              mainAxisSpacing: 8,
-                              crossAxisSpacing: 8,
-                            ),
-                            itemBuilder: (_, index) => GridTile(
-                              child: GestureDetector(
-                                onLongPress: () {
-                                  _handlePress(
-                                      index,
-                                      category,
-                                      clothingSearch);
-                                },
-                                onTap: () {
-                                  _handlePress(
-                                      index,
-                                      category,
-                                      clothingSearch);
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: preferences.contains(
-                                      _getText(category, index),
-                                    )
-                                        ? Theme.of(context).hoverColor
-                                        : Colors.transparent,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      //GPT used for box shadow styling
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.25),
-                                        spreadRadius: 2,
-                                        blurRadius: 6,
-                                        offset: const Offset(0, 4),
+                              padding: const EdgeInsets.only(
+                                  top: 10, left: 10, right: 10),
+                              child: GridView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: crossAxisCount,
+                                  mainAxisSpacing: 8,
+                                  crossAxisSpacing: 8,
+                                ),
+                                itemBuilder: (_, index) => GridTile(
+                                  child: GestureDetector(
+                                    onLongPress: () {
+                                      _handlePress(
+                                          index, category, clothingSearch);
+                                    },
+                                    onTap: () {
+                                      _handlePress(
+                                          index, category, clothingSearch);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: preferences.contains(
+                                          _getText(category, index),
+                                        )
+                                            ? Theme.of(context).hoverColor
+                                            : Colors.transparent,
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          //GPT used for box shadow styling
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.25),
+                                            spreadRadius: 2,
+                                            blurRadius: 6,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      //Condition contains multiple words and requires special formatting
-                                      Text(
-                                          _getText(category, index) ==
-                                                  "Newwithtags"
-                                              ? "New with tags"
-                                              : _getText(category, index) ==
-                                                      "Newnotags"
-                                                  ? "New no tags"
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          //Condition contains multiple words and requires special formatting
+                                          Text(
+                                              _getText(category, index) ==
+                                                      "Newwithtags"
+                                                  ? "New with tags"
                                                   : _getText(category, index) ==
-                                                          "Likenew"
-                                                      ? "Like new"
+                                                          "Newnotags"
+                                                      ? "New no tags"
                                                       : _getText(category,
                                                                   index) ==
-                                                              "Wellworn"
-                                                          ? "Well worn"
-                                                          : _getText(
-                                                              category, index),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge),
-                                      IconButton(
-                                        icon: category.values.toList()[index],
-                                        onPressed: () {
-                                          _handlePress(
-                                              index,
-                                              category,
-                                              clothingSearch);
-                                        },
+                                                              "Likenew"
+                                                          ? "Like new"
+                                                          : _getText(category,
+                                                                      index) ==
+                                                                  "Wellworn"
+                                                              ? "Well worn"
+                                                              : _getText(
+                                                                  category,
+                                                                  index),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyLarge),
+                                          IconButton(
+                                            icon:
+                                                category.values.toList()[index],
+                                            onPressed: () {
+                                              _handlePress(index, category,
+                                                  clothingSearch);
+                                            },
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
+                                itemCount: category.values.toList().length,
                               ),
-                            ),
-                            itemCount: category.values.toList().length,
-                          ),
-                        );
-                            },
+                            );
+                          },
                         ),
                       ],
                     ),

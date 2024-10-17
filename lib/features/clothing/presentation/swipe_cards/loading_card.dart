@@ -1,8 +1,4 @@
-import 'package:clothing_swap/theme/theme.dart';
-import 'package:clothing_swap/theme/theme_switcher.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class LoadingCard extends StatefulWidget {
   const LoadingCard({super.key});
@@ -29,7 +25,8 @@ class LoadingCardState extends State<LoadingCard> {
                     Theme.of(context).primaryColor, // Primary color of the app
                   ),
                 ),
-                const SizedBox(height: 16), // Space between the indicator and text
+                const SizedBox(height: 16),
+                // Space between the indicator and text
                 const Text(
                   "Fetching clothes, please wait",
                   textAlign: TextAlign.center,

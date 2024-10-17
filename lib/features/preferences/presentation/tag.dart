@@ -12,8 +12,10 @@ class Tag extends StatefulWidget {
     //GPT suggested using callback for updating after tag removed
     required this.onDeleted,
   });
+
   final String text;
   final String category;
+
   //GPT suggested using callback for updating after tag removed
   final VoidCallback onDeleted;
 

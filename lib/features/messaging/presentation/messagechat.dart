@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
 import 'package:clothing_swap/features/messaging/domain/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/domain/profile_class.dart';
@@ -11,11 +12,12 @@ import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
+import 'package:flutter_pannable_rating_bar/flutter_pannable_rating_bar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_pannable_rating_bar/flutter_pannable_rating_bar.dart';
+
 import '../../clothing/data/matching_api.dart';
 import '../../profile/data/profile_api.dart';
 
@@ -331,6 +333,7 @@ class _MessageChatState extends State<MessageChat> {
   final ImagePicker _picker = ImagePicker();
   XFile? _image;
   final FocusNode myFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     final chatManager = Provider.of<ChatManager>(context);
@@ -509,8 +512,8 @@ class _MessageChatState extends State<MessageChat> {
                                                           radius: 50,
                                                           child: ClipOval(
                                                             child: AspectRatio(
-                                                              aspectRatio:
-                                                                  1.0, // Ensures a 1:1 ratio
+                                                              aspectRatio: 1.0,
+                                                              // Ensures a 1:1 ratio
                                                               child:
                                                                   Image.memory(
                                                                 chat

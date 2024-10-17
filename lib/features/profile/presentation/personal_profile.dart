@@ -1,14 +1,11 @@
-import 'dart:io';
 import 'package:clothing_swap/features/profile/domain/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/widgets/photo_modal.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show Uint8List, kDebugMode, kIsWeb;
-import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';

@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../domain/clothing_info.dart';
@@ -18,7 +18,8 @@ Future<bool> likeDislikeItem(String clothingId, bool liked) async {
       String userId = user.uid;
 
       // API URL
-      String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/clothes/like/$userId/$clothingId?Like=$liked';
+      String url =
+          'https://deco3801-fiversityplus1.uqcloud.net/api/clothes/like/$userId/$clothingId?Like=$liked';
 
       // Make the GET request
       http.Response response = await http.get(
@@ -29,20 +30,33 @@ Future<bool> likeDislikeItem(String clothingId, bool liked) async {
       );
 
       // Check the response status
-      if (response.statusCode == 200) { // Success and matched
-        print('Request successful: ${response.body}');
+      if (response.statusCode == 200) {
+        // Success and matched
+        if (kDebugMode) {
+          print('Request successful: ${response.body}');
+        }
         return liked;
-      } else if (response.statusCode == 201) { // Success but no match
-        print('Request successful: ${response.body}');
+      } else if (response.statusCode == 201) {
+        // Success but no match
+        if (kDebugMode) {
+          print('Request successful: ${response.body}');
+        }
         return false;
-      } {
-        print('Request failed with status: ${response.statusCode}');
+      }
+      {
+        if (kDebugMode) {
+          print('Request failed with status: ${response.statusCode}');
+        }
       }
     } else {
-      print('No user is signed in.');
+      if (kDebugMode) {
+        print('No user is signed in.');
+      }
     }
   } catch (e) {
-    print('Error: $e');
+    if (kDebugMode) {
+      print('Error: $e');
+    }
   }
 
   return false;
@@ -67,7 +81,8 @@ Future<List<MatchedUserResponse>> getMatchedUsers() async {
       String userId = user.uid;
 
       // API URL
-      String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/match/$userId';
+      String url =
+          'https://deco3801-fiversityplus1.uqcloud.net/api/match/$userId';
 
       // Make the GET request
       http.Response response = await http.get(
@@ -79,18 +94,29 @@ Future<List<MatchedUserResponse>> getMatchedUsers() async {
 
       // Check the response status
       if (response.statusCode == 200) {
-        print('Request successful: ${response.body}');
+        if (kDebugMode) {
+          print('Request successful: ${response.body}');
+        }
 
         var data = await jsonDecode(response.body);
-        return data.map<MatchedUserResponse>((elem) => MatchedUserResponse(elem['userId'], elem['name'], base64Decode(elem['image']))).toList();
+        return data
+            .map<MatchedUserResponse>((elem) => MatchedUserResponse(
+                elem['userId'], elem['name'], base64Decode(elem['image'])))
+            .toList();
       } else {
-        print('Request failed with status: ${response.statusCode}');
+        if (kDebugMode) {
+          print('Request failed with status: ${response.statusCode}');
+        }
       }
     } else {
-      print('No user is signed in.');
+      if (kDebugMode) {
+        print('No user is signed in.');
+      }
     }
   } catch (e) {
-    print('Error: $e');
+    if (kDebugMode) {
+      print('Error: $e');
+    }
   }
 
   return [];
@@ -114,7 +140,8 @@ Future<MatchedClothing?> getMatchedClothing(String otherUserId) async {
       String userId = user.uid;
 
       // API URL
-      String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/clothes/match/$userId/$otherUserId';
+      String url =
+          'https://deco3801-fiversityplus1.uqcloud.net/api/clothes/match/$userId/$otherUserId';
 
       // Make the GET request
       http.Response response = await http.get(
@@ -126,21 +153,28 @@ Future<MatchedClothing?> getMatchedClothing(String otherUserId) async {
 
       // Check the response status
       if (response.statusCode == 200) {
-        print('Request successful: ${response.body}');
+        if (kDebugMode) {
+          print('Request successful: ${response.body}');
+        }
 
         var data = await jsonDecode(response.body);
         return MatchedClothing(
-          await convertApiResponseToClothingInfo(data['toRecv']),
-            await convertApiResponseToClothingInfo(data['toTrade'])
-        );
+            await convertApiResponseToClothingInfo(data['toRecv']),
+            await convertApiResponseToClothingInfo(data['toTrade']));
       } else {
-        print('Request failed with status: ${response.statusCode}');
+        if (kDebugMode) {
+          print('Request failed with status: ${response.statusCode}');
+        }
       }
     } else {
-      print('No user is signed in.');
+      if (kDebugMode) {
+        print('No user is signed in.');
+      }
     }
   } catch (e) {
-    print('Error: $e');
+    if (kDebugMode) {
+      print('Error: $e');
+    }
   }
 
   return null;

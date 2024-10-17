@@ -1,17 +1,19 @@
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
-import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+
 import '../../profile/data/profile_api.dart';
 import '../../profile/domain/profile_class.dart';
 
 //Log in page
 class StartPage extends StatelessWidget {
   const StartPage({super.key, required this.title});
+
   final String title;
 
   @override
@@ -132,15 +134,13 @@ class StartPage extends StatelessWidget {
       // if the user is registered, take them to the swipe page
       // otherwise take them to the new_profile page.
       if (await isUserRegistered()) {
-        userManager.switchUser(Profile.fromUser(FirebaseAuth.instance.currentUser!));
+        userManager
+            .switchUser(Profile.fromUser(FirebaseAuth.instance.currentUser!));
 
-        Navigator.pushNamedAndRemoveUntil(context,
-            '/swipe', (route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, '/swipe', (route) => false);
       } else {
         Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/new_profile',
-                (route) => false);
+            context, '/new_profile', (route) => false);
       }
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);

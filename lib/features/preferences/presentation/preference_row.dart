@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 //PreferenceRow is a list of "tag" widgets with a text widget used for each
 //search preference (i.e. condition)
 class PreferenceRow<T> extends StatefulWidget {
-  const PreferenceRow({super.key, required this.category, required this.preferences,
-    required this.onDelete});
+  const PreferenceRow(
+      {super.key,
+      required this.category,
+      required this.preferences,
+      required this.onDelete});
+
   final String category;
   final List<T> preferences;
   final void Function(int) onDelete;

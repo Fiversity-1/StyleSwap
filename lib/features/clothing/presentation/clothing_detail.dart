@@ -1,11 +1,10 @@
 import 'package:clothing_swap/features/clothing/application/search_provider.dart';
-import 'package:clothing_swap/features/profile/domain/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/widgets/browse_photos.dart';
-import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../profile/data/profile_api.dart';
@@ -15,6 +14,7 @@ import '../../profile/data/profile_api.dart';
 //browsing a person's listings
 class ClothingDetail extends StatelessWidget {
   final String? location;
+
   const ClothingDetail({super.key, this.location});
 
   //https://medium.com/@kavyamistry0612/building-interactive-user-interfaces-with-alert-dialogs-in-flutter-81e268fb72f0
@@ -32,14 +32,17 @@ class ClothingDetail extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () async {
-                final searchResults = Provider.of<Search>(context, listen: false);
-                await blockUser(searchResults.getListing(update: false)[0].userId); // block the user
+                final searchResults =
+                    Provider.of<Search>(context, listen: false);
+                await blockUser(searchResults
+                    .getListing(update: false)[0]
+                    .userId); // block the user
 
                 if (context.mounted) {
                   Navigator.of(context).pop();
                   searchResults.resetSearch();
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/swipe', (route) => false);
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/swipe', (route) => false);
                 }
               },
               //GPT used for styling button
@@ -196,7 +199,8 @@ class ClothingDetail extends StatelessWidget {
                                   photoListings: searchResults
                                       .getListing()[0]
                                       .images
-                                      .map<ImageProvider<Object>>((image) => MemoryImage(image))
+                                      .map<ImageProvider<Object>>(
+                                          (image) => MemoryImage(image))
                                       .toList(),
                                 )),
                       );

@@ -1,14 +1,10 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:string_extensions/string_extensions.dart';
 
 import '../data/clothing_api.dart';
 
-//ClothingInfo Class and Enums for each category
-class ClothingInfo  {
+/// ClothingInfo Class and Enums for each category
+class ClothingInfo {
   final String? id;
   final List<Uint8List> images;
   final ClothingSize? size;
@@ -36,20 +32,20 @@ class ClothingInfo  {
       this.distance,
       this.id});
 
-  ClothingInfo copyWith({
-    List<Uint8List>? images,
-    ClothingSize? size,
-    String? description,
-    String? brand,
-    ClothingCondition? condition,
-    ClothingGender? gender,
-    ClothingType? type,
-    List<ClothingColour>? colours,
-    String? user,
-    String? userId,
-    double? distance,
-    String? id
-  }) {
+  // Copy the current data with the provided modifications.
+  ClothingInfo copyWith(
+      {List<Uint8List>? images,
+      ClothingSize? size,
+      String? description,
+      String? brand,
+      ClothingCondition? condition,
+      ClothingGender? gender,
+      ClothingType? type,
+      List<ClothingColour>? colours,
+      String? user,
+      String? userId,
+      double? distance,
+      String? id}) {
     return ClothingInfo(
         size: size ?? this.size,
         images: images ?? this.images,
@@ -66,33 +62,53 @@ class ClothingInfo  {
   }
 }
 
-Future<List<ClothingInfo>> convertApiResponseToClothingInfo(dynamic apiResponse) async {
+// Converts an api response to the clothingInfo class.
+Future<List<ClothingInfo>> convertApiResponseToClothingInfo(
+    dynamic apiResponse) async {
   return await Future.wait(
     (apiResponse as List).map((item) async {
       try {
         return ClothingInfo(
           id: item['clothingId'].toString(),
-          size: item['size'] != null ? ClothingSize.fromDatabaseRepresentation(item['size']) : null,
+          size: item['size'] != null
+              ? ClothingSize.fromDatabaseRepresentation(item['size'])
+              : null,
           description: item['bio'],
-          condition: item['condition'] != null ? ClothingCondition.fromDatabaseRepresentation(item['condition']) : null,
-          gender: item['gender'] != null ? ClothingGender.fromDatabaseRepresentation(item['gender']) : null,
-          type: item['type'] != null ? ClothingType.fromDatabaseRepresentation(item['type']) : null,
-          colours: item['colour'] != null ? (item['colour'] as List).map((colour) => ClothingColour.fromDatabaseRepresentation(colour)).toList() : [],
+          condition: item['condition'] != null
+              ? ClothingCondition.fromDatabaseRepresentation(item['condition'])
+              : null,
+          gender: item['gender'] != null
+              ? ClothingGender.fromDatabaseRepresentation(item['gender'])
+              : null,
+          type: item['type'] != null
+              ? ClothingType.fromDatabaseRepresentation(item['type'])
+              : null,
+          colours: item['colour'] != null
+              ? (item['colour'] as List)
+                  .map((colour) =>
+                      ClothingColour.fromDatabaseRepresentation(colour))
+                  .toList()
+              : [],
           userId: item['userId'],
           user: item['user']?['name'],
           distance: item['distance'].toString().toDouble(),
-          images: await decodeImageBase64((item['images'] as List).cast<String>()),
+          images:
+              await decodeImageBase64((item['images'] as List).cast<String>()),
         );
       } catch (e) {
         // Log the error and return null
-        print('Error processing item: $e');
+        if (kDebugMode) {
+          print('Error processing item: $e');
+        }
         return null;
       }
     }).toList(),
-  ).then((results) => results.where((item) => item != null).cast<ClothingInfo>().toList());
+  ).then((results) =>
+      results.where((item) => item != null).cast<ClothingInfo>().toList());
 }
 
-enum ClothingType implements DatabaseRepresentationMapper<ClothingType>  {
+/// An enum for the type of clothing item.
+enum ClothingType implements DatabaseRepresentationMapper<ClothingType> {
   hat,
   scarf,
   tie,
@@ -131,11 +147,13 @@ enum ClothingType implements DatabaseRepresentationMapper<ClothingType>  {
 
   static ClothingType fromDatabaseRepresentation(String value) {
     return ClothingType.values.firstWhere(
-            (e) => e.getDatabaseRepresentation() == value,
-        orElse: () => throw ArgumentError('Invalid clothing type value: $value'));
+        (e) => e.getDatabaseRepresentation() == value,
+        orElse: () =>
+            throw ArgumentError('Invalid clothing type value: $value'));
   }
 }
 
+/// An enum for the style of code.
 enum Style {
   contemporary,
   naughties,
@@ -147,6 +165,7 @@ enum Style {
   vintage
 }
 
+/// An enum for the clothing condition.
 enum ClothingCondition with DatabaseRepresentationMapper<ClothingCondition> {
   newWithTags,
   newNoTags,
@@ -171,13 +190,13 @@ enum ClothingCondition with DatabaseRepresentationMapper<ClothingCondition> {
 
   static ClothingCondition fromDatabaseRepresentation(String value) {
     return ClothingCondition.values.firstWhere(
-            (e) => e.getDatabaseRepresentation() == value,
-        orElse: () => ClothingCondition.newNoTags);
-        // TODO change back to orElse: () => throw ArgumentError('Invalid condition value: $value'));
+        (e) => e.getDatabaseRepresentation() == value,
+        orElse: () => throw ArgumentError('Invalid condition value: $value'));
   }
 }
 
-enum ClothingGender with DatabaseRepresentationMapper<ClothingGender>  {
+/// An enum for the gender of the clothing item.
+enum ClothingGender with DatabaseRepresentationMapper<ClothingGender> {
   male,
   female,
   unisex;
@@ -201,13 +220,16 @@ enum ClothingGender with DatabaseRepresentationMapper<ClothingGender>  {
 
   static ClothingGender fromDatabaseRepresentation(String value) {
     return ClothingGender.values.firstWhere(
-            (e) => e.getDatabaseRepresentation() == value,
+        (e) => e.getDatabaseRepresentation() == value,
         orElse: () => throw ArgumentError('Invalid gender value: $value'));
   }
 }
 
+/// An enum for the categories of clothing items.
 enum ClothingCategory { top, bottom, accessories }
 
+/// An class for the size of an item that is abstract.
+/// This allows multiple different size systems to be implemented.
 sealed class ClothingSize with DatabaseRepresentationMapper<ClothingSize> {
   const ClothingSize();
 
@@ -220,6 +242,7 @@ sealed class ClothingSize with DatabaseRepresentationMapper<ClothingSize> {
   }
 }
 
+/// A class for lettered sizing which wraps the LetteredSize enum.
 class LetteredSizing extends ClothingSize {
   const LetteredSizing(this.size);
 
@@ -240,6 +263,7 @@ class LetteredSizing extends ClothingSize {
   }
 }
 
+/// An enum for lettered sizes of clothing items.
 enum LetteredSize with DatabaseRepresentationMapper<LetteredSize> {
   xxs,
   xs,
@@ -261,7 +285,7 @@ enum LetteredSize with DatabaseRepresentationMapper<LetteredSize> {
 
   static LetteredSize fromDatabaseRepresentation(String value) {
     return LetteredSize.values.firstWhere(
-            (e) => e.getDatabaseRepresentation() == value,
+        (e) => e.getDatabaseRepresentation() == value,
         orElse: () => throw ArgumentError('Invalid sizing value: $value'));
   }
 
@@ -270,6 +294,7 @@ enum LetteredSize with DatabaseRepresentationMapper<LetteredSize> {
   }
 }
 
+/// A class for numerical sizing which wraps an integer size.
 class NumericalSizing extends ClothingSize {
   const NumericalSizing(this.size, this.system);
 
@@ -283,11 +308,7 @@ class NumericalSizing extends ClothingSize {
 
   @override
   String getDatabaseRepresentation() {
-    return '$size:${system
-        .toString()
-        .split('.')
-        .last
-        .toUpperCase()}';
+    return '$size:${system.toString().split('.').last.toUpperCase()}';
   }
 
   static NumericalSizing fromDatabaseRepresentation(String value) {
@@ -298,22 +319,19 @@ class NumericalSizing extends ClothingSize {
 
     final size = int.parse(parts[0]);
     final system = SizingSystem.values.firstWhere(
-          (e) =>
-      e
-          .toString()
-          .split('.')
-          .last
-          .toUpperCase() == parts[1],
+      (e) => e.toString().split('.').last.toUpperCase() == parts[1],
       orElse: () =>
-      throw ArgumentError('Invalid sizing system value: ${parts[1]}'),
+          throw ArgumentError('Invalid sizing system value: ${parts[1]}'),
     );
 
     return NumericalSizing(size, system);
   }
 }
 
+/// The system of numerical sizing being used.
 enum SizingSystem { eu, uk, us }
 
+/// An enum for the colour of a clothing item.
 enum ClothingColour with DatabaseRepresentationMapper<ClothingColour> {
   red,
   green,
@@ -346,11 +364,13 @@ enum ClothingColour with DatabaseRepresentationMapper<ClothingColour> {
 
   static ClothingColour fromDatabaseRepresentation(String value) {
     return ClothingColour.values.firstWhere(
-            (e) => e.getDatabaseRepresentation() == value,
+        (e) => e.getDatabaseRepresentation() == value,
         orElse: () => throw ArgumentError('Invalid colour value: $value'));
   }
 }
 
+/// The database representation mixin that provides the common function to get
+/// database representation.
 mixin DatabaseRepresentationMapper<T extends DatabaseRepresentationMapper<T>> {
   String getDatabaseRepresentation();
 }

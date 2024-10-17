@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:clothing_swap/features/profile/data/profile_api.dart';
 import 'package:clothing_swap/features/profile/domain/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
@@ -234,100 +232,109 @@ For any questions or concerns about these terms and conditions, please contact o
                             ),
                             const SizedBox(height: 20),
                             ElevatedButton(
-                                style: ElevatedButton.styleFrom(),
-                                onPressed: () async {
-                                  //Validation; only accept when bio, location is not null
-                                  //Make sure terms and condition box ticked
-                                  if ((checkedValue == false) ||
-                                      (lat == "" || long == "") ||
-                                      (_controllerBio.text == "")) {
-                                    toastification.showCustom(
-                                      context: context,
-                                      autoCloseDuration:
-                                          const Duration(seconds: 3),
-                                      alignment: Alignment.topCenter,
-                                      builder: (BuildContext context,
-                                          ToastificationItem holder) {
-                                        return Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            color: Theme.of(context).hoverColor,
-                                          ),
-                                          padding: const EdgeInsets.all(16),
-                                          margin: const EdgeInsets.all(8),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                  (_controllerBio.text == "")
-                                                      ? "Please enter a bio"
-                                                      : (lat == "" ||
-                                                              long == "")
-                                                          ? "Please enter a valid location"
-                                                          : "Please read and accept the terms and conditions",
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              const SizedBox(height: 16),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  } else {
-                              setState(() {
-                                isLoading = true;
-                              });
+                              style: ElevatedButton.styleFrom(),
+                              onPressed: () async {
+                                //Validation; only accept when bio, location is not null
+                                //Make sure terms and condition box ticked
+                                if ((checkedValue == false) ||
+                                    (lat == "" || long == "") ||
+                                    (_controllerBio.text == "")) {
+                                  toastification.showCustom(
+                                    context: context,
+                                    autoCloseDuration:
+                                        const Duration(seconds: 3),
+                                    alignment: Alignment.topCenter,
+                                    builder: (BuildContext context,
+                                        ToastificationItem holder) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: Theme.of(context).hoverColor,
+                                        ),
+                                        padding: const EdgeInsets.all(16),
+                                        margin: const EdgeInsets.all(8),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                                (_controllerBio.text == "")
+                                                    ? "Please enter a bio"
+                                                    : (lat == "" || long == "")
+                                                        ? "Please enter a valid location"
+                                                        : "Please read and accept the terms and conditions",
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const SizedBox(height: 16),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
 
-                              try {
-                                var isRegistered = await isUserRegistered();
+                                  try {
+                                    var isRegistered = await isUserRegistered();
 
-                                if (!isRegistered) {
-                                  User? user = FirebaseAuth.instance.currentUser;
-                                  final String? imageUrl = user?.photoURL;
+                                    if (!isRegistered) {
+                                      User? user =
+                                          FirebaseAuth.instance.currentUser;
+                                      final String? imageUrl = user?.photoURL;
 
-                                  final bytes = await rootBundle.load('lib/images/test_users/profilepicture2.jpg');
-                                  Uint8List profilePicture = bytes.buffer.asUint8List();
+                                      final bytes = await rootBundle.load(
+                                          'lib/images/test_users/profilepicture2.jpg');
+                                      Uint8List profilePicture =
+                                          bytes.buffer.asUint8List();
 
-                                  if (imageUrl != null) {
-                                    try {
-                                      // Download the image
-                                      final http.Response response = await http.get(Uri.parse(imageUrl));
+                                      if (imageUrl != null) {
+                                        try {
+                                          // Download the image
+                                          final http.Response response =
+                                              await http
+                                                  .get(Uri.parse(imageUrl));
 
-                                      profilePicture = response.bodyBytes;
-                                    } catch (_) {
-                                      if (kDebugMode) {
-                                        print("Error retrieving users profile picture");
+                                          profilePicture = response.bodyBytes;
+                                        } catch (_) {
+                                          if (kDebugMode) {
+                                            print(
+                                                "Error retrieving users profile picture");
+                                          }
+                                        }
+                                      }
+
+                                      var success = await addUser(lat, long,
+                                          _controllerBio.text, profilePicture);
+
+                                      if (!success) {
+                                        throw "User not registered";
                                       }
                                     }
-                                  }
 
-                                  var success = await addUser(lat, long, _controllerBio.text, profilePicture);
+                                    // switch the user to reflect new user.
+                                    userManager.switchUser(Profile.fromUser(
+                                        FirebaseAuth.instance.currentUser!));
 
-                                  if (!success) {
-                                    throw "User not registered";
+                                    Navigator.pushNamedAndRemoveUntil(context,
+                                        '/personal_profile', (route) => false);
+                                  } finally {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
                                   }
                                 }
-
-                                // switch the user to reflect new user.
-                                userManager.switchUser(Profile.fromUser(FirebaseAuth.instance.currentUser!));
-
-                                Navigator.pushNamedAndRemoveUntil(context, '/personal_profile', (route) => false);
-                              } finally {
-                                setState(() {
-                                  isLoading = false;
-                                });
-                              }
-                            }
-                          },
-                          child: isLoading
-                              ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
-                              : const Text('Complete', style: TextStyle(fontSize: 20)),
-                        )
+                              },
+                              child: isLoading
+                                  ? const CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
+                                  : const Text('Complete',
+                                      style: TextStyle(fontSize: 20)),
+                            )
                           ],
                         ),
                       ),

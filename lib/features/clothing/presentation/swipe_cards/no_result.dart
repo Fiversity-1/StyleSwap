@@ -20,15 +20,19 @@ class NoResultCardState extends State<NoResultCard> {
       child: Image(
         image: (!kIsWeb &&
                 Provider.of<ThemeSwitcher>(context).themeData == lightTheme)
-            ? const AssetImage('lib/images/search_exhausted/nothingPhoneLight.png')
+            ? const AssetImage(
+                'lib/images/search_exhausted/nothingPhoneLight.png')
             : (!kIsWeb &&
                     Provider.of<ThemeSwitcher>(context).themeData == darkTheme)
-                ? const AssetImage('lib/images/search_exhausted/nothingPhoneDark.png')
+                ? const AssetImage(
+                    'lib/images/search_exhausted/nothingPhoneDark.png')
                 : (kIsWeb &&
                         Provider.of<ThemeSwitcher>(context).themeData ==
                             lightTheme)
-                    ? const AssetImage('lib/images/search_exhausted/nothingWebLight.png')
-                    : const AssetImage('lib/images/search_exhausted/nothingWebDark.png'),
+                    ? const AssetImage(
+                        'lib/images/search_exhausted/nothingWebLight.png')
+                    : const AssetImage(
+                        'lib/images/search_exhausted/nothingWebDark.png'),
         fit: BoxFit.cover,
       ),
     );

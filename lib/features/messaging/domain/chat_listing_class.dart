@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../clothing/data/matching_api.dart';
-import '../../clothing/domain/clothing_info.dart';
+
 //GPT used to this implement this page for state management of ChatListings
 //ChatListings have a list of ChatMessages
 
@@ -29,12 +29,13 @@ class ChatListing extends ChangeNotifier {
 
     return _trades;
   }
+
   set trades(MatchedClothing? value) {
     _trades = value;
     notifyListeners();
   }
 
-    ChatListing({
+  ChatListing({
     String? id,
     required this.name,
     required this.previewContent,
@@ -74,8 +75,10 @@ class ChatManager with ChangeNotifier {
   ChatManager(this.userManager) {
     _initializeChats();
   }
+
   //Determine id of current chat opened
   List<ChatListing> get chats => _chats;
+
   ChatListing? get selectedChat {
     if (_selectedChatId == null) return null;
     try {

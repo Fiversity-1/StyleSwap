@@ -1,13 +1,14 @@
 import 'package:clothing_swap/features/community/domain/event_class.dart';
-import 'package:clothing_swap/theme/gradient.dart';
-import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:clothing_swap/features/community/presentation/event_listing.dart';
-import 'package:flutter/material.dart';
+import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
+import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
+import 'package:flutter/material.dart';
 
 //Displays list of event_listing widgets
 class EventPage extends StatefulWidget {
   const EventPage({super.key, required this.communityEvents});
+
   final List<Event> communityEvents;
 
   @override

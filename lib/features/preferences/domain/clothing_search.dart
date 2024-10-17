@@ -1,6 +1,3 @@
-
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 import '../../clothing/domain/clothing_info.dart';
@@ -13,8 +10,13 @@ class ClothingSearch extends ChangeNotifier {
   List<ClothingGender>? genders;
   int? distance;
 
-  ClothingSearch({this.types, this.sizes, this.colours,
-    this.conditions, this.genders, this.distance});
+  ClothingSearch(
+      {this.types,
+      this.sizes,
+      this.colours,
+      this.conditions,
+      this.genders,
+      this.distance});
 
   Map<String, dynamic> getData() {
     Map<String, dynamic> data = {};
@@ -35,7 +37,8 @@ class ClothingSearch extends ChangeNotifier {
   void addData(Map<String, dynamic> data, String key,
       List<DatabaseRepresentationMapper>? props) {
     if (props != null) {
-      data[key] = props.map((type) => type.getDatabaseRepresentation()).toList();
+      data[key] =
+          props.map((type) => type.getDatabaseRepresentation()).toList();
     }
   }
 

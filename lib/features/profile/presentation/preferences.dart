@@ -2,9 +2,9 @@ import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 //Page for user settings and preferences (not search preferences)
@@ -51,6 +51,7 @@ class _PreferencesState extends State<Preferences> {
 ''';
 
   late String chosenValue;
+
   //Firebase Implemented based on tutorial: https://firebase.google.com/codelabs/firebase-auth-in-flutter-apps#0
   //Log out via Firebase
   Future<void> _logOutFunction() async {
@@ -75,6 +76,7 @@ class _PreferencesState extends State<Preferences> {
     'Private',
   ];
   String? selectedValue;
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;

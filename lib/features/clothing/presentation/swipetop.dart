@@ -1,22 +1,20 @@
 import 'package:clothing_swap/features/clothing/application/search_provider.dart';
 import 'package:clothing_swap/features/clothing/data/matching_api.dart';
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
-import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
+import 'package:clothing_swap/features/clothing/presentation/swipe_cards/fun_fact.dart';
+import 'package:clothing_swap/features/clothing/presentation/swipe_cards/loading_card.dart';
+import 'package:clothing_swap/features/clothing/presentation/swipe_cards/no_result.dart';
 import 'package:clothing_swap/features/messaging/domain/chat_listing_class.dart';
 import 'package:clothing_swap/features/profile/domain/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
-import 'package:clothing_swap/features/clothing/presentation/swipe_cards/fun_fact.dart';
-import 'package:clothing_swap/features/clothing/presentation/swipe_cards/loading_card.dart';
-import 'package:clothing_swap/features/clothing/presentation/swipe_cards/no_result.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:provider/provider.dart';
-import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-import 'package:toastification/toastification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toastification/toastification.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../profile/data/profile_api.dart';
 import 'clothing_item_build.dart';
@@ -35,6 +33,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
   int _cardsSwiped = 0;
   List<TargetFocus> listTargets = [];
   bool _hasRun = false;
+
 //Start GPT, tutorial runs once per device, delay searchResult init
   @override
   void initState() {
@@ -56,6 +55,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
     final prefs = await SharedPreferences.getInstance();
     _hasRun = prefs.getBool('hasRun') ?? false;
   }
+
 //End ChatGPT
 
   Future<void> _tutorialRan() async {
@@ -143,7 +143,10 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                 child: searchResults.checkCardType() != "Empty"
                                     ? CardSwiper(
                                         key: _tapingKey,
-                                        cardsCount: searchResults.getListing().length + 1 + _cardsSwiped,
+                                        cardsCount:
+                                            searchResults.getListing().length +
+                                                1 +
+                                                _cardsSwiped,
                                         scale: 0.6,
                                         isLoop: false,
                                         numberOfCardsDisplayed: 2,
@@ -157,13 +160,20 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                             percentThresholdY) {
                                           index = index - _cardsSwiped;
 
-                                          if (index < searchResults.getListing().length) {
-                                            var item = searchResults.getListing()[index];
+                                          if (index <
+                                              searchResults
+                                                  .getListing()
+                                                  .length) {
+                                            var item = searchResults
+                                                .getListing()[index];
 
                                             if (item is ClothingInfo)
-                                              return ClothingCard(item: (item as ClothingInfo));
+                                              return ClothingCard(
+                                                  item: (item as ClothingInfo));
                                             else if (item is FunFact)
-                                              return FunFactCard(index: (item as FunFact).funFactId);
+                                              return FunFactCard(
+                                                  index: (item as FunFact)
+                                                      .funFactId);
                                           }
 
                                           return const NoResultCard();
@@ -171,8 +181,9 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                       )
                                     //Show no result image once user has run
                                     //out of search results
-                                    : (searchResults.searching ? const LoadingCard() : const NoResultCard())),
-
+                                    : (searchResults.searching
+                                        ? const LoadingCard()
+                                        : const NoResultCard())),
                           ),
                         ],
                       ),
@@ -181,7 +192,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         left: 17.5,
                         child: Text(
                           searchResults.checkCardType() == "Clothes"
-                              ? searchResults.getListing()[0].user ?? "Anonymous"
+                              ? searchResults.getListing()[0].user ??
+                                  "Anonymous"
                               : searchResults.checkCardType() == "Fact"
                                   ? "Fun Fact!"
                                   : "Sorry!",
@@ -206,8 +218,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
                         child: Text(
                             searchResults.checkCardType() == "Clothes"
                                 ? searchResults.getListing()[0].distance != null
-                                  ? '${searchResults.getListing()[0].distance!.toStringAsFixed(2)}km'
-                                  : "Unknown"
+                                    ? '${searchResults.getListing()[0].distance!.toStringAsFixed(2)}km'
+                                    : "Unknown"
                                 : searchResults.checkCardType() == "Fact"
                                     ? ""
                                     : "No Cards left!",
@@ -251,20 +263,16 @@ class _SwipePageTopState extends State<SwipePageTop> {
   }
 
   Future<void> sendApi(clothingItem, direction) async {
-    final userManager =
-    Provider.of<UserManager>(
-        context,
-        listen: false);
+    final userManager = Provider.of<UserManager>(context, listen: false);
 
-    final currentUser =
-        userManager.currentUser;
+    final currentUser = userManager.currentUser;
 
     if (await likeDislikeItem(
         clothingItem.id, direction == CardSwiperDirection.right)) {
-      if (currentUser.interestedListings.any((listing) =>
-      listing.otherUserId == clothingItem.userId)) {
-        var listing = currentUser.interestedListings.firstWhere((
-            listing) => listing.otherUserId == clothingItem.userId);
+      if (currentUser.interestedListings
+          .any((listing) => listing.otherUserId == clothingItem.userId)) {
+        var listing = currentUser.interestedListings.firstWhere(
+            (listing) => listing.otherUserId == clothingItem.userId);
 
         if (listing.trades != null) {
           listing.trades!.othersTrades.add(clothingItem);
@@ -273,16 +281,15 @@ class _SwipePageTopState extends State<SwipePageTop> {
         var otherUser = await getUser(userId: clothingItem.userId);
 
         if (otherUser != null) {
-          currentUser.addInterestedListing(
-              ChatListing(
-                currentUserId: currentUser.id,
-                otherUserId: clothingItem.userId,
-                name: clothingItem.user ?? "Anonymous",
-                previewContent: "New Match",
-                time: "Now",
-                opened: false,
-                image: MemoryImage(otherUser.profilePicture),
-              ));
+          currentUser.addInterestedListing(ChatListing(
+            currentUserId: currentUser.id,
+            otherUserId: clothingItem.userId,
+            name: clothingItem.user ?? "Anonymous",
+            previewContent: "New Match",
+            time: "Now",
+            opened: false,
+            image: MemoryImage(otherUser.profilePicture),
+          ));
         }
       }
 
@@ -291,52 +298,32 @@ class _SwipePageTopState extends State<SwipePageTop> {
       //Match doesn't occur on instant swipe right
       toastification.showCustom(
         context: context,
-        autoCloseDuration:
-        const Duration(seconds: 3),
+        autoCloseDuration: const Duration(seconds: 3),
         alignment: Alignment.topLeft,
-        builder: (BuildContext context,
-            ToastificationItem holder) {
+        builder: (BuildContext context, ToastificationItem holder) {
           return Container(
             decoration: BoxDecoration(
-                borderRadius:
-                BorderRadius.circular(
-                    8),
-                color: Theme
-                    .of(context)
-                    .hoverColor),
-            padding:
-            const EdgeInsets.all(16),
-            margin:
-            const EdgeInsets.all(8),
+                borderRadius: BorderRadius.circular(8),
+                color: Theme.of(context).hoverColor),
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.all(8),
             child: Column(
-              crossAxisAlignment:
-              CrossAxisAlignment
-                  .center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
-                    'You\'ve got a New Match!',
-                    style: TextStyle(
-                        fontWeight:
-                        FontWeight
-                            .bold)),
-                const SizedBox(
-                    height: 16),
+                const Text('You\'ve got a New Match!',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    final chat = chatManager
-                        .findChatByUserId(
-                        clothingItem
-                            .userId);
-                    chatManager
-                        .selectChat(
-                        chat!.id);
+                    final chat =
+                        chatManager.findChatByUserId(clothingItem.userId);
+                    chatManager.selectChat(chat!.id);
                     Navigator.pushNamed(
                       context,
                       '/chat',
                     );
                   },
-                  child: const Text(
-                      'Send a Message!'),
+                  child: const Text('Send a Message!'),
                 ),
               ],
             ),
@@ -346,8 +333,7 @@ class _SwipePageTopState extends State<SwipePageTop> {
     }
   }
 
-  Future<bool> handleSwipe(previousIndex, currentIndex,
-      direction) async {
+  Future<bool> handleSwipe(previousIndex, currentIndex, direction) async {
     //Keep track of interest listings on
     //non fun fact cards
 

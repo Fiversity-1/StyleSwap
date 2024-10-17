@@ -9,6 +9,7 @@ class EventList extends StatefulWidget {
     super.key,
     required this.listings,
   });
+
   final List<Event> listings;
 
   @override

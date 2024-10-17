@@ -4,6 +4,9 @@ import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
+import 'package:provider/provider.dart';
+
+import '../../profile/domain/profile_class.dart';
 
 //https://pub.dev/packages/comment_box general template of comments and
 //comment bar inspired by this example. Package was not used.
@@ -101,8 +104,12 @@ class CommentsState extends State<Comments> {
   }
 
   final FocusNode myFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
+    var userManager = Provider.of<UserManager>(context);
+    var currentUser = userManager.currentUser;
+
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return GradientBackground(
@@ -400,12 +407,12 @@ class CommentsState extends State<Comments> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      prefixIcon: const Padding(
-                        padding: EdgeInsets.only(left: (10.0), right: 10),
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.only(left: (10.0), right: 10),
                         child: CircleAvatar(
                           radius: 12,
                           backgroundImage:
-                              AssetImage('lib/images/profile/noProfilePicture.png'),
+                              MemoryImage(currentUser.profilePicture!),
                         ),
                       ),
                       hintText: 'Comment Here...',

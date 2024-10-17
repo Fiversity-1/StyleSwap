@@ -9,6 +9,7 @@ class Event {
   final String location;
   final String city;
   int attendance;
+
   Event(
       {required this.title,
       required this.company,

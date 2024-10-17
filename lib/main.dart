@@ -1,28 +1,29 @@
-import 'package:clothing_swap/features/preferences/domain/clothing_search.dart';
-import 'package:clothing_swap/features/clothing/presentation/clothing_detail.dart';
 import 'package:clothing_swap/features/clothing/application/search_provider.dart';
-import 'package:clothing_swap/features/preferences/presentation/select_preferences.dart';
+import 'package:clothing_swap/features/clothing/presentation/add_clothing_item.dart';
+import 'package:clothing_swap/features/clothing/presentation/clothing_detail.dart';
+import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
+import 'package:clothing_swap/features/clothing/presentation/view_pref.dart';
 import 'package:clothing_swap/features/community/domain/event_class.dart';
+import 'package:clothing_swap/features/community/presentation/comment.dart';
 import 'package:clothing_swap/features/community/presentation/eventlist.dart';
 import 'package:clothing_swap/features/messaging/domain/chat_listing_class.dart';
 import 'package:clothing_swap/features/messaging/presentation/messagechat.dart';
 import 'package:clothing_swap/features/messaging/presentation/messageinbox.dart';
-import 'package:clothing_swap/features/clothing/presentation/add_clothing_item.dart';
-import 'package:clothing_swap/features/profile/presentation/new_profile.dart';
+import 'package:clothing_swap/features/preferences/domain/clothing_search.dart';
+import 'package:clothing_swap/features/preferences/presentation/select_preferences.dart';
 import 'package:clothing_swap/features/profile/domain/profile_class.dart';
-import 'package:clothing_swap/features/community/presentation/comment.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:clothing_swap/features/signup/presentation/startpage.dart';
+import 'package:clothing_swap/features/profile/presentation/new_profile.dart';
 import 'package:clothing_swap/features/profile/presentation/personal_profile.dart';
-import 'package:clothing_swap/features/clothing/presentation/view_pref.dart';
-import 'package:clothing_swap/features/clothing/presentation/swipe.dart';
-import 'package:provider/provider.dart';
-import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:clothing_swap/features/profile/presentation/preferences.dart';
-import 'features/profile/presentation/public_profile.dart';
+import 'package:clothing_swap/features/signup/presentation/startpage.dart';
+import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'features/profile/presentation/public_profile.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -43,7 +44,8 @@ Future<void> main() async {
           create: (context) => UserManager(),
         ),
         ChangeNotifierProvider(create: (context) => Search()),
-        ChangeNotifierProvider(create: (context) => ClothingSearch(distance: 10)),
+        ChangeNotifierProvider(
+            create: (context) => ClothingSearch(distance: 10)),
         ChangeNotifierProxyProvider<UserManager, ChatManager>(
           create: (context) => ChatManager(context.read<UserManager>()),
           update: (context, userManager, previousChatManager) {

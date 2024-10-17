@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 //Display Message Inbox of User
 class Message extends StatefulWidget {
   const Message({super.key, required this.title});
+
   final String title;
 
   @override
@@ -20,7 +21,7 @@ class _MessageState extends State<Message> {
     if (text.length <= length) {
       return text;
     } else {
-      return '${text.substring(0, length-1)}...';
+      return '${text.substring(0, length - 1)}...';
     }
   }
 
@@ -128,7 +129,9 @@ class _MessageState extends State<Message> {
                       ),
                       title: Row(
                         children: [
-                          Text(truncateWithEllipsis(chat.name, !chat.opened ? 13 : 14),
+                          Text(
+                              truncateWithEllipsis(
+                                  chat.name, !chat.opened ? 13 : 14),
                               style: const TextStyle(
                                 fontSize: 24,
                               )),
