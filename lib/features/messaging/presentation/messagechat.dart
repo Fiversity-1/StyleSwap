@@ -240,7 +240,7 @@ class _MessageChatState extends State<MessageChat> {
           actions: [
             TextButton(
               onPressed: () async {
-                //await blockUser(userId); // block the user
+                await blockUser(userId); // block the user
 
                 if (context.mounted) {
                   final userManager = Provider.of<UserManager>(context, listen: false);
