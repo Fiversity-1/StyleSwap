@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
@@ -50,8 +51,9 @@ Future<bool> likeDislikeItem(String clothingId, bool liked) async {
 class MatchedUserResponse {
   final String userId;
   final String name;
+  final Uint8List profilePicture;
 
-  MatchedUserResponse(this.userId, this.name);
+  MatchedUserResponse(this.userId, this.name, this.profilePicture);
 }
 
 /// Get the user ids where there is a match with a user
@@ -80,7 +82,7 @@ Future<List<MatchedUserResponse>> getMatchedUsers() async {
         print('Request successful: ${response.body}');
 
         var data = await jsonDecode(response.body);
-        return data.map<MatchedUserResponse>((elem) => MatchedUserResponse(elem['userId'], elem['name'])).toList();
+        return data.map<MatchedUserResponse>((elem) => MatchedUserResponse(elem['userId'], elem['name'], base64Decode(elem['image']))).toList();
       } else {
         print('Request failed with status: ${response.statusCode}');
       }

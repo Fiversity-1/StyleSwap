@@ -44,28 +44,10 @@ class Profile with ChangeNotifier {
 
     final currentUser = FirebaseAuth.instance.currentUser;
 
-
+    var userInfo = await userInfoFuture;
 
     if (currentUser != null && currentUser.uid == id) {
       var usersMatchedFuture = getMatchedUsers();
-      try {
-        final String? imageUrl = currentUser.photoURL;
-
-        if (imageUrl == null) {
-          return;
-        }
-
-        // Download the image
-        final http.Response response = await http.get(Uri.parse(imageUrl));
-
-
-        profilePicture = response.bodyBytes;
-      } catch (e) {
-        if (kDebugMode) {
-          print('Error fetching image: $e');
-        }
-      }
-
       var matchedUsers = await usersMatchedFuture;
 
       int count = 0;
@@ -75,20 +57,16 @@ class Profile with ChangeNotifier {
 
         interestedListings.add(
             ChatListing(name: matchedUser.name, previewContent: messageHistory.last.messageContent,
-                time: messageHistory.last.time, opened: messageHistory.last.messageType == "sender", image: const AssetImage("/lib/images/test_users/profilepicture2.jpg"),
+                time: messageHistory.last.time, opened: messageHistory.last.messageType == "sender", image: MemoryImage(matchedUser.profilePicture),
                 otherUserId: matchedUser.userId, currentUserId: id, messages: messageHistory)
         );
       }
-    } else {
-      ByteData data = await rootBundle.load("lib/images/profile/noProfilePicture.png");
-      profilePicture =  data.buffer.asUint8List();
     }
-
-    var userInfo = await userInfoFuture;
 
     if (userInfo != null) {
       bio = userInfo.bio;
       name = userInfo.name;
+      profilePicture = userInfo.profilePicture;
     } else {
       bio = "";
       name = "Failed to retrieve name...";

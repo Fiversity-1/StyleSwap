@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:clothing_swap/features/profile/data/profile_api.dart';
 import 'package:clothing_swap/features/profile/domain/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
@@ -5,8 +7,10 @@ import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
@@ -280,7 +284,27 @@ For any questions or concerns about these terms and conditions, please contact o
                                 var isRegistered = await isUserRegistered();
 
                                 if (!isRegistered) {
-                                  var success = await addUser(lat, long, _controllerBio.text);
+                                  User? user = FirebaseAuth.instance.currentUser;
+                                  final String? imageUrl = user?.photoURL;
+
+                                  Uint8List profilePicture;
+
+                                  if (imageUrl == null) {
+                                    final bytes = await rootBundle.load('lib/images/test_users/profilepicture2.jpg');
+                                    profilePicture = bytes.buffer.asUint8List();
+                                  } else {
+                                    try {
+                                      // Download the image
+                                      final http.Response response = await http.get(Uri.parse(imageUrl));
+
+                                      profilePicture = response.bodyBytes;
+                                    } catch (e) {
+                                      final bytes = await rootBundle.load('lib/images/test_users/profilepicture2.jpg');
+                                      profilePicture = bytes.buffer.asUint8List();
+                                    }
+                                  }
+
+                                  var success = await addUser(lat, long, _controllerBio.text, profilePicture);
 
                                   if (!success) {
                                     throw "User not registered";

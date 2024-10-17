@@ -1,13 +1,15 @@
 
 import 'dart:convert';
+import 'dart:typed_data';
 
+import 'package:clothing_swap/features/clothing/data/clothing_api.dart';
 import 'package:clothing_swap/features/preferences/domain/clothing_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 import '../../clothing/presentation/clothing_item_class.dart';
 
-Future<bool> addUser(String lat, String long, String bio) async {
+Future<bool> addUser(String lat, String long, String bio, Uint8List profile) async {
   try {
     // Get the current user
     User? user = FirebaseAuth.instance.currentUser;
@@ -29,7 +31,8 @@ Future<bool> addUser(String lat, String long, String bio) async {
           "lat": lat,
           "lon": long,
           "bio": bio,
-          "name": user.displayName ?? "Anonymous"
+          "name": user.displayName ?? "Anonymous",
+          "image": base64Encode(profile)
         }),
       );
 
@@ -92,8 +95,9 @@ class UserInfo {
   final String name;
   final String bio;
   final List<ClothingItem> matchedItems;
+  final Uint8List profilePicture;
 
-  UserInfo(this.name, this.bio, this.matchedItems);
+  UserInfo(this.name, this.bio, this.matchedItems, this.profilePicture);
 }
 
 Future<UserInfo?> getUser({String? userId}) async {
@@ -120,7 +124,7 @@ Future<UserInfo?> getUser({String? userId}) async {
       if (response.statusCode == 200) {
         print('Request successful: ${response.body}');
         var body = jsonDecode(response.body);
-        return UserInfo(body['name'].toString(), body['bio'].toString(), []);
+        return UserInfo(body['name'].toString(), body['bio'].toString(), [], base64Decode(body['image'].toString()));
       } else {
         print('Request failed with status: ${response.statusCode}');
       }
