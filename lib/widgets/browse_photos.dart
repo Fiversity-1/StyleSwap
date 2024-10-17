@@ -1,4 +1,4 @@
-import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
+import 'package:clothing_swap/features/messaging/domain/chat_listing_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:photo_view/photo_view.dart';

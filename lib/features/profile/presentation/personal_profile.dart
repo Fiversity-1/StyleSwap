@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/features/profile/domain/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/browse_photos.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
@@ -133,7 +133,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                                         personalProfile
                                                             .profilePicture!)
                                                     : const AssetImage(
-                                                        'lib/images/noProfilePicture.png'))
+                                                        'lib/images/profile/noProfilePicture.png'))
                                                 : Image.memory(_image!,
                                                         fit: BoxFit.cover)
                                                     .image),

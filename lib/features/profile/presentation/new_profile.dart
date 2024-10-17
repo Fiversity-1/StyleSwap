@@ -1,5 +1,5 @@
 import 'package:clothing_swap/features/profile/data/profile_api.dart';
-import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/features/profile/domain/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
@@ -86,8 +86,8 @@ For any questions or concerns about these terms and conditions, please contact o
           title: Center(
             child: Image.asset(
               Provider.of<ThemeSwitcher>(context).themeData == lightTheme
-                  ? 'lib/images/hanger.png'
-                  : 'lib/images/hanger_white.png',
+                  ? 'lib/images/logo/hanger.png'
+                  : 'lib/images/logo/hanger_white.png',
               height: 65,
               width: 75,
             ),

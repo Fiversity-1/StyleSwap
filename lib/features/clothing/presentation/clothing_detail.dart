@@ -1,5 +1,5 @@
 import 'package:clothing_swap/features/clothing/application/search_provider.dart';
-import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/features/profile/domain/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
@@ -74,8 +74,8 @@ class ClothingDetail extends StatelessWidget {
             ? AppBar(
                 title: Image.asset(
                   Provider.of<ThemeSwitcher>(context).themeData == lightTheme
-                      ? 'lib/images/hanger.png'
-                      : 'lib/images/hanger_white.png',
+                      ? 'lib/images/logo/hanger.png'
+                      : 'lib/images/logo/hanger_white.png',
                   height: 65,
                   width: 75,
                 ),

@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
-import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
-import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/features/messaging/domain/chat_listing_class.dart';
+import 'package:clothing_swap/features/profile/domain/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
@@ -16,8 +16,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 
-import '../clothing/data/matching_api.dart';
-import '../profile/data/profile_api.dart';
+import '../../clothing/data/matching_api.dart';
+import '../../profile/data/profile_api.dart';
 
 //Individual Chat UI
 class MessageChat extends StatefulWidget {
@@ -117,26 +117,26 @@ class _MessageChatState extends State<MessageChat> {
             ),
           );
 
-          if (chat.messages[index].messageType == "sender") {
-            if (!_clipOvalExistsInList(
-                _imagesRight, chat.messages[index].additionalListings!)) {
-              _imagesRight.add(newClipOval);
-            }
-          } else {
-            if (!_clipOvalExistsInList(
-                _imagesLeft, chat.messages[index].additionalListings!)) {
-              _imagesLeft.add(newClipOval);
-            }
-          }
+          // if (chat.messages[index].messageType == "sender") {
+          //   if (!_clipOvalExistsInList(
+          //       _imagesRight, chat.messages[index].additionalListings!)) {
+          //     _imagesRight.add(newClipOval);
+          //   }
+          // } else {
+          //   if (!_clipOvalExistsInList(
+          //       _imagesLeft, chat.messages[index].additionalListings!)) {
+          //     _imagesLeft.add(newClipOval);
+          //   }
+          // }
         } else if (chat.messages[index].accepted == false) {
           // Remove image if no longer accepted
-          if (chat.messages[index].messageType == "sender") {
-            _removeClipOvalFromList(
-                _imagesRight, chat.messages[index].additionalListings!);
-          } else {
-            _removeClipOvalFromList(
-                _imagesLeft, chat.messages[index].additionalListings!);
-          }
+          // if (chat.messages[index].messageType == "sender") {
+          //   _removeClipOvalFromList(
+          //       _imagesRight, chat.messages[index].additionalListings!);
+          // } else {
+          //   _removeClipOvalFromList(
+          //       _imagesLeft, chat.messages[index].additionalListings!);
+          // }
         }
       }
       // Handle declination
@@ -151,13 +151,13 @@ class _MessageChatState extends State<MessageChat> {
 
         // Remove image if declined
         if (chat.messages[index].declined == true) {
-          if (chat.messages[index].messageType == "sender") {
-            _removeClipOvalFromList(
-                _imagesRight, chat.messages[index].additionalListings!);
-          } else {
-            _removeClipOvalFromList(
-                _imagesLeft, chat.messages[index].additionalListings!);
-          }
+          // if (chat.messages[index].messageType == "sender") {
+          //   _removeClipOvalFromList(
+          //       _imagesRight, chat.messages[index].additionalListings!);
+          // } else {
+          //   _removeClipOvalFromList(
+          //       _imagesLeft, chat.messages[index].additionalListings!);
+          // }
         }
       }
     });
@@ -212,54 +212,6 @@ class _MessageChatState extends State<MessageChat> {
       },
     );
   }
-
-  //https://pub.dev/packages/flutter_image_stack
-  //Example code used to implement image stack
-  final List<Widget> _imagesLeft = [
-    ClipOval(
-      child: Image.asset(
-        'lib/images/1.jpg',
-        width: 100,
-        height: 100,
-        fit: BoxFit.cover,
-      ),
-    ),
-    ClipOval(
-      child: Image.asset(
-        'lib/images/5.jpg',
-        width: 100,
-        height: 100,
-        fit: BoxFit.cover,
-      ),
-    ),
-  ];
-
-  final List<Widget> _imagesRight = [
-    ClipOval(
-      child: Image.asset(
-        'lib/images/op.jpg',
-        width: 100,
-        height: 100,
-        fit: BoxFit.cover,
-      ),
-    ),
-    ClipOval(
-      child: Image.asset(
-        'lib/images/3.jpg',
-        width: 100,
-        height: 100,
-        fit: BoxFit.cover,
-      ),
-    ),
-    ClipOval(
-      child: Image.asset(
-        'lib/images/0.jpg',
-        width: 100,
-        height: 100,
-        fit: BoxFit.cover,
-      ),
-    ),
-  ];
 
   final List<Widget> _empty = [
     ClipOval(
@@ -341,8 +293,8 @@ class _MessageChatState extends State<MessageChat> {
               Provider
                   .of<ThemeSwitcher>(context)
                   .themeData == lightTheme
-                  ? 'lib/images/hanger.png'
-                  : 'lib/images/hanger_white.png',
+                  ? 'lib/images/logo/hanger.png'
+                  : 'lib/images/logo/hanger_white.png',
               height: 65,
               width: 75,
             ),

@@ -3,8 +3,8 @@ import 'dart:typed_data';
 
 import 'package:clothing_swap/features/clothing/data/matching_api.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
-import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
-import 'package:clothing_swap/features/messaging/messagechat.dart';
+import 'package:clothing_swap/features/messaging/domain/chat_listing_class.dart';
+import 'package:clothing_swap/features/messaging/presentation/messagechat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -75,12 +75,12 @@ class Profile with ChangeNotifier {
 
         interestedListings.add(
             ChatListing(name: matchedUser.name, previewContent: messageHistory.last.messageContent,
-                time: messageHistory.last.time, opened: messageHistory.last.messageType == "sender", image: const AssetImage("/lib/images/profilepicture2.jpg"),
+                time: messageHistory.last.time, opened: messageHistory.last.messageType == "sender", image: const AssetImage("/lib/images/test_users/profilepicture2.jpg"),
                 otherUserId: matchedUser.userId, currentUserId: id, messages: messageHistory)
         );
       }
     } else {
-      ByteData data = await rootBundle.load("lib/images/noProfilePicture.png");
+      ByteData data = await rootBundle.load("lib/images/profile/noProfilePicture.png");
       profilePicture =  data.buffer.asUint8List();
     }
 
@@ -164,9 +164,9 @@ class Profile with ChangeNotifier {
 //User manager handles user profiles
 class UserManager with ChangeNotifier {
   final List<Profile> _users = [
-    personal
+    defaultProfile
   ]; // Ensure profiles are added here, currently using hardcoded profiles
-  Profile _currentUser = personal;
+  Profile _currentUser = defaultProfile;
 
   UserManager() {
     final currentUser = FirebaseAuth.instance.currentUser;
@@ -211,169 +211,10 @@ String publicProfileUUID = uuid.v4();
 List<String> personalItemUUIDs = List.generate(5, (_) => uuid.v4());
 List<String> publicItemUUIDs = List.generate(5, (_) => uuid.v4());
 
-//Peronsal and public profiles instances used for testing purposes
-List<ClothingItem> personalListings = [
-  ClothingItem(
-    id: personalItemUUIDs[0],
-    userId: personalProfileUUID,
-    name: 'Clothing 1',
-    location: 'Location 1',
-    images: [const AssetImage('lib/images/4.jpg')],
-    details: ClothingItemDetail(
-      bio: 'Description for Clothing 1',
-      type: 'Shirt',
-      size: "S",
-      gender: 'Male',
-      condition: 'Good',
-      colours: ['Color1'],
-      images: [const AssetImage('lib/images/4.jpg')],
-    ),
-  ),
-  ClothingItem(
-    id: personalItemUUIDs[1],
-    userId: personalProfileUUID,
-    name: 'Clothing 2',
-    location: 'Location 2',
-    images: [const AssetImage('lib/images/1.jpg')],
-    details: ClothingItemDetail(
-      bio: 'Description for Clothing 2',
-      type: 'Type 2',
-      size: "S",
-      gender: 'Male',
-      condition: 'Good',
-      colours: ['Color2'],
-      images: [const AssetImage('lib/images/1.jpg')],
-    ),
-  ),
-  ClothingItem(
-    id: personalItemUUIDs[2],
-    userId: personalProfileUUID,
-    name: 'Clothing 3',
-    location: 'Location 3',
-    images: [const AssetImage('lib/images/3.jpg')],
-    details: ClothingItemDetail(
-      bio: 'Description for Clothing 3',
-      type: 'Type 3',
-      size: "S",
-      gender: 'Male',
-      condition: 'Good',
-      colours: ['Color3'],
-      images: [const AssetImage('lib/images/3.jpg')],
-    ),
-  ),
-  ClothingItem(
-    id: personalItemUUIDs[3],
-    userId: personalProfileUUID,
-    name: 'Clothing 4',
-    location: 'Location 4',
-    images: [const AssetImage('lib/images/5.jpg')],
-    details: ClothingItemDetail(
-      bio: 'Description for Clothing 4',
-      type: 'Type 4',
-      size: "S",
-      gender: 'Male',
-      condition: 'Good',
-      colours: ['Color4'],
-      images: [const AssetImage('lib/images/5.jpg')],
-    ),
-  ),
-];
-
-List<ClothingItem> publicListings = [
-  ClothingItem(
-    id: publicItemUUIDs[0],
-    userId: publicProfileUUID,
-    name: 'Striped Shirt',
-    location: 'Gold Coast',
-    images: [const AssetImage('lib/images/0.jpg')],
-    details: ClothingItemDetail(
-      bio: 'Description for Clothing A',
-      type: 'Shirt',
-      size: "S",
-      gender: 'Male',
-      condition: 'Good',
-      colours: ['ColorA'],
-      images: [
-        const AssetImage('lib/images/0.jpg'),
-      ],
-    ),
-  ),
-  ClothingItem(
-    id: publicItemUUIDs[1],
-    userId: publicProfileUUID,
-    name: 'White Shirt',
-    location: 'Mount Cotton',
-    images: [const AssetImage('lib/images/2.jpg')],
-    details: ClothingItemDetail(
-      bio: 'Description for Clothing B',
-      type: 'Type B',
-      size: "S",
-      gender: 'Male',
-      condition: 'Good',
-      colours: ['ColorB'],
-      images: [const AssetImage('lib/images/2.jpg')],
-    ),
-  ),
-  ClothingItem(
-    id: publicItemUUIDs[2],
-    userId: publicProfileUUID,
-    name: 'Red Shirt',
-    location: 'Brisbane City',
-    images: [const AssetImage('lib/images/3.jpg')],
-    details: ClothingItemDetail(
-      bio: 'Red Shirt bought from cotton-on',
-      type: 'Shirt',
-      size: "S",
-      gender: 'Male',
-      condition: 'Like new',
-      colours: ['Red'],
-      images: [const AssetImage('lib/images/3.jpg')],
-    ),
-  ),
-  ClothingItem(
-    id: publicItemUUIDs[3],
-    userId: publicProfileUUID,
-    name: 'Bucket Hat',
-    location: 'Capalaba',
-    images: [const AssetImage('lib/images/5.jpg')],
-    details: ClothingItemDetail(
-      bio: 'Description for Clothing D',
-      type: 'Type D',
-      size: "S",
-      gender: 'Male',
-      condition: 'Good',
-      colours: ['ColorD'],
-      images: [const AssetImage('lib/images/5.jpg')],
-    ),
-  ),
-  ClothingItem(
-    id: publicItemUUIDs[4],
-    userId: publicProfileUUID,
-    name: 'Black Shirt',
-    location: 'Windaroo',
-    images: [
-      const AssetImage('lib/images/1.jpg'),
-      const AssetImage('lib/images/1-extra.jpg')
-    ],
-    details: ClothingItemDetail(
-      bio: 'Fresh black t-shirt',
-      type: 'Shirt',
-      size: "S",
-      gender: 'Male',
-      condition: 'Like new',
-      colours: ['Black'],
-      images: [
-        const AssetImage('lib/images/1.jpg'),
-        const AssetImage('lib/images/1-extra.jpg')
-      ],
-    ),
-  ),
-];
-
-Profile personal = Profile(
+Profile defaultProfile = Profile(
   id: personalProfileUUID,
-  bio: "Keen for some trades!",
-  name: "Jacob",
+  bio: "",
+  name: "Loading...",
   personalListings: [],
 );
 

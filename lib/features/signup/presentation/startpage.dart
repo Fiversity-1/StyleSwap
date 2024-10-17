@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../profile/data/profile_api.dart';
-import '../../profile/presentation/profile_class.dart';
+import '../../profile/domain/profile_class.dart';
 
 //Log in page
 class StartPage extends StatelessWidget {
@@ -78,8 +78,8 @@ class StartPage extends StatelessWidget {
           title: Center(
             child: Image.asset(
               Provider.of<ThemeSwitcher>(context).themeData == lightTheme
-                  ? 'lib/images/hanger.png'
-                  : 'lib/images/hanger_white.png',
+                  ? 'lib/images/logo/hanger.png'
+                  : 'lib/images/logo/hanger_white.png',
               height: 65,
               width: 75,
             ),

@@ -1,7 +1,7 @@
 
 import 'dart:convert';
 
-import 'package:clothing_swap/features/clothing/domain/clothing_search.dart';
+import 'package:clothing_swap/features/preferences/domain/clothing_search.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;

@@ -1,4 +1,4 @@
-import 'package:clothing_swap/features/community/event_class.dart';
+import 'package:clothing_swap/features/community/domain/event_class.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +14,8 @@ class CustomTopAppBar extends StatelessWidget {
       title: Image.asset(
         //Use white hanger on light themes, black hanger on dark themes
         Provider.of<ThemeSwitcher>(context).themeData == lightTheme
-            ? 'lib/images/hanger.png'
-            : 'lib/images/hanger_white.png',
+            ? 'lib/images/logo/hanger.png'
+            : 'lib/images/logo/hanger_white.png',
         height: 65,
         width: 75,
       ),

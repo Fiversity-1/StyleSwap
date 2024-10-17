@@ -1,4 +1,4 @@
-import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
+import 'package:clothing_swap/features/messaging/domain/chat_listing_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';

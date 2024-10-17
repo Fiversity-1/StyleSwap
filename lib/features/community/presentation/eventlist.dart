@@ -1,7 +1,7 @@
-import 'package:clothing_swap/features/community/event_class.dart';
+import 'package:clothing_swap/features/community/domain/event_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
-import 'package:clothing_swap/widgets/event_listing.dart';
+import 'package:clothing_swap/features/community/presentation/event_listing.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 

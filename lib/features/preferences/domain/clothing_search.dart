@@ -3,7 +3,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
-import 'clothing_info.dart';
+import '../../clothing/domain/clothing_info.dart';
 
 class ClothingSearch extends ChangeNotifier {
   List<ClothingType>? types;
@@ -25,7 +25,9 @@ class ClothingSearch extends ChangeNotifier {
     addData(data, "condition", conditions);
     addData(data, "gender", genders);
 
-    data["distance"] = distance.toString();
+    if (distance != null) {
+      data["distance"] = distance.toString();
+    }
 
     return data;
   }

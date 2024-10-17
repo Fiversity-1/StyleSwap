@@ -1,4 +1,4 @@
-import 'package:clothing_swap/features/community/event_class.dart';
+import 'package:clothing_swap/features/community/domain/event_class.dart';
 import 'package:flutter/material.dart';
 
 //Custom Bottom Navigation bar

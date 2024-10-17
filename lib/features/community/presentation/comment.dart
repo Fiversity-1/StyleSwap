@@ -1,4 +1,4 @@
-import 'package:clothing_swap/features/community/comment_class.dart';
+import 'package:clothing_swap/features/community/domain/comment_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
 import 'package:flutter/foundation.dart';
@@ -82,7 +82,7 @@ class CommentsState extends State<Comments> {
               commentContent: value,
               time: "Now",
               user: "Steve",
-              picture: 'lib/images/noProfilePicture.png',
+              picture: 'lib/images/profile/noProfilePicture.png',
               like: 5,
               heart: 6,
               haha: 7,
@@ -405,7 +405,7 @@ class CommentsState extends State<Comments> {
                         child: CircleAvatar(
                           radius: 12,
                           backgroundImage:
-                              AssetImage('lib/images/noProfilePicture.png'),
+                              AssetImage('lib/images/profile/noProfilePicture.png'),
                         ),
                       ),
                       hintText: 'Comment Here...',

@@ -1,8 +1,8 @@
 
 import 'dart:io';
 
-import 'package:clothing_swap/features/messaging/chat_listing_class.dart';
-import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/features/messaging/domain/chat_listing_class.dart';
+import 'package:clothing_swap/features/profile/domain/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
@@ -45,8 +45,8 @@ class PublicProfileState extends State<PublicProfile> {
               Provider
                   .of<ThemeSwitcher>(context)
                   .themeData == lightTheme
-                  ? 'lib/images/hanger.png'
-                  : 'lib/images/hanger_white.png',
+                  ? 'lib/images/logo/hanger.png'
+                  : 'lib/images/logo/hanger_white.png',
               height: 65,
               width: 75,
             ),
@@ -80,7 +80,7 @@ class PublicProfileState extends State<PublicProfile> {
                                       null
                                       ? MemoryImage(profile.profilePicture!)
                                       : const AssetImage(
-                                      'lib/images/noProfilePicture.png')),
+                                      'lib/images/profile/noProfilePicture.png')),
                             ),
                           ),
                         ],

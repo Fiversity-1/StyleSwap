@@ -24,7 +24,7 @@ class Event {
 List<Event> communityEvents = [
   Event(
       company: 'Vinnies',
-      image: 'lib/images/op.jpg',
+      image: 'lib/images/test_events/op.jpg',
       details: 'Bring sport hats!',
       title: 'Hat Swap',
       date: '1/5/24',
@@ -34,7 +34,7 @@ List<Event> communityEvents = [
       attendance: 4),
   Event(
       company: 'UQ',
-      image: 'lib/images/op2.jpg',
+      image: 'lib/images/test_events/op2.jpg',
       details: 'Striped Clothes Encouraged!',
       title: 'Stripe Swap',
       date: '4/5/24',
@@ -44,7 +44,7 @@ List<Event> communityEvents = [
       attendance: 21),
   Event(
       company: 'Salvation Army',
-      image: 'lib/images/op3.jpg',
+      image: 'lib/images/test_events/op3.jpg',
       details: '',
       title: '2nd Hand Swapping',
       date: '14/6/24',
@@ -54,7 +54,7 @@ List<Event> communityEvents = [
       attendance: 58),
   Event(
       company: 'Blue Care',
-      image: 'lib/images/op4.jpg',
+      image: 'lib/images/test_events/op4.jpg',
       details: 'Bring hats!',
       title: 'Vintage Clothe Swap',
       date: '24/6/24',

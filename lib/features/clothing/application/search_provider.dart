@@ -1,10 +1,10 @@
 import 'dart:ffi';
 import 'dart:math';
 
-import 'package:clothing_swap/features/clothing/domain/clothing_search.dart';
+import 'package:clothing_swap/features/preferences/domain/clothing_search.dart';
 import 'package:clothing_swap/features/clothing/presentation/clothing_item_build.dart';
-import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
-import 'package:clothing_swap/widgets/fun_fact.dart';
+import 'package:clothing_swap/features/profile/domain/profile_class.dart';
+import 'package:clothing_swap/features/clothing/presentation/swipe_cards/fun_fact.dart';
 import 'package:flutter/material.dart';
 
 import '../data/search_api.dart';

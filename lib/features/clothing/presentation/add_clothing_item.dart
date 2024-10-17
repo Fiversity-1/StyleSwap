@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:clothing_swap/features/clothing/data/clothing_api.dart';
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
-import 'package:clothing_swap/features/clothing/presentation/select_preferences.dart';
+import 'package:clothing_swap/features/preferences/presentation/select_preferences.dart';
 import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/widgets/image_selection.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:string_extensions/string_extensions.dart';
 import 'package:toastification/toastification.dart';
 
-import '../../profile/presentation/profile_class.dart';
+import '../../profile/domain/profile_class.dart';
 
 //GPT to change to statefulwidget instead of hook
 //GPT to then implement setState for dynamic changes (as no longer hook),

@@ -1,4 +1,4 @@
-import 'package:clothing_swap/widgets/tag.dart';
+import 'package:clothing_swap/features/preferences/presentation/tag.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

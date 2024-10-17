@@ -1,8 +1,8 @@
 import 'package:clothing_swap/features/clothing/data/search_api.dart';
 import 'package:clothing_swap/features/clothing/domain/clothing_info.dart';
-import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/features/profile/domain/profile_class.dart';
 import 'package:clothing_swap/theme/gradient.dart';
-import 'package:clothing_swap/widgets/preference_row.dart';
+import 'package:clothing_swap/features/preferences/presentation/preference_row.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_swap/widgets/custom_bottom_nav_bar.dart';
 import 'package:clothing_swap/widgets/custom_top_app_bar.dart';
@@ -10,7 +10,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 
 import '../application/search_provider.dart';
-import '../domain/clothing_search.dart';
+import '../../preferences/domain/clothing_search.dart';
 
 //View list of preferences
 class ViewPrefences extends StatefulWidget {

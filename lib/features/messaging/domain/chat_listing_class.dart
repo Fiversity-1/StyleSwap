@@ -1,11 +1,11 @@
-import 'package:clothing_swap/features/profile/presentation/profile_class.dart';
+import 'package:clothing_swap/features/profile/domain/profile_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
-import '../clothing/data/matching_api.dart';
-import '../clothing/domain/clothing_info.dart';
+import '../../clothing/data/matching_api.dart';
+import '../../clothing/domain/clothing_info.dart';
 //GPT used to this implement this page for state management of ChatListings
 //ChatListings have a list of ChatMessages
 
