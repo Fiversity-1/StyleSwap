@@ -112,7 +112,7 @@ Future<MatchedClothing?> getMatchedClothing(String otherUserId) async {
       String userId = user.uid;
 
       // API URL
-      String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/match/$userId';
+      String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/clothes/match/$userId/$otherUserId';
 
       // Make the GET request
       http.Response response = await http.get(
@@ -127,7 +127,10 @@ Future<MatchedClothing?> getMatchedClothing(String otherUserId) async {
         print('Request successful: ${response.body}');
 
         var data = await jsonDecode(response.body);
-        return data.map<MatchedUserResponse>((elem) => MatchedUserResponse(elem['userId'], elem['name'])).toList();
+        return MatchedClothing(
+          await convertApiResponseToClothingInfo(data['toRecv']),
+            await convertApiResponseToClothingInfo(data['toTrade'])
+        );
       } else {
         print('Request failed with status: ${response.statusCode}');
       }

@@ -128,7 +128,7 @@ class _MessageState extends State<Message> {
                       ),
                       title: Row(
                         children: [
-                          Text(truncateWithEllipsis(chat.name, !chat.opened ? 13 : 16),
+                          Text(truncateWithEllipsis(chat.name, !chat.opened ? 13 : 14),
                               style: const TextStyle(
                                 fontSize: 24,
                               )),
