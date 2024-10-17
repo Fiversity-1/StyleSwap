@@ -17,6 +17,7 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:toastification/toastification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../profile/data/profile_api.dart';
 import 'clothing_item_build.dart';
 
 //Page for swiping through public listings
@@ -276,20 +277,29 @@ class _SwipePageTopState extends State<SwipePageTop> {
           .getListing()[0];
 
       if (await likeDislikeItem(clothingItem.id, direction == CardSwiperDirection.right)) {
-        currentUser.addInterestedListing(
-            ChatListing(
-              currentUserId: currentUser.id,
-              otherUserId: clothingItem.userId,
-              name: clothingItem.user ?? "Anonymous",
-              previewContent: "New Match",
-              time: "Now",
-              opened: false,
-              image: searchResults
-                  .getListing()[0]
-                  .images.length >= 1 ? MemoryImage(searchResults
-                  .getListing()[0]
-                  .images[0]) : const AssetImage('lib/images/noImage.png'),
-            ));
+        if (currentUser.interestedListings.any((listing) => listing.otherUserId == clothingItem.userId)) {
+          var listing = currentUser.interestedListings.firstWhere((listing) => listing.otherUserId == clothingItem.userId);
+
+          if (listing.trades != null) {
+            listing.trades!.othersTrades.add(clothingItem);
+          }
+        } else {
+          var otherUser = await getUser(userId: clothingItem.userId);
+
+          if (otherUser != null) {
+            currentUser.addInterestedListing(
+                ChatListing(
+                  currentUserId: currentUser.id,
+                  otherUserId: clothingItem.userId,
+                  name: clothingItem.user ?? "Anonymous",
+                  previewContent: "New Match",
+                  time: "Now",
+                  opened: false,
+                  image: MemoryImage(otherUser.profilePicture),
+                ));
+          }
+        }
+
         //Show toaster when match occurs
         //Rowan needs to move based on integration
         //Match doesn't occur on instant swipe right

@@ -79,7 +79,7 @@ Future<bool> isUserRegistered() async {
         print('User exists');
         return true;
       } else {
-        print('User does not exists or error: ${response.statusCode}');
+        print('User does not exist or error: ${response.statusCode}');
       }
     } else {
       print('No user is signed in.');

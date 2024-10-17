@@ -6,6 +6,7 @@ import 'package:clothing_swap/theme/gradient.dart';
 import 'package:clothing_swap/theme/theme.dart';
 import 'package:clothing_swap/theme/theme_switcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
@@ -287,20 +288,19 @@ For any questions or concerns about these terms and conditions, please contact o
                                   User? user = FirebaseAuth.instance.currentUser;
                                   final String? imageUrl = user?.photoURL;
 
-                                  Uint8List profilePicture;
+                                  final bytes = await rootBundle.load('lib/images/test_users/profilepicture2.jpg');
+                                  Uint8List profilePicture = bytes.buffer.asUint8List();
 
-                                  if (imageUrl == null) {
-                                    final bytes = await rootBundle.load('lib/images/test_users/profilepicture2.jpg');
-                                    profilePicture = bytes.buffer.asUint8List();
-                                  } else {
+                                  if (imageUrl != null) {
                                     try {
                                       // Download the image
                                       final http.Response response = await http.get(Uri.parse(imageUrl));
 
                                       profilePicture = response.bodyBytes;
-                                    } catch (e) {
-                                      final bytes = await rootBundle.load('lib/images/test_users/profilepicture2.jpg');
-                                      profilePicture = bytes.buffer.asUint8List();
+                                    } catch (_) {
+                                      if (kDebugMode) {
+                                        print("Error retrieving users profile picture");
+                                      }
                                     }
                                   }
 
