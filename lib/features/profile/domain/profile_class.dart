@@ -31,6 +31,7 @@ class Profile with ChangeNotifier {
     fetchUserDetails();
   }
 
+  /// fetch the user details from the api.
   void fetchUserDetails() async {
     var futureClothes = getUsersClothes(userId: id);
     var userInfoFuture = getUser(userId: id);
@@ -39,6 +40,8 @@ class Profile with ChangeNotifier {
 
     var userInfo = await userInfoFuture;
 
+    // if the user is the logged in user, also get the matched users to
+    // generate the messages.
     if (currentUser != null && currentUser.uid == id) {
       var usersMatchedFuture = getMatchedUsers();
       var matchedUsers = await usersMatchedFuture;
@@ -73,6 +76,7 @@ class Profile with ChangeNotifier {
     notifyListeners();
   }
 
+  /// construct a profile from a FirebaseAuth user.
   Profile.fromUser(
     User user, {
     this.personalListings,

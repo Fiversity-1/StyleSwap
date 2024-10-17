@@ -95,98 +95,6 @@ class _MessageChatState extends State<MessageChat> {
     setState(() {});
   }
 
-//GPT modified original code to correct implementation
-//Use for handling the state of trades
-  void _handleTrade(
-      String type, int index, ChatManager chatManager, ChatListing chat) async {
-    setState(() {
-      // Handle acceptance
-      if (type == "accepted") {
-        chatManager.updateTradeAcceptance(chat.id, chat.messages[index].id);
-
-        if (chat.messages[index].declined == true) {
-          chatManager.updateTradeDecline(chat.id, chat.messages[index].id);
-        }
-
-        // Add image if accepted
-        if (chat.messages[index].accepted == true) {
-          ClipOval newClipOval = ClipOval(
-            child: Image(
-              image: chat.messages[index].additionalListings!,
-              width: 100,
-              height: 100,
-              fit: BoxFit.cover,
-            ),
-          );
-
-          // if (chat.messages[index].messageType == "sender") {
-          //   if (!_clipOvalExistsInList(
-          //       _imagesRight, chat.messages[index].additionalListings!)) {
-          //     _imagesRight.add(newClipOval);
-          //   }
-          // } else {
-          //   if (!_clipOvalExistsInList(
-          //       _imagesLeft, chat.messages[index].additionalListings!)) {
-          //     _imagesLeft.add(newClipOval);
-          //   }
-          // }
-        } else if (chat.messages[index].accepted == false) {
-          // Remove image if no longer accepted
-          // if (chat.messages[index].messageType == "sender") {
-          //   _removeClipOvalFromList(
-          //       _imagesRight, chat.messages[index].additionalListings!);
-          // } else {
-          //   _removeClipOvalFromList(
-          //       _imagesLeft, chat.messages[index].additionalListings!);
-          // }
-        }
-      }
-      // Handle declination
-      else {
-        if (chat.messages[index].declined != null) {
-          chat.messages[index].declined = !chat.messages[index].declined!;
-        }
-
-        if (chat.messages[index].accepted == true) {
-          chat.messages[index].accepted = false;
-        }
-
-        // Remove image if declined
-        if (chat.messages[index].declined == true) {
-          // if (chat.messages[index].messageType == "sender") {
-          //   _removeClipOvalFromList(
-          //       _imagesRight, chat.messages[index].additionalListings!);
-          // } else {
-          //   _removeClipOvalFromList(
-          //       _imagesLeft, chat.messages[index].additionalListings!);
-          // }
-        }
-      }
-    });
-  }
-
-// GPT Helper function to check if a ClipOval containing a specific ImageProvider exists in the list
-  bool _clipOvalExistsInList(List<Widget> list, ImageProvider imageProvider) {
-    return list.any((widget) {
-      if (widget is ClipOval) {
-        Image? image = widget.child as Image?;
-        return image?.image == imageProvider;
-      }
-      return false;
-    });
-  }
-
-// GPT Helper function to remove a ClipOval containing a specific ImageProvider from the list
-  void _removeClipOvalFromList(List<Widget> list, ImageProvider imageProvider) {
-    list.removeWhere((widget) {
-      if (widget is ClipOval) {
-        Image? image = widget.child as Image?;
-        return image?.image == imageProvider;
-      }
-      return false;
-    });
-  }
-
 //https://medium.com/@kavyamistry0612/building-interactive-user-interfaces-with-alert-dialogs-in-flutter-81e268fb72f0
 //Used for demonstrating how to implement flutter alert dialog
 //Dialog to show Chat Guide
@@ -865,18 +773,6 @@ class _MessageChatState extends State<MessageChat> {
                                                                           .messages[
                                                                               index]
                                                                           .accepted,
-                                                                      onTap:
-                                                                          (isLiked) async {
-                                                                        _handleTrade(
-                                                                            "accepted",
-                                                                            index,
-                                                                            chatManager,
-                                                                            chat);
-
-                                                                        return chat
-                                                                            .messages[index]
-                                                                            .accepted;
-                                                                      },
                                                                       likeCountPadding:
                                                                           const EdgeInsets
                                                                               .all(
@@ -908,19 +804,6 @@ class _MessageChatState extends State<MessageChat> {
                                                                         .messages[
                                                                             index]
                                                                         .declined,
-                                                                    onTap:
-                                                                        (isLiked) async {
-                                                                      _handleTrade(
-                                                                          "declined",
-                                                                          index,
-                                                                          chatManager,
-                                                                          chat);
-
-                                                                      return chat
-                                                                          .messages[
-                                                                              index]
-                                                                          .declined;
-                                                                    },
                                                                     likeCountPadding:
                                                                         const EdgeInsets
                                                                             .all(
@@ -1002,19 +885,6 @@ class _MessageChatState extends State<MessageChat> {
                                                                         .messages[
                                                                             index]
                                                                         .accepted,
-                                                                    onTap:
-                                                                        (isLiked) async {
-                                                                      _handleTrade(
-                                                                          "accepted",
-                                                                          index,
-                                                                          chatManager,
-                                                                          chat);
-
-                                                                      return chat
-                                                                          .messages[
-                                                                              index]
-                                                                          .accepted;
-                                                                    },
                                                                     likeCountPadding:
                                                                         const EdgeInsets
                                                                             .all(
@@ -1052,18 +922,6 @@ class _MessageChatState extends State<MessageChat> {
                                                                           .messages[
                                                                               index]
                                                                           .declined,
-                                                                      onTap:
-                                                                          (isLiked) async {
-                                                                        _handleTrade(
-                                                                            "declined",
-                                                                            index,
-                                                                            chatManager,
-                                                                            chat);
-
-                                                                        return chat
-                                                                            .messages[index]
-                                                                            .declined;
-                                                                      },
                                                                       likeCountPadding:
                                                                           const EdgeInsets
                                                                               .all(

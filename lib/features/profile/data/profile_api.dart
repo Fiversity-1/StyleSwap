@@ -1,16 +1,15 @@
-
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:clothing_swap/features/clothing/data/clothing_api.dart';
-import 'package:clothing_swap/features/preferences/domain/clothing_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../../clothing/domain/clothing_info.dart';
-import '../../clothing/presentation/clothing_item_class.dart';
 
-Future<bool> addUser(String lat, String long, String bio, Uint8List profile) async {
+/// Adds a user with the given parameters.
+Future<bool> addUser(
+    String lat, String long, String bio, Uint8List profile) async {
   try {
     // Get the current user
     User? user = FirebaseAuth.instance.currentUser;
@@ -20,7 +19,8 @@ Future<bool> addUser(String lat, String long, String bio, Uint8List profile) asy
       String userId = user.uid;
 
       // API URL
-      String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/user/$userId';
+      String url =
+          'https://deco3801-fiversityplus1.uqcloud.net/api/user/$userId';
 
       // Make the POST request
       http.Response response = await http.post(
@@ -39,22 +39,30 @@ Future<bool> addUser(String lat, String long, String bio, Uint8List profile) asy
 
       // Check the response status
       if (response.statusCode == 201) {
-        print('Request successful: ${response.body}');
+        if (kDebugMode) {
+          print('Request successful: ${response.body}');
+        }
         return true;
       } else {
-        print('Request failed with status: ${response.statusCode}');
+        if (kDebugMode) {
+          print('Request failed with status: ${response.statusCode}');
+        }
       }
     } else {
-      print('No user is signed in.');
+      if (kDebugMode) {
+        print('No user is signed in.');
+      }
     }
   } catch (e) {
-    print('Error: $e');
+    if (kDebugMode) {
+      print('Error: $e');
+    }
   }
 
   return false;
 }
 
-
+/// Returns whether the user is registered by checking the api.
 Future<bool> isUserRegistered() async {
   try {
     // Get the current user
@@ -65,28 +73,34 @@ Future<bool> isUserRegistered() async {
       String userId = user.uid;
 
       // API URL
-      String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/user/$userId';
+      String url =
+          'https://deco3801-fiversityplus1.uqcloud.net/api/user/$userId';
 
       // Make the POST request
-      http.Response response = await http.get(
-          Uri.parse(url),
-          headers: {
-            'Content-Type': 'application/json',
-          }
-      );
+      http.Response response = await http.get(Uri.parse(url), headers: {
+        'Content-Type': 'application/json',
+      });
 
       // Check the response status
       if (response.statusCode == 200) {
-        print('User exists');
+        if (kDebugMode) {
+          print('User exists');
+        }
         return true;
       } else {
-        print('User does not exist or error: ${response.statusCode}');
+        if (kDebugMode) {
+          print('User does not exist or error: ${response.statusCode}');
+        }
       }
     } else {
-      print('No user is signed in.');
+      if (kDebugMode) {
+        print('No user is signed in.');
+      }
     }
   } catch (e) {
-    print('Error: $e');
+    if (kDebugMode) {
+      print('Error: $e');
+    }
   }
 
   return false;
@@ -101,6 +115,8 @@ class UserInfo {
   UserInfo(this.name, this.bio, this.matchedItems, this.profilePicture);
 }
 
+/// Return gets the user information for the user with the given id.
+/// If no userId is provided, defaults to the current user.
 Future<UserInfo?> getUser({String? userId}) async {
   try {
     // Get the current user
@@ -111,21 +127,20 @@ Future<UserInfo?> getUser({String? userId}) async {
       userId ??= user!.uid;
 
       // API URL
-      String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/user/$userId';
+      String url =
+          'https://deco3801-fiversityplus1.uqcloud.net/api/user/$userId';
 
       // Make the POST request
-      http.Response response = await http.get(
-        Uri.parse(url),
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      );
+      http.Response response = await http.get(Uri.parse(url), headers: {
+        'Content-Type': 'application/json',
+      });
 
       // Check the response status
       if (response.statusCode == 200) {
         print('Request successful: ${response.body}');
         var body = jsonDecode(response.body);
-        return UserInfo(body['name'].toString(), body['bio'].toString(), [], base64Decode(body['image'].toString()));
+        return UserInfo(body['name'].toString(), body['bio'].toString(), [],
+            base64Decode(body['image'].toString()));
       } else {
         print('Request failed with status: ${response.statusCode}');
       }
@@ -139,7 +154,7 @@ Future<UserInfo?> getUser({String? userId}) async {
   return null;
 }
 
-
+/// Blocks the given user id.
 Future<void> blockUser(String userIdToBlock) async {
   try {
     // Get the current user
@@ -150,15 +165,13 @@ Future<void> blockUser(String userIdToBlock) async {
       String userId = user.uid;
 
       // API URL
-      String url = 'https://deco3801-fiversityplus1.uqcloud.net/api/user/block/$userId/$userIdToBlock';
+      String url =
+          'https://deco3801-fiversityplus1.uqcloud.net/api/user/block/$userId/$userIdToBlock';
 
       // Make the POST request
-      http.Response response = await http.get(
-          Uri.parse(url),
-          headers: {
-            'Content-Type': 'application/json',
-          }
-      );
+      http.Response response = await http.get(Uri.parse(url), headers: {
+        'Content-Type': 'application/json',
+      });
 
       // Check the response status
       if (response.statusCode == 200) {
