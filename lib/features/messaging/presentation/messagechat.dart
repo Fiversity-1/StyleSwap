@@ -34,7 +34,10 @@ class _MessageChatState extends State<MessageChat> {
   final _scroller = ScrollController();
 
   @override
-  // GPT for scrolling if new listing added to chat
+  //GPT was used for the following reasons:
+  //Prompt: "I am doing a message chat UI, how could I handle animating to
+  //the current position of the chat after a message is sent. I am using a
+  //list view"
   void didChangeDependencies() {
     super.didChangeDependencies();
 
@@ -48,8 +51,8 @@ class _MessageChatState extends State<MessageChat> {
     });
   }
 
-//Void function idea to handle  both onSubmitted: and onPressed (icon) from GPT
-//code modified for personal implementation
+  //GPT was used for the following reasons:
+  //Prompt: "How to make sure a keyboard stays open after submitting a message"
   void _handleSend(String value, ChatManager chatManager, ChatListing chat) {
     _sendText.text.isNotEmpty
         ? chatManager.addChatMessage(
@@ -112,7 +115,8 @@ class _MessageChatState extends State<MessageChat> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              //Gpt for styling button
+              //GPT was used for the following reasons:
+              //Prompt: "How to style a text button in flutter"
               style: TextButton.styleFrom(
                   foregroundColor: Colors.white // Set the text color here
                   ),
@@ -135,10 +139,13 @@ class _MessageChatState extends State<MessageChat> {
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (context, setState) {
-            // GPT used to Make the dialog stateful by using StatefulBuilder
+            //GPT was used for the following reasons:
+            //Prompt: "(Provided AlertDialog code)Make this following code stateful
+            //so changes are updated on the UI"
             return AlertDialog(
               backgroundColor: Colors.blue,
               title: const Text('Rate User'),
+              //Rating code provided by: https://pub.dev/packages/flutter_pannable_rating_bar
               content: PannableRatingBar(
                 rate: rating,
                 items: List.generate(
@@ -164,7 +171,8 @@ class _MessageChatState extends State<MessageChat> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  // GPT for Styling button
+                  //GPT was used for the following reasons:
+                  //Prompt: "How to style a text button in flutter"
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white, // Set the text color here
                   ),
@@ -180,7 +188,8 @@ class _MessageChatState extends State<MessageChat> {
 
   final List<Widget> _empty = [
     ClipOval(
-      //GPT used for transform scale - changes image scale
+      //GPT was used for the following reasons:
+      //Prompt: "How to transform the scale of image in clipoval"
       child: Transform.scale(
         scale: 0.6, // Adjust the scale factor as needed
         child: Image.asset(
@@ -220,7 +229,8 @@ class _MessageChatState extends State<MessageChat> {
                       context, "/message", ModalRoute.withName('/profile'));
                 }
               },
-              //GPT used for styling button
+              //GPT was used for the following reasons:
+              //Prompt: "How to style a text button"
               style: TextButton.styleFrom(foregroundColor: Colors.white),
               child: const Text('Yes'),
             ),
@@ -228,7 +238,8 @@ class _MessageChatState extends State<MessageChat> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              //GPT used for styling button
+              //GPT was used for the following reasons:
+              //Prompt: "How to style a text button"
               style: TextButton.styleFrom(foregroundColor: Colors.white),
               child: const Text('No'),
             ),
@@ -277,7 +288,8 @@ class _MessageChatState extends State<MessageChat> {
                             icon: const Icon(Icons.help)),
                         //Based on https://www.youtube.com/watch?v=YHNCYfqGrBY for speed dial
                         SpeedDial(
-                            //GPT for speed dial direction
+                            //GPT was used for the following reasons:
+                            //Prompt: "How to specify direction of speed dial"
                             direction: SpeedDialDirection.down,
                             elevation: 0,
                             backgroundColor: Colors.transparent,
@@ -649,7 +661,9 @@ class _MessageChatState extends State<MessageChat> {
                                                                             () {
                                                                           showImageViewer(
                                                                               context,
-                                                                              //GPT suggested using FileImage instead of Image.File
+                                                                              //GPT was used for the following reasons:
+                                                                              //Prompt: "(Provided showImageViewer function) Why is Image.File not displaying?"
+
                                                                               FileImage(
                                                                                 File(chat.messages[index].images!.path),
                                                                               ),
@@ -1000,10 +1014,11 @@ class _MessageChatState extends State<MessageChat> {
                                               TextAlignVertical.top,
                                           controller: _sendText,
                                           decoration: InputDecoration(
-                                            //fill color from GPT
+                                            //GPT was used for the following reasons:
+                                            //Prompt: "Fill colour and content padding for a text field"
                                             fillColor:
                                                 Theme.of(context).primaryColor,
-                                            //contentPadding from GPT
+
                                             contentPadding: kIsWeb
                                                 ? const EdgeInsets.all(20.0)
                                                 : const EdgeInsets.only(
@@ -1018,8 +1033,9 @@ class _MessageChatState extends State<MessageChat> {
                                               icon: const Icon(Icons.send,
                                                   size: kIsWeb ? 24 : 18),
                                               onPressed: () {
-                                                //Idea from GPT to user _handleSend (onPressed/submitted)
-                                                //to handle both keyboard enter and send icon press
+                                                //GPT was used for the following reasons:
+                                                //Prompt: "How to handle both keyboard enter and icon press
+                                                //with a textfield in flutter"
                                                 _handleSend(_sendText.text,
                                                     chatManager, chat);
                                               },

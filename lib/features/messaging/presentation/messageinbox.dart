@@ -50,8 +50,10 @@ class _MessageState extends State<Message> {
                     (index) {
                   final chat = chatManager.chats[index];
                   return Slidable(
-                    // Key implemented based on GPT recommendation for
-                    // keeping track of each unique slidable
+                    //GPT was used for the following reasons:
+                    //Prompt: "I am doing a message inbox UI with a list view,
+                    //how do I stop changes happening to all tiles, and treat
+                    //them separately?"
                     key: ValueKey(chat),
 
                     endActionPane: ActionPane(
@@ -65,8 +67,8 @@ class _MessageState extends State<Message> {
                           visible: !chat.opened,
                           child: SlidableAction(
                             onPressed: (context) {
-                              //GPT used for future delay - allow slideable to go back before setState is called
-                              //Prevent half of the slider not having time to update to correct colour
+                              //GPT was used for the following reasons:
+                              //Prompt: "How can I add a delay in flutter to prevent setState being called too early"
                               Future.delayed(
                                 const Duration(milliseconds: 200),
                                 () {

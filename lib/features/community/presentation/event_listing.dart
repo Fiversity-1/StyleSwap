@@ -17,7 +17,9 @@ class EventList extends StatefulWidget {
 }
 
 class _EventListState extends State<EventList> {
-  //GPT used for mapping boolean - see comment below
+  //GPT was used for the following reasons:
+  //Prompt: "How can I create a mapping of booleans for each list tile in a
+  //list view. I want to track the state of changes in each tile"
   //Used so each announcement wouldn't open when see more pressed
   Map<int, bool> seeMoreMap = {};
   bool attendance = false;
@@ -34,7 +36,6 @@ class _EventListState extends State<EventList> {
           child: ListView.builder(
             itemCount: widget.listings.length,
             itemBuilder: (context, index) {
-              //GPT for mapping booleans
               bool seeMore = seeMoreMap[index] ?? false;
               return Padding(
                 padding: const EdgeInsets.only(bottom: 25.0),

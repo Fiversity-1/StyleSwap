@@ -14,9 +14,9 @@ import 'package:toastification/toastification.dart';
 
 import '../../profile/domain/profile_class.dart';
 
-//GPT to change to statefulwidget instead of hook
-//GPT to then implement setState for dynamic changes (as no longer hook),
-//GPT then used to make sure to use "setState()" instead of "setState"
+//GPT was used for the following reasons:
+//Prompt: "How to change to a statefulwidget instead of hook page flutter"
+//Prompt: "Why is my setState()s not making any changes (provided code)"
 class AddClothingItemPage extends StatefulWidget {
   const AddClothingItemPage({super.key});
 
@@ -202,7 +202,8 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       setState(() {});
     }
 
-    //GPT suggest custom validation when not using form key
+    //GPT was used for the following reasons:
+    //Prompt: "How to change to do custom validation without using form key"
     //Function shows toast when no colours are given and user clicks next
     void colourValidation() {
       if (selectedColours.isEmpty)
@@ -297,7 +298,8 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       }
     }
 
-    //GPT generated function for extracting and formatting names of enums from a map
+    //GPT was used for the following reasons:
+    //Prompt: "How to extract and format strings from a mapping of enums"
     String getText(Map<Enum, FaIcon> category, int index) {
       return category == letteredSizeIcons
           ? category.keys
@@ -328,7 +330,8 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
               )
             : Scaffold(
                 backgroundColor: Colors.transparent,
-                //GPT used for LayoutBuilder
+                //GPT was used for the following reasons:
+                //Prompt: "How to make grid builder dynamic in flutter"
                 body: LayoutBuilder(
                   builder: (context, constraints) {
                     // Define grid column count based on available width
@@ -405,7 +408,8 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                                 boxShadow: [
-                                                  //GPT used for BoxShadow styling
+                                                  //GPT was used for the following reasons:
+                                                  //Prompt: "How to add shadow to a container flutter"
                                                   BoxShadow(
                                                     color: Colors.black
                                                         .withOpacity(0.25),
@@ -473,7 +477,8 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(
                                             top: 20, bottom: 20),
-                                        //GPT used for aid in styling textfield
+                                        //GPT was used for the following reasons:
+                                        //Prompt: "How to style text field in flutter"
                                         child: TextField(
                                           focusNode: myFocusNodeDescription,
                                           textInputAction: TextInputAction.done,
@@ -543,7 +548,7 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                             ),
                           ),
                         ),
-                        //GPT for floating action button (previous), modified for our usage
+
                         //Show except when on 1st step
                         Column(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -557,6 +562,8 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                                 children: [
                                   Visibility(
                                     visible: !isFirstStep(),
+                                    //GPT was used for the following reasons:
+                                    //Prompt: "How to implement a floating action button in flutter"
                                     child: FloatingActionButton(
                                         onPressed: () {
                                           isFirstStep() ? null : previous();
@@ -564,7 +571,6 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
                                         child:
                                             const Icon(Icons.arrow_back_ios)),
                                   ),
-                                  //GPT for floating action button (next), modified for our usage
                                   //Only show on pages that require validation (colours, image, description)
                                   Visibility(
                                     visible: activeStep == 6 ||

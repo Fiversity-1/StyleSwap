@@ -60,7 +60,8 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                   ModalRoute.withName('/message'),
                 );
               },
-              //GPT used for styling button
+              //GPT was used for the following reasons:
+              //Prompt: "How to style textbutton"
               style: TextButton.styleFrom(
                   foregroundColor: Colors.white // Set the text color here
                   ),
@@ -70,7 +71,8 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              //GPT used for styling button
+              //GPT was used for the following reasons:
+              //Prompt: "How to style textbutton"
               style: TextButton.styleFrom(
                   foregroundColor: Colors.white // Set the text color here
                   ),
@@ -81,35 +83,6 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
       },
     );
   }
-  //Rowan implement this please
-  //Dialog box when max of 3 items in trades exceeded
-  // void _showAlertDialogMaxTrade(
-  //   BuildContext context,
-  // ) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         backgroundColor: Colors.blue,
-  //         title: const Text('Oops'),
-  //         content:
-  //             const Text('Sorry there is a max of 3 items per proposed trade.'),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //             //Gpt for styling button
-  //             style: TextButton.styleFrom(
-  //                 foregroundColor: Colors.white // Set the text color here
-  //                 ),
-  //             child: const Text('OK'),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -146,84 +119,88 @@ class _BrowsePhotoState extends State<BrowsePhoto> {
                 Padding(
                   padding: const EdgeInsets.only(top: 5),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Visibility(
-                        //On profile page show info icon and close icon
-                        //Info for personal show listing stats=
-                        visible: widget.title != "details",
-                        child: widget.title == "personal" ?
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: kIsWeb ? 7.5 : 25, left: 5),
-                              child: IconButton(
-                                  icon: const Icon(
-                                    Icons.info,
-                                  ),
-                                  iconSize: 25,
-                                  onPressed: () {
-                                      showModalBottomSheet(
-                                          context: context,
-                                          builder: (context) {
-                                            return const Wrap(
-                                              children: [
-                                                ListTile(
-                                                  tileColor: Colors.transparent,
-                                                  leading:
-                                                      Icon(Icons.date_range),
-                                                  title: Text('Date Listed:'),
-                                                  subtitle: Text('25/10/2024'),
-                                                ),
-                                                ListTile(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Visibility(
+                          //On profile page show info icon and close icon
+                          //Info for personal show listing stats=
+                          visible: widget.title != "details",
+                          child: widget.title == "personal"
+                              ? Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: kIsWeb ? 7.5 : 25, left: 5),
+                                  child: IconButton(
+                                      icon: const Icon(
+                                        Icons.info,
+                                      ),
+                                      iconSize: 25,
+                                      onPressed: () {
+                                        showModalBottomSheet(
+                                            context: context,
+                                            builder: (context) {
+                                              return const Wrap(
+                                                children: [
+                                                  ListTile(
                                                     tileColor:
                                                         Colors.transparent,
-                                                    leading: Icon(Icons.people),
-                                                    title: Text('Views'),
-                                                    subtitle: Text("15")),
-                                                ListTile(
-                                                  tileColor: Colors.transparent,
-                                                  leading:
-                                                      Icon(Icons.swap_horiz),
-                                                  title:
-                                                      Text('Interested People'),
-                                                  subtitle: Text("8"),
-                                                ),
-                                              ],
-                                            );
-                                          });
-                                  }),
-                            ) :
-                            //Public page provides trading option -> based on
-                            //last chat opened.
-                            Padding(
-                                padding: const EdgeInsets.only(
-                                    top: kIsWeb ? 7.5 : 25),
-                                child: IconButton(
-                                  icon: const Icon(
-                                    Icons.swap_horiz,
+                                                    leading:
+                                                        Icon(Icons.date_range),
+                                                    title: Text('Date Listed:'),
+                                                    subtitle:
+                                                        Text('25/10/2024'),
+                                                  ),
+                                                  ListTile(
+                                                      tileColor:
+                                                          Colors.transparent,
+                                                      leading:
+                                                          Icon(Icons.people),
+                                                      title: Text('Views'),
+                                                      subtitle: Text("15")),
+                                                  ListTile(
+                                                    tileColor:
+                                                        Colors.transparent,
+                                                    leading:
+                                                        Icon(Icons.swap_horiz),
+                                                    title: Text(
+                                                        'Interested People'),
+                                                    subtitle: Text("8"),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      }),
+                                )
+                              :
+                              //Public page provides trading option -> based on
+                              //last chat opened.
+                              Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: kIsWeb ? 7.5 : 25),
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      Icons.swap_horiz,
+                                    ),
+                                    iconSize: 25,
+                                    onPressed: () {
+                                      _showAlertDialogProposeTrade(
+                                          context, chatManager, chat);
+                                    },
                                   ),
-                                  iconSize: 25,
-                                  onPressed: () {
-                                    _showAlertDialogProposeTrade(
-                                        context, chatManager, chat);
-                                  },
                                 ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: kIsWeb ? 7.5 : 25, left: 5),
+                          child: IconButton(
+                              icon: const Icon(
+                                Icons.close,
                               ),
-                            ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: kIsWeb ? 7.5 : 25, left: 5),
-                        child: IconButton(
-                            icon: const Icon(
-                              Icons.close,
-                            ),
-                            iconSize: 25,
-                            onPressed: () {
-                              Navigator.pop(context);
-                            }),
-                      ),
-                    ]
-                  ),
+                              iconSize: 25,
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }),
+                        ),
+                      ]),
                 ),
                 SizedBox(height: height * 0.4),
                 //For the web have arrow buttons. Buttons animate to start/end

@@ -29,11 +29,12 @@ class PreferenceRowState<T> extends State<PreferenceRow> {
       tags.add(Tag(
         text: widget.preferences[i].toString(),
         category: widget.category,
-        //GPT suggested using callback for updating after tag removed
+        //GPT was used for the following reasons:
+        //Prompt: "How to use a callback to track state changes when a widget
+        //is removed in flutter"
         onDeleted: () {
           widget.onDelete(i);
           // Notify the parent to rebuild
-          // TODO check if necessary setState(() {});
         },
       ));
     }

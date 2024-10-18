@@ -28,9 +28,10 @@ class CustomBottomNavBar extends StatelessWidget {
   }
 
   @override
-  //GPT for Icon size; particularly "selectedIconTheme","unselectedIconTheme"
-  //GPT use for setting selected/unseletected FontSize to 0 to prevent shifting
-  //GPT used for setting background and inactive colour of the navigation bar
+  //GPT was used for the following reasons:
+  //Prompt: "How do I stop icons and text shifting on this bottom navigation bar
+  //when selecting between different pages?"
+  //Prompt: "How to set the background and inactive colour of a navigation bar"
   Widget build(BuildContext context) {
     return Theme(
         data: Theme.of(context).copyWith(

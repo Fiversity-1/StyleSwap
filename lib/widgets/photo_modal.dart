@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 //This modal is used to provide users with the option to take or select photo
-//GPT was used for the following reasons (written by GPT):
-//1. suggested use of async - used for aysynchronous code
-//2. wait with Future returns - wait until user provides image
-//3. context.mounted when using navigator.pop - prevent Navigator.pop() when
-//using async function
+//GPT was used for the following reasons:
+//Prompt: "Make the modal wait until image is provided"
+//Prompt: "How do I use Navigator.pop() when using an async function"
 Future<XFile?> photoOptionModal(BuildContext context, ImagePicker picker,
     int quality, double? maxwidth, double? maxheight) async {
   XFile? image;

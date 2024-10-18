@@ -16,8 +16,9 @@ class SwipePage extends StatelessWidget {
         scrollDirection: Axis.vertical,
         children: [
           const SwipePageTop(),
-          // GPT suggested, only make "swipe_top" scrollable if page
-          //is being used for search and not when viewing public profile listings
+          //GPT was used for the following reasons:
+          //Prompt: Using this page view in flutter (provided code), how to make a certain page
+          //not scrollable based on a certain condition"
           if (searchResults.checkCardType() == "Clothes")
             const ClothingDetail(),
         ],

@@ -13,8 +13,7 @@ class ImageSelectionField extends FormField<List<Uint8List>> {
       super.onSaved,
       super.validator,
       initialValue,
-      AutovalidateMode super.autovalidateMode =
-          AutovalidateMode.disabled})
+      AutovalidateMode super.autovalidateMode = AutovalidateMode.disabled})
       : super(
             initialValue: initialValue ?? [],
             builder: (FormFieldState<List<Uint8List>> field) {
@@ -30,7 +29,8 @@ class ImageSelectionField extends FormField<List<Uint8List>> {
                   return;
                 }
 
-                List<Uint8List> updatedList = List<Uint8List>.from(state.value ?? []);
+                List<Uint8List> updatedList =
+                    List<Uint8List>.from(state.value ?? []);
                 updatedList.add(await file.readAsBytes());
                 state.didChange(updatedList);
               }
@@ -44,7 +44,8 @@ class ImageSelectionField extends FormField<List<Uint8List>> {
                   return;
                 }
 
-                List<Uint8List> updatedList = List<Uint8List>.from(state.value ?? []);
+                List<Uint8List> updatedList =
+                    List<Uint8List>.from(state.value ?? []);
                 updatedList.add(await file.readAsBytes());
                 state.didChange(updatedList);
               }
@@ -82,7 +83,8 @@ class ImageSelectionField extends FormField<List<Uint8List>> {
 
               // removes the current image
               void onClearImage(int index) {
-                List<Uint8List> updatedList = List<Uint8List>.from(state.value ?? []);
+                List<Uint8List> updatedList =
+                    List<Uint8List>.from(state.value ?? []);
                 updatedList.removeAt(index);
                 state.didChange(updatedList);
               }

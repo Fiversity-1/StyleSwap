@@ -45,7 +45,9 @@ class PublicProfileState extends State<PublicProfile> {
                 ),
                 centerTitle: true,
               ),
-              //GPT used for LayoutBuilder to scale grid element amount
+              //GPT was used for the following reasons:
+              //Prompt: "How to scale grid element amount on flutter with layoutbuilder"
+
               body: LayoutBuilder(
                 builder: (context, constraints) {
                   // Define grid column count based on available width

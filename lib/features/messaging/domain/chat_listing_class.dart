@@ -6,9 +6,11 @@ import 'package:uuid/uuid.dart';
 
 import '../../clothing/data/matching_api.dart';
 
-//GPT used to this implement this page for state management of ChatListings
 //ChatListings have a list of ChatMessages
-
+//GPT was used for the following reasons:
+//Prompt: "How to implement state management using provider for multiple
+//chat listings being used. Base it of the provided ChatListing and
+//Chat message class (provided code)."
 class ChatListing extends ChangeNotifier {
   final String id;
   String name;

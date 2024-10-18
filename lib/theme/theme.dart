@@ -21,7 +21,8 @@ ThemeData lightTheme = ThemeData(
       ),
     ),
   ),
-  //GPT used for generating text theme data.
+  //GPT was used for the following reasons:
+  //Prompt: "Generate text themes with a particular font style in flutter"
   textTheme: TextTheme(
     headlineLarge: GoogleFonts.poppins(),
     headlineMedium: GoogleFonts.poppins(),
@@ -41,7 +42,8 @@ ThemeData lightTheme = ThemeData(
       selectedColor: Colors.white),
   sliderTheme: const SliderThemeData(
     thumbColor: Colors.black,
-    //GPT used for generating valudIndicator Text style.
+    //GPT was used for the following reasons:
+    //Prompt: "How to style a valueIndicator in Flutter"
     valueIndicatorTextStyle: TextStyle(
       color: Colors.black,
     ),
@@ -83,7 +85,8 @@ ThemeData darkTheme = ThemeData(
     ),
     floatingActionButtonTheme:
         FloatingActionButtonThemeData(backgroundColor: Colors.blue[900]),
-    //GPT used for generating text theme data.
+    //GPT was used for the following reasons:
+    //Prompt: "Generate text themes with a particular font style in flutter"
     textTheme: TextTheme(
       headlineLarge: GoogleFonts.poppins(),
       headlineMedium: GoogleFonts.poppins(),
@@ -96,7 +99,8 @@ ThemeData darkTheme = ThemeData(
     sliderTheme: const SliderThemeData(
       thumbColor: Colors.white,
       trackHeight: 10,
-      //GPT used for generating valudIndicator Text style.
+      //GPT was used for the following reasons:
+      //Prompt: "How to style a valueIndicator in Flutter"
       valueIndicatorTextStyle: TextStyle(
         color: Colors.white,
       ),

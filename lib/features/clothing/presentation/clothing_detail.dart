@@ -17,7 +17,7 @@ class ClothingDetail extends StatelessWidget {
 
   const ClothingDetail({super.key, this.location});
 
-  //https://medium.com/@kavyamistry0612/building-interactive-user-interfaces-with-alert-dialogs-in-flutter-81e268fb72f0
+//https://medium.com/@kavyamistry0612/building-interactive-user-interfaces-with-alert-dialogs-in-flutter-81e268fb72f0
 //Template used throughout app for creating dialog boxes in flutter
 //Dialog used to report listing and potentially block a user
   void _showAlertDialogReportListing(context) {
@@ -45,7 +45,8 @@ class ClothingDetail extends StatelessWidget {
                       .pushNamedAndRemoveUntil('/swipe', (route) => false);
                 }
               },
-              //GPT used for styling button
+              //GPT was used for the following reasons:
+              //Prompt: "How to style text button in flutter"
               style: TextButton.styleFrom(foregroundColor: Colors.white),
               child: const Text('Yes'),
             ),
@@ -53,7 +54,8 @@ class ClothingDetail extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              //GPT used for styling button
+              //GPT was used for the following reasons:
+              //Prompt: "How to style text button in flutter"
               style: TextButton.styleFrom(foregroundColor: Colors.white),
               child: const Text('No'),
             ),
@@ -66,7 +68,8 @@ class ClothingDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final searchResults = Provider.of<Search>(context);
-    //GPT for modal route to collect argument
+    //GPT was used for the following reasons:
+    //Prompt: "How to collect argument push in Navigator.pushNamed"
     final String? location =
         ModalRoute.of(context)!.settings.arguments as String?;
     return GradientBackground(
@@ -160,8 +163,9 @@ class ClothingDetail extends StatelessWidget {
                       Icons.gpp_good_outlined,
                     ),
                   ),
-                  //Colour has been modified by GPT to highlight tiles containing
-                  //any colour from list of preferred colours.
+                  //GPT was used for the following reasons:
+                  //Prompt: "(Provided code) How to handle when there is a list
+                  //of colours, and want it to highlight if at least 1 is present"
                   ListTile(
                     title: Text(
                       "Colour",
@@ -190,8 +194,9 @@ class ClothingDetail extends StatelessWidget {
                       Navigator.push(
                         context,
                         //PhotoViewGallery Code from pubdev photo_view https://pub.dev/packages/photo_view
-                        //modified with GPT to stack icon on top
-                        //see browse_photos widget
+                        //GPT was used for the following reasons:
+                        //Prompt: "(Provided code for photo_view)How would I stack a icon on top
+                        //of the photo_view package in flutter" **see browse_photo widget
                         MaterialPageRoute(
                             builder: (context) => BrowsePhoto(
                                   title: "details",

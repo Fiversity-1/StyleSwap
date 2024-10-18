@@ -9,14 +9,12 @@ class Tag extends StatefulWidget {
     super.key,
     required this.text,
     required this.category,
-    //GPT suggested using callback for updating after tag removed
     required this.onDeleted,
   });
 
   final String text;
   final String category;
 
-  //GPT suggested using callback for updating after tag removed
   final VoidCallback onDeleted;
 
   @override
@@ -24,7 +22,8 @@ class Tag extends StatefulWidget {
 }
 
 class TagState extends State<Tag> {
-//getIconForValue has been modified by GPT to convert string to enum
+//GPT was used for the following reasons:
+//Prompt: "How could I convert and enum to a string?"
   FaIcon? getIconForValue(String category, String value, {double? newSize}) {
     FaIcon? originalIcon;
 
@@ -93,7 +92,9 @@ class TagState extends State<Tag> {
                   : widget.text == "Wellworn"
                       ? "Well worn"
                       : widget.text),
-      // GPT recommended using this approach for finding the correct icon to use
+      //GPT was used for the following reasons:
+      //Prompt: "How to handle multiple ternary operations in flutter for
+      //example selecting between different using as FaIcon or a normal icon"
       avatar: widget.category != "Colour"
           ? FaIcon(icon != null ? icon.icon : Icons.error,
               size: 20, color: Theme.of(context).iconTheme.color)
@@ -103,12 +104,15 @@ class TagState extends State<Tag> {
           Theme.of(context).floatingActionButtonTheme.backgroundColor,
       labelStyle: Theme.of(context).textTheme.bodyLarge,
       deleteIcon: const Icon(Icons.close),
-      //GPT suggested using callback for updating after tag removed
+      //GPT was used for the following reasons:
+      //Prompt: "How to use a callback to track state changes when a widget
+      //is removed in flutter"
       onDeleted: () {
         widget.onDeleted();
       },
       deleteButtonTooltipMessage: '',
-      //GPT was used for border modification of colour and rounded edges
+      //GPT was used for the following reasons:
+      //Prompt: "How to style a chip in flutter"
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
           side: BorderSide(color: Theme.of(context).hoverColor, width: 2)),
