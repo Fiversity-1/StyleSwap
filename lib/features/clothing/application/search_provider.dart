@@ -31,6 +31,10 @@ class Search with ChangeNotifier {
     notifyListeners();
   }
 
+  bool isEmpty() {
+    return _listings.isEmpty;
+  }
+
   // Clear listings
   void resetSearch() {
     _listings.clear();

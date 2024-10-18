@@ -164,6 +164,12 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                             percentThresholdY) {
                                           index = index - _cardsSwiped;
 
+                                          if (index < 0) {
+                                            setState(() {
+                                              _cardsSwiped = 0;
+                                            });
+                                          }
+
                                           if (index <
                                               searchResults
                                                   .getListing()
@@ -171,13 +177,14 @@ class _SwipePageTopState extends State<SwipePageTop> {
                                             var item = searchResults
                                                 .getListing()[index];
 
-                                            if (item is ClothingInfo)
+                                            if (item is ClothingInfo) {
                                               return ClothingCard(
                                                   item: (item as ClothingInfo));
-                                            else if (item is FunFact)
+                                            } else if (item is FunFact) {
                                               return FunFactCard(
                                                   index: (item as FunFact)
                                                       .funFactId);
+                                            }
                                           }
 
                                           return const NoResultCard();
@@ -343,7 +350,12 @@ class _SwipePageTopState extends State<SwipePageTop> {
 
     setState(() {
       _handleRemove(searchResults, 0);
-      _cardsSwiped++;
+
+      if (searchResults.getListing().isNotEmpty) {
+        _cardsSwiped++;
+      } else {
+        _cardsSwiped = 0;
+      }
     });
 
     if (swipedItem is ClothingInfo) {
