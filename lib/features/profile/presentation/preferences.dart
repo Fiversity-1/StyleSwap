@@ -16,7 +16,9 @@ class Preferences extends StatefulWidget {
 }
 
 class _PreferencesState extends State<Preferences> {
-  //GPT used to generate safetyGuide
+  //GPT was used for the following reasons:
+  //Prompt: "Generate a safety guide for a clothing app where users
+  //can message and trade in person. Include a point about hygiene"
 
   final String safetyGuide = '''
 1. **Use the Platform’s Messaging for All Communication**
@@ -112,7 +114,10 @@ class _PreferencesState extends State<Preferences> {
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child:
-                  //GPT used for safety guide box styling
+                  //GPT was used for the following reasons:
+                  //Prompt: "How to create a container similar to one
+                  //used for terms and conditions"
+
                   SizedBox(
                 height: 250,
                 width: width * 0.85,

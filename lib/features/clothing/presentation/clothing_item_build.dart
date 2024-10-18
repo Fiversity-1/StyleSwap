@@ -23,13 +23,16 @@ class ClothingCardState extends State<ClothingCard> {
     return GestureDetector(
       onLongPress: () {
         setState(() {
-          //GPT code for cycling through listings with multiple images and resetting index
+          //GPT was used for the following reasons:
+          //Prompt: "I am swiping through cards similar to tinder in flutter.
+          //These cards can be tapped to view additional images for that card
+          //as well. How do I handle the logic to switch back to the beginning
+          //to avoid an index error"
           currentIndex = (currentIndex + 1) % widget.item.images.length;
         });
       },
       onTap: () {
         setState(() {
-          //GPT code for cycling through listings with multiple images and resetting index
           currentIndex = (currentIndex + 1) % widget.item.images.length;
         });
       },

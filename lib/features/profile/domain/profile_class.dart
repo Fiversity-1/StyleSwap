@@ -9,8 +9,9 @@ import '../../clothing/data/clothing_api.dart';
 import '../../clothing/domain/clothing_info.dart';
 import '../data/profile_api.dart';
 
-//GPT used to learn and implement provider code for user state management.
-//Mostly follows the same format as Theme Provider.
+//GPT was used for the following reasons:
+//Prompt: "How to implement state management using provider for multiple
+//profiles being used. Base it of the provided profile class (provided code).""
 class Profile with ChangeNotifier {
   late final String id;
   late String name;

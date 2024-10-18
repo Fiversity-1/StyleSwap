@@ -30,8 +30,10 @@ class NewProfileState extends State<NewProfile> {
   String lat = "";
   String long = "";
 
-//GPT used for terms and condition generation
-//GPT used for checkValue logic for terms and condition validation
+//GPT was used for the following reasons:
+//Prompt: "Generate terms and conditions for a clothing swap app where users
+//trade clothes after matching and messaging with each other."
+//Prompt: "Generate logic to handle state changes in the terms and conditions"
   bool checkedValue = false;
   bool isLoading = false;
   final String termsAndConditions = '''
@@ -82,7 +84,8 @@ For any questions or concerns about these terms and conditions, please contact o
     return GradientBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        //GPT used for fixing overflow pixels (resizeToAvoidBottomInset)
+        //GPT was used for the following reasons:
+        //Prompt: "How to avoid overflow error when opening keyboard Flutter"
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -188,7 +191,9 @@ For any questions or concerns about these terms and conditions, please contact o
                             ),
                             _placesAutoCompleteTextField(),
                             const SizedBox(height: 15),
-                            //GPT used for styling scrollable box for terms and conditions
+                            //GPT was used for the following reasons:
+                            //Prompt: "How to create a container similar to one
+                            //used for terms and conditions"
                             SizedBox(
                               height: 150,
                               child: SingleChildScrollView(
@@ -350,7 +355,9 @@ For any questions or concerns about these terms and conditions, please contact o
   }
 
 //https://pub.dev/packages/google_places_flutter package used for determining location
-//This template was modified by GPT to handle decoration changes.
+//GPT was used for the following reasons:
+//Prompt: "How would I modify this tempate to edit the styling of
+//the text field"
   Widget _placesAutoCompleteTextField() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 0),

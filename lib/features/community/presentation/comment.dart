@@ -36,8 +36,10 @@ class CommentsState extends State<Comments> {
 
       switch (value) {
         case "like":
-          //GPT used for tracking state of like count and liked state
-          //Same code applied for each reation.
+          //GPT was used for the following reasons:
+          //Prompt: "I am using 4 reactions for a comment section, how to
+          //handle the logic of changing the bool state and the current counter,
+          //I am using the LikeButton package"
           comments[index].liked = !comments[index].liked;
           comments[index].like += comments[index].liked ? 1 : -1;
           break;
@@ -165,8 +167,9 @@ class CommentsState extends State<Comments> {
                                 reverse: true,
                                 shrinkWrap: true,
 
-                                //GPT used for NeverScrollableSCrollPhysics
-                                //Used to prevent scrolling of whole page
+                                //GPT was used for the following reasons:
+                                //Prompt: "how to prevent a page from scrolling and only
+                                //allow a list view to scroll within the page"
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: comments.length,
                                 itemBuilder: (context, index) {
@@ -398,9 +401,11 @@ class CommentsState extends State<Comments> {
                     controller: _sendComment,
                     onSubmitted: _handleComment,
                     decoration: InputDecoration(
-                      //GPT used for fill colour of input comment box
+                      //GPT was used for the following reasons:
+                      //Prompt: "How to style a textfield for example the fill
+                      //colour and the content padding"
                       fillColor: Theme.of(context).primaryColor,
-                      //GPT used for inner content padding
+
                       contentPadding: kIsWeb
                           ? const EdgeInsets.all(20.0)
                           : const EdgeInsets.only(top: 20.0),

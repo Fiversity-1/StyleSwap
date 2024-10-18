@@ -34,7 +34,10 @@ class _SwipePageTopState extends State<SwipePageTop> {
   List<TargetFocus> listTargets = [];
   bool _hasRun = false;
 
-//Start GPT, tutorial runs once per device, delay searchResult init
+  //GPT was used for the following reasons:
+  //Prompt: "I am using a tutorial in flutter, how to make sure that
+  //this only shows once per device. I also want to add a delay in
+  //other functions being called, until it is completed"
   @override
   void initState() {
     super.initState();
@@ -102,7 +105,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
           preferredSize: Size.fromHeight(50),
           child: CustomTopAppBar(),
         ),
-        //GPT used for LayoutBuilder
+        //GPT was used for the following reasons:
+        //Prompt: "How to make a dynamic page in flutter using layout builder"
         body: LayoutBuilder(
           builder: (context, constraints) {
             // Define grid column count based on available width
@@ -294,8 +298,6 @@ class _SwipePageTopState extends State<SwipePageTop> {
       }
 
       //Show toaster when match occurs
-      //Rowan needs to move based on integration
-      //Match doesn't occur on instant swipe right
       toastification.showCustom(
         context: context,
         autoCloseDuration: const Duration(seconds: 3),
