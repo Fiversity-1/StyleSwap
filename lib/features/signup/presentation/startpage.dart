@@ -144,8 +144,8 @@ class StartPage extends StatelessWidget {
       }
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
-    } on Error {
-      debugPrint("Error happened somewhere");
+    } on Error catch (e) {
+      debugPrint(e.toString());
     }
   }
 }

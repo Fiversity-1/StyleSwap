@@ -351,6 +351,8 @@ class _SwipePageTopState extends State<SwipePageTop> {
     setState(() {
       _handleRemove(searchResults, 0);
 
+
+
       if (searchResults.getListing().isNotEmpty) {
         _cardsSwiped++;
       } else {

@@ -20,6 +20,10 @@ class ClothingCardState extends State<ClothingCard> {
 
   @override
   Widget build(BuildContext context) {
+    if (currentIndex >= widget.item.images.length) {
+      currentIndex = 0;
+    }
+
     return GestureDetector(
       onLongPress: () {
         setState(() {
